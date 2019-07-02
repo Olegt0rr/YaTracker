@@ -1,4 +1,4 @@
-aiohttp
-python-rapidjson
-certifi
-pydantic[ujson]
+aiohttp==3.5.4
+certifi==2019.6.16
+pydantic[ujson]==0.29
+python-rapidjson==0.7.2

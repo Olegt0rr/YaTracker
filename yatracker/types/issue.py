@@ -6,33 +6,36 @@ from .objects import Issue, IssueType, Priority, Queue, Sprint, Status, User
 
 
 class FullIssue(BaseModel):
-    link: str
+    url: str
     id: str
     key: str
     version: int
-    last_comment_update_at: Optional[str]
+
     summary: str
     parent: Optional[Issue]
-    aliases: Optional[List[str]]
-    updated_by: User
-    description: str
+    description: Optional[str]
     sprint: Optional[List[Sprint]]
     type: IssueType
     priority: Priority
+    followers: Optional[List[User]]
+    queue: Queue
+    favorite: bool
+    assignee: Optional[User]
+
+    last_comment_update_at: Optional[str]
+    aliases: Optional[List[str]]
+    updated_by: Optional[User]
     created_at: str
-    followers: List[User]
     created_by: User
     votes: int
-    assignee: User
-    queue: Queue
-    updated_at: str
+    updated_at: Optional[str]
     status: Status
     previous_status: Optional[Status]
-    favorite: bool
+    direction: Optional[str]
 
     class Config:
         fields = {
-            'link': {'alias': '_self'},
+            'url': {'alias': '_self'},
             'last_comment_update_at': {'alias': 'lastCommentUpdatedAt'},
             'updated_by': {'alias': 'updatedBy'},
             'created_at': {'alias': 'createdAt'},

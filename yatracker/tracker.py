@@ -107,33 +107,27 @@ class YaTracker:
         data = await self._request(method, uri, payload=payload)
         return data
 
-    async def find_issues(self, filter=None, query=None, order=None, expand=None, keys=None, queue=None):
+    async def find_issues(self, filter=None, query=None, order=None, expand=None,
+                          keys=None, queue=None):
         """
         Find issues.
         Use this request to get a list of issues that meet specific criteria.
         If there are more than 10,000 issues in the response, use paging.
         :return:
         """
+        if (filter or query) and (queue or keys):
+            raise YaTrackerException('You can only use keys, queue or search request.')
+
+        payload = self.clear_payload(locals(), exclude=['expand', 'order'])
+
         method = 'POST'
         uri = f'{self.host}/v2/issues/_search'
+
         params = dict()
         if order:
             params['order'] = order
         if expand:
             params['expand'] = expand
-
-        if (filter or query) and (queue or keys):
-            raise YaTrackerException('You can only use keys, queue or search request.')
-
-        payload = dict()
-        if filter:
-            payload['filter'] = filter
-        if query:
-            payload['query'] = query
-        if queue:
-            payload['queue'] = queue
-        if keys:
-            payload['keys'] = keys
 
         data = await self._request(method, uri, params, payload)
         return [FullIssue(**item) for item in data]
@@ -215,9 +209,10 @@ class YaTracker:
         raise YaTrackerException(text)
 
     @staticmethod
-    def clear_payload(payload: dict):
+    def clear_payload(payload: dict, exclude=None):
+        exclude = exclude or []
         return {k: v for k, v in payload.items()
-                if k not in ['self', 'cls'] and v is not None}
+                if k not in ['self', 'cls'] + exclude and v is not None}
 
     @staticmethod
     def _get_beauty_json(text):

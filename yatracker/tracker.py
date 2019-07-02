@@ -7,6 +7,7 @@ import rapidjson
 from aiohttp import ClientSession, TCPConnector
 
 from .types import FullIssue
+from .types import NotAuthorized, SufficientRights, ObjectNotFound, YaTrackerException
 
 
 class YaTracker:
@@ -54,8 +55,25 @@ class YaTracker:
 
         # let's send request and get results
         async with self._session.request(method, uri, params=params) as response:
+            await self._check_status(response.status)
             text = await response.text()
             return self._get_beauty_json(text)
+
+    @staticmethod
+    async def _check_status(status):
+        if status == 200:
+            return
+
+        if status == 401:
+            raise NotAuthorized()
+
+        if status == 403:
+            raise SufficientRights()
+
+        if status == 404:
+            raise ObjectNotFound()
+
+        raise YaTrackerException()
 
     @staticmethod
     def _get_beauty_json(text):

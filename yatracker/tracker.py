@@ -28,7 +28,7 @@ class YaTracker:
         self.__org_id = org_id
         self.__token = token
 
-    async def view_issue(self, issue_id, expand=None):
+    async def get_issue(self, issue_id, expand=None):
         """
         View issue parameters.
         Use this request to get information about an issue.

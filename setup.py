@@ -71,6 +71,7 @@ setup(
     author_email="oleg@trueweb.app",
     description="Fully asynchronous library for Yandex Tracker",
     long_description=get_description(),
+    long_description_content_type='text/markdown',
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Console",

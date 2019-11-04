@@ -65,7 +65,7 @@ class YaTracker:
 
     async def create_issue(self, summary, queue, parent=None, description=None,
                            sprint=None, type=None, priority=None, followers=None,
-                           unique=None):
+                           unique=None, **kwargs):
         """
         Create an issue.
         Use this request to create an issue.
@@ -211,6 +211,9 @@ class YaTracker:
     @staticmethod
     def clear_payload(payload: dict, exclude=None):
         exclude = exclude or []
+        kwargs = payload.pop('kwargs')
+        if kwargs:
+            payload.update(kwargs)
         return {k: v for k, v in payload.items()
                 if k not in ['self', 'cls'] + exclude and v is not None}
 

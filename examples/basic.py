@@ -20,7 +20,7 @@ async def foo():
     print(issue)
 
     # update issue
-    issue = await tracker.edit_issue('KEY-1', payload={'description': 'Hello World'})
+    issue = await tracker.edit_issue('KEY-1', description='Hello World')
     print(issue)
 
 

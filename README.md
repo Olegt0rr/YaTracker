@@ -28,8 +28,8 @@ async def foo():
     # get issue
     issue = await tracker.get_issue('KEY-1')
     
-    # update issue
-    issue = await tracker.edit_issue('KEY-1', payload={'description': 'Hello World'})
+    # update issue (just pass kwargs)
+    issue = await tracker.edit_issue('KEY-1', description='Hello World')
 ```
 ```python
 # don't forget to close tracker on app shutdown

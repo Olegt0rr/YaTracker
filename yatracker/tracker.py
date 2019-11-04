@@ -46,13 +46,13 @@ class YaTracker:
         data = await self._request(method, uri, params)
         return FullIssue(**data)
 
-    async def edit_issue(self, issue_id, version=None, payload=None):
+    async def edit_issue(self, issue_id, version=None, **kwargs):
         """
         Edit an issue.
         Use this request to make changes to an issue.
         The issue is selected by its ID or key.
 
-        :param payload:
+        :param kwargs:
         :param version:
         :param issue_id:
         :return:
@@ -60,6 +60,7 @@ class YaTracker:
         method = 'PATCH'
         uri = f'{self.host}/v2/issues/{issue_id}'
         params = {'version': version} if version else None
+        payload = self.clear_payload(kwargs)
         data = await self._request(method, uri, params, payload)
         return FullIssue(**data)
 
@@ -211,7 +212,7 @@ class YaTracker:
     @staticmethod
     def clear_payload(payload: dict, exclude=None):
         exclude = exclude or []
-        kwargs = payload.pop('kwargs')
+        kwargs = payload.pop('kwargs', None)
         if kwargs:
             payload.update(kwargs)
         return {k: v for k, v in payload.items()

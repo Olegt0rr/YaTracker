@@ -34,6 +34,7 @@ class FullIssue(BaseModel):
     direction: Optional[str]
 
     class Config:
+        extra = 'allow'
         fields = {
             'url': {'alias': '_self'},
             'last_comment_update_at': {'alias': 'lastCommentUpdatedAt'},

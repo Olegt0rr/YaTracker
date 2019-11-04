@@ -44,3 +44,11 @@ class FullIssue(BaseModel):
             'updated_at': {'alias': 'updatedAt'},
             'previous_status': {'alias': 'previousStatus'},
         }
+
+    @property
+    def tracker(self):
+        from ..tracker import YaTracker
+        return YaTracker.get_current()
+
+    async def get_transitions(self):
+        return await self.tracker.get_transitions(self.id)

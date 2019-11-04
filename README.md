@@ -30,6 +30,14 @@ async def foo():
     
     # update issue (just pass kwargs)
     issue = await tracker.edit_issue('KEY-1', description='Hello World')
+
+    # get transitions:
+    transitions = await issue.get_transitions()
+
+    # execute transition
+    transition = transitions[0]
+    await transition.execute()
+
 ```
 ```python
 # don't forget to close tracker on app shutdown

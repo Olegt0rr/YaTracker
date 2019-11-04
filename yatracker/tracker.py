@@ -8,9 +8,10 @@ from aiohttp import ClientSession, TCPConnector
 
 from .types import FullIssue, Transition, Priority, Comment, AlreadyExists
 from .types import NotAuthorized, SufficientRights, ObjectNotFound, YaTrackerException
+from .utils.mixins import ContextInstanceMixin
 
 
-class YaTracker:
+class YaTracker(ContextInstanceMixin):
     """
     API docs: https://tech.yandex.com/connect/tracker/api/about-docpage/
 
@@ -176,12 +177,22 @@ class YaTracker:
         data = await self._request(method, uri)
         return [Transition(**item) for item in data]
 
+    async def execute_transition(self, transition: Transition, **kwargs):
+        method = 'POST'
+        uri = f'{transition.url}/_execute'
+        payload = self.clear_payload(kwargs)
+        data = await self._request(method, uri, payload)
+        return [Transition(**item) for item in data]
+
     async def _request(self, method, uri, params=None, payload=None):
         """ Base request method. """
 
         # let's get new or existing session
         if not isinstance(self._session, ClientSession) or self._session.closed:
             await self._get_session()
+
+        # set context
+        YaTracker.set_current(self)
 
         # let's send request and get results
         async with self._session.request(method=method, url=uri,

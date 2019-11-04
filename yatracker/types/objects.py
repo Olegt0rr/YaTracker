@@ -111,6 +111,14 @@ class Transition(BaseModel):
             'url': {'alias': '_self'},
         }
 
+    @property
+    def tracker(self):
+        from ..tracker import YaTracker
+        return YaTracker.get_current()
+
+    async def execute(self):
+        await self.tracker.execute_transition(self)
+
 
 class Comment(BaseModel):
     url: str

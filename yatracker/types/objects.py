@@ -1,9 +1,9 @@
-from typing import Optional, Union
+from typing import Optional, Union, Iterator
 
-from pydantic import BaseModel
+from .base import BaseObject
 
 
-class Issue(BaseModel):
+class Issue(BaseObject):
     url: str
     id: str
     key: str
@@ -15,7 +15,7 @@ class Issue(BaseModel):
         }
 
 
-class User(BaseModel):
+class User(BaseObject):
     url: str
     id: str
     display: str
@@ -26,7 +26,7 @@ class User(BaseModel):
         }
 
 
-class Sprint(BaseModel):
+class Sprint(BaseObject):
     url: str
     id: str
     display: str
@@ -37,7 +37,7 @@ class Sprint(BaseModel):
         }
 
 
-class IssueType(BaseModel):
+class IssueType(BaseObject):
     url: str
     id: str
     key: str
@@ -49,7 +49,7 @@ class IssueType(BaseModel):
         }
 
 
-class Priority(BaseModel):
+class Priority(BaseObject):
     """
     Attributes:
         url - Reference to the object.
@@ -76,7 +76,7 @@ class Priority(BaseModel):
         }
 
 
-class Queue(BaseModel):
+class Queue(BaseObject):
     url: str
     id: str
     key: str
@@ -88,7 +88,7 @@ class Queue(BaseModel):
         }
 
 
-class Status(BaseModel):
+class Status(BaseObject):
     url: str
     id: str
     key: str
@@ -100,7 +100,7 @@ class Status(BaseModel):
         }
 
 
-class Transition(BaseModel):
+class Transition(BaseObject):
     id: str
     url: str
     display: str
@@ -111,16 +111,27 @@ class Transition(BaseModel):
             'url': {'alias': '_self'},
         }
 
-    @property
-    def tracker(self):
-        from ..tracker import YaTracker
-        return YaTracker.get_current()
-
     async def execute(self):
         await self.tracker.execute_transition(self)
 
 
-class Comment(BaseModel):
+class Transitions(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.current = -1
+
+    def __iter__(self) -> Iterator[Transition]:
+        return self
+
+    def __next__(self):
+        self.current += 1
+        values = list(self.values())
+        if self.current >= len(values):
+            raise StopIteration
+        return values[self.current]
+
+
+class Comment(BaseObject):
     url: str
     id: str
     text: str

@@ -1,11 +1,10 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from .base import BaseObject
+from .objects import Issue, IssueType, Priority, Queue, Sprint, Status, User, Transitions
 
-from .objects import Issue, IssueType, Priority, Queue, Sprint, Status, User
 
-
-class FullIssue(BaseModel):
+class FullIssue(BaseObject):
     url: str
     id: str
     key: str
@@ -45,10 +44,19 @@ class FullIssue(BaseModel):
             'previous_status': {'alias': 'previousStatus'},
         }
 
-    @property
-    def tracker(self):
-        from ..tracker import YaTracker
-        return YaTracker.get_current()
+    async def get_transitions(self) -> Transitions:
+        """
+        Returns dict and list-like Transitions object.
 
-    async def get_transitions(self):
+        Iterate Transitions like a list:
+        >>> transitions = await self.get_transitions()
+        >>> for t in transitions:
+        >>>    print(t)
+
+        Use Transitions like a dict with transition names:
+        >>> transitions = await self.get_transitions()
+        >>> close = transitions.get('close')
+        >>> if close:
+        >>>    await close.execute()
+        """
         return await self.tracker.get_transitions(self.id)

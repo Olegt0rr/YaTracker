@@ -6,7 +6,7 @@ import certifi
 import rapidjson
 from aiohttp import ClientSession, TCPConnector
 
-from .types import FullIssue, Transition, Priority, Comment, AlreadyExists
+from .types import FullIssue, Transitions, Transition, Priority, Comment, AlreadyExists
 from .types import NotAuthorized, SufficientRights, ObjectNotFound, YaTrackerException
 from .utils.mixins import ContextInstanceMixin
 
@@ -175,7 +175,7 @@ class YaTracker(ContextInstanceMixin):
         method = 'GET'
         uri = f'{self.host}/v2/issues/{issue_id}/transitions'
         data = await self._request(method, uri)
-        return [Transition(**item) for item in data]
+        return Transitions(**{Transition(**item).id: Transition(**item) for item in data})
 
     async def execute_transition(self, transition: Transition, **kwargs):
         method = 'POST'

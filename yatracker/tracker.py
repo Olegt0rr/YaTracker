@@ -4,7 +4,7 @@ from typing import Optional, List
 
 import certifi
 import rapidjson
-from aiohttp import ClientSession, TCPConnector
+from aiohttp import ClientSession, TCPConnector, BasicAuth
 
 from .types import FullIssue, Transitions, Transition, Priority, Comment, AlreadyExists
 from .types import NotAuthorized, SufficientRights, ObjectNotFound, YaTrackerException
@@ -91,6 +91,13 @@ class YaTracker(ContextInstanceMixin):
         uri = f'{self.host}/v2/issues/{issue_id}/comments'
         data = await self._request(method, uri)
         return [Comment(**item) for item in data]
+
+    async def post_comment(self, issue_id, text, **kwargs):
+        payload = self.clear_payload(locals(), exclude=['issue_id'])
+        method = 'POST'
+        uri = f'{self.host}/v2/issues/{issue_id}/comments/'
+        data = await self._request(method, uri, payload=payload)
+        return Comment(**data)
 
     async def count_issues(self, filter=None, query=None):
         """

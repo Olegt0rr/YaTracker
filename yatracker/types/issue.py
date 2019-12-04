@@ -67,3 +67,12 @@ class FullIssue(BaseObject):
         :return:
         """
         return await self.tracker.get_comments(self.id)
+
+    async def post_comment(self, text=None, **kwargs):
+        """
+        Post comment for self
+        :param text:
+        :param kwargs:
+        :return: Comment
+        """
+        return await self.tracker.post_comment(self.id, text=text, **kwargs)

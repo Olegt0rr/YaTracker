@@ -60,3 +60,10 @@ class FullIssue(BaseObject):
         >>>    await close.execute()
         """
         return await self.tracker.get_transitions(self.id)
+
+    async def get_comments(self):
+        """
+        Get comments for self
+        :return:
+        """
+        return await self.tracker.get_comments(self.id)

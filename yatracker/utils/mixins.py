@@ -1,12 +1,12 @@
 import contextvars
-from typing import TypeVar, Type
+from typing import Type, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class ContextInstanceMixin:
     def __init_subclass__(cls, **kwargs):
-        cls.__context_instance = contextvars.ContextVar(f'instance_{cls.__name__}')
+        cls.__context_instance = contextvars.ContextVar(f"instance_{cls.__name__}")
         return cls
 
     @classmethod
@@ -18,5 +18,7 @@ class ContextInstanceMixin:
     @classmethod
     def set_current(cls: Type[T], value: T):
         if not isinstance(value, cls):
-            raise TypeError(f'Value should be instance of {cls.__name__!r} not {type(value).__name__!r}')
+            raise TypeError(
+                f"Value should be instance of {cls.__name__!r} not {type(value).__name__!r}"
+            )
         cls.__context_instance.set(value)

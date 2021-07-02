@@ -1,4 +1,4 @@
-from typing import Optional, Union, Iterator
+from typing import Iterator, Optional, Union
 
 from .base import BaseObject
 
@@ -11,7 +11,7 @@ class Issue(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -22,7 +22,7 @@ class User(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -33,7 +33,7 @@ class Sprint(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -45,7 +45,7 @@ class IssueType(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -62,6 +62,7 @@ class Priority(BaseObject):
         order - The weight of the priority. This parameter affects the order
                 for displaying the priority in the interface.
     """
+
     url: str
     id: str
     key: str
@@ -72,7 +73,7 @@ class Priority(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -84,7 +85,7 @@ class Queue(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -96,7 +97,7 @@ class Status(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
 
@@ -108,7 +109,7 @@ class Transition(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
+            "url": {"alias": "_self"},
         }
 
     async def execute(self):
@@ -143,9 +144,9 @@ class Comment(BaseObject):
 
     class Config:
         fields = {
-            'url': {'alias': '_self'},
-            'updated_by': {'alias': 'updatedBy'},
-            'created_at': {'alias': 'createdAt'},
-            'created_by': {'alias': 'createdBy'},
-            'updated_at': {'alias': 'updatedAt'},
+            "url": {"alias": "_self"},
+            "updated_by": {"alias": "updatedBy"},
+            "created_at": {"alias": "createdAt"},
+            "created_by": {"alias": "createdBy"},
+            "updated_at": {"alias": "updatedAt"},
         }

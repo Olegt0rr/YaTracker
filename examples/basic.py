@@ -4,7 +4,7 @@ from yatracker import YaTracker
 
 # CAUTION! Don't store credentials in your code!
 ORG_ID = 123456
-TOKEN = 'AgAEA7qidDyAXAnwDvLnsA6Yu6WzFw'
+TOKEN = "AgAEA7qidDyAXAnwDvLnsA6Yu6WzFw"
 
 # define tracker
 tracker = YaTracker(ORG_ID, TOKEN)
@@ -12,15 +12,15 @@ tracker = YaTracker(ORG_ID, TOKEN)
 
 async def foo():
     # create issue
-    issue = await tracker.create_issue('New Issue', 'KEY')
+    issue = await tracker.create_issue("New Issue", "KEY")
     print(issue)
 
     # get issue
-    issue = await tracker.get_issue('KEY-1')
+    issue = await tracker.get_issue("KEY-1")
     print(issue)
 
     # update issue
-    issue = await tracker.edit_issue('KEY-1', description='Hello World')
+    issue = await tracker.edit_issue("KEY-1", description="Hello World")
     print(issue)
 
 
@@ -29,7 +29,7 @@ async def on_shutdown():
     await tracker.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     loop = aio.get_event_loop()
     loop.run_until_complete(foo())
     loop.run_until_complete(on_shutdown())

@@ -1,7 +1,16 @@
 from typing import List, Optional
 
 from .base import BaseObject
-from .objects import Issue, IssueType, Priority, Queue, Sprint, Status, User, Transitions
+from .objects import (
+    Issue,
+    IssueType,
+    Priority,
+    Queue,
+    Sprint,
+    Status,
+    Transitions,
+    User,
+)
 
 
 class FullIssue(BaseObject):
@@ -33,15 +42,15 @@ class FullIssue(BaseObject):
     direction: Optional[str]
 
     class Config:
-        extra = 'allow'
+        extra = "allow"
         fields = {
-            'url': {'alias': '_self'},
-            'last_comment_update_at': {'alias': 'lastCommentUpdatedAt'},
-            'updated_by': {'alias': 'updatedBy'},
-            'created_at': {'alias': 'createdAt'},
-            'created_by': {'alias': 'createdBy'},
-            'updated_at': {'alias': 'updatedAt'},
-            'previous_status': {'alias': 'previousStatus'},
+            "url": {"alias": "_self"},
+            "last_comment_update_at": {"alias": "lastCommentUpdatedAt"},
+            "updated_by": {"alias": "updatedBy"},
+            "created_at": {"alias": "createdAt"},
+            "created_by": {"alias": "createdBy"},
+            "updated_at": {"alias": "updatedAt"},
+            "previous_status": {"alias": "previousStatus"},
         }
 
     async def get_transitions(self) -> Transitions:

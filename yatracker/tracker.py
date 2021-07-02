@@ -3,11 +3,11 @@ import ssl
 from typing import Optional, List
 
 import certifi
-import rapidjson
 from aiohttp import ClientSession, TCPConnector, BasicAuth
 
 from .types import FullIssue, Transitions, Transition, Priority, Comment, AlreadyExists
 from .types import NotAuthorized, SufficientRights, ObjectNotFound, YaTrackerException
+from .utils import json
 from .utils.mixins import ContextInstanceMixin
 
 
@@ -243,7 +243,7 @@ class YaTracker(ContextInstanceMixin):
         Special thanks for Yandex API namespace incompatible with Python...
 
         """
-        return rapidjson.loads(text.replace('"self":"', '"_self":"'))
+        return json.loads(text.replace('"self":"', '"_self":"'))
 
     async def _get_session(self):
         """ Define aiohttp.ClientSession. """
@@ -258,7 +258,7 @@ class YaTracker(ContextInstanceMixin):
 
         # define session
         self._session = ClientSession(connector=connector, headers=headers,
-                                      json_serialize=rapidjson.dumps)
+                                      json_serialize=json.dumps)
 
     async def close(self):
         """ Graceful closing. """

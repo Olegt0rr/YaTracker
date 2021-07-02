@@ -14,13 +14,7 @@ mypy:
 flake8:
 	flake8 yatracker
 
-pylint:
-	pylint yatracker --ignored-modules=pydantic
-
-pydocstyle:
-	pydocstyle yatracker
-
-lint: isort black mypy flake8 pylint pydocstyle
+lint: isort black mypy flake8
 
 requirements:
 	poetry export -E ultra --without-hashes -f requirements.txt -o requirements.txt

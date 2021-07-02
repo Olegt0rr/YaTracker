@@ -38,7 +38,7 @@ elif mode == UJSON:
 
 
 else:
-    import json
+    import json  # type: ignore
 
     def dumps(data):
         return json.dumps(data, ensure_ascii=False)

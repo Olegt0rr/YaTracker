@@ -1,0 +1,91 @@
+[tool.poetry]
+name = "yatracker"
+version = "2021.7.2"
+description = "Async client for Yandex Tracker API"
+authors = ["Oleg A. <oleg@trueweb.app>"]
+maintainers = ["Oleg A. <oleg@trueweb.app>"]
+license = "MIT"
+readme = "README.md"
+homepage = ""
+repository = "https://github.com/Olegt0rr/YaTracker/"
+documentation = "https://yandex.ru/dev/connect/tracker/"
+keywords = [
+    "Yandex",
+    "Tracker",
+    "API",
+    "async",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.7",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.7"
+aiohttp = "^3.7"
+certifi = "^2021"
+pydantic = "^1.8"
+
+
+[tool.poetry.dev-dependencies]
+black = {version = "^21", allow-prereleases = true}
+coverage = "^5.5"
+flake8 = "^3.9"
+isort = "^5.9"
+mypy = "^0.910"
+pre-commit = "^2.13"
+pydocstyle = "^6.1"
+pylint = "^2.8"
+pytest = "^6.2"
+pytest-asyncio = "^0.15"
+pytest-cov = "^2.12"
+
+
+[tool.poetry.extras]
+ultra = ["ujson", "uvloop"]
+
+
+[tool.black]
+exclude = '''
+/(
+    \.git
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.tox
+  | venv
+  | build
+  | dist
+)/
+'''
+
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+
+[tool.mypy]
+warn_redundant_casts = true
+warn_unused_ignores = false
+warn_no_return = true
+warn_unreachable = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = "*.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

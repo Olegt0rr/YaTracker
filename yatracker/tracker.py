@@ -3,7 +3,7 @@ import ssl
 from typing import List, Optional
 
 import certifi
-from aiohttp import BasicAuth, ClientSession, TCPConnector
+from aiohttp import ClientSession, TCPConnector
 
 from .types import (
     AlreadyExists,

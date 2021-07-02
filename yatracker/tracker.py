@@ -1,6 +1,6 @@
 import asyncio as aio
 import ssl
-from typing import List, Optional
+from typing import Optional
 
 import certifi
 from aiohttp import ClientSession, TCPConnector

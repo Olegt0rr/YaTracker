@@ -12,7 +12,7 @@ mypy:
 	mypy -p yatracker
 
 flake8:
-	flake8 .
+	flake8 yatracker
 
 pylint:
 	pylint yatracker --ignored-modules=pydantic

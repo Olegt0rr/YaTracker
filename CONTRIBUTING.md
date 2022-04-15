@@ -103,7 +103,7 @@ def collect_integers(a: int, b: int) -> List[int]:
 
 - [isort](https://github.com/timothycrosley/isort) to maintain consistent imports.
 
-- [pylint](https://www.pylint.org/) with the `pylint-django` plugin to catch errors in your code.
+- [pylint](https://www.pylint.org/) to catch errors in your code.
 
 - [flake8](https://flake8.pycqa.org/en/latest/) to make sure your code adheres to PEP 8.
 

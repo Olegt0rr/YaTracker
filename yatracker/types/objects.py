@@ -1,52 +1,34 @@
 from typing import Iterator, Optional, Union
 
+from pydantic import Field
+
 from .base import BaseObject
 
 
 class Issue(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     key: str
     display: str
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
 
 class User(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     display: str
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
 
 class Sprint(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     display: str
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
 
 class IssueType(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     key: str
     display: str
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
 
 class Priority(BaseObject):
@@ -63,7 +45,7 @@ class Priority(BaseObject):
                 for displaying the priority in the interface.
     """
 
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     key: str
     display: Optional[str]
@@ -71,46 +53,26 @@ class Priority(BaseObject):
     name: Optional[Union[str, dict]]
     order: Optional[int]
 
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
-
 
 class Queue(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     key: str
     display: str
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
 
 class Status(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     key: str
     display: str
 
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
-
 
 class Transition(BaseObject):
-    id: str
+    id: str = Field(..., alias="_self")
     url: str
     display: str
     to: Status
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-        }
 
     async def execute(self):
         await self.tracker.execute_transition(self)
@@ -133,20 +95,11 @@ class Transitions(dict):
 
 
 class Comment(BaseObject):
-    url: str
+    url: str = Field(..., alias="_self")
     id: str
     text: str
-    created_by: User
-    updated_by: User
-    created_at: str
-    updated_at: str
+    created_by: User = Field(..., alias="createdBy")
+    updated_by: User = Field(..., alias="updatedBy")
+    created_at: str = Field(..., alias="createdAt")
+    updated_at: str = Field(..., alias="updatedAt")
     version: int
-
-    class Config:
-        fields = {
-            "url": {"alias": "_self"},
-            "updated_by": {"alias": "updatedBy"},
-            "created_at": {"alias": "createdAt"},
-            "created_by": {"alias": "createdBy"},
-            "updated_at": {"alias": "updatedAt"},
-        }

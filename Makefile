@@ -1,21 +1,26 @@
+.PHONY: *
+
 pre-commit:
 	pre-commit install
 	pre-commit autoupdate
 
 isort:
-	isort . --profile black
+	isort yatracker --profile black
+	isort tests --profile black
 
 black:
-	black .
+	black yatracker
+	black tests
 
 mypy:
 	mypy -p yatracker
 
 flake8:
 	flake8 yatracker
+	flake8 tests
 
-lint: isort black mypy flake8
+pylint:
+	pylint yatracker
+	pylint tests
 
-requirements:
-	poetry export -E ultra --without-hashes -f requirements.txt -o requirements.txt
-	poetry export -E ultra --without-hashes -f requirements.txt -o requirements_dev.txt --dev
+lint: isort black pylint flake8 mypy

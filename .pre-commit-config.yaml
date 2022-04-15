@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.2.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -10,20 +10,20 @@ repos:
       - id: name-tests-test
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v0.910'
+    rev: 'v0.942'
     hooks:
       - id: mypy
         args: [ --ignore-missing-imports ]
         exclude: tests
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.9.1
+    rev: 5.10.1
     hooks:
       - id: isort
         args: [ --profile, black, --filter-files ]
 
   - repo: https://github.com/psf/black
-    rev: 21.6b0
+    rev: 22.3.0
     hooks:
       - id: black
         language_version: python3
@@ -32,21 +32,3 @@ repos:
     rev: '3.9.2'
     hooks:
       - id: flake8
-
-  - repo: local
-    hooks:
-      - id: update-poetry-lock
-        name: update poetry.lock
-        entry: poetry update
-        files: "^pyproject.toml$"
-        language: system
-        pass_filenames: false
-        require_serial: true
-
-      - id: update-requirements-txt
-        name: update requirements.txt
-        entry: make requirements
-        files: "^pyproject.toml$"
-        language: system
-        pass_filenames: false
-        require_serial: true

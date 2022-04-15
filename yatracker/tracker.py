@@ -26,7 +26,7 @@ class YaTracker(ContextInstanceMixin):
     API docs: https://tech.yandex.com/connect/tracker/api/about-docpage/
 
     Attention!
-        All 'self' properties renamed to 'link' cause it's incompatible with Python.
+        All 'self' properties renamed to 'link' because it's incompatible with Python.
         All camelCase properties renamed to pythonic_case.
         Methods named by author, cause Yandex API has no clear method names.
         For help you to recognize method names full description is attached.

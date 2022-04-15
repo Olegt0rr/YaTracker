@@ -31,5 +31,5 @@ class ObjectNotFound(YaTrackerException):
 class AlreadyExists(YaTrackerException):
     def __init__(self):
         super().__init__(
-            "An issue with the same value of the unique parameter " "already exists."
+            "An issue with the same value of the unique parameter already exists."
         )

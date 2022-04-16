@@ -8,6 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 class BaseTracker(ContextInstanceMixin):
+    """Represents technical methods for using YaTracker."""
+
     def __init__(
         self,
         org_id: Union[str, int, None] = None,

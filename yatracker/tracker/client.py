@@ -5,20 +5,20 @@ import io
 import ssl
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import certifi
 from aiohttp import ClientSession, ClientTimeout, FormData, TCPConnector
 from aiohttp.typedefs import StrOrURL
 
-from ..types import (
+from yatracker.types import (
     AlreadyExists,
     NotAuthorized,
     ObjectNotFound,
     SufficientRights,
     YaTrackerException,
 )
-from ..utils import json
+from yatracker.utils import json
 
 DEFAULT_API_HOST = "https://api.tracker.yandex.net"
 DEFAULT_API_VERSION = "v2"
@@ -31,13 +31,12 @@ class BaseClient(ABC):
         self,
         org_id: Union[str, int],
         token: str,
-        headers: Optional[Dict[str, str]] = None,
+        headers: Optional[dict[str, str]] = None,
         api_host: Optional[str] = None,
         api_version: Optional[str] = None,
         **kwargs,
-    ):
-        """
-        Set defaults on object init.
+    ) -> None:
+        """Set defaults on object init.
 
         By default, `self._session` is None.
         It will be created on a first API request.
@@ -49,17 +48,17 @@ class BaseClient(ABC):
         _headers = headers.copy() if headers else {}
         _headers.setdefault("X-Org-Id", str(org_id))
         _headers.setdefault("Authorization", f"OAuth {token}")
-        self._headers: Dict[str, str] = _headers
+        self._headers: dict[str, str] = _headers
         self._session: Optional[ClientSession] = None
 
     async def request(
         self,
         method: str,
         uri: str,
-        params: Optional[Dict[str, Any]] = None,
-        payload: Optional[Dict[str, Any]] = None,
+        params: Optional[dict[str, Any]] = None,
+        payload: Optional[dict[str, Any]] = None,
         **kwargs,
-    ) -> Union[Dict[str, Any], List[Dict[str, Any]], str]:
+    ) -> Union[dict[str, Any], list[dict[str, Any]], str]:
         """Make request."""
         status, body = await self._make_request(
             method=method,
@@ -73,10 +72,13 @@ class BaseClient(ABC):
 
     @abstractmethod
     async def _make_request(
-        self, method: str, url: StrOrURL, **kwargs
-    ) -> Tuple[int, str]:
+        self,
+        method: str,
+        url: StrOrURL,
+        **kwargs,
+    ) -> tuple[int, str]:
         """Get raw response from via http-client.
-        :returns: tuple of (status_code, response_body)
+        :returns: tuple of (status_code, response_body).
         """
 
     @staticmethod
@@ -85,24 +87,23 @@ class BaseClient(ABC):
             return
 
         if status == 401:
-            raise NotAuthorized()
+            raise NotAuthorized
 
         if status == 403:
-            raise SufficientRights()
+            raise SufficientRights
 
         if status == 404:
-            raise ObjectNotFound()
+            raise ObjectNotFound
 
         if status == 409:
-            raise AlreadyExists()
+            raise AlreadyExists
 
         raise YaTrackerException(text)
 
     @staticmethod
-    def _get_beauty_json(text: str) -> Union[Dict[str, Any], List[Dict[str, Any]], str]:
-        """
-        Ugly 'self' param escaping!
-        Special thanks for Yandex API namespace incompatible with Python
+    def _get_beauty_json(text: str) -> Union[dict[str, Any], list[dict[str, Any]], str]:
+        """Ugly 'self' param escaping!
+        Special thanks for Yandex API namespace incompatible with Python.
 
         """
         # noinspection PyBroadException
@@ -116,8 +117,7 @@ class BaseClient(ABC):
 
 
 class AIOHTTPClient(BaseClient):
-    """
-    Base aiohttp client.
+    """Base aiohttp client.
 
     Consists of all methods need to make a request to API:
      - session caching
@@ -131,13 +131,12 @@ class AIOHTTPClient(BaseClient):
         self,
         org_id: Union[str, int],
         token: str,
-        headers: Optional[Dict[str, str]] = None,
+        headers: Optional[dict[str, str]] = None,
         api_host: Optional[str] = None,
         api_version: Optional[str] = None,
         **kwargs,
-    ):
-        """
-        Set defaults on object init.
+    ) -> None:
+        """Set defaults on object init.
 
         By default, `self._session` is None.
         It will be created on a first API request.
@@ -171,10 +170,12 @@ class AIOHTTPClient(BaseClient):
         return self._session
 
     async def _make_request(
-        self, method: str, url: StrOrURL, **kwargs
-    ) -> Tuple[int, str]:
-        """
-        Make a request.
+        self,
+        method: str,
+        url: StrOrURL,
+        **kwargs,
+    ) -> tuple[int, str]:
+        """Make a request.
 
         :param method: HTTP Method
         :param url: endpoint link
@@ -210,14 +211,15 @@ class AIOHTTPClient(BaseClient):
         if isinstance(file, Path):
             return file.open("rb")
 
-        raise TypeError(f"Not supported file type: `{type(file).__name__}`")
+        msg = f"Not supported file type: `{type(file).__name__}`"
+        raise TypeError(msg)
 
     @staticmethod
     def _process_exception(
-        status: int, data: Union[Dict[str, Any], str]
+        status: int,
+        data: Union[dict[str, Any], str],
     ) -> YaTrackerException:
-        """
-        Wrap API exceptions.
+        """Wrap API exceptions.
 
         :param status: response status
         :param data: response json converted to dict()

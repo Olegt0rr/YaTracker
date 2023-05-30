@@ -28,20 +28,20 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7"
 aiohttp = "^3.8"
-certifi = "^2021"
+certifi = "^2023"
 pydantic = "^1.8"
 
 [tool.poetry.dev-dependencies]
-black = { version = "^22", allow-prereleases = true }
-coverage = "^6.3"
-flake8 = "^4.0"
-isort = "^5.10"
-mypy = "^0.942"
-pre-commit = "^2.18"
-pylint = "^2.13"
-pytest = "^7.1"
-pytest-asyncio = "^0.18"
-pytest-cov = "^3.0"
+black = "^23"
+coverage = "^6"
+flake8 = "^4"
+isort = "^5"
+mypy = "^0"
+pre-commit = "^2"
+pylint = "^2"
+pytest = "^7"
+pytest-asyncio = "^0"
+pytest-cov = "^3"
 
 [tool.poetry.extras]
 ultra = ["ujson", "uvloop"]

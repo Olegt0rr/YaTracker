@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from .base import BaseObject
 from .objects import (
@@ -22,16 +22,16 @@ class FullIssue(BaseObject):
     summary: str
     parent: Optional[Issue]
     description: Optional[str]
-    sprint: Optional[List[Sprint]]
+    sprint: Optional[list[Sprint]]
     type: IssueType
     priority: Priority
-    followers: Optional[List[User]]
+    followers: Optional[list[User]]
     queue: Queue
     favorite: bool
     assignee: Optional[User]
 
     last_comment_update_at: Optional[str]
-    aliases: Optional[List[str]]
+    aliases: Optional[list[str]]
     updated_by: Optional[User]
     created_at: str
     created_by: User
@@ -54,8 +54,7 @@ class FullIssue(BaseObject):
         }
 
     async def get_transitions(self) -> Transitions:
-        """
-        Returns dict and list-like Transitions object.
+        """Returns dict and list-like Transitions object.
 
         Iterate Transitions like a list:
         >>> transitions = await self.get_transitions()
@@ -71,17 +70,15 @@ class FullIssue(BaseObject):
         return await self.tracker.get_transitions(self.id)
 
     async def get_comments(self):
-        """
-        Get comments for self
+        """Get comments for self
         :return:
         """
         return await self.tracker.get_comments(self.id)
 
     async def post_comment(self, text=None, **kwargs):
-        """
-        Post comment for self
+        """Post comment for self
         :param text:
         :param kwargs:
-        :return: Comment
+        :return: Comment.
         """
         return await self.tracker.post_comment(self.id, text=text, **kwargs)

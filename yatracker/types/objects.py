@@ -1,4 +1,5 @@
-from typing import Iterator, Optional, Union
+from collections.abc import Iterator
+from typing import Optional, Union
 
 from pydantic import Field
 
@@ -32,17 +33,16 @@ class IssueType(BaseObject):
 
 
 class Priority(BaseObject):
-    """
-    Attributes:
-        url - Reference to the object.
-        id - Priority ID.
-        key - Priority key.
-        version - Priority version.
-        name - Display name of the priority. When localized=false is passed
-                in the request, this parameter contains duplicates of
-                the names in other languages.
-        order - The weight of the priority. This parameter affects the order
-                for displaying the priority in the interface.
+    """Attributes
+    url - Reference to the object.
+    id - Priority ID.
+    key - Priority key.
+    version - Priority version.
+    name - Display name of the priority. When localized=false is passed
+    in the request, this parameter contains duplicates of
+    the names in other languages.
+    order - The weight of the priority. This parameter affects the order
+    for displaying the priority in the interface.
     """
 
     url: str = Field(..., alias="_self")
@@ -79,7 +79,7 @@ class Transition(BaseObject):
 
 
 class Transitions(dict):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.current = -1
 

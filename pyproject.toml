@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yatracker"
-version = "2022.4.1"
+version = "2023.5.1"
 description = "Async client for Yandex Tracker API"
 authors = ["Oleg A. <oleg@trueweb.app>"]
 maintainers = ["Oleg A. <oleg@trueweb.app>"]
@@ -26,22 +26,22 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8.1"
 aiohttp = "^3.8"
 certifi = "^2023"
 pydantic = "^1.8"
 
 [tool.poetry.dev-dependencies]
 black = "^23"
-coverage = "^6"
-flake8 = "^4"
+coverage = "^7"
+flake8 = "^6"
 isort = "^5"
-mypy = "^0"
-pre-commit = "^2"
+mypy = "^1"
+pre-commit = "^3"
 pylint = "^2"
 pytest = "^7"
 pytest-asyncio = "^0"
-pytest-cov = "^3"
+pytest-cov = "^4"
 
 [tool.poetry.extras]
 ultra = ["ujson", "uvloop"]

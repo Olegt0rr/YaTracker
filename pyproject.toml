@@ -29,7 +29,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7"
 aiohttp = "^3.7"
-certifi = "^2021"
+certifi = ">=2021,<2023"
 pydantic = "^1.8"
 
 

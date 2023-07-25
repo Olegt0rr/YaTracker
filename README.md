@@ -11,7 +11,7 @@ API docs: https://tech.yandex.com/connect/tracker/api/about-docpage/
 
 ## How to install
 ```text
-python3.7 -m pip install yatracker
+python3.9 -m pip install yatracker
 ```
 
 
@@ -24,10 +24,10 @@ tracker = YaTracker(org_id=..., token=...)
 async def foo():
     # create issue
     issue = await tracker.create_issue('New Issue', 'KEY')
-    
+
     # get issue
     issue = await tracker.get_issue('KEY-1')
-    
+
     # update issue (just pass kwargs)
     issue = await tracker.edit_issue('KEY-1', description='Hello World')
 

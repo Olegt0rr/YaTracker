@@ -26,10 +26,10 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.9"
 aiohttp = "^3.8"
 certifi = "^2023"
-pydantic = "^1.8"
+pydantic = "^1.10"
 
 
 [tool.poetry.dev-dependencies]
@@ -88,7 +88,7 @@ ignore_errors = true
 [tool.ruff]
 src = ["app", "tools", "tests"]
 select = ["ALL"]
-ignore = ["ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "RUF001", "RUF002", "RUF003", "S101", "PT015", "PT017", "B011"]
+ignore = ["A003", "ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "RUF001", "RUF002", "RUF003", "S101", "PT015", "PT017", "B011"]
 fixable = ["ALL"]
 unfixable = []
 

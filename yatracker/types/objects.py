@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from collections.abc import Iterator
-from typing import Optional, Union
 
 from pydantic import Field
 
@@ -48,10 +49,10 @@ class Priority(BaseObject):
     url: str = Field(..., alias="_self")
     id: str
     key: str
-    display: Optional[str]
-    version: Optional[int]
-    name: Optional[Union[str, dict]]
-    order: Optional[int]
+    display: str | None = None
+    version: int | None = None
+    name: str | dict | None = None
+    order: int | None = None
 
 
 class Queue(BaseObject):

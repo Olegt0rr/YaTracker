@@ -42,9 +42,8 @@ class BaseClient(ABC):
         It will be created on a first API request.
         The second request will use the same `self._session`.
         """
-        api_host = api_host or DEFAULT_API_HOST
-        api_version = api_version or DEFAULT_API_VERSION
-        self._base_url = f"{api_host}/{api_version}"
+        self._api_version = api_version or DEFAULT_API_VERSION
+        self._base_url = api_host or DEFAULT_API_HOST
         _headers = headers.copy() if headers else {}
         _headers.setdefault("X-Org-Id", str(org_id))
         _headers.setdefault("Authorization", f"OAuth {token}")
@@ -62,7 +61,7 @@ class BaseClient(ABC):
         """Make request."""
         status, body = await self._make_request(
             method=method,
-            url=uri,
+            url=f"/{self._api_version}{uri}",
             params=params,
             json=payload,
             **kwargs,

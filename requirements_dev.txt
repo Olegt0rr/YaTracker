@@ -4,7 +4,7 @@ async-timeout==3.0.1
 atomicwrites==1.4.0; sys_platform == "win32"
 attrs==21.2.0
 black==21.6b0
-certifi==2021.5.30
+certifi==2023.7.22
 cfgv==3.3.0
 chardet==4.0.0
 click==8.0.1

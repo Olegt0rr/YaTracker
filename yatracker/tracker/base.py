@@ -1,5 +1,8 @@
 import logging
+from functools import lru_cache
 from typing import Any, Optional, Union
+
+import msgspec.json
 
 from yatracker.utils.mixins import ContextInstanceMixin
 
@@ -36,6 +39,10 @@ class BaseTracker(ContextInstanceMixin):
                 api_host=api_host,
                 api_version=api_version,
             )
+
+    @lru_cache
+    def _get_decoder(self, struct: type[msgspec.Struct]) -> msgspec.json.Decoder:
+        return msgspec.json.Decoder(struct)
 
     @staticmethod
     def clear_payload(payload: dict[str, Any], exclude: Optional[list[str]] = None):

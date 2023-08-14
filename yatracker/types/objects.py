@@ -1,39 +1,42 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from typing import TYPE_CHECKING
 
-from pydantic import Field
+import msgspec
 
 from .base import BaseObject
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
-class Issue(BaseObject):
-    url: str = Field(..., alias="_self")
+
+class Issue(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     display: str
 
 
-class User(BaseObject):
-    url: str = Field(..., alias="_self")
+class User(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     display: str
 
 
-class Sprint(BaseObject):
-    url: str = Field(..., alias="_self")
+class Sprint(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     display: str
 
 
-class IssueType(BaseObject):
-    url: str = Field(..., alias="_self")
+class IssueType(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     display: str
 
 
-class Priority(BaseObject):
+class Priority(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
     """Attributes
     url - Reference to the object.
     id - Priority ID.
@@ -46,7 +49,7 @@ class Priority(BaseObject):
     for displaying the priority in the interface.
     """
 
-    url: str = Field(..., alias="_self")
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     display: str | None = None
@@ -55,27 +58,27 @@ class Priority(BaseObject):
     order: int | None = None
 
 
-class Queue(BaseObject):
-    url: str = Field(..., alias="_self")
+class Queue(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     display: str
 
 
-class Status(BaseObject):
-    url: str = Field(..., alias="_self")
+class Status(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     display: str
 
 
-class Transition(BaseObject):
-    id: str = Field(..., alias="_self")
+class Transition(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    id: str = msgspec.field(name="self")
     url: str
     display: str
     to: Status
 
-    async def execute(self):
+    async def execute(self) -> None:
         await self.tracker.execute_transition(self)
 
 
@@ -95,12 +98,12 @@ class Transitions(dict):
         return values[self.current]
 
 
-class Comment(BaseObject):
-    url: str = Field(..., alias="_self")
+class Comment(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     text: str
-    created_by: User = Field(..., alias="createdBy")
-    updated_by: User = Field(..., alias="updatedBy")
-    created_at: str = Field(..., alias="createdAt")
-    updated_at: str = Field(..., alias="updatedAt")
+    created_by: User
+    updated_by: User | None = None
+    created_at: str
+    updated_at: str | None = None
     version: int

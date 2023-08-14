@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 import msgspec.json
 
@@ -12,8 +12,11 @@ from .client import AIOHTTPClient
 
 if TYPE_CHECKING:
     from collections.abc import Collection
+    from types import TracebackType
 
     from .client import BaseClient
+
+T = TypeVar("T")
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +24,7 @@ logger = logging.getLogger(__name__)
 class BaseTracker(ContextInstanceMixin):
     """Represents technical methods for using YaTracker."""
 
+    # ruff: noqa: PLR0913
     def __init__(
         self,
         org_id: str | int | None = None,
@@ -51,8 +55,9 @@ class BaseTracker(ContextInstanceMixin):
                 api_version=api_version,
             )
 
+    # ruff: noqa: B019
     @lru_cache
-    def _get_decoder(self, struct: type[msgspec.Struct]) -> msgspec.json.Decoder:
+    def _get_decoder(self, struct: type[T]) -> msgspec.json.Decoder:
         """Get cached msgspec encoder."""
         return msgspec.json.Decoder(struct)
 
@@ -60,7 +65,7 @@ class BaseTracker(ContextInstanceMixin):
     def clear_payload(
         payload: dict[str, Any],
         exclude: Collection[str] | None = None,
-    ):
+    ) -> dict[str, Any]:
         """Remove empty fields from payload."""
         payload = payload.copy()
         exclude = exclude or []
@@ -74,12 +79,20 @@ class BaseTracker(ContextInstanceMixin):
             if k not in {"self", "cls", *exclude} and v is not None
         }
 
-    async def close(self):
+    async def close(self) -> None:
         """Close gracefully."""
         await self._client.close()
 
-    async def __aenter__(self):
+    # ruff: noqa: PYI034
+    async def __aenter__(self) -> BaseTracker:
+        """Return async Tracker with async context."""
         return self
 
-    async def __aexit__(self, exc_type, exc, tb):
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
+        """Close async context."""
         await self.close()

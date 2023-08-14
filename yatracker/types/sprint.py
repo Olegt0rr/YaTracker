@@ -1,14 +1,10 @@
 from __future__ import annotations
 
-__all__ = ["Issue"]
-
+__all__ = ["Sprint"]
 from .base import Base, field
 
 
-class Issue(Base, kw_only=True, frozen=True):
-    """Represents short view of issue."""
-
+class Sprint(Base, kw_only=True, frozen=True):
     url: str = field(name="self")
     id: str
-    key: str
     display: str

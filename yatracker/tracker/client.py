@@ -152,7 +152,7 @@ class AIOHTTPClient(BaseClient):
             base_url=self._base_url,
             connector=connector,
             headers=self._headers,
-            json_serialize=lambda obj: str(encoder.encode(obj)),
+            json_serialize=lambda obj: encoder.encode(obj).decode(),
             timeout=self._timeout,
         )
         return self._session

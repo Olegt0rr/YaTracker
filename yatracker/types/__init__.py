@@ -3,7 +3,7 @@ __all__ = [
     "NotAuthorized",
     "ObjectNotFound",
     "SufficientRights",
-    "YaTrackerException",
+    "YaTrackerError",
     "FullIssue",
     "Comment",
     "Issue",
@@ -22,7 +22,7 @@ from .exceptions import (
     NotAuthorized,
     ObjectNotFound,
     SufficientRights,
-    YaTrackerException,
+    YaTrackerError,
 )
 from .issue import FullIssue
 from .objects import (

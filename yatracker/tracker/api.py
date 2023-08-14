@@ -9,7 +9,7 @@ from yatracker.types import (
     Priority,
     Transition,
     Transitions,
-    YaTrackerException,
+    YaTrackerError,
 )
 
 from .base import BaseTracker
@@ -119,8 +119,10 @@ class YaTracker(BaseTracker):
         )
         if not isinstance(data, list):
             msg = "Invalid response"
-            raise YaTrackerException(msg)
-        return [Comment(**item) for item in data]
+            raise YaTrackerError(msg)
+
+        decoder = self._get_decoder(Comment)
+        return [decoder.decode(item) for item in data]
 
     async def post_comment(self, issue_id, text, **kwargs) -> Comment:
         payload = self.clear_payload(locals(), exclude=["issue_id"])

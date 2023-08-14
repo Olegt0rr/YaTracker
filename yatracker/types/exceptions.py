@@ -1,8 +1,8 @@
-class YaTrackerException(Exception):
+class YaTrackerError(Exception):
     pass
 
 
-class NotAuthorized(YaTrackerException):
+class NotAuthorized(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "The user is not authorized. Check whether all the steps "
@@ -10,7 +10,7 @@ class NotAuthorized(YaTrackerException):
         )
 
 
-class SufficientRights(YaTrackerException):
+class SufficientRights(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "You do not have sufficient rights to perform this action. "
@@ -20,7 +20,7 @@ class SufficientRights(YaTrackerException):
         )
 
 
-class ObjectNotFound(YaTrackerException):
+class ObjectNotFound(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "The requested object was not found. You might have entered"
@@ -28,7 +28,7 @@ class ObjectNotFound(YaTrackerException):
         )
 
 
-class AlreadyExists(YaTrackerException):
+class AlreadyExists(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "An issue with the same value of the unique parameter already exists.",

@@ -16,7 +16,7 @@ from yatracker.types import (
     NotAuthorized,
     ObjectNotFound,
     SufficientRights,
-    YaTrackerException,
+    YaTrackerError,
 )
 from yatracker.utils import json
 
@@ -97,19 +97,7 @@ class BaseClient(ABC):
         if status == 409:
             raise AlreadyExists
 
-        raise YaTrackerException(text)
-
-    @staticmethod
-    def _get_beauty_json(text: str) -> Union[dict[str, Any], list[dict[str, Any]], str]:
-        """Ugly 'self' param escaping!
-        Special thanks for Yandex API namespace incompatible with Python.
-
-        """
-        # noinspection PyBroadException
-        try:
-            return json.loads(text.replace('"self":"', '"_self":"'))
-        except Exception:
-            return text
+        raise YaTrackerError(text)
 
     async def close(self):
         """Close the session gracefully."""
@@ -217,7 +205,7 @@ class AIOHTTPClient(BaseClient):
     def _process_exception(
         status: int,
         data: Union[dict[str, Any], str],
-    ) -> YaTrackerException:
+    ) -> YaTrackerError:
         """Wrap API exceptions.
 
         :param status: response status
@@ -228,7 +216,7 @@ class AIOHTTPClient(BaseClient):
             text = data.get("message") or data.get("detail")
         else:
             text = data
-        return YaTrackerException(text)
+        return YaTrackerError(text)
 
     async def close(self):
         """Close the session gracefully."""

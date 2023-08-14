@@ -1,8 +1,8 @@
 class YaTrackerError(Exception):
-    pass
+    """Represents base Yandex Tracker error."""
 
 
-class NotAuthorized(YaTrackerError):
+class NotAuthorizedError(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "The user is not authorized. Check whether all the steps "
@@ -10,7 +10,7 @@ class NotAuthorized(YaTrackerError):
         )
 
 
-class SufficientRights(YaTrackerError):
+class SufficientRightsError(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "You do not have sufficient rights to perform this action. "
@@ -20,7 +20,7 @@ class SufficientRights(YaTrackerError):
         )
 
 
-class ObjectNotFound(YaTrackerError):
+class ObjectNotFoundError(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "The requested object was not found. You might have entered"
@@ -28,7 +28,7 @@ class ObjectNotFound(YaTrackerError):
         )
 
 
-class AlreadyExists(YaTrackerError):
+class AlreadyExistsError(YaTrackerError):
     def __init__(self) -> None:
         super().__init__(
             "An issue with the same value of the unique parameter already exists.",

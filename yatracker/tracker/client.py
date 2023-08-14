@@ -14,7 +14,7 @@ import certifi
 import msgspec
 from aiohttp import BytesPayload, ClientSession, ClientTimeout, FormData, TCPConnector
 
-from yatracker.types import (
+from yatracker.exceptions import (
     AlreadyExistsError,
     NotAuthorizedError,
     ObjectNotFoundError,

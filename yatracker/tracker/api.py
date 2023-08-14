@@ -18,7 +18,9 @@ logger = logging.getLogger(__name__)
 
 
 class YaTracker(BaseTracker):
-    """API docs: https://cloud.yandex.com/en/docs/tracker/about-api.
+    """Represents Yandex Tracker API client.
+
+    API docs: https://cloud.yandex.com/en/docs/tracker/about-api
 
     Attention!
         All 'self' properties renamed to 'link' because it's incompatible with Python.
@@ -36,10 +38,10 @@ class YaTracker(BaseTracker):
         """View issue parameters.
         Use this request to get information about an issue.
 
-        :type issue_id: str
+        :param issue_id: ID or key of the current issue.
         :param expand: Additional fields to include in the response:
-                        transitions — Lifecycle transitions between statuses.
-                        attachments — Attached files
+                        transitions — Workflow transitions between statuses.
+                        attachments — Attachments
 
         :return:
         """
@@ -87,11 +89,7 @@ class YaTracker(BaseTracker):
         unique: Optional[str] = None,
         **kwargs,
     ) -> FullIssue:
-        """Create an issue.
-        Use this request to create an issue.
-
-        :return:
-        """
+        """Create an issue."""
         payload = self.clear_payload(locals())
         data = await self._client.request(
             method="POST",
@@ -103,6 +101,7 @@ class YaTracker(BaseTracker):
 
     async def get_comments(self, issue_id: str) -> list[Comment]:
         """Get the comments for an issue.
+
         Use this request to get a list of comments in the issue.
         :param issue_id:
         :return:
@@ -134,6 +133,7 @@ class YaTracker(BaseTracker):
         query: Optional[str] = None,
     ) -> int:
         """Get the number of issues.
+
         Use this request to find out how many issues meet the criteria in your request.
         :return:
         """
@@ -160,6 +160,7 @@ class YaTracker(BaseTracker):
         queue: Optional[str] = None,
     ) -> list[FullIssue]:
         """Find issues.
+
         Use this request to get a list of issues that meet specific criteria.
         If there are more than 10,000 issues in the response, use paging.
         :return:
@@ -183,6 +184,7 @@ class YaTracker(BaseTracker):
 
     async def get_priorities(self, localized: bool = True) -> list[Priority]:
         """Get priorities.
+
         Use this request to get a list of priorities for an issue.
         """
         params = {"localized": str(localized).lower()} if localized else None
@@ -197,11 +199,9 @@ class YaTracker(BaseTracker):
 
     async def get_issue_links(self, issue_id: str) -> list[FullIssue]:
         """Get issue links.
+
         Use this request to get information about links between issues.
         The issue is selected by its ID or key.
-
-        :param issue_id:
-        :return:
         """
         data = await self._client.request(
             method="GET",
@@ -216,11 +216,9 @@ class YaTracker(BaseTracker):
 
     async def get_transitions(self, issue_id) -> Transitions:
         """Get transitions.
+
         Use this request to get a list of possible transitions for an issue.
         The issue is selected by its ID or key.
-
-        :param issue_id:
-        :rtype:
         """
         data = await self._client.request(
             method="GET",

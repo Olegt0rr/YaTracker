@@ -1,7 +1,10 @@
 from typing import Optional
 
+import msgspec
+
 from .base import BaseObject
 from .objects import (
+    Comment,
     Issue,
     IssueType,
     Priority,
@@ -13,45 +16,33 @@ from .objects import (
 )
 
 
-class FullIssue(BaseObject):
-    url: str
+class FullIssue(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
+    url: str = msgspec.field(name="self")
     id: str
     key: str
     version: int
 
     summary: str
-    parent: Optional[Issue]
-    description: Optional[str]
-    sprint: Optional[list[Sprint]]
+    parent: Optional[Issue] = None
+    description: Optional[str] = None
+    sprint: Optional[list[Sprint]] = None
     type: IssueType
     priority: Priority
-    followers: Optional[list[User]]
+    followers: Optional[list[User]] = None
     queue: Queue
     favorite: bool
-    assignee: Optional[User]
+    assignee: Optional[User] = None
 
-    last_comment_update_at: Optional[str]
-    aliases: Optional[list[str]]
-    updated_by: Optional[User]
+    last_comment_update_at: Optional[str] = None
+    aliases: Optional[list[str]] = None
+    updated_by: Optional[User] = None
     created_at: str
     created_by: User
     votes: int
-    updated_at: Optional[str]
+    updated_at: Optional[str] = None
     status: Status
-    previous_status: Optional[Status]
-    direction: Optional[str]
-
-    class Config:
-        extra = "allow"
-        fields = {
-            "url": {"alias": "_self"},
-            "last_comment_update_at": {"alias": "lastCommentUpdatedAt"},
-            "updated_by": {"alias": "updatedBy"},
-            "created_at": {"alias": "createdAt"},
-            "created_by": {"alias": "createdBy"},
-            "updated_at": {"alias": "updatedAt"},
-            "previous_status": {"alias": "previousStatus"},
-        }
+    previous_status: Optional[Status] = None
+    direction: Optional[str] = None
 
     async def get_transitions(self) -> Transitions:
         """Returns dict and list-like Transitions object.
@@ -69,8 +60,9 @@ class FullIssue(BaseObject):
         """
         return await self.tracker.get_transitions(self.id)
 
-    async def get_comments(self):
-        """Get comments for self
+    async def get_comments(self) -> list[Comment]:
+        """Get comments for self.
+
         :return:
         """
         return await self.tracker.get_comments(self.id)

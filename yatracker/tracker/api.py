@@ -32,7 +32,7 @@ class YaTracker(BaseTracker):
         self,
         issue_id: str,
         expand: Optional[str] = None,
-    ):
+    ) -> FullIssue:
         """View issue parameters.
         Use this request to get information about an issue.
 
@@ -48,17 +48,15 @@ class YaTracker(BaseTracker):
             uri=f"/issues/{issue_id}",
             params={"expand": expand} if expand else None,
         )
-        if not isinstance(data, dict):
-            msg = "Invalid response"
-            raise YaTrackerException(msg)
-        return FullIssue(**data)
+        decoder = self._get_decoder(FullIssue)
+        return decoder.decode(data)
 
     async def edit_issue(
         self,
         issue_id: str,
         version: Optional[Union[str, int]] = None,
         **kwargs,
-    ):
+    ) -> FullIssue:
         """Make changes to an issue.
 
         Use this request to make changes to an issue.
@@ -73,10 +71,8 @@ class YaTracker(BaseTracker):
             params={"version": str(version)} if version else None,
             payload=self.clear_payload(kwargs),
         )
-        if not isinstance(data, dict):
-            msg = "Invalid response"
-            raise YaTrackerException(msg)
-        return FullIssue(**data)
+        decoder = self._get_decoder(FullIssue)
+        return decoder.decode(data)
 
     async def create_issue(
         self,
@@ -102,10 +98,8 @@ class YaTracker(BaseTracker):
             uri="/issues/",
             payload=payload,
         )
-        if not isinstance(data, dict):
-            msg = "Invalid response"
-            raise YaTrackerException(msg)
-        return FullIssue(**data)
+        decoder = self._get_decoder(FullIssue)
+        return decoder.decode(data)
 
     async def get_comments(self, issue_id: str) -> list[Comment]:
         """Get the comments for an issue.
@@ -131,10 +125,8 @@ class YaTracker(BaseTracker):
             uri=f"/issues/{issue_id}/comments/",
             payload=payload,
         )
-        if not isinstance(data, dict):
-            msg = "Invalid response"
-            raise YaTrackerException(msg)
-        return Comment(**data)
+        decoder = self._get_decoder(Comment)
+        return decoder.decode(data)
 
     async def count_issues(
         self,
@@ -156,9 +148,6 @@ class YaTracker(BaseTracker):
             uri="/issues/_count",
             payload=payload,
         )
-        if not isinstance(data, str):
-            msg = "Invalid response"
-            raise YaTrackerException(msg)
         return int(data)
 
     async def find_issues(
@@ -169,7 +158,7 @@ class YaTracker(BaseTracker):
         expand: Optional[str] = None,
         keys: Optional[str] = None,
         queue: Optional[str] = None,
-    ):
+    ) -> list[FullIssue]:
         """Find issues.
         Use this request to get a list of issues that meet specific criteria.
         If there are more than 10,000 issues in the response, use paging.
@@ -189,10 +178,8 @@ class YaTracker(BaseTracker):
             params=params,
             payload=payload,
         )
-        if not isinstance(data, list):
-            msg = "Not a list"
-            raise YaTrackerException(msg)
-        return [FullIssue(**item) for item in data]
+        decoder = self._get_decoder(FullIssue)
+        return [decoder.decode(item) for item in data]
 
     async def get_priorities(self, localized: bool = True) -> list[Priority]:
         """Get priorities.
@@ -204,10 +191,9 @@ class YaTracker(BaseTracker):
             uri="/priorities",
             params=params,
         )
-        if not isinstance(data, list):
-            msg = "Not a list"
-            raise YaTrackerException(msg)
-        return [Priority(**item) for item in data]
+
+        decoder = self._get_decoder(Priority)
+        return [decoder.decode(item) for item in data]
 
     async def get_issue_links(self, issue_id: str) -> list[FullIssue]:
         """Get issue links.
@@ -223,24 +209,31 @@ class YaTracker(BaseTracker):
         )
         if not isinstance(data, list):
             msg = "Not a list"
-            raise YaTrackerException(msg)
-        return [FullIssue(**item) for item in data]
+            raise YaTrackerError(msg)
 
-    async def get_transitions(self, issue_id):
+        decoder = self._get_decoder(FullIssue)
+        return [decoder.decode(item) for item in data]
+
+    async def get_transitions(self, issue_id) -> Transitions:
         """Get transitions.
         Use this request to get a list of possible transitions for an issue.
         The issue is selected by its ID or key.
 
         :param issue_id:
-        :rtype: List[Transition]
+        :rtype:
         """
         data = await self._client.request(
             method="GET",
             uri=f"/issues/{issue_id}/transitions",
         )
-        return Transitions(
-            **{Transition(**item).id: Transition(**item) for item in data},
-        )
+        decoder = self._get_decoder(Transition)
+        transitions = {}
+
+        for item in data:
+            transition = decoder.decode(item)
+            transitions[transition.id] = transition
+
+        return Transitions(**transitions)
 
     async def execute_transition(
         self,
@@ -254,7 +247,5 @@ class YaTracker(BaseTracker):
             uri=f"{transition.url}/_execute",
             payload=payload,
         )
-        if not isinstance(data, list):
-            msg = "Not a list"
-            raise YaTrackerException(msg)
-        return [Transition(**item) for item in data]
+        decoder = self._get_decoder(Transition)
+        return [decoder.decode(item) for item in data]

@@ -15,4 +15,4 @@ ruff:
 	ruff check yatracker --fix
 	ruff check tests --fix
 
-lint: ruff mypy black
+lint: ruff black

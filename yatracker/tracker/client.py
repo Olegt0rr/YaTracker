@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Optional, Union
 
 import certifi
+import msgspec
 from aiohttp import ClientSession, ClientTimeout, FormData, TCPConnector
 from aiohttp.typedefs import StrOrURL
 
@@ -18,7 +19,6 @@ from yatracker.types import (
     SufficientRights,
     YaTrackerError,
 )
-from yatracker.utils import json
 
 DEFAULT_API_HOST = "https://api.tracker.yandex.net"
 DEFAULT_API_VERSION = "v2"
@@ -67,7 +67,7 @@ class BaseClient(ABC):
             **kwargs,
         )
         self._check_status(status, body)
-        return self._get_beauty_json(body)
+        return body
 
     @abstractmethod
     async def _make_request(
@@ -147,11 +147,12 @@ class AIOHTTPClient(BaseClient):
         ssl_context = ssl.create_default_context(cafile=certifi.where())
         connector = TCPConnector(ssl=ssl_context)
 
+        encoder = msgspec.json.Encoder()
         self._session = ClientSession(
             base_url=self._base_url,
             connector=connector,
             headers=self._headers,
-            json_serialize=json.dumps,
+            json_serialize=lambda obj: str(encoder.encode(obj)),
             timeout=self._timeout,
         )
         return self._session

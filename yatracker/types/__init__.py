@@ -1,8 +1,8 @@
 __all__ = [
-    "AlreadyExists",
-    "NotAuthorized",
-    "ObjectNotFound",
-    "SufficientRights",
+    "AlreadyExistsError",
+    "NotAuthorizedError",
+    "ObjectNotFoundError",
+    "SufficientRightsError",
     "YaTrackerError",
     "FullIssue",
     "Comment",
@@ -18,10 +18,10 @@ __all__ = [
 ]
 
 from .exceptions import (
-    AlreadyExists,
-    NotAuthorized,
-    ObjectNotFound,
-    SufficientRights,
+    AlreadyExistsError,
+    NotAuthorizedError,
+    ObjectNotFoundError,
+    SufficientRightsError,
     YaTrackerError,
 )
 from .issue import FullIssue

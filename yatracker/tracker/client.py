@@ -4,6 +4,7 @@ import asyncio
 import io
 import ssl
 from abc import ABC, abstractmethod
+from http import HTTPStatus
 from pathlib import Path
 from typing import Any, Optional, Union
 
@@ -13,10 +14,10 @@ from aiohttp import BytesPayload, ClientSession, ClientTimeout, FormData, TCPCon
 from aiohttp.typedefs import StrOrURL
 
 from yatracker.types import (
-    AlreadyExists,
-    NotAuthorized,
-    ObjectNotFound,
-    SufficientRights,
+    AlreadyExistsError,
+    NotAuthorizedError,
+    ObjectNotFoundError,
+    SufficientRightsError,
     YaTrackerError,
 )
 
@@ -87,20 +88,20 @@ class BaseClient(ABC):
 
     @staticmethod
     def _check_status(status, text):
-        if status < 300:
+        if status < HTTPStatus.MULTIPLE_CHOICES:
             return
 
-        if status == 401:
-            raise NotAuthorized
+        if status == HTTPStatus.UNAUTHORIZED:
+            raise NotAuthorizedError
 
-        if status == 403:
-            raise SufficientRights
+        if status == HTTPStatus.FORBIDDEN:
+            raise SufficientRightsError
 
-        if status == 404:
-            raise ObjectNotFound
+        if status == HTTPStatus.NOT_FOUND:
+            raise ObjectNotFoundError
 
-        if status == 409:
-            raise AlreadyExists
+        if status == HTTPStatus.CONFLICT:
+            raise AlreadyExistsError
 
         raise YaTrackerError(text)
 

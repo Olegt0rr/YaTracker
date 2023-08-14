@@ -1,11 +1,11 @@
+from __future__ import annotations
+
 import logging
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 from yatracker.types import (
     Comment,
     FullIssue,
-    Issue,
-    IssueType,
     Priority,
     Transition,
     Transitions,
@@ -13,6 +13,12 @@ from yatracker.types import (
 )
 
 from .base import BaseTracker
+
+if TYPE_CHECKING:
+    from yatracker.types import (
+        Issue,
+        IssueType,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -30,12 +36,9 @@ class YaTracker(BaseTracker):
 
     """
 
-    async def get_issue(
-        self,
-        issue_id: str,
-        expand: Optional[str] = None,
-    ) -> FullIssue:
-        """View issue parameters.
+    async def get_issue(self, issue_id: str, expand: str | None = None) -> FullIssue:
+        """Get issue parameters.
+
         Use this request to get information about an issue.
 
         :param issue_id: ID or key of the current issue.
@@ -56,7 +59,7 @@ class YaTracker(BaseTracker):
     async def edit_issue(
         self,
         issue_id: str,
-        version: Optional[Union[str, int]] = None,
+        version: str | int | None = None,
         **kwargs,
     ) -> FullIssue:
         """Make changes to an issue.
@@ -80,13 +83,13 @@ class YaTracker(BaseTracker):
         self,
         summary: str,
         queue: str,
-        parent: Optional[Issue] = None,
-        description: Optional[str] = None,
-        sprint: Optional[dict[str, str]] = None,
-        type_: Optional[IssueType] = None,
-        priority: Optional[Union[int, str, Priority]] = None,
-        followers: Optional[list[str]] = None,
-        unique: Optional[str] = None,
+        parent: Issue | None = None,
+        description: str | None = None,
+        sprint: dict[str, str] | None = None,
+        type_: IssueType | None = None,
+        priority: int | str | Priority | None = None,
+        followers: list[str] | None = None,
+        unique: str | None = None,
         **kwargs,
     ) -> FullIssue:
         """Create an issue."""
@@ -129,8 +132,8 @@ class YaTracker(BaseTracker):
 
     async def count_issues(
         self,
-        filter_: Optional[dict[str, str]] = None,
-        query: Optional[str] = None,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
     ) -> int:
         """Get the number of issues.
 
@@ -152,12 +155,12 @@ class YaTracker(BaseTracker):
 
     async def find_issues(
         self,
-        filter_: Optional[dict[str, str]] = None,
-        query: Optional[str] = None,
-        order: Optional[str] = None,
-        expand: Optional[str] = None,
-        keys: Optional[str] = None,
-        queue: Optional[str] = None,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        keys: str | None = None,
+        queue: str | None = None,
     ) -> list[FullIssue]:
         """Find issues.
 

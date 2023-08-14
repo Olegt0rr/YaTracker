@@ -1,4 +1,4 @@
-from typing import Optional
+from __future__ import annotations
 
 import msgspec
 
@@ -23,26 +23,26 @@ class FullIssue(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
     version: int
 
     summary: str
-    parent: Optional[Issue] = None
-    description: Optional[str] = None
-    sprint: Optional[list[Sprint]] = None
+    parent: Issue | None = None
+    description: str | None = None
+    sprint: list[Sprint] | None = None
     type: IssueType
     priority: Priority
-    followers: Optional[list[User]] = None
+    followers: list[User] | None = None
     queue: Queue
     favorite: bool
-    assignee: Optional[User] = None
+    assignee: User | None = None
 
-    last_comment_update_at: Optional[str] = None
-    aliases: Optional[list[str]] = None
-    updated_by: Optional[User] = None
+    last_comment_update_at: str | None = None
+    aliases: list[str] | None = None
+    updated_by: User | None = None
     created_at: str
     created_by: User
     votes: int
-    updated_at: Optional[str] = None
+    updated_at: str | None = None
     status: Status
-    previous_status: Optional[Status] = None
-    direction: Optional[str] = None
+    previous_status: Status | None = None
+    direction: str | None = None
 
     async def get_transitions(self) -> Transitions:
         """Returns dict and list-like Transitions object.
@@ -68,7 +68,8 @@ class FullIssue(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
         return await self.tracker.get_comments(self.id)
 
     async def post_comment(self, text=None, **kwargs):
-        """Post comment for self
+        """Post comment for self.
+
         :param text:
         :param kwargs:
         :return: Comment.

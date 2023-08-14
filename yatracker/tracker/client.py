@@ -1,17 +1,18 @@
 """Base aiohttp client class module."""
 
+from __future__ import annotations
+
 import asyncio
 import io
 import ssl
 from abc import ABC, abstractmethod
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 import certifi
 import msgspec
 from aiohttp import BytesPayload, ClientSession, ClientTimeout, FormData, TCPConnector
-from aiohttp.typedefs import StrOrURL
 
 from yatracker.types import (
     AlreadyExistsError,
@@ -20,6 +21,9 @@ from yatracker.types import (
     SufficientRightsError,
     YaTrackerError,
 )
+
+if TYPE_CHECKING:
+    from aiohttp.typedefs import StrOrURL
 
 DEFAULT_API_HOST = "https://api.tracker.yandex.net"
 DEFAULT_API_VERSION = "v2"
@@ -30,11 +34,11 @@ class BaseClient(ABC):
 
     def __init__(
         self,
-        org_id: Union[str, int],
+        org_id: str | int,
         token: str,
-        headers: Optional[dict[str, str]] = None,
-        api_host: Optional[str] = None,
-        api_version: Optional[str] = None,
+        headers: dict[str, str] | None = None,
+        api_host: str | None = None,
+        api_version: str | None = None,
         **kwargs,
     ) -> None:
         """Set defaults on object init.
@@ -49,17 +53,17 @@ class BaseClient(ABC):
         _headers.setdefault("X-Org-Id", str(org_id))
         _headers.setdefault("Authorization", f"OAuth {token}")
         self._headers: dict[str, str] = _headers
-        self._session: Optional[ClientSession] = None
+        self._session: ClientSession | None = None
         self._encoder = msgspec.json.Encoder()
 
     async def request(
         self,
         method: str,
         uri: str,
-        params: Optional[dict[str, Any]] = None,
-        payload: Optional[dict[str, Any]] = None,
+        params: dict[str, Any] | None = None,
+        payload: dict[str, Any] | None = None,
         **kwargs,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], str]:
+    ) -> dict[str, Any] | list[dict[str, Any]] | str:
         """Make request."""
         bytes_payload = BytesPayload(
             value=self._encoder.encode(payload),
@@ -122,11 +126,11 @@ class AIOHTTPClient(BaseClient):
 
     def __init__(
         self,
-        org_id: Union[str, int],
+        org_id: str | int,
         token: str,
-        headers: Optional[dict[str, str]] = None,
-        api_host: Optional[str] = None,
-        api_version: Optional[str] = None,
+        headers: dict[str, str] | None = None,
+        api_host: str | None = None,
+        api_version: str | None = None,
         **kwargs,
     ) -> None:
         """Set defaults on object init.
@@ -187,14 +191,14 @@ class AIOHTTPClient(BaseClient):
 
         return status, text
 
-    def _prepare_form(self, file: Union[str, Path, io.IOBase]) -> FormData:
+    def _prepare_form(self, file: str | Path | io.IOBase) -> FormData:
         """Create form to pass file via multipart/form-data."""
         form = FormData()
         form.add_field("file", self._prepare_file(file))
         return form
 
     @staticmethod
-    def _prepare_file(file: Union[str, Path, io.IOBase]):
+    def _prepare_file(file: str | Path | io.IOBase):
         """Prepare accepted types to correct file type."""
         if isinstance(file, str):
             return Path(file).open("rb")
@@ -211,7 +215,7 @@ class AIOHTTPClient(BaseClient):
     @staticmethod
     def _process_exception(
         status: int,
-        data: Union[dict[str, Any], str],
+        data: dict[str, Any] | str,
     ) -> YaTrackerError:
         """Wrap API exceptions.
 

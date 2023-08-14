@@ -37,7 +37,10 @@ class IssueType(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
 
 
 class Priority(BaseObject, kw_only=True, omit_defaults=True, rename="camel"):
-    """Attributes
+    """Represents Priority.
+
+    Attributes
+    ----------
     url - Reference to the object.
     id - Priority ID.
     key - Priority key.

@@ -9,7 +9,7 @@ from typing import Any, Optional, Union
 
 import certifi
 import msgspec
-from aiohttp import ClientSession, ClientTimeout, FormData, TCPConnector
+from aiohttp import BytesPayload, ClientSession, ClientTimeout, FormData, TCPConnector
 from aiohttp.typedefs import StrOrURL
 
 from yatracker.types import (
@@ -49,6 +49,7 @@ class BaseClient(ABC):
         _headers.setdefault("Authorization", f"OAuth {token}")
         self._headers: dict[str, str] = _headers
         self._session: Optional[ClientSession] = None
+        self._encoder = msgspec.json.Encoder()
 
     async def request(
         self,
@@ -59,11 +60,15 @@ class BaseClient(ABC):
         **kwargs,
     ) -> Union[dict[str, Any], list[dict[str, Any]], str]:
         """Make request."""
+        bytes_payload = BytesPayload(
+            value=self._encoder.encode(payload),
+            content_type="application/json",
+        )
         status, body = await self._make_request(
             method=method,
             url=f"/{self._api_version}{uri}",
             params=params,
-            json=payload,
+            data=bytes_payload,
             **kwargs,
         )
         self._check_status(status, body)

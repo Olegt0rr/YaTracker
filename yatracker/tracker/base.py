@@ -86,6 +86,7 @@ class BaseTracker(ContextInstanceMixin):
     # ruff: noqa: PYI034
     async def __aenter__(self) -> BaseTracker:
         """Return async Tracker with async context."""
+        self.set_current(self)
         return self
 
     async def __aexit__(

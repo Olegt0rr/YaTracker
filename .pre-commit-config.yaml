@@ -19,6 +19,7 @@ repos:
     rev: 'v1.5.0'
     hooks:
       - id: mypy
+        additional_dependencies: ["msgspec"]
         args: [ --ignore-missing-imports ]
         exclude: tests
 

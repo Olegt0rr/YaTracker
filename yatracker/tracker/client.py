@@ -194,7 +194,7 @@ class AIOHTTPClient(BaseClient):
             status = response.status
             body = await response.read()
 
-        if status != HTTPStatus.OK:
+        if status >= HTTPStatus.BAD_REQUEST:
             raise self._process_exception(status, body)
 
         return status, body

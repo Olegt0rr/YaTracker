@@ -7,8 +7,8 @@ from .status import Status
 
 
 class Transition(Base, kw_only=True, frozen=True):
-    id: str = field(name="self")
-    url: str
+    id: str
+    url: str = field(name="self")
     display: str
     to: Status
 

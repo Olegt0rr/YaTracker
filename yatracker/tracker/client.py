@@ -74,9 +74,14 @@ class BaseClient(ABC):
             value=self._encoder.encode(payload),
             content_type="application/json",
         )
+
+        # to support full links (e.g. Transition)
+        if not uri.startswith("http"):
+            uri = f"{self._base_url}/{self._api_version}{uri}"
+
         status, body = await self._make_request(
             method=method,
-            url=f"/{self._api_version}{uri}",
+            url=uri,
             params=params,
             data=bytes_payload,
             **kwargs,
@@ -167,7 +172,6 @@ class AIOHTTPClient(BaseClient):
 
         encoder = msgspec.json.Encoder()
         self._session = ClientSession(
-            base_url=self._base_url,
             connector=connector,
             headers=self._headers,
             json_serialize=lambda obj: encoder.encode(obj).decode(),

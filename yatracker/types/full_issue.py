@@ -2,10 +2,6 @@ from __future__ import annotations
 
 __all__ = ["FullIssue"]
 
-from typing import Annotated
-
-from msgspec import Meta
-
 from .base import Base, field
 from .comment import Comment
 from .issue import Issue
@@ -16,17 +12,6 @@ from .sprint import Sprint
 from .status import Status
 from .transitions import Transitions
 from .user import User
-
-UnixName = Annotated[
-    str,
-    Meta(
-        name="name",
-        min_length=1,
-        max_length=32,
-        pattern="^[a-z_][a-z0-9_-]*$",
-        description="A valid UNIX username",
-    ),
-]
 
 
 class FullIssue(Base, kw_only=True, frozen=True):

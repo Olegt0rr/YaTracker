@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yatracker"
-version = "2023.8.3"
+version = "2023.8.4"
 description = "Async client for Yandex Tracker API"
 authors = ["Oleg A. <oleg@trueweb.app>"]
 maintainers = ["Oleg A. <oleg@trueweb.app>"]

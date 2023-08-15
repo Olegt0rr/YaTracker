@@ -9,7 +9,6 @@ from yatracker.types import (
     Priority,
     Transition,
     Transitions,
-    YaTrackerError,
 )
 
 from .base import BaseTracker
@@ -79,6 +78,7 @@ class YaTracker(BaseTracker):
         decoder = self._get_decoder(FullIssue)
         return decoder.decode(data)
 
+    # ruff: noqa: ARG002 PLR0913
     async def create_issue(
         self,
         summary: str,
@@ -113,14 +113,12 @@ class YaTracker(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/comments",
         )
-        if not isinstance(data, list):
-            msg = "Invalid response"
-            raise YaTrackerError(msg)
 
-        decoder = self._get_decoder(Comment)
-        return [decoder.decode(item) for item in data]
+        decoder = self._get_decoder(list[Comment])
+        return decoder.decode(data)
 
-    async def post_comment(self, issue_id, text, **kwargs) -> Comment:
+    async def post_comment(self, issue_id: str, text: str, **kwargs) -> Comment:
+        """Comment the issue."""
         payload = self.clear_payload(locals(), exclude=["issue_id"])
         data = await self._client.request(
             method="POST",
@@ -151,7 +149,8 @@ class YaTracker(BaseTracker):
             uri="/issues/_count",
             payload=payload,
         )
-        return int(data)
+        decoder = self._get_decoder(int)
+        return decoder.decode(data)
 
     async def find_issues(
         self,
@@ -182,9 +181,10 @@ class YaTracker(BaseTracker):
             params=params,
             payload=payload,
         )
-        decoder = self._get_decoder(FullIssue)
-        return [decoder.decode(item) for item in data]
+        decoder = self._get_decoder(list[FullIssue])
+        return decoder.decode(data)
 
+    # ruff: noqa: FBT001 FBT002
     async def get_priorities(self, localized: bool = True) -> list[Priority]:
         """Get priorities.
 
@@ -197,8 +197,8 @@ class YaTracker(BaseTracker):
             params=params,
         )
 
-        decoder = self._get_decoder(Priority)
-        return [decoder.decode(item) for item in data]
+        decoder = self._get_decoder(list[Priority])
+        return decoder.decode(data)
 
     async def get_issue_links(self, issue_id: str) -> list[FullIssue]:
         """Get issue links.
@@ -210,14 +210,11 @@ class YaTracker(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
-        if not isinstance(data, list):
-            msg = "Not a list"
-            raise YaTrackerError(msg)
 
-        decoder = self._get_decoder(FullIssue)
-        return [decoder.decode(item) for item in data]
+        decoder = self._get_decoder(list[FullIssue])
+        return decoder.decode(data)
 
-    async def get_transitions(self, issue_id) -> Transitions:
+    async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.
 
         Use this request to get a list of possible transitions for an issue.
@@ -227,14 +224,9 @@ class YaTracker(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/transitions",
         )
-        decoder = self._get_decoder(Transition)
-        transitions = {}
-
-        for item in data:
-            transition = decoder.decode(item)
-            transitions[transition.id] = transition
-
-        return Transitions(**transitions)
+        decoder = self._get_decoder(list[Transition])
+        transitions = decoder.decode(data)
+        return Transitions(**{t.id: t for t in transitions})
 
     async def execute_transition(
         self,
@@ -248,5 +240,5 @@ class YaTracker(BaseTracker):
             uri=f"{transition.url}/_execute",
             payload=payload,
         )
-        decoder = self._get_decoder(Transition)
-        return [decoder.decode(item) for item in data]
+        decoder = self._get_decoder(list[Transition])
+        return decoder.decode(data)

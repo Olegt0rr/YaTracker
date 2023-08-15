@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import io
+import logging
 import ssl
 from abc import ABC, abstractmethod
 from http import HTTPStatus
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, BinaryIO
 
 import certifi
 import msgspec
@@ -28,10 +29,13 @@ if TYPE_CHECKING:
 DEFAULT_API_HOST = "https://api.tracker.yandex.net"
 DEFAULT_API_VERSION = "v2"
 
+logger = logging.getLogger(__name__)
+
 
 class BaseClient(ABC):
     """Represents abstract base class for tracker client."""
 
+    # ruff: noqa: PLR0913
     def __init__(
         self,
         org_id: str | int,
@@ -39,6 +43,7 @@ class BaseClient(ABC):
         headers: dict[str, str] | None = None,
         api_host: str | None = None,
         api_version: str | None = None,
+        # ruff: noqa: ARG002
         **kwargs,
     ) -> None:
         """Set defaults on object init.
@@ -63,7 +68,7 @@ class BaseClient(ABC):
         params: dict[str, Any] | None = None,
         payload: dict[str, Any] | None = None,
         **kwargs,
-    ) -> dict[str, Any] | list[dict[str, Any]] | str:
+    ) -> bytes:
         """Make request."""
         bytes_payload = BytesPayload(
             value=self._encoder.encode(payload),
@@ -85,13 +90,14 @@ class BaseClient(ABC):
         method: str,
         url: StrOrURL,
         **kwargs,
-    ) -> tuple[int, str]:
+    ) -> tuple[int, bytes]:
         """Get raw response from via http-client.
+
         :returns: tuple of (status_code, response_body).
         """
 
     @staticmethod
-    def _check_status(status, text):
+    def _check_status(status: int, body: bytes) -> None:
         if status < HTTPStatus.MULTIPLE_CHOICES:
             return
 
@@ -107,9 +113,10 @@ class BaseClient(ABC):
         if status == HTTPStatus.CONFLICT:
             raise AlreadyExistsError
 
-        raise YaTrackerError(text)
+        raise YaTrackerError(body)
 
-    async def close(self):
+    @abstractmethod
+    async def close(self) -> None:
         """Close the session gracefully."""
 
 
@@ -124,6 +131,7 @@ class AIOHTTPClient(BaseClient):
      - e.t.c.
     """
 
+    # ruff: noqa: PLR0913
     def __init__(
         self,
         org_id: str | int,
@@ -149,7 +157,7 @@ class AIOHTTPClient(BaseClient):
         )
         self._timeout: ClientTimeout = kwargs.get("timeout") or ClientTimeout(total=0)
 
-    def get_session(self):
+    def get_session(self) -> ClientSession:
         """Get cached session. One session per instance."""
         if isinstance(self._session, ClientSession) and not self._session.closed:
             return self._session
@@ -172,7 +180,7 @@ class AIOHTTPClient(BaseClient):
         method: str,
         url: StrOrURL,
         **kwargs,
-    ) -> tuple[int, str]:
+    ) -> tuple[int, bytes]:
         """Make a request.
 
         :param method: HTTP Method
@@ -184,12 +192,12 @@ class AIOHTTPClient(BaseClient):
 
         async with session.request(method, url, **kwargs) as response:
             status = response.status
-            text = await response.text()
+            body = await response.read()
 
-        if status != 200:
-            raise self._process_exception(status, text)
+        if status != HTTPStatus.OK:
+            raise self._process_exception(status, body)
 
-        return status, text
+        return status, body
 
     def _prepare_form(self, file: str | Path | io.IOBase) -> FormData:
         """Create form to pass file via multipart/form-data."""
@@ -198,10 +206,11 @@ class AIOHTTPClient(BaseClient):
         return form
 
     @staticmethod
-    def _prepare_file(file: str | Path | io.IOBase):
+    def _prepare_file(file: str | Path | io.IOBase) -> io.IOBase | BinaryIO:
         """Prepare accepted types to correct file type."""
         if isinstance(file, str):
-            return Path(file).open("rb")
+            with Path(file).open("rb") as f:
+                return f
 
         if isinstance(file, io.IOBase):
             return file
@@ -209,13 +218,15 @@ class AIOHTTPClient(BaseClient):
         if isinstance(file, Path):
             return file.open("rb")
 
-        msg = f"Not supported file type: `{type(file).__name__}`"
+        msg = (  # type: ignore[unreachable]
+            f"Not supported file type: `{type(file).__name__}`"
+        )
         raise TypeError(msg)
 
     @staticmethod
     def _process_exception(
         status: int,
-        data: dict[str, Any] | str,
+        data: bytes,
     ) -> YaTrackerError:
         """Wrap API exceptions.
 
@@ -223,13 +234,11 @@ class AIOHTTPClient(BaseClient):
         :param data: response json converted to dict()
         :return: wrapped exception
         """
-        if isinstance(data, dict):
-            text = data.get("message") or data.get("detail")
-        else:
-            text = data
+        text = data.decode("utf-8")
+        logger.warning("Error! Status: %s. Body: %s", status, text)
         return YaTrackerError(text)
 
-    async def close(self):
+    async def close(self) -> None:
         """Close the session gracefully."""
         if not isinstance(self._session, ClientSession):
             return

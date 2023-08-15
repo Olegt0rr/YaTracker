@@ -3,7 +3,7 @@ YaTracker
 
 Asyncio Yandex Tracker API client
 
-[![Python](https://img.shields.io/badge/python-^3.9-blue)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-^3.10-blue)](https://www.python.org/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Code linter: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json)](https://github.com/charliermarsh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
@@ -20,7 +20,7 @@ API docs: https://tech.yandex.com/connect/tracker/api/about-docpage/
 
 ## How to install
 ```text
-python3.9 -m pip install yatracker
+pip install yatracker
 ```
 
 

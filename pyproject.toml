@@ -1,14 +1,20 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
 name = "yatracker"
-version = "2023.8.4"
+dynamic = ["version"]
 description = "Async client for Yandex Tracker API"
-authors = ["Oleg A. <oleg@trueweb.app>"]
-maintainers = ["Oleg A. <oleg@trueweb.app>"]
-license = "MIT"
 readme = "README.md"
-homepage = ""
-repository = "https://github.com/Olegt0rr/YaTracker/"
-documentation = "https://yandex.ru/dev/connect/tracker/"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "Oleg Abramov", email = "oleg@trueweb.app" },
+]
+maintainers = [
+    { name = "Oleg Abramov", email = "oleg@trueweb.app" },
+]
 keywords = [
     "Yandex",
     "Tracker",
@@ -16,32 +22,95 @@ keywords = [
     "async",
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Console",
-    "Framework :: AsyncIO",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Framework :: AsyncIO",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-aiohttp = "^3.8"
-certifi = "^2023"
-msgspec = "^0.18"
+dependencies = [
+    "aiohttp~=3.8.5",
+    "certifi>=2023",
+    "msgspec~=0.18.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0",
+    "black>=23",
+    "mypy>=1",
+    "pre-commit>=3",
+]
+test = [
+    "coverage>=7",
+    "pytest>=7",
+    "pytest-asyncio>=0",
+    "pytest-cov>=4",
+]
 
 
-[tool.poetry.dev-dependencies]
-ruff = "^0"
-black = "^23"
-coverage = "^7"
-mypy = "^1"
-pre-commit = "^3"
-pytest = "^7"
-pytest-asyncio = "^0"
-pytest-cov = "^4"
+[project.urls]
+Repository = "https://github.com/Olegt0rr/YaTracker/"
+Documentation = "https://cloud.yandex.ru/docs/tracker/about-api"
 
+[tool.hatch.version]
+path = "yatracker/__init__.py"
+
+[tool.hatch.envs.default]
+features = [
+    "dev",
+    "test",
+]
+post-install-commands = [
+    "pre-commit install",
+]
+
+[tool.hatch.envs.default.scripts]
+reformat = [
+    "black yatracker tests",
+]
+lint = [
+    "ruff check yatracker --fix",
+    "ruff check tests --fix",
+]
+
+[tool.hatch.envs.dev]
+python = "3.11"
+features = [
+    "dev",
+    "test",
+]
+
+[[tool.hatch.envs.test.matrix]]
+python = ["310", "311"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+branch = false
+parallel = true
+omit = [
+    "aiogram/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:",
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "@overload",
+]
 
 [tool.black]
 exclude = '''
@@ -86,7 +155,7 @@ ignore_errors = true
 [tool.ruff]
 src = ["app", "tools", "tests"]
 select = ["ALL"]
-ignore = ["A003", "ANN002", "ANN003", "ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "RUF001", "RUF002", "RUF003", "S101", "TCH001", "TCH002" ,"PT015", "PT017", "B011"]
+ignore = ["A003", "ANN002", "ANN003", "ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "RUF001", "RUF002", "RUF003", "S101", "TCH001", "TCH002", "PT015", "PT017", "B011"]
 fixable = ["ALL"]
 unfixable = []
 
@@ -132,8 +201,3 @@ runtime-evaluated-base-classes = ["msgspec.Struct"]
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101", "INP001"]
 "tools/*" = ["INP001"]
-
-
-[build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"

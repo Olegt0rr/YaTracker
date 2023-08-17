@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
@@ -60,7 +60,7 @@ Repository = "https://github.com/Olegt0rr/YaTracker/"
 Documentation = "https://cloud.yandex.ru/docs/tracker/about-api"
 
 [tool.hatch.version]
-path = "yatracker/__init__.py"
+source = "vcs"
 
 [tool.hatch.envs.default]
 features = [

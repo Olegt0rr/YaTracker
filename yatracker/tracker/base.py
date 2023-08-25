@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 import msgspec.json
 
+from yatracker.utils.camel_case import camel_case
 from yatracker.utils.mixins import ContextInstanceMixin
 
 from .client import AIOHTTPClient
@@ -74,7 +75,7 @@ class BaseTracker(ContextInstanceMixin):
             payload.update(kwargs)
 
         return {
-            k: v
+            camel_case(k): v
             for k, v in payload.items()
             if k not in {"self", "cls", *exclude} and v is not None
         }

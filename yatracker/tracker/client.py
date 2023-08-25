@@ -67,13 +67,17 @@ class BaseClient(ABC):
         uri: str,
         params: dict[str, Any] | None = None,
         payload: dict[str, Any] | None = None,
+        form: FormData | None = None,
         **kwargs,
     ) -> bytes:
         """Make request."""
-        bytes_payload = BytesPayload(
-            value=self._encoder.encode(payload),
-            content_type="application/json",
-        )
+        if form:
+            bytes_payload = form
+        else:
+            bytes_payload = BytesPayload(
+                value=self._encoder.encode(payload),
+                content_type="application/json",
+            )
 
         # to support full links (e.g. Transition)
         if not uri.startswith("http"):

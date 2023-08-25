@@ -1,4 +1,5 @@
 __all__ = [
+    "Attachment",
     "Comment",
     "FullIssue",
     "Issue",
@@ -12,6 +13,7 @@ __all__ = [
     "User",
 ]
 
+from .attachment import Attachment
 from .comment import Comment
 from .full_issue import FullIssue
 from .issue import Issue

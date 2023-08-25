@@ -69,6 +69,7 @@ class Issues(BaseTracker):
         priority: int | str | Priority | None = None,
         followers: list[str] | None = None,
         unique: str | None = None,
+        attachment_ids: list[str] | None = None,
         **kwargs,
     ) -> FullIssue:
         """Create an issue."""

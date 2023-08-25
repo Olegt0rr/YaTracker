@@ -28,3 +28,4 @@ jobs:
         with:
           path: './yatracker'
           mypy_flags: '--config-file pyproject.toml'
+          requirements: msgspec

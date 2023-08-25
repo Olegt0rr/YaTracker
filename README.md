@@ -10,7 +10,7 @@ Asyncio Yandex Tracker API client
 ---
 
 
-API docs: https://tech.yandex.com/connect/tracker/api/about-docpage/
+API docs: https://cloud.yandex.com/en/docs/tracker/about-api
 
 ## Attention!
 * All `self` properties renamed to `url` cause it's incompatible with Python.

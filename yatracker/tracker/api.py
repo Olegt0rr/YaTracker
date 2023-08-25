@@ -67,7 +67,7 @@ class YaTracker(BaseTracker):
         The issue is selected by its ID or key.
 
         Source:
-        https://yandex.com/dev/connect/tracker/api/concepts/issues/patch-issue.html
+        https://cloud.yandex.com/en/docs/tracker/concepts/issues/patch-issue
         """
         data = await self._client.request(
             method="PATCH",

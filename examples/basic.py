@@ -8,13 +8,13 @@ TOKEN = ...
 
 
 async def main() -> None:
-    """Basic example.
+    """Run basic example.
 
     This way you may create, get and edit an issue.
     """
     # define tracker (once)
     tracker = YaTracker(ORG_ID, TOKEN)
-    
+
     # create an issue
     issue = await tracker.create_issue("New Issue", "KEY")
     print(issue)
@@ -32,4 +32,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main)
+    asyncio.run(main())

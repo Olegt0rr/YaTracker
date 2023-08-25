@@ -21,7 +21,7 @@ repos:
       - id: mypy
         additional_dependencies: ["msgspec"]
         args: [ --ignore-missing-imports ]
-        exclude: tests
+        exclude: tests|examples
 
   - repo: https://github.com/psf/black
     rev: 23.7.0

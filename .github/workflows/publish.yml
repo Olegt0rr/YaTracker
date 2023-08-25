@@ -53,8 +53,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: pypi
-      url: https://pypi.org/project/yatracker/${{ steps.package-version.outputs.value }}/
+      name: PyPI
+      url: https://pypi.org/project/yatracker/
     permissions:
       id-token: write
     steps:
@@ -64,5 +64,5 @@ jobs:
           name: dist
           path: dist
 
-      - name: Publish a Python distribution to PyPI
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

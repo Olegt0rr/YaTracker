@@ -19,6 +19,7 @@ class FullIssue(Base, kw_only=True, frozen=True):
     id: str
     key: str
     version: int
+
     summary: str
     parent: Issue | None = None
     description: str | None = None
@@ -27,6 +28,7 @@ class FullIssue(Base, kw_only=True, frozen=True):
     priority: Priority
     followers: list[User] | None = None
     queue: Queue
+    previous_queue: Queue | None = None
     favorite: bool
     assignee: User | None = None
 

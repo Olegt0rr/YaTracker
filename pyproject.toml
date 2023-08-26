@@ -62,6 +62,11 @@ Documentation = "https://cloud.yandex.ru/docs/tracker/about-api"
 [tool.hatch.version]
 path = "yatracker/__init__.py"
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+]
+
 [tool.hatch.envs.default]
 features = [
     "dev",

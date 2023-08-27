@@ -62,4 +62,4 @@ class Duration:
             if value := result.group(field.name):
                 data[field.name] = int(value)
 
-        return Duration(**data)
+        return cls(**data)

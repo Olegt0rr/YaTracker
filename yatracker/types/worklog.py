@@ -20,3 +20,10 @@ class Worklog(Base, kw_only=True):
     updated_at: datetime | None = None
     start: datetime
     duration: str
+
+    async def delete(self) -> bool:
+        """Delete current worklog."""
+        return await self._tracker.delete_worklog(
+            issue_id=self.issue.id,
+            worklog_id=self.id,
+        )

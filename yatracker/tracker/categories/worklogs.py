@@ -75,3 +75,16 @@ class Worklogs(BaseTracker):
             uri=f"/issues/{issue_id}/worklog/{worklog_id}",
         )
         return True
+
+    async def get_issue_worklog(self, issue_id: str) -> list[Worklog]:
+        """Get issue worklog records.
+
+        Source:
+        https://cloud.yandex.ru/docs/tracker/concepts/issues/issue-worklog
+        """
+        data = await self._client.request(
+            method="PATCH",
+            uri=f"/issues/{issue_id}/worklog",
+        )
+        decoder = self._get_decoder(list[Worklog])
+        return decoder.decode(data)

@@ -30,11 +30,14 @@ async def main() -> None:
     )
 
     # edit worklog
-    await tracker.edit_worklog(
+    worklog = await tracker.edit_worklog(
         issue_id=issue.id,
         worklog_id=worklog.id,
         duration=Duration(minutes=5),
     )
+
+    # delete worklog
+    await tracker.delete_worklog(issue.id, worklog.id)
 
     # don't forget to close tracker on app shutdown (once)
     await tracker.close()

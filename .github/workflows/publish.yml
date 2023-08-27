@@ -24,12 +24,6 @@ jobs:
         id: package-version
         run: echo "value=$(echo ${{ github.ref }} | sed -e 's/refs\/tags\/v//')" >> $GITHUB_OUTPUT
 
-      - name: Store version
-        run: |
-          VERSION=$(echo ${{ github.ref }} | sed -e 's/refs\/tags\/v//')
-          (echo '__version__ = "'$VERSION'"' && cat ./yatracker/__init__.py) > _version.py && mv _version.py ./yatracker/__init__.py
-          cat './yatracker/__init__.py'
-
       - name: Build source distribution
         run: python -m build .
 

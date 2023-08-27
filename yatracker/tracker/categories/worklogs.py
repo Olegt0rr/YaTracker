@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from warnings import warn
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import Worklog
@@ -88,3 +89,59 @@ class Worklogs(BaseTracker):
         )
         decoder = self._get_decoder(list[Worklog])
         return decoder.decode(data)
+
+    async def get_worklog(
+        self,
+        created_by: str | None = None,
+        created_at_from: datetime | str | None = None,
+        created_at_to: datetime | str | None = None,
+    ) -> list[Worklog]:
+        """Get issue worklog records.
+
+        Source:
+        https://cloud.yandex.ru/docs/tracker/concepts/issues/get-worklog
+        """
+        created_at = _process_created_at(created_at_from, created_at_to)
+        payload = self.clear_payload(
+            locals(),
+            exclude=["created_at_from", "created_at_to"],
+        )
+        data = await self._client.request(
+            method="POST",
+            uri="/worklog/_search",
+            payload=payload,
+        )
+        decoder = self._get_decoder(list[Worklog])
+        return decoder.decode(data)
+
+
+def _process_created_at(
+    created_at_from: datetime | str | None = None,
+    created_at_to: datetime | str | None = None,
+) -> dict[str, str] | None:
+    date_range = [created_at_from, created_at_to]
+    if any(date_range) and not all(date_range):
+        msg = "Set full range or not set it at all."
+        raise ValueError(msg)
+
+    if not created_at_from or not created_at_to:
+        return None
+
+    if isinstance(created_at_from, datetime):
+        if created_at_from.tzinfo is None:
+            warn(
+                "Tracker API may works wrong with naive datetime. "
+                "Please, use Timezone-Aware objects.",
+                UserWarning,
+                stacklevel=2,
+            )
+        created_at_from = created_at_from.isoformat(timespec="milliseconds")
+
+    if isinstance(created_at_to, datetime):
+        created_at_to = created_at_to.isoformat(timespec="milliseconds")
+
+    created_at: dict[str, str] = {
+        "from": created_at_from,
+        "to": created_at_to,
+    }
+    return created_at

@@ -17,6 +17,4 @@ class Priorities(BaseTracker):
             uri="/priorities",
             params=params,
         )
-
-        decoder = self._get_decoder(list[Priority])
-        return decoder.decode(data)
+        return self._decode(list[Priority], data)

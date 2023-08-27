@@ -33,8 +33,7 @@ class Worklogs(BaseTracker):
             uri=f"/issues/{issue_id}/worklog/",
             payload=payload,
         )
-        decoder = self._get_decoder(Worklog)
-        return decoder.decode(data)
+        return self._decode(Worklog, data)
 
     async def edit_worklog(
         self,
@@ -58,8 +57,7 @@ class Worklogs(BaseTracker):
             uri=f"/issues/{issue_id}/worklog/{worklog_id}",
             payload=payload,
         )
-        decoder = self._get_decoder(Worklog)
-        return decoder.decode(data)
+        return self._decode(Worklog, data)
 
     async def delete_worklog(
         self,
@@ -87,8 +85,7 @@ class Worklogs(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/worklog",
         )
-        decoder = self._get_decoder(list[Worklog])
-        return decoder.decode(data)
+        return self._decode(list[Worklog], data)
 
     async def get_worklog(
         self,
@@ -111,8 +108,7 @@ class Worklogs(BaseTracker):
             uri="/worklog/_search",
             payload=payload,
         )
-        decoder = self._get_decoder(list[Worklog])
-        return decoder.decode(data)
+        return self._decode(list[Worklog], data)
 
 
 def _process_created_at(

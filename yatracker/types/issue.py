@@ -5,7 +5,7 @@ __all__ = ["Issue"]
 from .base import Base, field
 
 
-class Issue(Base, kw_only=True, frozen=True):
+class Issue(Base, kw_only=True):
     """Represents short view of issue."""
 
     url: str = field(name="self")

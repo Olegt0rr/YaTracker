@@ -18,9 +18,7 @@ class Comments(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/comments",
         )
-
-        decoder = self._get_decoder(list[Comment])
-        return decoder.decode(data)
+        return self._decode(list[Comment], data)
 
     async def post_comment(self, issue_id: str, text: str, **kwargs) -> Comment:
         """Comment the issue."""
@@ -30,5 +28,4 @@ class Comments(BaseTracker):
             uri=f"/issues/{issue_id}/comments/",
             payload=payload,
         )
-        decoder = self._get_decoder(Comment)
-        return decoder.decode(data)
+        return self._decode(Comment, data)

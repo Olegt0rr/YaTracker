@@ -5,7 +5,7 @@ __all__ = ["Priority"]
 from .base import Base, field
 
 
-class Priority(Base, kw_only=True, frozen=True):
+class Priority(Base, kw_only=True):
     """Represents Priority.
 
     Attributes

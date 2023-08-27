@@ -17,7 +17,7 @@ from .transitions import Transitions
 from .user import User
 
 
-class FullIssue(Base, kw_only=True, frozen=True):
+class FullIssue(Base, kw_only=True):
     url: str = field(name="self")
     id: str
     key: str
@@ -60,15 +60,15 @@ class FullIssue(Base, kw_only=True, frozen=True):
         >>> if close:
         >>>    await close.execute()
         """
-        return await self.tracker.get_transitions(self.id)
+        return await self._tracker.get_transitions(self.id)
 
     async def get_comments(self) -> list[Comment]:
         """Get comments for self.
 
         :return:
         """
-        return await self.tracker.get_comments(self.id)
+        return await self._tracker.get_comments(self.id)
 
     async def post_comment(self, text: str, **kwargs) -> Comment:
         """Post comment for self."""
-        return await self.tracker.post_comment(self.id, text=text, **kwargs)
+        return await self._tracker.post_comment(self.id, text=text, **kwargs)

@@ -5,7 +5,7 @@ __all__ = ["Queue"]
 from .base import Base, field
 
 
-class Queue(Base, kw_only=True, frozen=True):
+class Queue(Base, kw_only=True):
     url: str = field(name="self")
     id: str
     key: str

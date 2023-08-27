@@ -8,7 +8,7 @@ from .base import Base, field
 from .user import User
 
 
-class Comment(Base, kw_only=True, frozen=True):
+class Comment(Base, kw_only=True):
     url: str = field(name="self")
     id: str
     text: str

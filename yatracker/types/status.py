@@ -5,7 +5,7 @@ __all__ = ["Status"]
 from .base import Base, field
 
 
-class Status(Base, kw_only=True, frozen=True):
+class Status(Base, kw_only=True):
     url: str = field(name="self")
     id: str
     key: str

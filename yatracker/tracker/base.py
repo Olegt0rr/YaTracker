@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 import msgspec.json
 
+from yatracker.types.base import Base
 from yatracker.utils.camel_case import camel_case
-from yatracker.utils.mixins import ContextInstanceMixin
 
 from .client import AIOHTTPClient
 
@@ -22,7 +22,7 @@ T = TypeVar("T")
 logger = logging.getLogger(__name__)
 
 
-class BaseTracker(ContextInstanceMixin):
+class BaseTracker:
     """Represents technical methods for using YaTracker."""
 
     # ruff: noqa: PLR0913
@@ -56,11 +56,15 @@ class BaseTracker(ContextInstanceMixin):
                 api_version=api_version,
             )
 
-    # ruff: noqa: B019
-    @lru_cache
-    def _get_decoder(self, struct: type[T]) -> msgspec.json.Decoder:
-        """Get cached msgspec encoder."""
-        return msgspec.json.Decoder(struct)
+    def _decode(self, type_: type[T], data: bytes) -> T:
+        """Decode bytes object to struct.
+
+        Also add producer client object to `_tracker` field.
+        """
+        decoder = _get_decoder(type_)  # type: ignore[arg-type]
+        obj = decoder.decode(data)
+        _add_tracker(self, obj)
+        return obj
 
     @staticmethod
     def clear_payload(
@@ -87,7 +91,6 @@ class BaseTracker(ContextInstanceMixin):
     # ruff: noqa: PYI034
     async def __aenter__(self) -> BaseTracker:
         """Return async Tracker with async context."""
-        self.set_current(self)
         return self
 
     async def __aexit__(
@@ -98,3 +101,22 @@ class BaseTracker(ContextInstanceMixin):
     ) -> None:
         """Close async context."""
         await self.close()
+
+
+@lru_cache
+def _get_decoder(type_: type[T]) -> msgspec.json.Decoder:
+    """Get cached msgspec encoder."""
+    return msgspec.json.Decoder(type_)
+
+
+def _add_tracker(tracker: BaseTracker, obj: Any) -> None:  # noqa: ANN401
+    """Add tracker link to the object."""
+    match obj:
+        case Base():
+            obj._tracker = tracker  # noqa: SLF001
+        case list():
+            for o in obj:
+                _add_tracker(tracker, o)
+        case dict():
+            for v in obj.values():
+                _add_tracker(tracker, v)

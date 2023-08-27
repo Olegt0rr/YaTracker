@@ -19,8 +19,7 @@ class Attachments(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/attachments",
         )
-        decoder = self._get_decoder(list[Attachment])
-        return decoder.decode(data)
+        return self._decode(list[Attachment], data)
 
     async def download_attachment(
         self,
@@ -72,8 +71,7 @@ class Attachments(BaseTracker):
             params={"filename": filename} if filename else None,
             form=form,
         )
-        decoder = self._get_decoder(Attachment)
-        return decoder.decode(data)
+        return self._decode(Attachment, data)
 
     async def upload_temp_file(
         self,
@@ -96,8 +94,7 @@ class Attachments(BaseTracker):
             params={"filename": filename} if filename else None,
             form=form,
         )
-        decoder = self._get_decoder(Attachment)
-        return decoder.decode(data)
+        return self._decode(Attachment, data)
 
     async def delete_attachment(self, issue_id: str, attachment_id: str | int) -> bool:
         """Delete attached file.

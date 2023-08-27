@@ -31,8 +31,7 @@ class Issues(BaseTracker):
             uri=f"/issues/{issue_id}",
             params={"expand": expand} if expand else None,
         )
-        decoder = self._get_decoder(FullIssue)
-        return decoder.decode(data)
+        return self._decode(FullIssue, data)
 
     async def edit_issue(
         self,
@@ -54,8 +53,7 @@ class Issues(BaseTracker):
             params={"version": str(version)} if version else None,
             payload=self.clear_payload(kwargs),
         )
-        decoder = self._get_decoder(FullIssue)
-        return decoder.decode(data)
+        return self._decode(FullIssue, data)
 
     # ruff: noqa: ARG002 PLR0913
     async def create_issue(
@@ -79,8 +77,7 @@ class Issues(BaseTracker):
             uri="/issues/",
             payload=payload,
         )
-        decoder = self._get_decoder(FullIssue)
-        return decoder.decode(data)
+        return self._decode(FullIssue, data)
 
     async def move_issue(
         self,
@@ -145,8 +142,7 @@ class Issues(BaseTracker):
             params=params,
             payload=self.clear_payload(kwargs),
         )
-        decoder = self._get_decoder(FullIssue)
-        return decoder.decode(data)
+        return self._decode(FullIssue, data)
 
     async def count_issues(
         self,
@@ -169,8 +165,7 @@ class Issues(BaseTracker):
             uri="/issues/_count",
             payload=payload,
         )
-        decoder = self._get_decoder(int)
-        return decoder.decode(data)
+        return self._decode(int, data)
 
     async def find_issues(
         self,
@@ -201,8 +196,7 @@ class Issues(BaseTracker):
             params=params,
             payload=payload,
         )
-        decoder = self._get_decoder(list[FullIssue])
-        return decoder.decode(data)
+        return self._decode(list[FullIssue], data)
 
     async def get_issue_links(self, issue_id: str) -> list[FullIssue]:
         """Get issue links.
@@ -214,9 +208,7 @@ class Issues(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
-
-        decoder = self._get_decoder(list[FullIssue])
-        return decoder.decode(data)
+        return self._decode(list[FullIssue], data)
 
     async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.
@@ -228,8 +220,7 @@ class Issues(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/transitions",
         )
-        decoder = self._get_decoder(list[Transition])
-        transitions = decoder.decode(data)
+        transitions = self._decode(list[Transition], data)
         return Transitions(**{t.id: t for t in transitions})
 
     async def execute_transition(
@@ -244,5 +235,4 @@ class Issues(BaseTracker):
             uri=f"{transition.url}/_execute",
             payload=payload,
         )
-        decoder = self._get_decoder(list[Transition])
-        return decoder.decode(data)
+        return self._decode(list[Transition], data)

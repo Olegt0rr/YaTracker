@@ -6,7 +6,7 @@ from .base import Base, field
 from .status import Status
 
 
-class Transition(Base, kw_only=True, frozen=True):
+class Transition(Base, kw_only=True):
     id: str
     url: str = field(name="self")
     display: str
@@ -14,4 +14,4 @@ class Transition(Base, kw_only=True, frozen=True):
 
     async def execute(self) -> None:
         """Execute transition."""
-        await self.tracker.execute_transition(self)
+        await self._tracker.execute_transition(self)

@@ -1,19 +1,5 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from yatracker.tracker import YaTracker
-
-
-class TrackerAccess:
-    @property
-    def tracker(self) -> YaTracker:
-        """Get Tracker client."""
-        from yatracker.tracker import YaTracker
-
-        return YaTracker.get_current()
-
 
 class Printable:
     display: str | None

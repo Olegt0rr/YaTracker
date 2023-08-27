@@ -9,7 +9,7 @@ from .issue import Issue
 from .user import User
 
 
-class Worklog(Base, kw_only=True, frozen=True):
+class Worklog(Base, kw_only=True):
     url: str = field(name="self")
     id: int
     version: int

@@ -22,10 +22,18 @@ async def main() -> None:
     )
 
     # add worklog to issue
-    await tracker.post_worklog(
+    worklog = await tracker.post_worklog(
         issue_id=issue.id,
         start=datetime.now(ZoneInfo("Europe/Moscow")),
         duration=Duration(hours=5),
+        comment="Worklog testing",
+    )
+
+    # edit worklog
+    await tracker.edit_worklog(
+        issue_id=issue.id,
+        worklog_id=worklog.id,
+        duration=Duration(minutes=5),
     )
 
     # don't forget to close tracker on app shutdown (once)

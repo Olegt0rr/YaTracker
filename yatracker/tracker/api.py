@@ -8,6 +8,7 @@ from .categories import (
     Comments,
     Issues,
     Priorities,
+    Worklogs,
 )
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ class YaTracker(
     Comments,
     Priorities,
     Attachments,
+    Worklogs,
     BaseTracker,
 ):
     """Represents Yandex Tracker API client.

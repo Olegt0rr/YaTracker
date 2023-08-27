@@ -1,6 +1,7 @@
 __all__ = [
     "Attachment",
     "Comment",
+    "Duration",
     "FullIssue",
     "Issue",
     "IssueType",
@@ -11,10 +12,12 @@ __all__ = [
     "Transition",
     "Transitions",
     "User",
+    "Worklog",
 ]
 
 from .attachment import Attachment
 from .comment import Comment
+from .duration import Duration
 from .full_issue import FullIssue
 from .issue import Issue
 from .issue_type import IssueType
@@ -25,3 +28,4 @@ from .status import Status
 from .transition import Transition
 from .transitions import Transitions
 from .user import User
+from .worklog import Worklog

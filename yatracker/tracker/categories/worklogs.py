@@ -83,7 +83,7 @@ class Worklogs(BaseTracker):
         https://cloud.yandex.ru/docs/tracker/concepts/issues/issue-worklog
         """
         data = await self._client.request(
-            method="PATCH",
+            method="GET",
             uri=f"/issues/{issue_id}/worklog",
         )
         decoder = self._get_decoder(list[Worklog])

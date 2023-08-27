@@ -2,6 +2,9 @@ from __future__ import annotations
 
 __all__ = ["FullIssue"]
 
+
+from datetime import datetime
+
 from .base import Base, field
 from .comment import Comment
 from .issue import Issue
@@ -32,13 +35,13 @@ class FullIssue(Base, kw_only=True, frozen=True):
     favorite: bool
     assignee: User | None = None
 
-    last_comment_update_at: str | None = None
+    last_comment_update_at: datetime | None = None
     aliases: list[str] | None = None
     updated_by: User | None = None
-    created_at: str
+    created_at: datetime
     created_by: User
     votes: int
-    updated_at: str | None = None
+    updated_at: datetime | None = None
     status: Status
     previous_status: Status | None = None
     direction: str | None = None

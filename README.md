@@ -16,6 +16,7 @@ API docs: https://cloud.yandex.com/en/docs/tracker/about-api
 ## Attention!
 * All `self` properties renamed to `url` cause it's incompatible with Python.
 * All `camelCase` properties renamed to `pythonic_case`.
+* All datetime values converted to python's `datetime.datetime` objects.
 * Methods named by author, cause Yandex API has no clear method names.
 
 

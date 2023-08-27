@@ -59,3 +59,19 @@ class Worklogs(BaseTracker):
         )
         decoder = self._get_decoder(Worklog)
         return decoder.decode(data)
+
+    async def delete_worklog(
+        self,
+        issue_id: str,
+        worklog_id: int,
+    ) -> bool:
+        """Delete worklog.
+
+        Source:
+        https://cloud.yandex.ru/docs/tracker/concepts/issues/delete-worklog
+        """
+        await self._client.request(
+            method="DELETE",
+            uri=f"/issues/{issue_id}/worklog/{worklog_id}",
+        )
+        return True

@@ -10,7 +10,7 @@ Asyncio Yandex Tracker API client
 [![Linters](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml)
 ---
 
-
+Documentation: https://olegt0rr.github.io/YaTracker/
 API docs: https://cloud.yandex.com/en/docs/tracker/about-api
 
 ## Attention!

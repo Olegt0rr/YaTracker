@@ -1,4 +1,7 @@
 site_name: YaTracker
+repo_url: https://github.com/Olegt0rr/YaTracker
+repo_name: Olegt0rr/YaTracker
+
 theme:
   name: material
   language: ru

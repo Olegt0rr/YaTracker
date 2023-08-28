@@ -61,7 +61,7 @@ docs = [
 
 [project.urls]
 Repository = "https://github.com/Olegt0rr/YaTracker/"
-Documentation = "https://cloud.yandex.ru/docs/tracker/about-api"
+Documentation = "https://olegt0rr.github.io/YaTracker/"
 
 [tool.hatch.version]
 path = "yatracker/__init__.py"

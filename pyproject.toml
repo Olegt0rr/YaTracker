@@ -53,6 +53,10 @@ test = [
     "pytest-asyncio>=0",
     "pytest-cov>=4",
 ]
+docs = [
+    "mkdocs-material",
+    "mkdocstrings[python]",
+]
 
 
 [project.urls]

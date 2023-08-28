@@ -71,6 +71,7 @@ class BaseClient(ABC):
         **kwargs,
     ) -> bytes:
         """Make request."""
+        bytes_payload: FormData | BytesPayload
         if form:
             bytes_payload = form
         else:

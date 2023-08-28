@@ -67,7 +67,7 @@ class BaseTracker:
         return obj
 
     @staticmethod
-    def clear_payload(
+    def _prepare_payload(
         payload: dict[str, Any],
         exclude: Collection[str] | None = None,
     ) -> dict[str, Any]:

@@ -51,7 +51,7 @@ class Issues(BaseTracker):
             method="PATCH",
             uri=f"/issues/{issue_id}",
             params={"version": str(version)} if version else None,
-            payload=self.clear_payload(kwargs),
+            payload=self._prepare_payload(kwargs),
         )
         return self._decode(FullIssue, data)
 
@@ -70,8 +70,12 @@ class Issues(BaseTracker):
         attachment_ids: list[str] | None = None,
         **kwargs,
     ) -> FullIssue:
-        """Create an issue."""
-        payload = self.clear_payload(locals())
+        """Create an issue.
+
+        Source:
+        https://cloud.yandex.ru/docs/tracker/concepts/issues/create-issue
+        """
+        payload = self._prepare_payload(locals())
         data = await self._client.request(
             method="POST",
             uri="/issues/",
@@ -140,7 +144,7 @@ class Issues(BaseTracker):
             method="POST",
             uri=f"/issues/{issue_id}/_move",
             params=params,
-            payload=self.clear_payload(kwargs),
+            payload=self._prepare_payload(kwargs),
         )
         return self._decode(FullIssue, data)
 
@@ -182,7 +186,7 @@ class Issues(BaseTracker):
         If there are more than 10,000 issues in the response, use paging.
         :return:
         """
-        payload = self.clear_payload(locals(), exclude=["expand", "order"])
+        payload = self._prepare_payload(locals(), exclude=["expand", "order"])
 
         params = {}
         if order:
@@ -229,7 +233,7 @@ class Issues(BaseTracker):
         **kwargs,
     ) -> list[Transition]:
         """Execute transition."""
-        payload = self.clear_payload(kwargs)
+        payload = self._prepare_payload(kwargs)
         data = await self._client.request(
             method="POST",
             uri=f"{transition.url}/_execute",

@@ -22,7 +22,7 @@ class Comments(BaseTracker):
 
     async def post_comment(self, issue_id: str, text: str, **kwargs) -> Comment:
         """Comment the issue."""
-        payload = self.clear_payload(locals(), exclude=["issue_id"])
+        payload = self._prepare_payload(locals(), exclude=["issue_id"])
         data = await self._client.request(
             method="POST",
             uri=f"/issues/{issue_id}/comments/",

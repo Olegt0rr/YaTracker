@@ -27,7 +27,7 @@ class Worklogs(BaseTracker):
         if isinstance(duration, Duration):
             duration = duration.to_iso()
 
-        payload = self.clear_payload(locals(), exclude=["issue_id"])
+        payload = self._prepare_payload(locals(), exclude=["issue_id"])
         data = await self._client.request(
             method="POST",
             uri=f"/issues/{issue_id}/worklog/",
@@ -51,7 +51,7 @@ class Worklogs(BaseTracker):
             duration = duration.to_iso()
 
         query_params = ["issue_id", "worklog_id"]
-        payload = self.clear_payload(locals(), exclude=query_params)
+        payload = self._prepare_payload(locals(), exclude=query_params)
         data = await self._client.request(
             method="PATCH",
             uri=f"/issues/{issue_id}/worklog/{worklog_id}",
@@ -99,7 +99,7 @@ class Worklogs(BaseTracker):
         https://cloud.yandex.ru/docs/tracker/concepts/issues/get-worklog
         """
         created_at = _process_created_at(created_at_from, created_at_to)
-        payload = self.clear_payload(
+        payload = self._prepare_payload(
             locals(),
             exclude=["created_at_from", "created_at_to"],
         )

@@ -4,7 +4,7 @@ import logging
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, TypeVar
 
-import msgspec.json
+from msgspec import convert, json
 
 from yatracker.types.base import Base
 from yatracker.utils.camel_case import camel_case
@@ -79,7 +79,7 @@ class BaseTracker:
             payload.update(kwargs)
 
         return {
-            camel_case(k): v
+            camel_case(k): _convert_value(v)
             for k, v in payload.items()
             if k not in {"self", "cls", *exclude} and v is not None
         }
@@ -104,9 +104,9 @@ class BaseTracker:
 
 
 @lru_cache
-def _get_decoder(type_: type[T]) -> msgspec.json.Decoder:
+def _get_decoder(type_: type[T]) -> json.Decoder:
     """Get cached msgspec encoder."""
-    return msgspec.json.Decoder(type_)
+    return json.Decoder(type_)
 
 
 def _add_tracker(tracker: BaseTracker, obj: Any) -> None:  # noqa: ANN401
@@ -120,3 +120,16 @@ def _add_tracker(tracker: BaseTracker, obj: Any) -> None:  # noqa: ANN401
         case dict():
             for v in obj.values():
                 _add_tracker(tracker, v)
+
+
+def _convert_value(obj: Any) -> Any:  # noqa: ANN401
+    """Convert values to basic types."""
+    match obj:
+        case Base():
+            return convert(obj, dict)
+        case list():
+            return [_convert_value(o) for o in obj]
+        case dict():
+            return {k: _convert_value(v) for k, v in obj.items()}
+        case _:
+            return obj

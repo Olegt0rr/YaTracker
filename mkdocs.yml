@@ -1,0 +1,25 @@
+site_name: YaTracker
+theme:
+  name: material
+  language: ru
+
+  palette:
+    primary: blue
+
+  features:
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - mkdocstrings
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details

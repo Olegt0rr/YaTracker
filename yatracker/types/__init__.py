@@ -1,7 +1,9 @@
 __all__ = [
     "Attachment",
+    "Base",
     "Comment",
     "Duration",
+    "field",
     "FullIssue",
     "Issue",
     "IssueType",
@@ -16,6 +18,7 @@ __all__ = [
 ]
 
 from .attachment import Attachment
+from .base import Base, field
 from .comment import Comment
 from .duration import Duration
 from .full_issue import FullIssue

@@ -81,7 +81,9 @@ class BaseTracker:
         return {
             camel_case(k): _convert_value(v)
             for k, v in payload.items()
-            if k not in {"self", "cls", *exclude} and v is not None
+            if k not in {"self", "cls", *exclude}
+            and not k.startswith("_")
+            and v is not None
         }
 
     async def close(self) -> None:

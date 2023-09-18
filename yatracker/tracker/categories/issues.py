@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, TypeVar
+from typing import Any, TypeVar, overload
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import (
@@ -16,6 +16,23 @@ IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
 
 
 class Issues(BaseTracker):
+    @overload
+    async def get_issue(
+        self,
+        issue_id: str,
+        expand: str | None = None,
+    ) -> FullIssue:
+        ...
+
+    @overload
+    async def get_issue(
+        self,
+        issue_id: str,
+        expand: str | None = None,
+        _type: type[IssueT_co] = ...,
+    ) -> IssueT_co:
+        ...
+
     async def get_issue(
         self,
         issue_id: str,
@@ -40,6 +57,25 @@ class Issues(BaseTracker):
         )
         return self._decode(_type, data)
 
+    @overload
+    async def edit_issue(
+        self,
+        issue_id: str,
+        version: str | int | None = None,
+        **kwargs,
+    ) -> FullIssue:
+        ...
+
+    @overload
+    async def edit_issue(
+        self,
+        issue_id: str,
+        version: str | int | None = None,
+        _type: type[IssueT_co] = ...,
+        **kwargs,
+    ) -> IssueT_co:
+        ...
+
     async def edit_issue(
         self,
         issue_id: str,
@@ -62,6 +98,45 @@ class Issues(BaseTracker):
             payload=self._prepare_payload(kwargs),
         )
         return self._decode(_type, data)
+
+    @overload
+    async def create_issue(
+        self,
+        summary: str,
+        queue: str | int | dict,
+        *,
+        parent: Issue | str | None = None,
+        description: str | None = None,
+        sprint: dict[str, str] | None = None,
+        type_: IssueType | None = None,
+        priority: int | str | Priority | None = None,
+        followers: list[str] | None = None,
+        assignee: list[str] | None = None,
+        unique: str | None = None,
+        attachment_ids: list[str] | None = None,
+        _type: type[IssueT_co] = ...,
+        **kwargs,
+    ) -> IssueT_co:
+        ...
+
+    @overload
+    async def create_issue(
+        self,
+        summary: str,
+        queue: str | int | dict,
+        *,
+        parent: Issue | str | None = None,
+        description: str | None = None,
+        sprint: dict[str, str] | None = None,
+        type_: IssueType | None = None,
+        priority: int | str | Priority | None = None,
+        followers: list[str] | None = None,
+        assignee: list[str] | None = None,
+        unique: str | None = None,
+        attachment_ids: list[str] | None = None,
+        **kwargs,
+    ) -> FullIssue:
+        ...
 
     # ruff: noqa: ARG002 PLR0913
     async def create_issue(
@@ -93,6 +168,37 @@ class Issues(BaseTracker):
             payload=payload,
         )
         return self._decode(_type, data)
+
+    @overload
+    async def move_issue(
+        self,
+        issue_id: str,
+        queue_key: str,
+        *,
+        notify: bool = True,
+        notify_author: bool = False,
+        move_all_fields: bool = False,
+        initial_status: bool = False,
+        expand: str | None = None,
+        _type: type[IssueT_co] = ...,
+        **kwargs,
+    ) -> IssueT_co:
+        ...
+
+    @overload
+    async def move_issue(
+        self,
+        issue_id: str,
+        queue_key: str,
+        *,
+        notify: bool = True,
+        notify_author: bool = False,
+        move_all_fields: bool = False,
+        initial_status: bool = False,
+        expand: str | None = None,
+        **kwargs,
+    ) -> FullIssue:
+        ...
 
     async def move_issue(
         self,
@@ -183,6 +289,31 @@ class Issues(BaseTracker):
         )
         return self._decode(int, data)
 
+    @overload
+    async def find_issues(
+        self,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        keys: str | None = None,
+        queue: str | None = None,
+    ) -> list[FullIssue]:
+        ...
+
+    @overload
+    async def find_issues(
+        self,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        keys: str | None = None,
+        queue: str | None = None,
+        _type: type[IssueT_co] = ...,
+    ) -> list[IssueT_co]:
+        ...
+
     async def find_issues(
         self,
         filter_: dict[str, str] | None = None,
@@ -214,6 +345,21 @@ class Issues(BaseTracker):
             payload=payload,
         )
         return self._decode(list[_type], data)  # type: ignore[valid-type]
+
+    @overload
+    async def get_issue_links(
+        self,
+        issue_id: str,
+    ) -> list[FullIssue]:
+        ...
+
+    @overload
+    async def get_issue_links(
+        self,
+        issue_id: str,
+        _type: type[IssueT_co | FullIssue] = ...,
+    ) -> list[IssueT_co]:
+        ...
 
     async def get_issue_links(
         self,

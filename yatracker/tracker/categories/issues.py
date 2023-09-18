@@ -95,7 +95,7 @@ class Issues(BaseTracker):
             method="PATCH",
             uri=f"/issues/{issue_id}",
             params={"version": str(version)} if version else None,
-            payload=self._prepare_payload(kwargs),
+            payload=self._prepare_payload(kwargs, type_=_type),
         )
         return self._decode(_type, data)
 
@@ -161,7 +161,7 @@ class Issues(BaseTracker):
         Source:
         https://cloud.yandex.ru/docs/tracker/concepts/issues/create-issue
         """
-        payload = self._prepare_payload(locals())
+        payload = self._prepare_payload(locals(), type_=_type)
         data = await self._client.request(
             method="POST",
             uri="/issues/",
@@ -262,7 +262,7 @@ class Issues(BaseTracker):
             method="POST",
             uri=f"/issues/{issue_id}/_move",
             params=params,
-            payload=self._prepare_payload(kwargs),
+            payload=self._prepare_payload(kwargs, type_=_type),
         )
         return self._decode(_type, data)
 
@@ -330,7 +330,11 @@ class Issues(BaseTracker):
         If there are more than 10,000 issues in the response, use paging.
         :return:
         """
-        payload = self._prepare_payload(locals(), exclude=["expand", "order"])
+        payload = self._prepare_payload(
+            locals(),
+            exclude=["expand", "order"],
+            type_=_type,
+        )
 
         params = {}
         if order:

@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from .client import BaseClient
 
 T = TypeVar("T")
+B = TypeVar("B", bound=Base)
 
 logger = logging.getLogger(__name__)
 
@@ -70,12 +71,16 @@ class BaseTracker:
     def _prepare_payload(
         payload: dict[str, Any],
         exclude: Collection[str] | None = None,
+        type_: type[B] | None = None,
     ) -> dict[str, Any]:
         """Remove empty fields from payload."""
         payload = payload.copy()
         exclude = exclude or []
         kwargs = payload.pop("kwargs", None)
+
         if kwargs:
+            if type_ is not None:
+                kwargs = _replace_custom_fields(kwargs, type_)
             payload.update(kwargs)
 
         return {
@@ -135,3 +140,14 @@ def _convert_value(obj: Any) -> Any:  # noqa: ANN401
             return {k: _convert_value(v) for k, v in obj.items()}
         case _:
             return obj
+
+
+def _replace_custom_fields(kwargs: dict[str, Any], type_: type[B]) -> dict[str, Any]:
+    """Replace kwarg key with original field name."""
+    new_kwargs: dict[str, Any] = {}
+    for key, value in kwargs.items():
+        if not hasattr(type_, key):
+            continue
+        field = getattr(type_, key)
+        new_kwargs[field.name] = value
+    return new_kwargs

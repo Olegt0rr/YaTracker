@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TypeVar
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import (
@@ -12,9 +12,16 @@ from yatracker.types import (
     Transitions,
 )
 
+IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
+
 
 class Issues(BaseTracker):
-    async def get_issue(self, issue_id: str, expand: str | None = None) -> FullIssue:
+    async def get_issue(
+        self,
+        issue_id: str,
+        expand: str | None = None,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
+    ) -> IssueT_co | FullIssue:
         """Get issue parameters.
 
         Use this request to get information about an issue.
@@ -23,7 +30,7 @@ class Issues(BaseTracker):
         :param expand: Additional fields to include in the response:
                         transitions — Workflow transitions between statuses.
                         attachments — Attachments
-
+        :param _type: you can use your own extended FullIssue type
         :return:
         """
         data = await self._client.request(
@@ -31,14 +38,15 @@ class Issues(BaseTracker):
             uri=f"/issues/{issue_id}",
             params={"expand": expand} if expand else None,
         )
-        return self._decode(FullIssue, data)
+        return self._decode(_type, data)
 
     async def edit_issue(
         self,
         issue_id: str,
         version: str | int | None = None,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
         **kwargs,
-    ) -> FullIssue:
+    ) -> IssueT_co | FullIssue:
         """Make changes to an issue.
 
         Use this request to make changes to an issue.
@@ -53,7 +61,7 @@ class Issues(BaseTracker):
             params={"version": str(version)} if version else None,
             payload=self._prepare_payload(kwargs),
         )
-        return self._decode(FullIssue, data)
+        return self._decode(_type, data)
 
     # ruff: noqa: ARG002 PLR0913
     async def create_issue(
@@ -70,8 +78,9 @@ class Issues(BaseTracker):
         assignee: list[str] | None = None,
         unique: str | None = None,
         attachment_ids: list[str] | None = None,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
         **kwargs,
-    ) -> FullIssue:
+    ) -> IssueT_co | FullIssue:
         """Create an issue.
 
         Source:
@@ -83,7 +92,7 @@ class Issues(BaseTracker):
             uri="/issues/",
             payload=payload,
         )
-        return self._decode(FullIssue, data)
+        return self._decode(_type, data)
 
     async def move_issue(
         self,
@@ -95,8 +104,9 @@ class Issues(BaseTracker):
         move_all_fields: bool = False,
         initial_status: bool = False,
         expand: str | None = None,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
         **kwargs,
-    ) -> FullIssue:
+    ) -> IssueT_co | FullIssue:
         """Move an issue to a different queue.
 
         Before executing the request, make sure the user has permission
@@ -148,7 +158,7 @@ class Issues(BaseTracker):
             params=params,
             payload=self._prepare_payload(kwargs),
         )
-        return self._decode(FullIssue, data)
+        return self._decode(_type, data)
 
     async def count_issues(
         self,
@@ -181,7 +191,8 @@ class Issues(BaseTracker):
         expand: str | None = None,
         keys: str | None = None,
         queue: str | None = None,
-    ) -> list[FullIssue]:
+        _type: type[IssueT_co | FullIssue] = FullIssue,
+    ) -> list[IssueT_co] | list[FullIssue]:
         """Find issues.
 
         Use this request to get a list of issues that meet specific criteria.
@@ -202,9 +213,13 @@ class Issues(BaseTracker):
             params=params,
             payload=payload,
         )
-        return self._decode(list[FullIssue], data)
+        return self._decode(list[_type], data)  # type: ignore[valid-type]
 
-    async def get_issue_links(self, issue_id: str) -> list[FullIssue]:
+    async def get_issue_links(
+        self,
+        issue_id: str,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
+    ) -> list[IssueT_co] | list[FullIssue]:
         """Get issue links.
 
         Use this request to get information about links between issues.
@@ -214,7 +229,7 @@ class Issues(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
-        return self._decode(list[FullIssue], data)
+        return self._decode(list[_type], data)  # type: ignore[valid-type]
 
     async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.

@@ -5,10 +5,14 @@ __all__ = [
     "Duration",
     "field",
     "FullIssue",
+    "FullQueue",
     "Issue",
     "IssueType",
+    "IssueTypeConfig",
     "Priority",
     "Queue",
+    "QueueField",
+    "QueueVersion",
     "Sprint",
     "Status",
     "Transition",
@@ -22,10 +26,14 @@ from .base import Base, field
 from .comment import Comment
 from .duration import Duration
 from .full_issue import FullIssue
+from .full_queue import FullQueue
 from .issue import Issue
 from .issue_type import IssueType
+from .issue_type_config import IssueTypeConfig
 from .priority import Priority
 from .queue import Queue
+from .queue_field import QueueField
+from .queue_version import QueueVersion
 from .sprint import Sprint
 from .status import Status
 from .transition import Transition

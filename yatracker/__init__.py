@@ -1,4 +1,4 @@
-__version__ = "2023.9.2"
+__version__ = "2023.9.3"
 __api_version__ = "v2"
 __all__ = ["YaTracker"]
 

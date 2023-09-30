@@ -2,35 +2,11 @@
 
 ## Managing dependencies
 
-### Poetry
+### Dependencies
 
-To guarantee repeatable installations, all project dependencies are managed
-using [Poetry](https://poetry.eustace.io/). The project’s direct dependencies are listed
-in `pyproject.toml`. Running `poetry lock` generates `poetry.lock` which has all versions pinned.
-
-You can install Poetry by using `pip install --pre poetry` or by following the official
-installation guide [here](https://github.com/sdispater/poetry#installation).
-
-If you're using a [PyCharm](https://www.jetbrains.com/pycharm/), also install
-a [Poetry Plugin](https://plugins.jetbrains.com/plugin/14307-poetry).
-
-### Other tools
-
-For compatibility, YaTracker also provides `requirements.txt` and `requirements_dev.txt`.
-
-## Coding style
-
-YaTracker uses various tools to maintain a common coding style and help with development. To
-install all the development tools, run the following commands:
-
+To install all development tools, set up and activate your venv and then run
 ```shell
-python -m pip install -r requirements_dev.txt
-```
-
-or use `poetry`:
-
-```shell
-poetry install
+pip install -e ."[dev,test]"
 ```
 
 ### Pre-commit
@@ -101,14 +77,7 @@ def collect_integers(a: int, b: int) -> List[int]:
 
 - [black](https://github.com/python/black/) to make sure your code is correctly formatted.
 
-- [isort](https://github.com/timothycrosley/isort) to maintain consistent imports.
-
-- [pylint](https://www.pylint.org/) to catch errors in your code.
-
-- [flake8](https://flake8.pycqa.org/en/latest/) to make sure your code adheres to PEP 8.
-
-- [pydocstyle](http://pydocstyle.pycqa.org/en/latest/) to check that your docstrings are properly
-  formatted.
+- [ruff](https://github.com/astral-sh/ruff) to lint the code with all available best practices.
 
 - [mypy](https://github.com/python/mypy) to check that your types correctly assigned and used.
 

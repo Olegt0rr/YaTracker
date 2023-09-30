@@ -8,6 +8,7 @@ from .categories import (
     Comments,
     Issues,
     Priorities,
+    Queues,
     Worklogs,
 )
 
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class YaTracker(
+    Queues,
     Issues,
     Comments,
     Priorities,

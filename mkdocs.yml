@@ -1,6 +1,12 @@
 site_name: YaTracker
 repo_url: https://github.com/Olegt0rr/YaTracker
 repo_name: Olegt0rr/YaTracker
+nav:
+  - О библиотеке: index.md
+  - С чего начать: howto.md
+  - Дополнительные возможности:
+    - Работа с пользовательскими полями: custom_fields.md
+
 
 theme:
   name: material

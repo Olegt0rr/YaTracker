@@ -41,3 +41,8 @@ class IssueLink(Base, kw_only=True):
     updated_at: datetime | None = None
     assignee: User | None = None
     status: Status
+
+    @property
+    def name(self) -> str:
+        """Get link name from links type based on direction."""
+        return getattr(self.type, self.direction)

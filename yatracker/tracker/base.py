@@ -121,6 +121,8 @@ def _add_tracker(tracker: BaseTracker, obj: Any) -> None:  # noqa: ANN401
     match obj:
         case Base():
             obj._tracker = tracker  # noqa: SLF001
+            for field in obj.__struct_fields__:
+                _add_tracker(tracker, getattr(obj, field))
         case list():
             for o in obj:
                 _add_tracker(tracker, o)

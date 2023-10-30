@@ -2,8 +2,8 @@ from __future__ import annotations
 
 __all__ = ["FullIssue"]
 
-
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from .base import Base, field
 from .comment import Comment
@@ -15,6 +15,9 @@ from .sprint import Sprint
 from .status import Status
 from .transitions import Transitions
 from .user import User
+
+if TYPE_CHECKING:
+    from .issue_link import IssueLink
 
 
 class FullIssue(Base, kw_only=True):
@@ -72,3 +75,7 @@ class FullIssue(Base, kw_only=True):
     async def post_comment(self, text: str, **kwargs) -> Comment:
         """Post comment for self."""
         return await self._tracker.post_comment(self.id, text=text, **kwargs)
+
+    async def get_links(self) -> list[IssueLink]:
+        """Get issue links."""
+        return await self._tracker.get_issue_links(self.id)

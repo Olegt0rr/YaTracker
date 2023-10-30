@@ -7,6 +7,7 @@ __all__ = [
     "FullIssue",
     "FullQueue",
     "Issue",
+    "IssueLink",
     "IssueType",
     "IssueTypeConfig",
     "Priority",
@@ -28,6 +29,7 @@ from .duration import Duration
 from .full_issue import FullIssue
 from .full_queue import FullQueue
 from .issue import Issue
+from .issue_link import IssueLink
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority

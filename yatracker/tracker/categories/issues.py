@@ -6,6 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types import (
     FullIssue,
     Issue,
+    IssueLink,
     IssueType,
     Priority,
     Transition,
@@ -350,26 +351,10 @@ class Issues(BaseTracker):
         )
         return self._decode(list[_type], data)  # type: ignore[valid-type]
 
-    @overload
     async def get_issue_links(
         self,
         issue_id: str,
-    ) -> list[FullIssue]:
-        ...
-
-    @overload
-    async def get_issue_links(
-        self,
-        issue_id: str,
-        _type: type[IssueT_co | FullIssue] = ...,
-    ) -> list[IssueT_co]:
-        ...
-
-    async def get_issue_links(
-        self,
-        issue_id: str,
-        _type: type[IssueT_co | FullIssue] = FullIssue,
-    ) -> list[IssueT_co] | list[FullIssue]:
+    ) -> list[IssueLink]:
         """Get issue links.
 
         Use this request to get information about links between issues.
@@ -379,7 +364,7 @@ class Issues(BaseTracker):
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
-        return self._decode(list[_type], data)  # type: ignore[valid-type]
+        return self._decode(list[IssueLink], data)
 
     async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.

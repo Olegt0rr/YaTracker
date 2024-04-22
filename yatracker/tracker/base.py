@@ -76,12 +76,13 @@ class BaseTracker:
         """Remove empty fields from payload."""
         payload = payload.copy()
         exclude = exclude or []
-        kwargs = payload.pop("kwargs", None)
 
+        kwargs: dict | None = payload.pop("kwargs", None)
         if kwargs:
-            if type_ is not None:
-                kwargs = _replace_custom_fields(kwargs, type_)
             payload.update(kwargs)
+
+        if type_ is not None:
+            return _rename_and_clear(type_, payload, exclude)
 
         return {
             camel_case(k): _convert_value(v)
@@ -144,12 +145,27 @@ def _convert_value(obj: Any) -> Any:  # noqa: ANN401
             return obj
 
 
-def _replace_custom_fields(kwargs: dict[str, Any], type_: type[B]) -> dict[str, Any]:
+def _rename_and_clear(
+    type_: type[B],
+    payload: dict[str, Any],
+    exclude: Collection[str],
+) -> dict[str, Any]:
     """Replace kwarg key with original field name."""
-    new_kwargs: dict[str, Any] = {}
-    for key, value in kwargs.items():
-        if not hasattr(type_, key):
+    renamed: dict[str, Any] = {}
+    exclude = {"self", "cls", *exclude}
+
+    for name, encode_name in zip(
+        type_.__struct_fields__,
+        type_.__struct_encode_fields__,  # type: ignore[attr-defined]
+        strict=False,
+    ):
+        if name not in payload or name in exclude or name.startswith("_"):
             continue
-        field = getattr(type_, key)
-        new_kwargs[field.name] = value
-    return new_kwargs
+
+        value = _convert_value(payload[name])
+        if value is None:
+            continue
+
+        renamed[encode_name] = value
+
+    return renamed

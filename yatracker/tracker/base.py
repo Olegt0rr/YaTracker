@@ -148,7 +148,7 @@ def _convert_value(obj: Any) -> Any:  # noqa: ANN401
 def _rename_and_clear(
     type_: type[B],
     payload: dict[str, Any],
-    exclude: list[str],
+    exclude: Collection[str],
 ) -> dict[str, Any]:
     """Replace kwarg key with original field name."""
     renamed: dict[str, Any] = {}
@@ -156,7 +156,7 @@ def _rename_and_clear(
 
     for name, encode_name in zip(
         type_.__struct_fields__,
-        type_.__struct_encode_fields__,
+        type_.__struct_encode_fields__,  # type: ignore[attr-defined]
         strict=False,
     ):
         if name not in payload or name in exclude or name.startswith("_"):

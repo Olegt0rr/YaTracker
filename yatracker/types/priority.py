@@ -19,6 +19,7 @@ class Priority(Base, kw_only=True):
     the names in other languages.
     order - The weight of the priority. This parameter affects the order
     for displaying the priority in the interface.
+
     """
 
     url: str = field(name="self")

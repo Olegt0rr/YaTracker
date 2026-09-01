@@ -13,9 +13,13 @@ jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: chartboost/ruff-action@v1
+      - uses: actions/checkout@v4
+      # version is pinned to match .pre-commit-config.yaml so CI,
+      # pre-commit and local runs agree on the rule set
+      - uses: astral-sh/ruff-action@v3
         with:
+          version: '0.4.1'
+          args: 'check'
           src: './yatracker'
 
   mypy:

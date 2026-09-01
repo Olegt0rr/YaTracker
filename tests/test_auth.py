@@ -73,6 +73,22 @@ def test_both_org_ids_raise() -> None:
         FakeClient(org_id="org", cloud_org_id="cloud-org", token="token")
 
 
+def test_both_org_headers_raise() -> None:
+    with pytest.raises(ValueError, match="at the same time"):
+        FakeClient(
+            token="token",
+            headers={ORG_ID_HEADER: "org", CLOUD_ORG_ID_HEADER: "cloud-org"},
+        )
+
+
+def test_both_org_headers_raise_case_insensitive() -> None:
+    with pytest.raises(ValueError, match="at the same time"):
+        FakeClient(
+            token="token",
+            headers={"x-org-id": "org", "X-CLOUD-ORG-ID": "cloud-org"},
+        )
+
+
 def test_no_org_id_and_no_header_raises() -> None:
     with pytest.raises(ValueError, match="org_id"):
         FakeClient(token="token")

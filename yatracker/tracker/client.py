@@ -72,7 +72,16 @@ def _set_org_header(
         )
         raise ValueError(msg)
 
-    if _has_header(headers, ORG_ID_HEADER) or _has_header(headers, CLOUD_ORG_ID_HEADER):
+    has_org_header = _has_header(headers, ORG_ID_HEADER)
+    has_cloud_org_header = _has_header(headers, CLOUD_ORG_ID_HEADER)
+    if has_org_header and has_cloud_org_header:
+        msg = (
+            "`headers` contains both `X-Org-ID` and `X-Cloud-Org-ID`: "
+            "the API forbids sending them at the same time."
+        )
+        raise ValueError(msg)
+
+    if has_org_header or has_cloud_org_header:
         return
 
     if org_id is not None:

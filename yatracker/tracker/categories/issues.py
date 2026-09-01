@@ -71,7 +71,10 @@ class Issues(BaseTracker):
                         transitions — Workflow transitions between statuses.
                         attachments — Attachments
         :param fields: Comma-separated list of response fields to
-                        return. Limits the response to just these fields.
+                        return. Non-listed fields are omitted from the
+                        response, so pass a ``_type`` whose required
+                        fields match the projection — the default
+                        FullIssue needs the full field set.
         :param _type: you can use your own extended FullIssue type
         :return:
         """
@@ -383,7 +386,12 @@ class Issues(BaseTracker):
         the scroll API: pass ``scroll_type`` ("sorted" or "unsorted") and
         ``per_scroll``/``scroll_ttl_millis`` to start a scroll session, then
         pass the ``scroll_id`` returned by the API on subsequent calls to
-        continue it.
+        continue it. Scroll is not supported together with the ``keys``
+        or ``queue`` search forms (the API answers HTTP 400).
+
+        ``fields`` projects the response: non-listed fields are omitted,
+        so pass a ``_type`` whose required fields match the projection —
+        the default FullIssue needs the full field set.
         :return:
         """
         payload = self._prepare_payload(
@@ -437,7 +445,6 @@ class Issues(BaseTracker):
         query: str | None = None,
         order: str | None = None,
         expand: str | None = None,
-        keys: str | None = None,
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
@@ -455,13 +462,25 @@ class Issues(BaseTracker):
         Iteration stops when a page comes back empty or the API stops
         sending the header.
 
+        The API rejects scroll for the `keys`/`queue` search forms with
+        HTTP 400, so there is no ``keys`` parameter here and ``queue``
+        is folded into the supported ``filter`` form.
+
         :meth:`find_issues` with an explicit ``scroll_id`` remains
         available when you need to drive the scroll session manually.
 
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
         :param scroll_ttl_millis: lifetime of the scroll context, in ms.
+        :param fields: comma-separated projection of response fields.
+            Non-listed fields are omitted from the response, so pass a
+            ``_type`` whose required fields match the projection — the
+            default :class:`FullIssue` needs the full field set.
         """
+        if queue is not None:
+            filter_ = {**(filter_ or {}), "queue": queue}
+            queue = None
+
         payload = self._prepare_payload(
             locals(),
             exclude=[

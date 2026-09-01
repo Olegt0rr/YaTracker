@@ -129,11 +129,28 @@ async def test_iter_issues_accepts_positional_type() -> None:
             None,
             None,
             None,
-            None,
             MyIssue,
         )
     ]
     assert isinstance(issues[0], MyIssue)
+
+
+async def test_iter_issues_folds_queue_into_filter() -> None:
+    """Scroll rejects the `queue` search form, so it becomes a filter."""
+    client = FakeClient(responses=[(200, b"[]", {})])
+    tracker = YaTracker(client=client)
+
+    _ = [
+        issue
+        async for issue in tracker.iter_issues(
+            filter_={"assignee": "me"},
+            queue="TEST",
+        )
+    ]
+
+    body = json.loads(bytes(client.calls[0]["data"]._value))
+    assert body == {"filter": {"assignee": "me", "queue": "TEST"}}
+    assert "queue" not in body
 
 
 async def test_get_issue_accepts_positional_type() -> None:

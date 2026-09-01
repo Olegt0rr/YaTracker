@@ -20,8 +20,8 @@ if TYPE_CHECKING:
     from .issue_link import IssueLink
 
 
-class FullIssue(Base, kw_only=True):
-    url: str = field(name="self")
+class FullIssue(Base):
+    url: str = field(alias="self")
     id: str
     key: str
     version: int

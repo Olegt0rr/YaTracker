@@ -4,7 +4,7 @@ __all__ = ["Sprint"]
 from .base import Base, field
 
 
-class Sprint(Base, kw_only=True):
-    url: str = field(name="self")
+class Sprint(Base):
+    url: str = field(alias="self")
     id: str
     display: str

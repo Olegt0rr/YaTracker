@@ -6,8 +6,8 @@ __all__ = ["Resolution"]
 from .base import Base, field
 
 
-class Resolution(Base, kw_only=True):
-    url: str = field(name="self")
+class Resolution(Base):
+    url: str = field(alias="self")
     id: str
     key: str
     display: str

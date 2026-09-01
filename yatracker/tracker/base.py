@@ -4,7 +4,7 @@ import logging
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, TypeVar
 
-from msgspec import convert, json
+from pydantic import TypeAdapter
 
 from yatracker.types.base import Base
 from yatracker.utils.camel_case import camel_case
@@ -34,38 +34,43 @@ class BaseTracker:
         client: BaseClient | None = None,
         api_host: str | None = None,
         api_version: str | None = None,
+        *,
+        cloud_org_id: str | int | None = None,
+        iam_token: str | None = None,
     ) -> None:
-        if (org_id is None or token is None) and client is None:
+        if client is not None:
+            self._client = client
+            return
+
+        has_org = org_id is not None or cloud_org_id is not None
+        has_token = token is not None or iam_token is not None
+
+        if not has_org or not has_token:
             msg = (
-                "You must provide either `org_id` and `token` or `BaseClient` "
-                "instance with set up headers `X-Org-Id` and `Authorization` and "
-                "base url."
+                "You must provide either an organization id (`org_id` for "
+                "Yandex 360 or `cloud_org_id` for Yandex Cloud) together with "
+                "a token (`token` for OAuth or `iam_token` for IAM), or a "
+                "`BaseClient` instance with set up headers `X-Org-ID` "
+                "(or `X-Cloud-Org-ID`) and `Authorization` and base url."
             )
             raise RuntimeError(msg)
 
-        if client is not None:
-            self._client = client
-        else:
-            if token is None or org_id is None:
-                msg = "You must provide `org_id` and `token`."
-                raise RuntimeError(msg)
-
-            self._client = AIOHTTPClient(
-                org_id=org_id,
-                token=token,
-                api_host=api_host,
-                api_version=api_version,
-            )
+        self._client = AIOHTTPClient(
+            org_id=org_id,
+            token=token,
+            api_host=api_host,
+            api_version=api_version,
+            cloud_org_id=cloud_org_id,
+            iam_token=iam_token,
+        )
 
     def _decode(self, type_: type[T], data: bytes) -> T:
-        """Decode bytes object to struct.
+        """Decode bytes object to model.
 
         Also add producer client object to `_tracker` field.
         """
-        decoder = _get_decoder(type_)  # type: ignore[arg-type]
-        obj = decoder.decode(data)
-        _add_tracker(self, obj)
-        return obj
+        adapter = _get_adapter(type_)  # type: ignore[arg-type]
+        return adapter.validate_json(data, context={"tracker": self})
 
     @staticmethod
     def _prepare_payload(
@@ -112,31 +117,25 @@ class BaseTracker:
 
 
 @lru_cache
-def _get_decoder(type_: type[T]) -> json.Decoder:
-    """Get cached msgspec encoder."""
-    return json.Decoder(type_)
+def _get_adapter(type_: type[T]) -> TypeAdapter[T]:
+    """Get cached pydantic type adapter."""
+    return TypeAdapter(type_)
 
 
-def _add_tracker(tracker: BaseTracker, obj: Any) -> None:  # noqa: ANN401
-    """Add tracker link to the object."""
-    match obj:
-        case Base():
-            obj._tracker = tracker  # noqa: SLF001
-            for field in obj.__struct_fields__:
-                _add_tracker(tracker, getattr(obj, field))
-        case list():
-            for o in obj:
-                _add_tracker(tracker, o)
-        case dict():
-            for v in obj.values():
-                _add_tracker(tracker, v)
+@lru_cache
+def _field_names(type_: type[Base]) -> dict[str, str]:
+    """Map model field names to their encoded (wire) names."""
+    return {
+        name: field_info.alias or camel_case(name)
+        for name, field_info in type_.model_fields.items()
+    }
 
 
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401
     """Convert values to basic types."""
     match obj:
         case Base():
-            return convert(obj, dict)
+            return obj.model_dump(mode="json", by_alias=True, exclude_none=True)
         case list():
             return [_convert_value(o) for o in obj]
         case dict():
@@ -150,22 +149,24 @@ def _rename_and_clear(
     payload: dict[str, Any],
     exclude: Collection[str],
 ) -> dict[str, Any]:
-    """Replace kwarg key with original field name."""
+    """Replace kwarg keys with the model's encoded field names.
+
+    Keys that are not fields of `type_` (e.g. `query`, `filter_`,
+    custom fields passed via **kwargs) are kept and converted to
+    camelCase instead of being dropped.
+    """
     renamed: dict[str, Any] = {}
     exclude = {"self", "cls", *exclude}
+    encode_names = _field_names(type_)
 
-    for name, encode_name in zip(
-        type_.__struct_fields__,
-        type_.__struct_encode_fields__,  # type: ignore[attr-defined]
-        strict=False,
-    ):
-        if name not in payload or name in exclude or name.startswith("_"):
+    for name, raw_value in payload.items():
+        if name in exclude or name.startswith("_"):
             continue
 
-        value = _convert_value(payload[name])
+        value = _convert_value(raw_value)
         if value is None:
             continue
 
-        renamed[encode_name] = value
+        renamed[encode_names.get(name) or camel_case(name)] = value
 
     return renamed

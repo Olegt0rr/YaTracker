@@ -9,8 +9,8 @@ from .base import Base, field
 from .queue import Queue
 
 
-class QueueVersion(Base, kw_only=True):
-    url: str = field(name="self")
+class QueueVersion(Base):
+    url: str = field(alias="self")
     id: int
     version: int
     queue: Queue

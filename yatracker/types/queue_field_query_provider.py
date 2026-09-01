@@ -6,5 +6,5 @@ __all__ = ["QueueFieldQueryProvider"]
 from .base import Base
 
 
-class QueueFieldQueryProvider(Base, kw_only=True):
+class QueueFieldQueryProvider(Base):
     type: str

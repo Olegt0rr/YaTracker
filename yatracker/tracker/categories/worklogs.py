@@ -50,8 +50,7 @@ class Worklogs(BaseTracker):
         if isinstance(duration, Duration):
             duration = duration.to_iso()
 
-        query_params = ["issue_id", "worklog_id"]
-        payload = self._prepare_payload(locals(), exclude=query_params)
+        payload = self._prepare_payload(locals(), exclude=("issue_id", "worklog_id"))
         data = await self._client.request(
             method="PATCH",
             uri=f"/issues/{issue_id}/worklog/{worklog_id}",
@@ -75,15 +74,32 @@ class Worklogs(BaseTracker):
         )
         return True
 
-    async def get_issue_worklog(self, issue_id: str) -> list[Worklog]:
+    async def get_issue_worklog(
+        self,
+        issue_id: str,
+        *,
+        per_page: int | None = None,
+        id_: str | int | None = None,
+    ) -> list[Worklog]:
         """Get issue worklog records.
+
+        :param per_page: Number of entries per page (max 500).
+        :param id_: Pagination cursor — return worklogs after this
+                    worklog id (query param "id").
 
         Source:
         https://cloud.yandex.ru/docs/tracker/concepts/issues/issue-worklog
         """
+        params: dict[str, str] = {}
+        if per_page is not None:
+            params["perPage"] = str(per_page)
+        if id_ is not None:
+            params["id"] = str(id_)
+
         data = await self._client.request(
             method="GET",
             uri=f"/issues/{issue_id}/worklog",
+            params=params or None,
         )
         return self._decode(list[Worklog], data)
 

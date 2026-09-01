@@ -6,9 +6,9 @@ from .base import Base, field
 from .status import Status
 
 
-class Transition(Base, kw_only=True):
+class Transition(Base):
     id: str
-    url: str = field(name="self")
+    url: str = field(alias="self")
     display: str
     to: Status
 

@@ -2,11 +2,11 @@ from __future__ import annotations
 
 
 class Printable:
-    display: str | None
+    __slots__ = ()
 
     def __str__(self) -> str:
         """Return display name."""
-        try:
-            return self.display or self.__class__.__name__
-        except AttributeError:
-            return super().__str__()
+        if "display" in getattr(type(self), "model_fields", {}):
+            display = getattr(self, "display", None)
+            return display or self.__class__.__name__
+        return super().__str__()

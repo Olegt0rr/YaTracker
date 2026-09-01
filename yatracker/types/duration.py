@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass, fields
 
 PATTERN = re.compile(
-    r"^P(?=\d+[YMWD])"
+    r"^P(?=\d+[YMWD]|T\d)"
     r"((?P<years>\d+)Y)?"
     r"((?P<months>\d+)M)?"
     r"((?P<weeks>\d+)W)?"

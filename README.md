@@ -7,6 +7,8 @@ Asyncio Yandex Tracker API client
 [![Code linter: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json)](https://github.com/charliermarsh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Linters](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/linters.yml)
+[![Tests](https://github.com/Olegt0rr/YaTracker/actions/workflows/tests.yml/badge.svg)](https://github.com/Olegt0rr/YaTracker/actions/workflows/tests.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Olegt0rr/YaTracker/python-coverage-comment-action-data/endpoint.json)](https://github.com/Olegt0rr/YaTracker/tree/python-coverage-comment-action-data)
 ---
 
 Documentation: https://olegt0rr.github.io/YaTracker/
@@ -32,15 +34,16 @@ from yatracker import YaTracker
 
 tracker = YaTracker(org_id=..., token=...)
 
+
 async def foo():
     # create issue
-    issue = await tracker.create_issue('New Issue', 'KEY')
+    issue = await tracker.create_issue("New Issue", "KEY")
 
     # get issue
-    issue = await tracker.get_issue('KEY-1')
+    issue = await tracker.get_issue("KEY-1")
 
     # update issue (just pass kwargs)
-    issue = await tracker.edit_issue('KEY-1', description='Hello World')
+    issue = await tracker.edit_issue("KEY-1", description="Hello World")
 
     # get transitions:
     transitions = await issue.get_transitions()
@@ -48,11 +51,25 @@ async def foo():
     # execute transition
     transition = transitions[0]
     await transition.execute()
-
 ```
 ```python
 # don't forget to close tracker on app shutdown
 async def on_shutdown():
     await tracker.close()
-
 ```
+
+
+## Organizations and tokens
+Pass exactly one organization id and exactly one token.
+
+```python
+# Yandex 360 organization (sends `X-Org-ID`) with an OAuth token
+tracker = YaTracker(org_id=..., token=...)
+
+# Yandex Cloud organization (sends `X-Cloud-Org-ID`) with an IAM token
+tracker = YaTracker(cloud_org_id=..., iam_token=...)
+```
+
+`org_id` and `cloud_org_id` are mutually exclusive, so are `token` and
+`iam_token`. API `v3` is used by default, `v2` is still available via
+`YaTracker(..., api_version="v2")`.

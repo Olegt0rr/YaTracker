@@ -6,7 +6,7 @@ __all__ = ["QueueFieldSchema"]
 from .base import Base
 
 
-class QueueFieldSchema(Base, kw_only=True):
+class QueueFieldSchema(Base):
     type: str
     required: bool | None = None
     items: str | None = None

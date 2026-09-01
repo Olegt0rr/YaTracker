@@ -8,8 +8,8 @@ from .base import Base, field
 from .user import User
 
 
-class Comment(Base, kw_only=True):
-    url: str = field(name="self")
+class Comment(Base):
+    url: str = field(alias="self")
     id: int
     text: str
     created_by: User

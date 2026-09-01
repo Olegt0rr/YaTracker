@@ -6,7 +6,9 @@ __all__ = ["QueueFieldOptionsProvider"]
 from .base import Base
 
 
-class QueueFieldOptionsProvider(Base, kw_only=True):
+class QueueFieldOptionsProvider(Base):
     type: str
-    values: list
-    defaults: list
+    # the API returns either a plain array or an object
+    # mapping a key to an array, e.g. {"DIRECT": ["First", ...]}
+    values: dict[str, list] | list | None = None
+    defaults: list | None = None

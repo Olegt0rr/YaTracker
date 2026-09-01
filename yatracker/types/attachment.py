@@ -9,10 +9,10 @@ from .base import Base, field
 from .user import User
 
 
-class Attachment(Base, kw_only=True):
+class Attachment(Base):
     """Represents attachment object."""
 
-    url: str = field(name="self")
+    url: str = field(alias="self")
     id: str
     name: str
     content: str
@@ -25,7 +25,7 @@ class Attachment(Base, kw_only=True):
     comment_id: str | None = None
 
 
-class Metadata(Base, kw_only=True):
+class Metadata(Base):
     """Represents attachment metadata."""
 
     size: str | None = None

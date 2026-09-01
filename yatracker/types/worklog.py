@@ -9,8 +9,8 @@ from .issue import Issue
 from .user import User
 
 
-class Worklog(Base, kw_only=True):
-    url: str = field(name="self")
+class Worklog(Base):
+    url: str = field(alias="self")
     id: int
     version: int
     issue: Issue

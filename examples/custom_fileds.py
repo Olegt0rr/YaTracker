@@ -1,7 +1,7 @@
 import asyncio
 
 from yatracker import YaTracker
-from yatracker.types import FullIssue
+from yatracker.types import FullIssue, field
 
 # CAUTION! Don't store credentials in your code!
 ORG_ID = ...
@@ -9,15 +9,22 @@ TOKEN = ...
 
 
 # Create your own custom Issue type:
-class HelpIssue(FullIssue, kw_only=True):
+class HelpIssue(FullIssue):
     """Your own FullIssue type.
 
     For example, you have some fields passed by external system.
-    One of them called 'userUsername', second - 'userId'.
+    One of them called 'userUsername', second - a queue local field
+    with an ugly generated name.
+
+    Local fields are optional: give them a default, so issues without
+    the field can still be decoded.
     """
 
-    user_username: str | None
-    user_id: int
+    user_username: str | None = None
+    user_id: int | None = field(
+        default=None,
+        name="64a51c6d866ea82411abe756--userId",
+    )
 
 
 async def main() -> None:

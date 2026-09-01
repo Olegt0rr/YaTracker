@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any, TypeVar, overload
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import (
@@ -13,7 +13,25 @@ from yatracker.types import (
     Transitions,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator, Mapping
+
 IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
+
+SCROLL_ID_HEADER = "X-Scroll-Id"
+
+
+def _get_header(headers: Mapping[str, str], name: str) -> str | None:
+    """Read a header ignoring case (HTTP headers are case-insensitive)."""
+    value = headers.get(name)
+    if value is not None:
+        return value
+
+    lowered = name.lower()
+    for key, header_value in headers.items():
+        if key.lower() == lowered:
+            return header_value
+    return None
 
 
 class Issues(BaseTracker):
@@ -22,8 +40,9 @@ class Issues(BaseTracker):
         self,
         issue_id: str,
         expand: str | None = None,
-    ) -> FullIssue:
-        ...
+        *,
+        fields: str | None = None,
+    ) -> FullIssue: ...
 
     @overload
     async def get_issue(
@@ -31,14 +50,17 @@ class Issues(BaseTracker):
         issue_id: str,
         expand: str | None = None,
         _type: type[IssueT_co] = ...,
-    ) -> IssueT_co:
-        ...
+        *,
+        fields: str | None = None,
+    ) -> IssueT_co: ...
 
     async def get_issue(
         self,
         issue_id: str,
         expand: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
+        *,
+        fields: str | None = None,
     ) -> IssueT_co | FullIssue:
         """Get issue parameters.
 
@@ -48,13 +70,21 @@ class Issues(BaseTracker):
         :param expand: Additional fields to include in the response:
                         transitions — Workflow transitions between statuses.
                         attachments — Attachments
+        :param fields: Comma-separated list of response fields to
+                        return. Limits the response to just these fields.
         :param _type: you can use your own extended FullIssue type
         :return:
         """
+        params: dict[str, str] = {}
+        if expand:
+            params["expand"] = expand
+        if fields:
+            params["fields"] = fields
+
         data = await self._client.request(
             method="GET",
             uri=f"/issues/{issue_id}",
-            params={"expand": expand} if expand else None,
+            params=params or None,
         )
         return self._decode(_type, data)
 
@@ -64,8 +94,7 @@ class Issues(BaseTracker):
         issue_id: str,
         version: str | int | None = None,
         **kwargs,
-    ) -> FullIssue:
-        ...
+    ) -> FullIssue: ...
 
     @overload
     async def edit_issue(
@@ -74,8 +103,7 @@ class Issues(BaseTracker):
         version: str | int | None = None,
         _type: type[IssueT_co] = ...,
         **kwargs,
-    ) -> IssueT_co:
-        ...
+    ) -> IssueT_co: ...
 
     async def edit_issue(
         self,
@@ -117,8 +145,7 @@ class Issues(BaseTracker):
         attachment_ids: list[str] | None = None,
         _type: type[IssueT_co] = ...,
         **kwargs,
-    ) -> IssueT_co:
-        ...
+    ) -> IssueT_co: ...
 
     @overload
     async def create_issue(
@@ -136,8 +163,7 @@ class Issues(BaseTracker):
         unique: str | None = None,
         attachment_ids: list[str] | None = None,
         **kwargs,
-    ) -> FullIssue:
-        ...
+    ) -> FullIssue: ...
 
     # ruff: noqa: ARG002 PLR0913
     async def create_issue(
@@ -183,8 +209,7 @@ class Issues(BaseTracker):
         expand: str | None = None,
         _type: type[IssueT_co] = ...,
         **kwargs,
-    ) -> IssueT_co:
-        ...
+    ) -> IssueT_co: ...
 
     @overload
     async def move_issue(
@@ -198,8 +223,7 @@ class Issues(BaseTracker):
         initial_status: bool = False,
         expand: str | None = None,
         **kwargs,
-    ) -> FullIssue:
-        ...
+    ) -> FullIssue: ...
 
     async def move_issue(
         self,
@@ -245,16 +269,16 @@ class Issues(BaseTracker):
         params: dict[str, Any] = {"queue": queue_key}
 
         if notify is False:
-            params["notify"] = notify
+            params["notify"] = "false"
 
         if notify_author is True:
-            params["notifyAuthor"] = notify_author
+            params["notifyAuthor"] = "true"
 
         if move_all_fields is True:
-            params["moveAllFields"] = move_all_fields
+            params["moveAllFields"] = "true"
 
         if initial_status is True:
-            params["initialStatus"] = initial_status
+            params["initialStatus"] = "true"
 
         if expand:
             params["expand"] = expand
@@ -290,6 +314,7 @@ class Issues(BaseTracker):
         )
         return self._decode(int, data)
 
+    # ruff: noqa: PLR0913
     @overload
     async def find_issues(
         self,
@@ -299,9 +324,17 @@ class Issues(BaseTracker):
         expand: str | None = None,
         keys: str | None = None,
         queue: str | None = None,
-    ) -> list[FullIssue]:
-        ...
+        *,
+        per_page: int | None = None,
+        page: int | None = None,
+        scroll_type: str | None = None,
+        per_scroll: int | None = None,
+        scroll_ttl_millis: int | None = None,
+        scroll_id: str | None = None,
+        fields: str | None = None,
+    ) -> list[FullIssue]: ...
 
+    # ruff: noqa: PLR0913
     @overload
     async def find_issues(
         self,
@@ -312,9 +345,17 @@ class Issues(BaseTracker):
         keys: str | None = None,
         queue: str | None = None,
         _type: type[IssueT_co] = ...,
-    ) -> list[IssueT_co]:
-        ...
+        *,
+        per_page: int | None = None,
+        page: int | None = None,
+        scroll_type: str | None = None,
+        per_scroll: int | None = None,
+        scroll_ttl_millis: int | None = None,
+        scroll_id: str | None = None,
+        fields: str | None = None,
+    ) -> list[IssueT_co]: ...
 
+    # ruff: noqa: PLR0913
     async def find_issues(
         self,
         filter_: dict[str, str] | None = None,
@@ -324,24 +365,62 @@ class Issues(BaseTracker):
         keys: str | None = None,
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
+        *,
+        per_page: int | None = None,
+        page: int | None = None,
+        scroll_type: str | None = None,
+        per_scroll: int | None = None,
+        scroll_ttl_millis: int | None = None,
+        scroll_id: str | None = None,
+        fields: str | None = None,
     ) -> list[IssueT_co] | list[FullIssue]:
         """Find issues.
 
         Use this request to get a list of issues that meet specific criteria.
         If there are more than 10,000 issues in the response, use paging.
+
+        Pagination can be done either with ``page``/``per_page``, or with
+        the scroll API: pass ``scroll_type`` ("sorted" or "unsorted") and
+        ``per_scroll``/``scroll_ttl_millis`` to start a scroll session, then
+        pass the ``scroll_id`` returned by the API on subsequent calls to
+        continue it.
         :return:
         """
         payload = self._prepare_payload(
             locals(),
-            exclude=["expand", "order"],
+            exclude=[
+                "expand",
+                "order",
+                "per_page",
+                "page",
+                "scroll_type",
+                "per_scroll",
+                "scroll_ttl_millis",
+                "scroll_id",
+                "fields",
+            ],
             type_=_type,
         )
 
-        params = {}
+        params: dict[str, str] = {}
         if order:
             params["order"] = order
         if expand:
             params["expand"] = expand
+        if per_page is not None:
+            params["perPage"] = str(per_page)
+        if page is not None:
+            params["page"] = str(page)
+        if scroll_type:
+            params["scrollType"] = scroll_type
+        if per_scroll is not None:
+            params["perScroll"] = str(per_scroll)
+        if scroll_ttl_millis is not None:
+            params["scrollTTLMillis"] = str(scroll_ttl_millis)
+        if scroll_id:
+            params["scrollId"] = scroll_id
+        if fields:
+            params["fields"] = fields
 
         data = await self._client.request(
             method="POST",
@@ -350,6 +429,84 @@ class Issues(BaseTracker):
             payload=payload,
         )
         return self._decode(list[_type], data)  # type: ignore[valid-type]
+
+    # ruff: noqa: PLR0913
+    async def iter_issues(
+        self,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        keys: str | None = None,
+        queue: str | None = None,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
+        *,
+        scroll_type: str = "sorted",
+        per_scroll: int = 100,
+        scroll_ttl_millis: int | None = None,
+        fields: str | None = None,
+    ) -> AsyncIterator[IssueT_co | FullIssue]:
+        """Iterate over all issues matching the criteria via the scroll API.
+
+        This is the supported way to read more than 10,000 issues: the
+        scroll session is started with `scrollType`/`perScroll` and then
+        continued with the `scrollId` returned in the `X-Scroll-Id`
+        response header, which :meth:`find_issues` cannot expose.
+        Iteration stops when a page comes back empty or the API stops
+        sending the header.
+
+        :meth:`find_issues` with an explicit ``scroll_id`` remains
+        available when you need to drive the scroll session manually.
+
+        :param scroll_type: "sorted" or "unsorted".
+        :param per_scroll: number of issues per scroll page.
+        :param scroll_ttl_millis: lifetime of the scroll context, in ms.
+        """
+        payload = self._prepare_payload(
+            locals(),
+            exclude=[
+                "expand",
+                "order",
+                "scroll_type",
+                "per_scroll",
+                "scroll_ttl_millis",
+                "fields",
+            ],
+            type_=_type,
+        )
+
+        params: dict[str, str] = {
+            "scrollType": scroll_type,
+            "perScroll": str(per_scroll),
+        }
+        if order:
+            params["order"] = order
+        if expand:
+            params["expand"] = expand
+        if scroll_ttl_millis is not None:
+            params["scrollTTLMillis"] = str(scroll_ttl_millis)
+        if fields:
+            params["fields"] = fields
+
+        while True:
+            data, headers = await self._client.request_with_headers(
+                method="POST",
+                uri="/issues/_search",
+                params=params,
+                payload=payload,
+            )
+            issues = self._decode(list[_type], data)  # type: ignore[valid-type]
+            if not issues:
+                return
+
+            for issue in issues:
+                yield issue
+
+            scroll_id = _get_header(headers, SCROLL_ID_HEADER)
+            if not scroll_id:
+                return
+
+            params = {**params, "scrollId": scroll_id}
 
     async def get_issue_links(
         self,

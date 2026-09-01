@@ -1,0 +1,73 @@
+"""Shared test fixtures/helpers for the yatracker test suite."""
+
+from __future__ import annotations
+
+import json
+from typing import Any
+
+from yatracker.tracker.client import BaseClient
+
+
+class FakeClient(BaseClient):
+    """In-memory client returning canned responses and capturing calls.
+
+    ``org_id``/``token`` default to ``"1"``/``"token"`` so most tests can
+    skip credentials entirely, but any keyword (including ``org_id``,
+    ``token``, ``cloud_org_id``, ``iam_token``, ...) can still be passed
+    through to ``BaseClient`` to override or omit them.
+    """
+
+    def __init__(
+        self,
+        body: bytes = b"{}",
+        status: int = 200,
+        headers: dict[str, str] | None = None,
+        responses: list[tuple[int, bytes, dict[str, str]]] | None = None,
+        **kwargs: Any,
+    ) -> None:
+        kwargs.setdefault("org_id", "1")
+        kwargs.setdefault("token", "token")
+        super().__init__(**kwargs)
+        self.status = status
+        self.body = body
+        self.headers: dict[str, str] = headers or {}
+        # Queue of `(status, body, headers)` triples served one per call;
+        # once exhausted (or if never set) the single canned response above
+        # is returned for every call.
+        self.responses = list(responses or [])
+        self.calls: list[dict[str, Any]] = []
+
+    async def _make_request(
+        self,
+        method: str,
+        url: Any,
+        **kwargs: Any,
+    ) -> tuple[int, bytes, dict[str, str]]:
+        self.calls.append({"method": method, "url": url, **kwargs})
+        if self.responses:
+            return self.responses.pop(0)
+        return self.status, self.body, self.headers
+
+    async def close(self) -> None:
+        return
+
+
+def full_issue_body(**overrides: Any) -> bytes:
+    """Build a canned ``FullIssue`` JSON body, with optional field overrides."""
+    issue = {
+        "self": "https://api/issues/1",
+        "id": "1",
+        "key": "TEST-1",
+        "version": 1,
+        "summary": "summary",
+        "type": {"self": "t", "id": "1", "key": "bug", "display": "Bug"},
+        "priority": {"self": "p", "id": "2", "key": "minor", "display": "Minor"},
+        "queue": {"self": "q", "id": "3", "key": "TEST", "display": "Test"},
+        "favorite": False,
+        "createdAt": "2024-01-01T00:00:00.000+0000",
+        "createdBy": {"self": "u", "id": "4", "display": "User"},
+        "votes": 0,
+        "status": {"self": "s", "id": "5", "key": "open", "display": "Open"},
+    }
+    issue.update(overrides)
+    return json.dumps(issue).encode()

@@ -9,7 +9,7 @@ from .resolution import Resolution
 from .workflow import Workflow
 
 
-class IssueTypeConfig(Base, kw_only=True):
+class IssueTypeConfig(Base):
     issue_type: IssueType
     workflow: Workflow
     resolutions: list[Resolution]

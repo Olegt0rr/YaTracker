@@ -11,7 +11,7 @@ class Priorities(BaseTracker):
 
         Use this request to get a list of priorities for an issue.
         """
-        params = {"localized": str(localized).lower()} if localized else None
+        params = {"localized": str(localized).lower()}
         data = await self._client.request(
             method="GET",
             uri="/priorities",

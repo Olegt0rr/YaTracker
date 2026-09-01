@@ -18,19 +18,19 @@ class LinkDirection(str, Enum):
     OUTWARD = "outward"
 
 
-class LinkType(Base, kw_only=True):
+class LinkType(Base):
     """Represents issue link type."""
 
-    url: str = field(name="self")
+    url: str = field(alias="self")
     id: str
     inward: str
     outward: str
 
 
-class IssueLink(Base, kw_only=True):
+class IssueLink(Base):
     """Represents issue link."""
 
-    url: str = field(name="self")
+    url: str = field(alias="self")
     id: int
     type: LinkType
     direction: LinkDirection

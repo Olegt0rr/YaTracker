@@ -20,21 +20,25 @@ class Queues(BaseTracker):
     async def get_queue(
         self,
         queue_id: str | int,
-    ) -> FullQueue:
-        ...
+        *,
+        expand: str | None = ...,
+    ) -> FullQueue: ...
 
     @overload
     async def get_queue(
         self,
         queue_id: str | int,
         _type: type[QueueT_co] = ...,
-    ) -> QueueT_co:
-        ...
+        *,
+        expand: str | None = ...,
+    ) -> QueueT_co: ...
 
     async def get_queue(
         self,
         queue_id: str | int,
         _type: type[QueueT_co | FullQueue] = FullQueue,
+        *,
+        expand: str | None = None,
     ) -> QueueT_co | FullQueue:
         """Get queue parameters.
 
@@ -45,11 +49,19 @@ class Queues(BaseTracker):
 
         :param queue_id: ID or key of the current queue.
         :param _type: you can use your own extended FullQueue type
+        :param expand: additional fields to include into the response.
+            One of `all`, `projects`, `components`, `versions`, `types`,
+            `team`, `workflows`, `fields`, `issueTypesConfig`.
         :return:
         """
+        params = {}
+        if expand is not None:
+            params["expand"] = expand
+
         data = await self._client.request(
             method="GET",
             uri=f"/queues/{queue_id}",
+            params=params or None,
         )
         return self._decode(_type, data)
 
@@ -63,8 +75,7 @@ class Queues(BaseTracker):
         default_type: str,
         default_priority: str,
         issue_types_config: list[IssueTypeConfig],
-    ) -> FullQueue:
-        ...
+    ) -> FullQueue: ...
 
     # ruff: noqa: PLR0913
     @overload
@@ -77,8 +88,7 @@ class Queues(BaseTracker):
         default_priority: str,
         issue_types_config: list[IssueTypeConfig],
         _type: type[QueueT_co] = ...,
-    ) -> QueueT_co:
-        ...
+    ) -> QueueT_co: ...
 
     # ruff: noqa: PLR0913
     async def create_queue(
@@ -109,8 +119,7 @@ class Queues(BaseTracker):
         self,
         expand: str | None = None,
         per_page: int | None = None,
-    ) -> list[FullQueue]:
-        ...
+    ) -> list[FullQueue]: ...
 
     @overload
     async def get_queues(
@@ -118,8 +127,7 @@ class Queues(BaseTracker):
         expand: str | None = None,
         per_page: int | None = None,
         _type: type[QueueT_co] = ...,
-    ) -> list[QueueT_co]:
-        ...
+    ) -> list[QueueT_co]: ...
 
     async def get_queues(
         self,
@@ -141,16 +149,10 @@ class Queues(BaseTracker):
         if per_page is not None:
             params["perPage"] = str(per_page)
 
-        payload = self._prepare_payload(
-            locals(),
-            exclude=["expand", "perPage"],
-            type_=_type,
-        )
         data = await self._client.request(
             method="GET",
             uri="/queues",
-            params=params,
-            payload=payload,
+            params=params or None,
         )
         return self._decode(list[_type], data)  # type: ignore[valid-type]
 
@@ -173,16 +175,14 @@ class Queues(BaseTracker):
     async def restore_queue(
         self,
         queue_id: str | int,
-    ) -> FullQueue:
-        ...
+    ) -> FullQueue: ...
 
     @overload
     async def restore_queue(
         self,
         queue_id: str | int,
         _type: type[QueueT_co] = ...,
-    ) -> QueueT_co:
-        ...
+    ) -> QueueT_co: ...
 
     async def restore_queue(
         self,
@@ -195,7 +195,7 @@ class Queues(BaseTracker):
         https://cloud.yandex.com/en/docs/tracker/concepts/queues/restore-queue
         """
         data = await self._client.request(
-            method="GET",
+            method="POST",
             uri=f"/queues/{queue_id}/_restore",
         )
         return self._decode(_type, data)
@@ -211,7 +211,7 @@ class Queues(BaseTracker):
         https://cloud.yandex.com/en/docs/tracker/concepts/queues/delete-tag
         """
         await self._client.request(
-            method="DELETE",
+            method="POST",
             uri=f"/queues/{queue_id}/tags/_remove",
             payload={"tag": tag_name},
         )
@@ -221,16 +221,14 @@ class Queues(BaseTracker):
     async def get_queue_fields(
         self,
         queue_id: str | int,
-    ) -> list[QueueField]:
-        ...
+    ) -> list[QueueField]: ...
 
     @overload
     async def get_queue_fields(
         self,
         queue_id: str | int,
         _type: type[QueueFieldT_co] = ...,
-    ) -> list[QueueFieldT_co]:
-        ...
+    ) -> list[QueueFieldT_co]: ...
 
     async def get_queue_fields(
         self,
@@ -252,16 +250,14 @@ class Queues(BaseTracker):
     async def get_queue_versions(
         self,
         queue_id: str | int,
-    ) -> list[QueueVersion]:
-        ...
+    ) -> list[QueueVersion]: ...
 
     @overload
     async def get_queue_versions(
         self,
         queue_id: str | int,
         _type: type[QueueVersionT_co] = ...,
-    ) -> list[QueueVersionT_co]:
-        ...
+    ) -> list[QueueVersionT_co]: ...
 
     async def get_queue_versions(
         self,

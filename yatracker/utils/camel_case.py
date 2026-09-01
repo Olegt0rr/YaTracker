@@ -1,5 +1,13 @@
 def camel_case(string: str) -> str:
-    """Convert string into camel case."""
+    """Convert string into camel case.
+
+    This intentionally differs from ``pydantic.alias_generators.to_camel``:
+    it also strips a trailing underscore, e.g. ``camel_case("filter_")
+    == "filter"`` and ``camel_case("type_") == "type"``. This is
+    load-bearing for kwargs that shadow Python keywords/builtins
+    (``filter_``, ``type_``, ...), so do not replace this with
+    ``pydantic.alias_generators.to_camel``.
+    """
     if not string:
         return string
 

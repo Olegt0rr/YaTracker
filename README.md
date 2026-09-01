@@ -56,3 +56,19 @@ async def on_shutdown():
     await tracker.close()
 
 ```
+
+
+## Organizations and tokens
+Pass exactly one organization id and exactly one token.
+
+```python
+# Yandex 360 organization (sends `X-Org-ID`) with an OAuth token
+tracker = YaTracker(org_id=..., token=...)
+
+# Yandex Cloud organization (sends `X-Cloud-Org-ID`) with an IAM token
+tracker = YaTracker(cloud_org_id=..., iam_token=...)
+```
+
+`org_id` and `cloud_org_id` are mutually exclusive, so are `token` and
+`iam_token`. API `v3` is used by default, `v2` is still available via
+`YaTracker(..., api_version="v2")`.

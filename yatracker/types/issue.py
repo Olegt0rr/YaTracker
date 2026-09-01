@@ -5,10 +5,10 @@ __all__ = ["Issue"]
 from .base import Base, field
 
 
-class Issue(Base, kw_only=True):
+class Issue(Base):
     """Represents short view of issue."""
 
-    url: str = field(name="self")
+    url: str = field(alias="self")
     id: str
     key: str
     display: str

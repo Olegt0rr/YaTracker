@@ -14,6 +14,7 @@ __all__ = [
     "Queue",
     "QueueField",
     "QueueVersion",
+    "QueueVersionRef",
     "Sprint",
     "Status",
     "Transition",
@@ -27,7 +28,7 @@ from .base import Base, field
 from .comment import Comment
 from .duration import Duration
 from .full_issue import FullIssue
-from .full_queue import FullQueue
+from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
 from .issue_link import IssueLink
 from .issue_type import IssueType

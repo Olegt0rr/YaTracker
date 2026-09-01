@@ -5,7 +5,7 @@ __all__ = ["Priority"]
 from .base import Base, field
 
 
-class Priority(Base, kw_only=True):
+class Priority(Base):
     """Represents Priority.
 
     Attributes
@@ -22,7 +22,7 @@ class Priority(Base, kw_only=True):
 
     """
 
-    url: str = field(name="self")
+    url: str = field(alias="self")
     id: str
     key: str
     display: str | None = None

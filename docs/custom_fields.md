@@ -21,14 +21,18 @@ https://cloud.yandex.ru/docs/tracker/local-fields
 ```python
 from yatracker.types import FullIssue
 
-class HelpIssue(FullIssue, kw_only=True):
+class HelpIssue(FullIssue):
     user_username: str | None = None
-    user_id: int
+    user_id: int | None = None
 ```
 
 Обратите внимание, что модели нашей библиотеки автоматически используют со стороны python имена в
 стиле `snake_case`, а при работе с Tracker, они конвертируются в `camelCase` – как это принято в
 самом трекере.
+
+Дополнительные поля лучше объявлять необязательными (со значением по умолчанию `None`):
+локальное поле может отсутствовать в ответе трекера, и тогда задача без него всё равно
+корректно разберётся.
 
 
 #### Локальные поля очереди
@@ -51,8 +55,22 @@ issue.update(**{'64a51c6d866ea82411abe756--userId': 42})
 ```python
 from yatracker.types import FullIssue, field
 
-class HelpIssue(FullIssue, kw_only=True):
-    user_id: int = field(name="64a51c6d866ea82411abe756--userId")
+class HelpIssue(FullIssue):
+    user_id: int | None = field(
+        default=None,
+        alias="64a51c6d866ea82411abe756--userId",
+    )
+```
+
+Устаревшее написание `field(name="...")` тоже продолжает работать – это синоним `alias=`,
+оставленный для совместимости:
+
+```python
+class HelpIssue(FullIssue):
+    user_id: int | None = field(
+        default=None,
+        name="64a51c6d866ea82411abe756--userId",
+    )
 ```
 
 ### Используем модель задачи

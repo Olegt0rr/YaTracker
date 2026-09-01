@@ -64,7 +64,7 @@ class Attachments(BaseTracker):
         https://cloud.yandex.com/en/docs/tracker/concepts/issues/post-attachment
         """
         form = FormData()
-        form.add_field("file_data", file)
+        form.add_field("file", file)
         data = await self._client.request(
             method="POST",
             uri=f"/issues/{issue_id}/attachments",
@@ -87,7 +87,7 @@ class Attachments(BaseTracker):
         https://cloud.yandex.com/en/docs/tracker/concepts/issues/temp-attachment
         """
         form = FormData()
-        form.add_field("file_data", file)
+        form.add_field("file", file)
         data = await self._client.request(
             method="POST",
             uri="/attachments/",

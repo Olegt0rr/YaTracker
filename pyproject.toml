@@ -29,15 +29,18 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Typing :: Typed",
 ]
 
 dependencies = [
-    "aiohttp>=3.8.5,<3.12.0",
+    "aiohttp>=3.9.0,<3.15.0",
     "certifi>=2023",
-    "msgspec~=0.18.2",
+    "pydantic>=2.7,<3",
 ]
 
 [project.optional-dependencies]
@@ -81,7 +84,7 @@ post-install-commands = [
 
 [tool.hatch.envs.default.scripts]
 reformat = [
-    "black yatracker tests",
+    "ruff format yatracker tests",
 ]
 lint = [
     "ruff check yatracker --fix",
@@ -96,7 +99,7 @@ features = [
 ]
 
 [[tool.hatch.envs.test.matrix]]
-python = ["310", "311"]
+python = ["310", "311", "312", "313", "314"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -107,9 +110,6 @@ testpaths = [
 [tool.coverage.run]
 branch = false
 parallel = true
-omit = [
-    "aiogram/__about__.py",
-]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -119,19 +119,6 @@ exclude_lines = [
     "@abstractmethod",
     "@overload",
 ]
-
-[tool.black]
-exclude = '''
-/(
-    \.git
-  | \.mypy_cache
-  | \.pytest_cache
-  | \.tox
-  | venv
-  | build
-  | dist
-)/
-'''
 
 [tool.mypy]
 warn_redundant_casts = true
@@ -202,9 +189,19 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 max-complexity = 10
 
 [tool.ruff.lint.flake8-type-checking]
-runtime-evaluated-base-classes = ["msgspec.Struct", "yatracker.types.base.Base"]
+runtime-evaluated-base-classes = ["pydantic.BaseModel", "yatracker.types.base.Base"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "INP001"]
+"tests/*" = [
+    "S101",
+    "S106",
+    "INP001",
+    "ANN001",
+    "ANN401",
+    "D102",
+    "D103",
+    "PLR2004",
+    "SLF001",
+]
 "tools/*" = ["INP001"]
 "examples/*" = ["INP001", "T201"]

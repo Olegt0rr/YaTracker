@@ -110,6 +110,8 @@ testpaths = [
 [tool.coverage.run]
 branch = false
 parallel = true
+# required by py-cov-action/python-coverage-comment-action
+relative_files = true
 
 [tool.coverage.report]
 exclude_lines = [
@@ -118,6 +120,10 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@abstractmethod",
     "@overload",
+    # `@overload`/`Protocol` stub bodies, both on their own line and
+    # collapsed onto the signature (`) -> X: ...`) by the formatter.
+    "^\\s*\\.\\.\\.$",
+    ": \\.\\.\\.$",
 ]
 
 [tool.mypy]

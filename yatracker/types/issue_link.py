@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["IssueLink", "LinkType", "LinkDirection"]
+__all__ = ["IssueLink", "LinkDirection", "LinkType"]
 
 from datetime import datetime
 from enum import Enum

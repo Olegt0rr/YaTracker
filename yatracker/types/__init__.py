@@ -3,7 +3,6 @@ __all__ = [
     "Base",
     "Comment",
     "Duration",
-    "field",
     "FullIssue",
     "FullQueue",
     "Issue",
@@ -21,6 +20,7 @@ __all__ = [
     "Transitions",
     "User",
     "Worklog",
+    "field",
 ]
 
 from .attachment import Attachment

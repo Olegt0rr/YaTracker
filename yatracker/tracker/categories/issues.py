@@ -165,7 +165,7 @@ class Issues(BaseTracker):
         **kwargs,
     ) -> FullIssue: ...
 
-    # ruff: noqa: ARG002 PLR0913
+    # ruff: noqa: PLR0913
     async def create_issue(
         self,
         summary: str,

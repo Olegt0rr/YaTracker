@@ -18,7 +18,7 @@ jobs:
       # pre-commit and local runs agree on the rule set
       - uses: astral-sh/ruff-action@v3
         with:
-          version: '0.4.1'
+          version: '0.16.5'
           args: 'check'
           src: './yatracker'
 

@@ -177,7 +177,31 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["A003", "ANN002", "ANN003", "ANN101", "ANN102", "D100", "D101", "D106", "D107", "D104", "D203", "D213", "RUF001", "RUF002", "RUF003", "S101", "TCH001", "TCH002", "PT015", "PT017", "B011"]
+ignore = [
+    "A003",
+    "ANN002",
+    "ANN003",
+    "B011",
+    "COM812",  # conflicts with the formatter
+    "CPY001",  # the project keeps its license in LICENSE, not per-file headers
+    "D100",
+    "D101",
+    "D104",
+    "D106",
+    "D107",
+    "D203",
+    "D213",
+    "ISC001",  # conflicts with the formatter
+    "PLR0917",  # wide positional signatures are part of the public API
+    "PT015",
+    "PT017",
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "S101",
+    "TC001",
+    "TC002",
+]
 fixable = ["ALL"]
 unfixable = []
 

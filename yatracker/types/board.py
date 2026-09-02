@@ -102,11 +102,9 @@ class Board(Base):
     created_by: User
     updated_at: datetime | None = None
     columns: list[BoardColumnRef] | None = None
-    # deprecated by the API
+    # the three fields below are deprecated by the API, see the docstring
     use_ranking: bool | None = None
-    # deprecated by the API
     estimate_by: FieldRef | None = None
-    # deprecated by the API
     country: CountryRef | None = None
     calendar: BoardCalendar | None = None
     auto_filter_settings: dict[str, Any] | None = None

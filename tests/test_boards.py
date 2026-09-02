@@ -214,6 +214,42 @@ class TestBoardEndpoints:
         assert boards == []
         assert len(client.calls) == 1
 
+    async def test_iter_boards_skips_cursor_board_and_stops_when_not_advancing(
+        self,
+    ) -> None:
+        """The docs describe `id` as the board the next page starts *from*.
+
+        With such an inclusive cursor the last board of a page comes back
+        at the top of the next one, and the final page is never empty.
+        """
+        board_1, board_2, board_3 = ({**BOARD, "id": i} for i in (1, 2, 3))
+        client = FakeClient(
+            responses=[
+                (200, json.dumps([board_1, board_2]).encode(), {}),
+                (200, json.dumps([board_2, board_3]).encode(), {}),
+                (200, json.dumps([board_3]).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+
+        boards = [board async for board in tracker.iter_boards(per_page=2)]
+
+        assert [b.id for b in boards] == ["1", "2", "3"]
+        assert len(client.calls) == 3
+        assert client.calls[2]["params"] == {"perPage": "2", "id": "3"}
+
+    async def test_iter_boards_stops_when_server_ignores_cursor(self) -> None:
+        board_1 = {**BOARD, "id": 1}
+        board_2 = {**BOARD, "id": 2}
+        same_page = json.dumps([board_1, board_2]).encode()
+        client = FakeClient(responses=[(200, same_page, {}), (200, same_page, {})])
+        tracker = YaTracker(client=client)
+
+        boards = [board async for board in tracker.iter_boards()]
+
+        assert [b.id for b in boards] == ["1", "2"]
+        assert len(client.calls) == 2
+
     async def test_create_board_sends_live_boards_endpoint(self) -> None:
         tracker, client = make_tracker(BOARD, status=201)
         board = await tracker.create_board("My board")
@@ -292,6 +328,16 @@ class TestBoardEndpoints:
         assert call["url"].endswith("/boards/5")
         assert sent_json(call) == {"name": "Renamed board"}
         assert call["headers"] == {"If-Match": '"3"'}
+
+    async def test_update_board_keeps_false_backlog_and_sprints(self) -> None:
+        """`False` disables backlog and sprints, so it must not be dropped."""
+        tracker, client = make_tracker(BOARD)
+        await tracker.update_board(5, backlog_available=False, sprints_available=False)
+
+        assert sent_json(client.calls[0]) == {
+            "backlogAvailable": False,
+            "sprintsAvailable": False,
+        }
 
     async def test_update_board_without_version_sends_no_headers(self) -> None:
         tracker, client = make_tracker(BOARD)

@@ -59,12 +59,11 @@ class Sprints(BaseTracker):
         :param end_date: end date, `YYYY-MM-DD` or a `date` object.
         :return: created sprint.
         """
-        payload = {
-            "name": name,
-            "board": {"id": str(board_id)},
-            "startDate": to_tracker_date(start_date),
-            "endDate": to_tracker_date(end_date),
-        }
+        start_date = to_tracker_date(start_date)
+        end_date = to_tracker_date(end_date)
+
+        payload = self._prepare_payload(locals(), exclude=["board_id"])
+        payload["board"] = {"id": str(board_id)}
         data = await self._client.request(
             method="POST",
             uri="/sprints",
@@ -137,6 +136,9 @@ class Sprints(BaseTracker):
         data = await self._client.request(
             method="POST",
             uri=f"/sprints/{sprint_id}/_start",
+            # the docs list `Content-Type: application/json` for this
+            # request, so an empty JSON object is sent instead of no body
+            payload={},
             headers=_if_match(version),
         )
         return self._decode(FullSprint, data)
@@ -161,6 +163,9 @@ class Sprints(BaseTracker):
         data = await self._client.request(
             method="POST",
             uri=f"/sprints/{sprint_id}/_archive",
+            # the docs list `Content-Type: application/json` for this
+            # request, so an empty JSON object is sent instead of no body
+            payload={},
             headers=_if_match(version),
         )
         return self._decode(FullSprint, data)

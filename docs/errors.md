@@ -9,6 +9,7 @@ from yatracker.exceptions import (
     NotAuthorizedError,
     ObjectNotFoundError,
     PreconditionFailedError,
+    PreconditionRequiredError,
     SufficientRightsError,
     YaTrackerError,
 )
@@ -28,14 +29,15 @@ Exception
     ├── SufficientRightsError — 403 Forbidden
     ├── ObjectNotFoundError   — 404 Not Found
     ├── AlreadyExistsError    — 409 Conflict
-    └── PreconditionFailedError — 412 Precondition Failed
+    ├── PreconditionFailedError — 412 Precondition Failed
+    └── PreconditionRequiredError — 428 Precondition Required
 ```
 
 Проверка выполняется в `BaseClient._check_status()` сразу после получения
 ответа. Логика простая:
 
 * статус меньше `300` — ошибки нет, тело ответа отдаётся дальше на разбор;
-* `401`, `403`, `404`, `409`, `412` — соответствующее специализированное исключение;
+* `401`, `403`, `404`, `409`, `412`, `428` — соответствующее специализированное исключение;
 * **любой другой** статус от `300` и выше — базовый `YaTrackerError`,
   в текст которого попадает тело ответа, декодированное как UTF-8.
 
@@ -131,7 +133,8 @@ except AlreadyExistsError:
 Возникает у колонок досок (`create_board_column`, `update_board_column`,
 `delete_board_column` — там передаётся версия **доски**), у спринтов
 (`update_sprint`, `start_sprint`, `archive_sprint`) и у
-`update_board(version=...)`, если версия указана. Подробнее про версии и `If-Match`
+`update_board(version=...)`, если версия указана (для этого запроса заголовок `If-Match`
+в справочнике не описан, но ответ `412` — описан). Подробнее про версии и `If-Match`
 смотрите в разделе [«Доски и спринты»](boards.md).
 
 ```python
@@ -144,6 +147,14 @@ except PreconditionFailedError:
     sprint = await tracker.get_sprint(sprint.id)
     sprint = await tracker.start_sprint(sprint.id, sprint.version)
 ```
+
+### `PreconditionRequiredError` — 428
+
+Запрос требует версию объекта в заголовке `If-Match`, а она не передана. В справочнике
+этот ответ описан у запросов на изменение доски и создание/изменение колонки; в библиотеке
+до него можно дойти только через `update_board` без параметра `version` — остальные методы
+с `If-Match` принимают версию обязательно. Перечитайте объект и повторите запрос
+с `version=obj.version`.
 
 ### `YaTrackerError` — всё остальное
 
@@ -305,10 +316,10 @@ async def with_retry(coro_factory, attempts: int = 3, delay: float = 1.0):
 !!! note "Не повторяйте всё подряд"
 
     `NotAuthorizedError`, `SufficientRightsError`, `ObjectNotFoundError`,
-    `AlreadyExistsError` и `PreconditionFailedError` от повтора не исправятся —
-    их лучше исключить из логики ретраев и обработать отдельно. Для
-    `PreconditionFailedError` «обработать» означает перечитать объект и
-    повторить запрос с его актуальной версией, а не просто повторить тот же
+    `AlreadyExistsError`, `PreconditionFailedError` и `PreconditionRequiredError`
+    от повтора не исправятся — их лучше исключить из логики ретраев и обработать
+    отдельно. Для `PreconditionFailedError` «обработать» означает перечитать объект
+    и повторить запрос с его актуальной версией, а не просто повторить тот же
     запрос ещё раз.
 
 ## Логирование

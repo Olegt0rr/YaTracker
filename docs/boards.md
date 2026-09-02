@@ -23,7 +23,8 @@ https://yandex.cloud/ru/docs/tracker/about-api
     устарела, то есть кто-то успел изменить объект раньше вас, Трекер отвечает
     `412 Precondition Failed`, и библиотека бросает `PreconditionFailedError` — подробнее
     в разделе [«Обработка ошибок»](errors.md). В этом случае объект нужно перечитать и
-    повторить запрос уже с актуальной версией.
+    повторить запрос уже с актуальной версией. Если версия обязательна, а её не передали,
+    Трекер отвечает `428 Precondition Required` — `PreconditionRequiredError`.
 
     Важно: методы работы с **колонками** (`create_board_column`, `update_board_column`,
     `delete_board_column`) принимают версию **доски** (`Board.version`), а не колонки — у
@@ -71,8 +72,13 @@ async def get_boards_paginated(
 
 ```python
 page = await tracker.get_boards_paginated(per_page=50)
-next_page = await tracker.get_boards_paginated(per_page=50, id_=page[-1].id)
+if page:
+    next_page = await tracker.get_boards_paginated(per_page=50, id_=page[-1].id)
 ```
+
+Пустая страница означает, что доски закончились. Документация описывает `id` как доску,
+*с которой начинается* следующая страница, поэтому доска-курсор может вернуться ещё раз в
+начале следующей страницы — `iter_boards` ниже учитывает это сам.
 
 1. `per_page` — количество досок на странице, не больше `500`.
 2. `id_` — `id` последней доски предыдущей страницы; для первой страницы не передаётся.
@@ -95,7 +101,8 @@ async for board in tracker.iter_boards(per_page=50):
 
 1. `per_page` — количество досок, запрашиваемых за один вызов `get_boards_paginated`.
 
-Итерация останавливается, когда очередная страница оказывается пустой.
+Итерация останавливается, когда очередная страница оказывается пустой или не продвигается
+дальше курсора; если Трекер вернёт доску-курсор повторно, второй раз она не отдаётся.
 
 ### get_board
 
@@ -215,9 +222,12 @@ board = await tracker.update_board(
 
 1. `board_id` — идентификатор доски.
 2. `version` — текущая версия доски (`board.version`). Если передать её, библиотека положит
-   значение в заголовок `If-Match`, и Трекер ответит `412 Precondition Failed` (у библиотеки —
-   `PreconditionFailedError`) при устаревшей версии. Если не передавать `version`, запрос
-   уйдёт без `If-Match`, без защиты от параллельного изменения.
+   значение в заголовок `If-Match`. В справочнике этого запроса заголовок `If-Match` не
+   перечислен, но сам запрос документирует ответы `412 Precondition Failed`
+   (`PreconditionFailedError`, версия устарела) и `428 Precondition Required`
+   (`PreconditionRequiredError`, версия обязательна), поэтому заголовок передаётся как есть.
+   Если не передавать `version`, запрос уйдёт без `If-Match` — без защиты от параллельного
+   изменения, а Трекер может ответить `428`.
 3. `name`, `backlog_available`, `sprints_available`, `columns`, `backlog_columns`,
    `non_parametrized_columns` — необязательные поля для изменения, как в `create_board`.
    Значение `None` означает «не менять».

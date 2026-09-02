@@ -191,7 +191,7 @@ class TestSprintEndpoints:
             "endDate": "2018-10-24",
         }
 
-    async def test_start_sprint_sends_if_match_and_no_body(self) -> None:
+    async def test_start_sprint_sends_if_match_and_empty_json_body(self) -> None:
         tracker, client = make_tracker(FULL_SPRINT)
         sprint = await tracker.start_sprint(4411, 2)
         assert sprint.status == "in_progress"
@@ -200,9 +200,11 @@ class TestSprintEndpoints:
         assert call["method"] == "POST"
         assert call["url"].endswith("/sprints/4411/_start")
         assert call["headers"] == {"If-Match": '"2"'}
-        assert call.get("data") is None
+        # the docs require `Content-Type: application/json`, so an empty
+        # JSON object goes out instead of a bodiless POST
+        assert sent_json(call) == {}
 
-    async def test_archive_sprint_sends_if_match_and_no_body(self) -> None:
+    async def test_archive_sprint_sends_if_match_and_empty_json_body(self) -> None:
         tracker, client = make_tracker(FULL_SPRINT)
         sprint = await tracker.archive_sprint(4411, 2)
         assert sprint.id == "4411"
@@ -211,7 +213,9 @@ class TestSprintEndpoints:
         assert call["method"] == "POST"
         assert call["url"].endswith("/sprints/4411/_archive")
         assert call["headers"] == {"If-Match": '"2"'}
-        assert call.get("data") is None
+        # the docs require `Content-Type: application/json`, so an empty
+        # JSON object goes out instead of a bodiless POST
+        assert sent_json(call) == {}
 
     async def test_delete_sprint_returns_true(self) -> None:
         tracker, client = make_tracker(status=204)

@@ -70,21 +70,28 @@ class Boards(BaseTracker):
 
         Wraps :meth:`get_boards_paginated`: every page is requested with
         the id of the last board of the previous one, and iteration stops
-        as soon as a page comes back empty.
+        as soon as a page comes back empty or does not advance past that
+        id. The docs describe the `id` cursor as the board the next page
+        *starts from*, so if the cursor board comes back at the top of a
+        page it is not yielded twice.
 
         Source:
         https://yandex.cloud/ru/docs/tracker/concepts/boards/get-boards-paginate
 
         :param per_page: number of boards per page (500 at most).
         """
-        id_: str | int | None = None
+        id_: str | None = None
         while True:
             boards = await self.get_boards_paginated(per_page=per_page, id_=id_)
-            if not boards:
+            # A page that does not advance past the cursor is either the
+            # last one (inclusive cursor) or a server ignoring `id`:
+            # stop instead of looping forever.
+            if not boards or boards[-1].id == id_:
                 return
 
             for board in boards:
-                yield board
+                if board.id != id_:
+                    yield board
 
             id_ = boards[-1].id
 
@@ -168,9 +175,12 @@ class Boards(BaseTracker):
 
         :param board_id: ID of the board to edit.
         :param version: current version of the board. When given, it is
-            sent in the `If-Match` header and the request fails with
-            :class:`PreconditionFailedError` (412) if the board was
-            changed meanwhile.
+            sent in the `If-Match` header. The API reference does not
+            list that header for this endpoint, but it does document the
+            412 (:class:`PreconditionFailedError`, stale version) and 428
+            (:class:`PreconditionRequiredError`, version required)
+            responses, so the header is passed through as is. Without
+            `version` the request carries no lost-update guard.
         :param name: new board name.
         :param backlog_available: whether the board has a backlog.
         :param sprints_available: whether the board has sprints.

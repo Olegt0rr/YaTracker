@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     import builtins
 
     from .changelog import Changelog
-    from .issue_link import IssueLink, LinkRelationship
+    from .issue_link import CreatedIssueLink, IssueLink, LinkRelationship
 
 IssueT = TypeVar("IssueT", bound="FullIssue")
 
@@ -38,7 +38,7 @@ def _render_deadline(kwargs: dict[str, Any]) -> dict[str, Any]:
     `FullIssue` helper, not at the frames below it.
     """
     if isinstance(kwargs.get("deadline"), datetime):
-        kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"], stacklevel=4)
+        kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"])
     return kwargs
 
 
@@ -243,14 +243,17 @@ class FullIssue(Base):
     async def link(
         self,
         relationship: LinkRelationship | str,
-        issue: str | Issue,
-    ) -> IssueLink:
+        issue: str | Issue | FullIssue,
+    ) -> CreatedIssueLink:
         """Create a link between self and another issue.
 
         :param relationship: type of the link, e.g. "relates"
             (see `LinkRelationship`).
-        :param issue: ID or key of the issue to link.
-        :return: the created link.
+        :param issue: ID or key of the issue to link, or an `Issue` /
+            `FullIssue` object (its `key` is sent).
+        :return: the created link. The API answers without `assignee`
+            and `status`, hence `CreatedIssueLink` rather than
+            `IssueLink`.
         """
         return await self._tracker.link_issues(self.id, relationship, issue)
 

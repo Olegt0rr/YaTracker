@@ -6,6 +6,8 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.attachment import Attachment
 from yatracker.types.entity import Entity, EntityType
 
+from .entities import _entity_uri
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -33,7 +35,7 @@ class EntityAttachments(BaseTracker):
         """
         data = await self._client.request(
             method="GET",
-            uri=_attachments_uri(entity_type, entity_id),
+            uri=_entity_uri(entity_type, str(entity_id), "attachments"),
         )
         return self._decode(list[Attachment], data)
 
@@ -57,7 +59,9 @@ class EntityAttachments(BaseTracker):
         """
         data = await self._client.request(
             method="GET",
-            uri=_attachments_uri(entity_type, entity_id, str(attachment_id)),
+            uri=_entity_uri(
+                entity_type, str(entity_id), "attachments", str(attachment_id)
+            ),
         )
         return self._decode(Attachment, data)
 
@@ -96,7 +100,7 @@ class EntityAttachments(BaseTracker):
         """
         data = await self._client.request(
             method="POST",
-            uri=_attachments_uri(entity_type, entity_id, str(file_id)),
+            uri=_entity_uri(entity_type, str(entity_id), "attachments", str(file_id)),
             params=self._prepare_params(
                 notify=notify,
                 notify_author=notify_author,
@@ -124,18 +128,11 @@ class EntityAttachments(BaseTracker):
         """
         await self._client.request(
             method="DELETE",
-            uri=_attachments_uri(entity_type, entity_id, str(attachment_id)),
+            uri=_entity_uri(
+                entity_type, str(entity_id), "attachments", str(attachment_id)
+            ),
         )
         return True
-
-
-def _attachments_uri(entity_type: str, entity_id: str | int, *parts: str) -> str:
-    """Build the uri of an entity attachments endpoint.
-
-    The entity type is not validated at runtime: `EntityType` documents
-    the kinds Tracker has today, but a kind added later still works.
-    """
-    return "/".join(("/entities", entity_type, str(entity_id), "attachments", *parts))
 
 
 def _fields_param(fields: str | Sequence[str] | None) -> str | None:

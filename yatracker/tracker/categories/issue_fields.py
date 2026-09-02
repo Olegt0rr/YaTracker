@@ -6,10 +6,9 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.field_category import FieldCategory
 from yatracker.types.issue_field import IssueField
 from yatracker.types.local_field import LocalField
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types.localized_name import LocalizedNameInput
 from yatracker.types.queue_field_options_provider import QueueFieldOptionsProvider
 
-NameT = LocalizedName | dict[str, str]
 OptionsProviderT = QueueFieldOptionsProvider | dict[str, Any]
 
 
@@ -58,8 +57,8 @@ class IssueFields(BaseTracker):
 
     async def create_field(  # noqa: PLR0913
         self,
-        name: NameT,
-        field_id: str,
+        name: LocalizedNameInput,
+        id_: str,
         category: str,
         type_: str,
         *,
@@ -78,7 +77,9 @@ class IssueFields(BaseTracker):
 
         :param name: localized field name, e.g.
             `LocalizedName(en="Name", ru="Название")`.
-        :param field_id: ID of the new field, sent as `id`.
+        :param id_: ID of the new field, sent as `id` (the trailing
+            underscore keeps the name out of the way of the builtin,
+            like `type_`).
         :param category: ID of the field category. The list of
             categories is served by `GET /fields/categories`.
         :param type_: field type, one of
@@ -105,8 +106,7 @@ class IssueFields(BaseTracker):
 
         :return: created field.
         """
-        payload = self._prepare_payload(locals(), exclude=["field_id"])
-        payload["id"] = field_id
+        payload = self._prepare_payload(locals())
         data = await self._client.request(
             method="POST",
             uri="/fields",
@@ -119,7 +119,7 @@ class IssueFields(BaseTracker):
         field_id: str | int,
         version: str | int,
         *,
-        name: NameT | None = None,
+        name: LocalizedNameInput | None = None,
         category: str | None = None,
         order: int | None = None,
         description: str | None = None,
@@ -169,7 +169,7 @@ class IssueFields(BaseTracker):
 
     async def create_field_category(
         self,
-        name: NameT,
+        name: LocalizedNameInput,
         order: int,
         *,
         description: str | None = None,
@@ -199,7 +199,7 @@ class IssueFields(BaseTracker):
         category_id: str | int,
         *,
         version: str | int | None = None,
-        name: NameT | None = None,
+        name: LocalizedNameInput | None = None,
         order: int | None = None,
         description: str | None = None,
     ) -> FieldCategory:
@@ -274,8 +274,8 @@ class IssueFields(BaseTracker):
     async def create_local_field(  # noqa: PLR0913
         self,
         queue_id: str | int,
-        name: NameT,
-        field_id: str,
+        name: LocalizedNameInput,
+        id_: str,
         category: str,
         type_: str,
         *,
@@ -296,8 +296,10 @@ class IssueFields(BaseTracker):
             case-sensitive).
         :param name: localized field name, e.g.
             `LocalizedName(en="Name", ru="Название")`.
-        :param field_id: key of the new local field, sent as `id`. The
-            created field gets the prefixed id `<hex>--<field_id>`.
+        :param id_: key of the new local field, sent as `id` (the
+            trailing underscore keeps the name out of the way of the
+            builtin, like `type_`). The created field gets the prefixed
+            id `<hex>--<id_>`.
         :param category: ID of the field category. The list of
             categories is served by `GET /fields/categories`.
         :param type_: field type, one of
@@ -324,11 +326,7 @@ class IssueFields(BaseTracker):
 
         :return: created local field.
         """
-        payload = self._prepare_payload(
-            locals(),
-            exclude=["queue_id", "field_id"],
-        )
-        payload["id"] = field_id
+        payload = self._prepare_payload(locals(), exclude=["queue_id"])
         data = await self._client.request(
             method="POST",
             uri=f"/queues/{queue_id}/localFields",
@@ -341,7 +339,7 @@ class IssueFields(BaseTracker):
         queue_id: str | int,
         field_key: str,
         *,
-        name: NameT | None = None,
+        name: LocalizedNameInput | None = None,
         category: str | None = None,
         order: int | None = None,
         description: str | None = None,

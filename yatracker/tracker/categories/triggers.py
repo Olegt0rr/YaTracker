@@ -2,26 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, _iter_relative, _relative_page_size
 from yatracker.types.trigger import Trigger, TriggerWebhookLog
+from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
     from datetime import datetime
 
     from yatracker.types.trigger import TriggerAction, TriggerCondition
-
-
-def _format_time(value: str | datetime | None) -> str | None:
-    """Render a log time bound the way the API expects it.
-
-    The docs use `YYYY-MM-DDThh:mm:ss.sss±hhmm`, which `datetime.isoformat`
-    produces, while `str(datetime)` would send a space instead of `T`.
-    Strings are passed through untouched.
-    """
-    if value is None or isinstance(value, str):
-        return value
-    return value.isoformat()
 
 
 class Triggers(BaseTracker):
@@ -63,32 +52,28 @@ class Triggers(BaseTracker):
         """Iterate over all triggers of a queue, page by page.
 
         Wraps :meth:`get_triggers`: every page is requested with the id
-        of the last trigger of the previous one, and iteration stops as
-        soon as a page comes back empty or does not advance past that
-        id. The docs describe the `id` cursor as the trigger the next
-        page *starts from*, so if the cursor trigger comes back at the
-        top of a page it is not yielded twice.
+        of the last trigger of the previous one (see
+        :func:`yatracker.tracker.base._iter_relative`).
 
         Source:
         https://yandex.ru/support/tracker/ru/api/queues/get-triggers
 
         :param queue_id: ID or key of the queue.
-        :param per_page: number of triggers per page.
+        :param per_page: number of triggers per page. `per_page=1` is
+            sent as 2: the cursor trigger is resent on every page, so a
+            page of one could never advance.
         """
-        id_: str | None = None
-        while True:
-            triggers = await self.get_triggers(queue_id, per_page=per_page, id_=id_)
-            # A page that does not advance past the cursor is either the
-            # last one (inclusive cursor) or a server ignoring `id`:
-            # stop instead of looping forever.
-            if not triggers or triggers[-1].id == id_:
-                return
+        page_size = _relative_page_size(per_page)
 
-            for trigger in triggers:
-                if trigger.id != id_:
-                    yield trigger
+        async def fetch_page(id_: str | None) -> list[Trigger]:
+            return await self.get_triggers(queue_id, per_page=page_size, id_=id_)
 
-            id_ = triggers[-1].id
+        async for trigger in _iter_relative(
+            fetch_page,
+            items=lambda page: page,
+            key=lambda trigger: trigger.id,
+        ):
+            yield trigger
 
     async def get_trigger(
         self,
@@ -219,15 +204,16 @@ class Triggers(BaseTracker):
             100 at most).
         :param from_: start of the time range, a `datetime` or a string
             formatted as `YYYY-MM-DDThh:mm:ss.sss±hhmm` (query param
-            "from").
+            "from"). A naive `datetime` is rendered without an offset
+            and warns.
         :param to: end of the time range, in the same format.
         :return: list of log entries, most recent first.
         """
         params = self._prepare_params(
             issue_id=issue_id,
             limit=limit,
-            from_=_format_time(from_),
-            to=_format_time(to),
+            from_=to_tracker_datetime(from_),
+            to=to_tracker_datetime(to),
         )
         data = await self._client.request(
             method="GET",

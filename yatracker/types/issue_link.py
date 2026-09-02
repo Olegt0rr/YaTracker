@@ -1,6 +1,13 @@
 from __future__ import annotations
 
-__all__ = ["BaseLink", "IssueLink", "LinkDirection", "LinkRelationship", "LinkType"]
+__all__ = [
+    "BaseLink",
+    "CreatedIssueLink",
+    "IssueLink",
+    "LinkDirection",
+    "LinkRelationship",
+    "LinkType",
+]
 
 from datetime import datetime
 from enum import Enum
@@ -72,11 +79,28 @@ class IssueLink(BaseLink):
     """Represents issue link.
 
     `assignee` and `status` describe the linked issue (the one in
-    `object`). `GET /issues/{id}/links` sends both, while the response
-    of `POST /issues/{id}/links` carries neither, so both are optional.
+    `object`), as returned by `GET /issues/{id}/links`.
 
     Source:
     https://yandex.ru/support/tracker/ru/api/issues/get-links
+    """
+
+    object: Issue
+    assignee: User | None = None
+    status: Status
+
+
+class CreatedIssueLink(BaseLink):
+    """Link as returned by `POST /issues/{id}/links`.
+
+    The parameter table of the create-link page lists `assignee` and
+    `status`, but its response sample carries neither, so both are
+    optional here. Reading the links back with
+    `GET /issues/{id}/links` yields :class:`IssueLink`, where `status`
+    is always present.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/issues/link-issue
     """
 
     object: Issue

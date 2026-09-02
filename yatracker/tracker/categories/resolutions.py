@@ -6,7 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.resolution import FullResolution
 
 if TYPE_CHECKING:
-    from yatracker.types.localized_name import LocalizedName
+    from yatracker.types.localized_name import LocalizedNameInput
 
 
 class Resolutions(BaseTracker):
@@ -29,7 +29,7 @@ class Resolutions(BaseTracker):
     async def create_resolution(
         self,
         key: str,
-        name: LocalizedName | dict[str, str],
+        name: LocalizedNameInput,
     ) -> FullResolution:
         """Create a resolution.
 
@@ -58,7 +58,7 @@ class Resolutions(BaseTracker):
         resolution_id: str | int,
         *,
         version: str | int | None = None,
-        name: LocalizedName | dict[str, str] | None = None,
+        name: LocalizedNameInput | None = None,
         description: str | None = None,
         order: int | None = None,
     ) -> FullResolution:

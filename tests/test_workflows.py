@@ -675,13 +675,13 @@ class TestCreateWorkflow:
             "steps": [{"status": "open", "actions": []}],
         }
 
-    async def test_workflow_id_is_sent_as_id(self) -> None:
+    async def test_id_is_sent_as_id(self) -> None:
         tracker, client = make_tracker(POST_WORKFLOW_RESPONSE, status=201)
         await tracker.create_workflow(
             "Design",
             {"id": "open", "name": {"ru": "Открыть", "en": "Open"}, "target": "open"},
             [{"status": "open", "actions": []}],
-            workflow_id="W99",
+            id_="W99",
         )
 
         body = sent_json(client.calls[0])

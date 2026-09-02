@@ -6,7 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.status import FullStatus
 
 if TYPE_CHECKING:
-    from yatracker.types.localized_name import LocalizedName
+    from yatracker.types.localized_name import LocalizedNameInput
 
 
 class Statuses(BaseTracker):
@@ -29,7 +29,7 @@ class Statuses(BaseTracker):
     async def create_status(
         self,
         key: str,
-        name: LocalizedName | dict[str, str],
+        name: LocalizedNameInput,
         type_: str,
     ) -> FullStatus:
         """Create an issue status.
@@ -61,7 +61,7 @@ class Statuses(BaseTracker):
         status_id: str | int,
         *,
         version: str | int | None = None,
-        name: LocalizedName | dict[str, str] | None = None,
+        name: LocalizedNameInput | None = None,
         description: str | None = None,
         order: int | None = None,
         type_: str | None = None,

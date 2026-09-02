@@ -417,3 +417,28 @@ async def test_delete_gaps_rejects_over_100() -> None:
         await tracker.delete_gaps(["id"] * (MAX_GAPS_PER_REQUEST + 1))
 
     assert client.calls == []
+
+
+async def test_delete_gaps_rejects_bare_string() -> None:
+    tracker, client = make_tracker(status=204)
+    with pytest.raises(TypeError, match="sequence of absence record ids"):
+        await tracker.delete_gaps("68340a1f2b4c1a3d5e7f9011")  # type: ignore[arg-type]
+
+    assert client.calls == []
+
+
+async def test_search_gaps_rejects_bare_string() -> None:
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    with pytest.raises(TypeError, match="sequence of logins or ids"):
+        await tracker.search_gaps("username1")  # type: ignore[arg-type]
+
+    assert client.calls == []
+
+
+async def test_iter_gaps_rejects_bare_string() -> None:
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    with pytest.raises(TypeError, match="sequence of logins or ids"):
+        async for _ in tracker.iter_gaps("username1"):  # type: ignore[arg-type]
+            pass
+
+    assert client.calls == []

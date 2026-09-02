@@ -132,13 +132,7 @@ class Reports(BaseTracker):
         :param page: page number (1 by default).
         :return: page of the reports found.
         """
-        payload: dict[str, Any] = {}
-        if filter_ is not None:
-            payload["filter"] = filter_
-        if order_by is not None:
-            payload["orderBy"] = order_by
-        if order_asc is not None:
-            payload["orderAsc"] = order_asc
+        payload = self._prepare_payload(locals(), exclude=["per_page", "page"])
 
         data = await self._client.request(
             method="POST",

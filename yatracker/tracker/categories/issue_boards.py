@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker, _if_match
+from yatracker.tracker.base import (
+    BaseTracker,
+    _if_match,
+    _iter_relative,
+    _relative_page_size,
+)
 from yatracker.types import Board, BoardColumn
 
 if TYPE_CHECKING:
@@ -69,31 +74,27 @@ class Boards(BaseTracker):
         """Iterate over all boards, page by page.
 
         Wraps :meth:`get_boards_paginated`: every page is requested with
-        the id of the last board of the previous one, and iteration stops
-        as soon as a page comes back empty or does not advance past that
-        id. The docs describe the `id` cursor as the board the next page
-        *starts from*, so if the cursor board comes back at the top of a
-        page it is not yielded twice.
+        the id of the last board of the previous one (see
+        :func:`yatracker.tracker.base._iter_relative`).
 
         Source:
         https://yandex.cloud/ru/docs/tracker/concepts/boards/get-boards-paginate
 
         :param per_page: number of boards per page (500 at most).
+            `per_page=1` is sent as 2: the cursor board is resent on
+            every page, so a page of one could never advance.
         """
-        id_: str | None = None
-        while True:
-            boards = await self.get_boards_paginated(per_page=per_page, id_=id_)
-            # A page that does not advance past the cursor is either the
-            # last one (inclusive cursor) or a server ignoring `id`:
-            # stop instead of looping forever.
-            if not boards or boards[-1].id == id_:
-                return
+        page_size = _relative_page_size(per_page)
 
-            for board in boards:
-                if board.id != id_:
-                    yield board
+        async def fetch_page(id_: str | None) -> list[Board]:
+            return await self.get_boards_paginated(per_page=page_size, id_=id_)
 
-            id_ = boards[-1].id
+        async for board in _iter_relative(
+            fetch_page,
+            items=lambda page: page,
+            key=lambda board: board.id,
+        ):
+            yield board
 
     async def get_board(self, board_id: str | int) -> Board:
         """Get a board.

@@ -11,6 +11,7 @@ https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist
 
 from __future__ import annotations
 
+import warnings
 from datetime import date, datetime, timezone
 from typing import Any
 
@@ -156,6 +157,8 @@ class TestAddEntityChecklistItem:
         }
 
     async def test_deadline_as_bare_date(self) -> None:
+        # the docs document the date only as a full timestamp, so a bare
+        # `date` is sent as midnight UTC
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
         await tracker.add_entity_checklist_item(
             "project",
@@ -165,9 +168,22 @@ class TestAddEntityChecklistItem:
         )
 
         assert sent_json(client.calls[0])["deadline"] == {
-            "date": "2021-05-09",
+            "date": "2021-05-09T00:00:00.000+0000",
             "deadlineType": "date",
         }
+
+    async def test_bare_date_deadline_does_not_warn(self) -> None:
+        # the midnight-UTC timestamp is built by the library, not by the
+        # user, so it must not trigger the naive-datetime warning
+        tracker, _ = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            await tracker.add_entity_checklist_item(
+                "project",
+                "1",
+                "Item",
+                deadline=date(2021, 5, 9),
+            )
 
     async def test_deadline_as_entity_deadline_keeps_its_type(self) -> None:
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
@@ -179,8 +195,22 @@ class TestAddEntityChecklistItem:
         )
 
         assert sent_json(client.calls[0])["deadline"] == {
-            "date": "2021-05-09",
+            "date": "2021-05-09T00:00:00.000+0000",
             "deadlineType": "quarter",
+        }
+
+    async def test_deadline_as_ready_made_string_passes_through(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.add_entity_checklist_item(
+            "project",
+            "1",
+            "Item",
+            deadline="2021-05-09",
+        )
+
+        assert sent_json(client.calls[0])["deadline"] == {
+            "date": "2021-05-09",
+            "deadlineType": "date",
         }
 
     async def test_deadline_as_entity_deadline_with_datetime(self) -> None:
@@ -203,13 +233,16 @@ class TestAddEntityChecklistItem:
 
     async def test_naive_deadline_warns(self) -> None:
         tracker, _ = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
-        with pytest.warns(UserWarning, match="naive datetime"):
+        with pytest.warns(UserWarning, match="naive datetime") as record:
             await tracker.add_entity_checklist_item(
                 "project",
                 "1",
                 "Item",
                 deadline=datetime(2021, 5, 9, 8),  # noqa: DTZ001
             )
+
+        # the warning points at this file, not at the library internals
+        assert record[0].filename == __file__
 
 
 # --- deadline decoding regression (`date` -> `DateOrDatetime`) ---------------
@@ -298,6 +331,43 @@ class TestEditEntityChecklist:
 
         assert sent_json(client.calls[0]) == [
             {"id": "1", "text": "Item", "checked": True},
+        ]
+
+    async def test_decoded_items_are_re_encoded_for_the_request(self) -> None:
+        # an item read back from the API carries an assignee object and
+        # read-only fields the endpoint does not accept: sending it back
+        # unchanged must not put them on the wire
+        item = {
+            "id": "6586d91f99a40477",
+            "text": "First list item",
+            "textHtml": "<p>First list item</p>",
+            "checked": False,
+            "assignee": USER,
+            "deadline": {
+                "date": "2021-05-09T00:00:00.000+0000",
+                "deadlineType": "date",
+                "isExceeded": False,
+            },
+            "checklistItemType": "standard",
+        }
+        tracker, client = make_tracker(entity_with_checklist_payload([item]))
+        entity = await tracker.get_entity("project", "1", fields="checklistItems")
+        items = entity.fields.checklist_items
+        assert items is not None
+
+        await tracker.edit_entity_checklist("project", "1", items)
+
+        assert sent_json(client.calls[1]) == [
+            {
+                "id": "6586d91f99a40477",
+                "text": "First list item",
+                "checked": False,
+                "assignee": "1111",
+                "deadline": {
+                    "date": "2021-05-09T00:00:00.000+0000",
+                    "deadlineType": "date",
+                },
+            },
         ]
 
     async def test_query_params(self) -> None:

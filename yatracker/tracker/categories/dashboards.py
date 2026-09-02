@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from yatracker.tracker.base import BaseTracker
-from yatracker.types.dashboard import CycleTimeWidget, Dashboard
+from yatracker.types.dashboard import CycleTimeWidget, Dashboard, WidgetBucket
 from yatracker.types.status import Status
 
 if TYPE_CHECKING:
@@ -13,7 +13,15 @@ if TYPE_CHECKING:
 
 
 def _encode_statuses(
-    statuses: Sequence[str | Status | dict[str, Any]] | None,
+    # The bare types are part of the annotation only so that the runtime
+    # guard below is not dead code for a type checker: a single status
+    # is exactly the kind of value that would otherwise be iterated
+    # (a bare `str` character by character).
+    statuses: Sequence[str | Status | dict[str, Any]]
+    | str
+    | Status
+    | dict[str, Any]
+    | None,
 ) -> list[dict[str, Any]] | None:
     """Bring a list of statuses to the request format.
 
@@ -21,6 +29,14 @@ def _encode_statuses(
     :class:`Status` object (so a widget can be re-sent as is) are
     accepted as well. Dicts are passed through verbatim.
     """
+    if isinstance(statuses, (str, dict, Status)):
+        msg = (
+            f"A list of statuses must be a sequence, got "
+            f"{type(statuses).__name__}. Pass a sequence of statuses, "
+            "e.g. `['open']`."
+        )
+        raise TypeError(msg)
+
     if statuses is None:
         return None
 
@@ -33,6 +49,29 @@ def _encode_statuses(
         else:
             encoded.append(dict(status))
     return encoded
+
+
+def _encode_bucket(
+    bucket: WidgetBucket | dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    """Bring the chart step size to the request format.
+
+    The request calls the grouping period `unit` while the response
+    calls it `type`, so a :class:`WidgetBucket` read back from a widget
+    is renamed here (a widget can then be re-sent as is) and its unset
+    fields are dropped. Dicts are passed through verbatim.
+    """
+    if bucket is None:
+        return None
+    if not isinstance(bucket, WidgetBucket):
+        return dict(bucket)
+
+    encoded = {
+        "unit": bucket.type,
+        "count": bucket.count,
+        "boardId": bucket.board_id,
+    }
+    return {key: value for key, value in encoded.items() if value is not None}
 
 
 class Dashboards(BaseTracker):
@@ -83,7 +122,7 @@ class Dashboards(BaseTracker):
         to_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
         excluded_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
         included_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
-        bucket: dict[str, Any] | None = None,
+        bucket: WidgetBucket | dict[str, Any] | None = None,
         calendar: str | int | None = None,
         lines: dict[str, Any] | None = None,
         start: str | None = None,
@@ -110,7 +149,8 @@ class Dashboards(BaseTracker):
         :param from_statuses: statuses the work on an issue starts
             from; the time spent in them is not counted. Either status
             keys or `{"key": ...}` dicts. The first status of the issue
-            history by default.
+            history by default. A single status on its own raises
+            `TypeError`.
         :param to_statuses: statuses the work on an issue ends at; the
             latest one the issue entered is used. The last status of the
             issue history by default.
@@ -120,7 +160,9 @@ class Dashboards(BaseTracker):
             computation.
         :param bucket: step size, e.g. `{"unit": "days", "count": 1}`;
             `unit` is "days", "weeks", "months" or "sprints" and
-            `boardId` is accepted for "sprints". 7 days by default.
+            `boardId` is accepted for "sprints". 7 days by default. A
+            :class:`WidgetBucket` read back from a widget is accepted as
+            well: its `type` is sent as the `unit` the request expects.
         :param calendar: ID of the working-time calendar. The plain
             calendar is used when omitted.
         :param lines: time axis settings, e.g. `{"movingAverage": True,
@@ -135,12 +177,15 @@ class Dashboards(BaseTracker):
         :param auto_updatable: whether the chart is updated
             automatically.
         :param kwargs: any other widget field.
+        :raises TypeError: If a list of statuses is a bare status
+            instead of a sequence.
         :return: created widget.
         """
         from_statuses = _encode_statuses(from_statuses)
         to_statuses = _encode_statuses(to_statuses)
         excluded_statuses = _encode_statuses(excluded_statuses)
         included_statuses = _encode_statuses(included_statuses)
+        bucket = _encode_bucket(bucket)
 
         payload = self._prepare_payload(locals(), exclude=["dashboard_id"])
         data = await self._client.request(

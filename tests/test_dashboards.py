@@ -14,7 +14,8 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from yatracker.types.dashboard import CycleTimeWidget, Dashboard
+import pytest
+from yatracker.types.dashboard import CycleTimeWidget, Dashboard, WidgetBucket
 from yatracker.types.status import Status
 
 from tests.conftest import make_tracker, sent_json
@@ -304,3 +305,53 @@ async def test_create_cycle_time_widget_decodes_response() -> None:
     assert widget.end == "now()-2d"
     assert widget.mode == "common-lines-and-points"
     assert widget.url == "https://api.tracker.yandex.net/v3/widgets/123456"
+
+
+async def test_create_cycle_time_widget_rejects_bare_status() -> None:
+    tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
+    bare_statuses: list[Any] = [
+        "open",
+        {"key": "open"},
+        Status(url="s", id="1", key="open", display="Открыт"),
+    ]
+    for bare in bare_statuses:
+        with pytest.raises(TypeError, match="sequence of statuses"):
+            await tracker.create_cycle_time_widget(10, "My widget", from_statuses=bare)
+
+    assert client.calls == []
+
+
+async def test_create_cycle_time_widget_renames_bucket_model_type_to_unit() -> None:
+    tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
+    widget = await tracker.create_cycle_time_widget(10, "My widget")
+    assert widget.bucket is not None
+
+    await tracker.create_cycle_time_widget(10, "Copy", bucket=widget.bucket)
+
+    assert sent_json(client.calls[1])["bucket"] == {"unit": "days", "count": 2}
+
+
+async def test_create_cycle_time_widget_sends_sprints_bucket_board_id() -> None:
+    tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
+    await tracker.create_cycle_time_widget(
+        10,
+        "My widget",
+        bucket=WidgetBucket(type="sprints", count=1, board_id="123"),
+    )
+
+    assert sent_json(client.calls[0])["bucket"] == {
+        "unit": "sprints",
+        "count": 1,
+        "boardId": "123",
+    }
+
+
+async def test_create_cycle_time_widget_keeps_dict_bucket_as_is() -> None:
+    tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
+    await tracker.create_cycle_time_widget(
+        10,
+        "My widget",
+        bucket={"unit": "weeks", "count": 3},
+    )
+
+    assert sent_json(client.calls[0])["bucket"] == {"unit": "weeks", "count": 3}

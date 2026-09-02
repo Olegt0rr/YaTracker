@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import warnings
 from collections.abc import Sequence
 from datetime import date, datetime
@@ -18,6 +19,7 @@ from yatracker.utils.datetime import (
     NAIVE_DATETIME_WARNING,
     to_tracker_date,
     to_tracker_datetime,
+    user_stacklevel,
 )
 
 if TYPE_CHECKING:
@@ -420,9 +422,7 @@ def _entity_changes(
     """
     changes: dict[str, Any] = {}
 
-    # stacklevel=4: the warning is raised inside `_prepare_fields`, so it is
-    # _prepare_fields -> this function -> the public method -> user code
-    prepared_fields = _prepare_fields(values, kwargs, stacklevel=4)
+    prepared_fields = _prepare_fields(values, kwargs)
     if prepared_fields:
         changes["fields"] = prepared_fields
 
@@ -467,8 +467,6 @@ def _prepare_meta_entities(entities: Sequence[str | Entity]) -> list[str]:
 def _prepare_fields(
     values: dict[str, Any] | None,
     kwargs: dict[str, Any],
-    *,
-    stacklevel: int = 3,
 ) -> dict[str, Any]:
     """Merge explicit `values` with the fields passed as keyword arguments.
 
@@ -477,18 +475,21 @@ def _prepare_fields(
     `None` keyword arguments are dropped, like in `bulk_update_issues`.
 
     A naive `datetime` anywhere in the merged values is reported once,
-    from here: warning per value would point at a comprehension frame or
-    at a recursive call instead of at the user's code. `stacklevel`
-    should point at that call site: the default `3` is this helper ->
-    the public method (`search_entities`) -> user code, plus one for
-    every extra frame in between.
+    from here: a warning per value would point at a comprehension frame
+    or at a recursive call instead of at the user's code. The warning
+    points at the first frame outside of the library, however many
+    internal helpers there are in between.
     """
     merged = {
         **(values or {}),
         **{key: value for key, value in kwargs.items() if value is not None},
     }
     if _has_naive_datetime(merged):
-        warnings.warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
+        warnings.warn(
+            NAIVE_DATETIME_WARNING,
+            UserWarning,
+            stacklevel=user_stacklevel(sys._getframe(0)),  # noqa: SLF001
+        )
 
     return {
         _encode_key(key): _convert_entity_value(value) for key, value in merged.items()

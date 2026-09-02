@@ -6,7 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.priority import Priority
 
 if TYPE_CHECKING:
-    from yatracker.types.localized_name import LocalizedName
+    from yatracker.types.localized_name import LocalizedNameInput
 
 
 class Priorities(BaseTracker):
@@ -36,7 +36,7 @@ class Priorities(BaseTracker):
     async def create_priority(
         self,
         key: str,
-        name: LocalizedName | dict[str, str],
+        name: LocalizedNameInput,
         order: int,
         description: str,
     ) -> Priority:
@@ -70,7 +70,7 @@ class Priorities(BaseTracker):
         priority_id: str | int,
         *,
         version: str | int | None = None,
-        name: LocalizedName | dict[str, str] | None = None,
+        name: LocalizedNameInput | None = None,
         description: str | None = None,
     ) -> Priority:
         """Edit a priority.

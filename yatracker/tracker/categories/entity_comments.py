@@ -6,6 +6,8 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.entity import EntityType
 from yatracker.types.entity_comment import EntityComment, EntityCommentsPage
 
+from .entities import _entity_uri
+
 
 class EntityComments(BaseTracker):
     """Comments of projects, portfolios and goals (`/entities`).
@@ -34,7 +36,7 @@ class EntityComments(BaseTracker):
         """
         data = await self._client.request(
             method="GET",
-            uri=_comments_uri(entity_type, entity_id),
+            uri=_entity_uri(entity_type, str(entity_id), "comments"),
             params=self._prepare_params(expand=expand),
         )
         return self._decode(list[EntityComment], data)
@@ -74,7 +76,7 @@ class EntityComments(BaseTracker):
 
         data = await self._client.request(
             method="GET",
-            uri=_comments_uri(entity_type, entity_id, "_relative"),
+            uri=_entity_uri(entity_type, str(entity_id), "comments", "_relative"),
             params=self._prepare_params(
                 per_page=per_page,
                 from_=from_,
@@ -106,7 +108,7 @@ class EntityComments(BaseTracker):
         """
         data = await self._client.request(
             method="GET",
-            uri=_comments_uri(entity_type, entity_id, str(comment_id)),
+            uri=_entity_uri(entity_type, str(entity_id), "comments", str(comment_id)),
             params=self._prepare_params(expand=expand),
         )
         return self._decode(EntityComment, data)
@@ -162,7 +164,7 @@ class EntityComments(BaseTracker):
 
         data = await self._client.request(
             method="POST",
-            uri=_comments_uri(entity_type, entity_id),
+            uri=_entity_uri(entity_type, str(entity_id), "comments"),
             params=self._prepare_params(
                 is_add_to_followers=is_add_to_followers,
                 notify=notify,
@@ -238,7 +240,7 @@ class EntityComments(BaseTracker):
 
         data = await self._client.request(
             method="PATCH",
-            uri=_comments_uri(entity_type, entity_id, str(comment_id)),
+            uri=_entity_uri(entity_type, str(entity_id), "comments", str(comment_id)),
             params=self._prepare_params(
                 is_add_to_followers=is_add_to_followers,
                 notify=notify,
@@ -274,16 +276,7 @@ class EntityComments(BaseTracker):
         """
         await self._client.request(
             method="DELETE",
-            uri=_comments_uri(entity_type, entity_id, str(comment_id)),
+            uri=_entity_uri(entity_type, str(entity_id), "comments", str(comment_id)),
             params=self._prepare_params(notify=notify, notify_author=notify_author),
         )
         return True
-
-
-def _comments_uri(entity_type: str, entity_id: str | int, *parts: str) -> str:
-    """Build the uri of an entity comments endpoint.
-
-    The entity type is not validated at runtime: `EntityType` documents
-    the kinds Tracker has today, but a kind added later still works.
-    """
-    return "/".join(("/entities", entity_type, str(entity_id), "comments", *parts))

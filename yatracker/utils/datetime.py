@@ -2,23 +2,58 @@
 
 from __future__ import annotations
 
+import os
+import sys
 import warnings
 from datetime import date, datetime
-from typing import overload
+from pathlib import Path
+from typing import TYPE_CHECKING, overload
 
-__all__ = ["NAIVE_DATETIME_WARNING", "to_tracker_date", "to_tracker_datetime"]
+if TYPE_CHECKING:
+    from types import FrameType
+
+__all__ = [
+    "NAIVE_DATETIME_WARNING",
+    "to_tracker_date",
+    "to_tracker_datetime",
+    "user_stacklevel",
+]
 
 NAIVE_DATETIME_WARNING = (
     "Tracker API may work incorrectly with naive datetime. "
     "Please use Timezone-Aware objects."
 )
 
+# Every module of the library lives under this prefix, so a frame whose
+# file does not start with it belongs to the code that called us.
+_PACKAGE_ROOT = f"{Path(__file__).parent.parent}{os.sep}"
+
+
+def user_stacklevel(frame: FrameType | None) -> int:
+    """Return the `stacklevel` of the first frame outside of yatracker.
+
+    Pass the frame that calls :func:`warnings.warn` (usually
+    ``sys._getframe(0)``) and the result is the `stacklevel` that makes
+    the warning point at the user's own code, however many internal
+    helpers there are in between.
+
+    :param frame: Frame the warning is raised from.
+    :return: `stacklevel` for `warnings.warn` called from that frame.
+    """
+    level = 1
+    while frame is not None:
+        if not frame.f_code.co_filename.startswith(_PACKAGE_ROOT):
+            return level
+        frame = frame.f_back
+        level += 1
+    return level - 1
+
 
 @overload
 def to_tracker_datetime(
     value: None,
     *,
-    stacklevel: int = ...,
+    stacklevel: int | None = ...,
     warn: bool = ...,
 ) -> None: ...
 
@@ -27,7 +62,7 @@ def to_tracker_datetime(
 def to_tracker_datetime(
     value: datetime | str,
     *,
-    stacklevel: int = ...,
+    stacklevel: int | None = ...,
     warn: bool = ...,
 ) -> str: ...
 
@@ -36,7 +71,7 @@ def to_tracker_datetime(
 def to_tracker_datetime(
     value: datetime | str | None,
     *,
-    stacklevel: int = ...,
+    stacklevel: int | None = ...,
     warn: bool = ...,
 ) -> str | None: ...
 
@@ -44,7 +79,7 @@ def to_tracker_datetime(
 def to_tracker_datetime(
     value: datetime | str | None,
     *,
-    stacklevel: int = 3,
+    stacklevel: int | None = None,
     warn: bool = True,
 ) -> str | None:
     """Render a timestamp as ``YYYY-MM-DDThh:mm:ss.sss±hhmm``.
@@ -54,17 +89,20 @@ def to_tracker_datetime(
     caller may always hand over a ready-made API string.
 
     A naive ``datetime`` is rendered without an offset and triggers a
-    :class:`UserWarning`. ``stacklevel`` should point at the user's call
-    site: ``3`` when this helper is called directly from a public method,
-    plus one for every extra frame in between. Pass ``warn=False`` when
-    the caller warns about naive values on its own (the entities API
-    does that once per request instead of once per value).
+    :class:`UserWarning`. By default the warning points at the first
+    frame outside of the library, so callers do not have to count the
+    helpers in between; pass ``stacklevel`` explicitly to override that.
+    Pass ``warn=False`` when the caller warns about naive values on its
+    own (the entities API does that once per request instead of once per
+    value).
     """
     if not isinstance(value, datetime):
         return value
 
     # Python's definition of naive: no tzinfo, or a tzinfo without an offset
     if warn and value.utcoffset() is None:
+        if stacklevel is None:
+            stacklevel = user_stacklevel(sys._getframe(0))  # noqa: SLF001
         warnings.warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
 
     milliseconds = value.microsecond // 1000

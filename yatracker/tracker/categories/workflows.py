@@ -67,7 +67,7 @@ class Workflows(BaseTracker):
         initial_action: dict[str, Any],
         steps: Sequence[dict[str, Any]],
         *,
-        workflow_id: str | None = None,
+        id_: str | None = None,
         queue: str | int | dict[str, Any] | None = None,
         type_: str | None = None,
         issue_type_resolutions: Sequence[dict[str, Any]] | None = None,
@@ -99,8 +99,10 @@ class Workflows(BaseTracker):
             issue gets when it is created.
         :param steps: steps of the workflow. Every step is a status with
             the transitions available from it.
-        :param workflow_id: ID of the workflow. The API generates one of
-            the `W...` form when it is not passed.
+        :param id_: ID of the workflow, sent as `id` (the trailing
+            underscore keeps the name out of the way of the builtin,
+            like `type_`). The API generates one of the `W...` form
+            when it is not passed.
         :param queue: queue to bind the workflow to: a queue key
             (string), a queue id (number) or an object (`{"key": ...}` /
             `{"id": ...}` / `{"name": ...}`). A common workflow, which
@@ -113,9 +115,7 @@ class Workflows(BaseTracker):
             `[{"issueType": "task", "resolutions": ["fixed"]}]`.
         :return: created workflow.
         """
-        payload = self._prepare_payload(locals(), exclude=["workflow_id"])
-        if workflow_id is not None:
-            payload["id"] = workflow_id
+        payload = self._prepare_payload(locals())
 
         data = await self._client.request(
             method="POST",
@@ -170,7 +170,7 @@ class Workflows(BaseTracker):
         data = await self._client.request(
             method="PATCH",
             uri=f"/workflows/{workflow_id}",
-            params={"version": str(version)},
+            params=self._prepare_params(version=version),
             payload=payload,
         )
         return self._decode(FullWorkflow, data)
@@ -221,16 +221,14 @@ class Workflows(BaseTracker):
         :return: the whole updated workflow.
         """
         payload = self._prepare_payload(
-            locals(),
-            exclude=["workflow_id", "status", "action_id", "version", "new_id"],
+            {**locals(), "id_": new_id},
+            exclude=["new_id", "workflow_id", "status", "action_id", "version"],
         )
-        if new_id is not None:
-            payload["id"] = new_id
 
         data = await self._client.request(
             method="PATCH",
             uri=f"/workflows/{workflow_id}/steps/{status}/actions/{action_id}",
-            params={"version": str(version)},
+            params=self._prepare_params(version=version),
             payload=payload,
         )
         return self._decode(FullWorkflow, data)

@@ -92,9 +92,16 @@ class QueueAccess(BaseTracker):
             settings.
         :param deny: grantees denied access to the queue. Roles cannot
             be denied, only users and groups.
+        :raises ValueError: If there is nothing to change.
         :return: access rights of the queue after the update.
         """
         payload = self._prepare_payload(locals(), exclude=["queue_id"])
+        if not payload:
+            msg = (
+                "This operation requires `create`, `read`, `write`, `grant` or `deny`."
+            )
+            raise ValueError(msg)
+
         data = await self._client.request(
             method="PATCH",
             uri=f"/queues/{queue_id}/permissions",

@@ -153,6 +153,119 @@ async def test_iter_issues_folds_queue_into_filter() -> None:
     assert "queue" not in body
 
 
+async def test_iter_issues_releases_the_scroll_on_early_break() -> None:
+    """Leaving the loop early must free the server-side snapshots."""
+    client = FakeClient(
+        responses=[
+            (
+                200,
+                issues_body("TEST-1", "TEST-2"),
+                {"X-Scroll-Id": "scroll-1", "X-Scroll-Token": "token-1"},
+            ),
+            (
+                200,
+                issues_body("TEST-3"),
+                {"X-Scroll-Id": "scroll-2", "X-Scroll-Token": "token-2"},
+            ),
+            (200, b"{}", {}),
+        ],
+    )
+    tracker = YaTracker(client=client)
+
+    seen = []
+    issues = tracker.iter_issues(query="Queue: TEST")
+    async for issue in issues:
+        seen.append(issue.key)
+        if len(seen) == 3:
+            break
+    # `break` only suspends the generator; the release runs when it is
+    # closed (`aclose()`, or the loop's `shutdown_asyncgens`).
+    await issues.aclose()
+
+    assert seen == ["TEST-1", "TEST-2", "TEST-3"]
+
+    clear = client.calls[-1]
+    assert clear["method"] == "POST"
+    assert clear["url"].endswith("/system/search/scroll/_clear")
+    assert json.loads(bytes(clear["data"]._value)) == {
+        "scroll-1": "token-1",
+        "scroll-2": "token-2",
+    }
+    # exactly one release call
+    assert (
+        sum(
+            call["url"].endswith("/system/search/scroll/_clear")
+            for call in client.calls
+        )
+        == 1
+    )
+
+
+async def test_iter_issues_does_not_release_when_the_scroll_is_exhausted() -> None:
+    client = FakeClient(
+        responses=[
+            (
+                200,
+                issues_body("TEST-1"),
+                {"X-Scroll-Id": "scroll-1", "X-Scroll-Token": "token-1"},
+            ),
+            (200, b"[]", {}),
+        ],
+    )
+    tracker = YaTracker(client=client)
+
+    _ = [issue async for issue in tracker.iter_issues()]
+
+    assert len(client.calls) == 2
+    assert not any(
+        call["url"].endswith("/system/search/scroll/_clear") for call in client.calls
+    )
+
+
+async def test_iter_issues_does_not_release_without_a_scroll_token() -> None:
+    """`X-Scroll-Id` alone is not enough to call the release endpoint."""
+    client = FakeClient(
+        responses=[
+            (200, issues_body("TEST-1"), {"X-Scroll-Id": "scroll-1"}),
+            (200, issues_body("TEST-2"), {"X-Scroll-Id": "scroll-2"}),
+        ],
+    )
+    tracker = YaTracker(client=client)
+
+    issues = tracker.iter_issues()
+    async for _issue in issues:
+        break
+    await issues.aclose()
+
+    assert len(client.calls) == 1
+    assert not any(
+        call["url"].endswith("/system/search/scroll/_clear") for call in client.calls
+    )
+
+
+async def test_iter_issues_swallows_a_failing_release() -> None:
+    client = FakeClient(
+        responses=[
+            (
+                200,
+                issues_body("TEST-1"),
+                {"X-Scroll-Id": "scroll-1", "X-Scroll-Token": "token-1"},
+            ),
+            (500, b"{}", {}),
+        ],
+    )
+    tracker = YaTracker(client=client)
+
+    issues = tracker.iter_issues()
+    async for _issue in issues:
+        break
+    # a failing release must not surface
+    await issues.aclose()
+
+    assert len(client.calls) == 2
+    assert client.calls[1]["url"].endswith("/system/search/scroll/_clear")
+
+
 async def test_get_issue_accepts_positional_type() -> None:
     class MyIssue(FullIssue):
         pass

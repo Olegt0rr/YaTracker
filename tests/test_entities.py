@@ -1032,6 +1032,17 @@ class TestNaiveDatetimeWarning:
         assert len(record) == 1
         assert record[0].filename == __file__
 
+    async def test_iter_filter_is_attributed_to_the_caller(self) -> None:
+        # `iter_entities` delegates to `search_entities`, adding a frame
+        # that the warning must still look past
+        tracker, _ = make_tracker(search_payload())
+        pages = tracker.iter_entities("project", filter_={"start": NAIVE})
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await anext(pages)
+        await pages.aclose()
+
+        assert record[0].filename == __file__
+
     async def test_aware_datetime_does_not_warn(self) -> None:
         tracker, client = make_tracker(CREATED_ENTITY)
         with warnings.catch_warnings():

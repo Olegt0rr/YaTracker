@@ -450,8 +450,11 @@ priority = await tracker.update_priority(
 
 `LocalizedName` — это формат **запроса** для `name` (`create_issue_type`, `create_status`,
 `create_resolution`, `create_priority` и их `update_*`-аналоги). Вместо него можно передать
-обычный словарь `{"ru": ..., "en": ...}`. В **ответе** же, наоборот, `name` — просто строка
-на языке пользователя (кроме `get_priorities(localized=False)`, см. выше).
+обычный словарь `{"ru": ..., "en": ...}`: обе формы объединены псевдонимом
+`LocalizedNameInput = LocalizedName | dict[str, str]` (`yatracker.types.localized_name`),
+который и стоит в аннотациях `name` — в сигнатурах ниже союз для наглядности выписан
+целиком. В **ответе** же, наоборот, `name` — просто строка на языке пользователя (кроме
+`get_priorities(localized=False)`, см. выше).
 
 !!! note "Короткие ссылки в задачах не меняются"
 

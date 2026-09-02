@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
 from yatracker.tracker.base import BaseTracker, _encode_key
@@ -7,13 +8,28 @@ from yatracker.types.gap import Gap, GapsResult, GapsSearchResult, UserGaps
 from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Mapping, Sequence
+    from collections.abc import AsyncIterator, Mapping
     from datetime import datetime
 
 # ruff: noqa: PLR0913
 
 #: The API rejects a request carrying more absence records than this.
 MAX_GAPS_PER_REQUEST = 100
+
+
+def _check_sequence(values: object, param: str, item: str, example: str) -> None:
+    """Reject a bare value passed where a sequence is expected.
+
+    A bare `str` would be iterated character by character: every
+    character would end up as a separate value and the
+    `MAX_GAPS_PER_REQUEST` guard would pass for it.
+    """
+    if isinstance(values, str) or not isinstance(values, Sequence):
+        msg = (
+            f"`{param}` must be a sequence of {item}, got "
+            f"{type(values).__name__}. Pass a sequence, e.g. `[{example}]`."
+        )
+        raise TypeError(msg)
 
 
 def _encode_gap(gap: Mapping[str, Any]) -> dict[str, Any]:
@@ -28,7 +44,7 @@ def _encode_gap(gap: Mapping[str, Any]) -> dict[str, Any]:
     }
     for key in ("from", "to"):
         if key in encoded:
-            encoded[key] = to_tracker_datetime(encoded[key], stacklevel=4)
+            encoded[key] = to_tracker_datetime(encoded[key])
     return encoded
 
 
@@ -114,16 +130,10 @@ class Gaps(BaseTracker):
             )
             raise ValueError(msg)
 
-        # a plain loop, not a comprehension: on Python < 3.12 a comprehension
-        # adds a frame and the naive-datetime warning would point at this
-        # module instead of the caller (PEP 709 removed that frame later)
-        encoded: list[dict[str, Any]] = []
-        for gap in gaps:
-            encoded.append(_encode_gap(gap))  # noqa: PERF401
         data = await self._client.request(
             method="POST",
             uri="/gaps",
-            payload={"gaps": encoded},
+            payload={"gaps": [_encode_gap(gap) for gap in gaps]},
         )
         return self._decode(GapsResult, data).gaps
 
@@ -153,8 +163,12 @@ class Gaps(BaseTracker):
             string. Must be strictly greater than `from_`.
         :param per_page: number of employees per page (50 by default).
         :param page: page number (1 by default).
+        :raises TypeError: If `users` is a bare login instead of a
+            sequence.
         :return: page of absence records grouped by employee.
         """
+        _check_sequence(users, "users", "logins or ids", "'login1'")
+
         from_ = to_tracker_datetime(from_)
         to = to_tracker_datetime(to)
 
@@ -196,6 +210,9 @@ class Gaps(BaseTracker):
             default.
         :param to: end of the search window.
         :param per_page: number of employees per page (50 by default).
+        :raises TypeError: If `users` is a bare login instead of a
+            sequence. Like any other error of a generator body, it is
+            raised on the first iteration.
         """
         page = 1
         while True:
@@ -241,8 +258,13 @@ class Gaps(BaseTracker):
         :param gap_ids: ids of the absence records to delete, at most
             100, each at most 128 characters long. They are sent as one
             comma-separated `gapIds` query parameter.
+        :raises TypeError: If `gap_ids` is a bare id instead of a
+            sequence.
+        :raises ValueError: If there are more than 100 ids.
         :return: True on success.
         """
+        _check_sequence(gap_ids, "gap_ids", "absence record ids", "gap.id")
+
         if len(gap_ids) > MAX_GAPS_PER_REQUEST:
             msg = (
                 f"At most {MAX_GAPS_PER_REQUEST} absence records can be "
@@ -253,6 +275,8 @@ class Gaps(BaseTracker):
         await self._client.request(
             method="DELETE",
             uri="/gaps",
-            params={"gapIds": ",".join(str(gap_id) for gap_id in gap_ids)},
+            params=self._prepare_params(
+                gap_ids=",".join(str(gap_id) for gap_id in gap_ids),
+            ),
         )
         return True

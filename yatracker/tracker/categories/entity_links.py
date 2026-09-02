@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types.entity import EntityLinkInfo, EntityType
@@ -90,9 +90,7 @@ class EntityLinks(BaseTracker):
         await self._client.request(
             method="POST",
             uri=_entity_uri(entity_type, str(entity_id), "links"),
-            # the body may be a JSON array; `request` serialises whatever
-            # it is given, only its annotation is narrower
-            payload=cast("dict[str, Any]", payload),
+            payload=payload,
         )
         return True
 
@@ -115,6 +113,6 @@ class EntityLinks(BaseTracker):
         await self._client.request(
             method="DELETE",
             uri=_entity_uri(entity_type, str(entity_id), "links"),
-            params={"right": str(right)},
+            params=self._prepare_params(right=right),
         )
         return True

@@ -65,7 +65,7 @@ async def create_cycle_time_widget(
     to_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
     excluded_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
     included_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
-    bucket: dict[str, Any] | None = None,
+    bucket: WidgetBucket | dict[str, Any] | None = None,
     calendar: str | int | None = None,
     lines: dict[str, Any] | None = None,
     start: str | None = None,
@@ -108,7 +108,9 @@ widget = await tracker.create_cycle_time_widget(
 6. `from_statuses` — статусы, с которых начинается отсчёт времени работы над задачей;
    время в них не учитывается. По умолчанию — первый статус в истории задачи. Каждый
    элемент — ключ статуса (строка), объект `Status` (из ответа другого запроса, чтобы
-   переиспользовать статус как есть) или готовый словарь `{"key": "..."}`.
+   переиспользовать статус как есть) или готовый словарь `{"key": "..."}`. Одиночный
+   статус вместо последовательности (`from_statuses="open"`) бросает `TypeError`:
+   иначе строка была бы разобрана по символам.
 7. `to_statuses` — статусы, на которых отсчёт заканчивается; если задача проходила
    через несколько из них, берётся самый поздний. По умолчанию — последний статус в
    истории задачи. Формат элементов такой же, как у `from_statuses`.
@@ -116,7 +118,9 @@ widget = await tracker.create_cycle_time_widget(
 9. `included_statuses` — статусы, время в которых добавляется к расчёту.
 10. `bucket` — величина шага диаграммы, например `{"unit": "days", "count": 1}`, где
     `unit` — `days`, `weeks`, `months` или `sprints`, а `boardId` — идентификатор доски,
-    используется только при `unit="sprints"`. По умолчанию — 7 дней.
+    используется только при `unit="sprints"`. По умолчанию — 7 дней. Принимается и
+    объект `WidgetBucket` из ответа другого запроса: его поле `type` отправляется как
+    `unit`, которого ждёт запрос, а незаполненные поля не отправляются.
 11. `calendar` — идентификатор календаря рабочего времени. Если не указан, используется
     обычный календарь.
 12. `lines` — настройки отображения оси времени, например `{"movingAverage": True,
@@ -137,9 +141,10 @@ widget = await tracker.create_cycle_time_widget(
     `auto_updatable` и так далее), которые библиотека сама приводит к camelCase,
     словари `bucket`, `lines` и `filter_` отправляются **как есть**, без
     преобразования ключей. Значит, ключи внутри них нужно писать сразу в формате
-    API — `movingAverage`, а не `moving_average`. Строки и списки статусов
-    (`from_statuses` и т. д.) исключение: они собираются библиотекой из ключей
-    статусов, объектов `Status` или словарей `{"key": "..."}`.
+    API — `movingAverage`, а не `moving_average`. Исключение — списки статусов
+    (`from_statuses` и т. д.), которые собираются библиотекой из ключей статусов,
+    объектов `Status` или словарей `{"key": "..."}`, и объект `WidgetBucket`,
+    переданный в `bucket` вместо словаря.
 
 !!! tip "Порядок источников задач"
 
@@ -192,7 +197,8 @@ widget = await tracker.create_cycle_time_widget(
 ### WidgetBucket
 
 Запрос называет период группировки `unit`, ответ — `type`; это одно и то же поле под
-разными именами.
+разными именами. Если передать объект `WidgetBucket` в `create_cycle_time_widget`,
+библиотека переименует поле сама.
 
 | Поле | Тип | Описание |
 |---|---|---|

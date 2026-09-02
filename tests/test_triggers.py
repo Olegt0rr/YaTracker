@@ -380,6 +380,24 @@ class TestIterTriggers:
         assert triggers == []
         assert len(client.calls) == 1
 
+    async def test_per_page_one_is_sent_as_two(self) -> None:
+        """A one-item page could only ever hold the (inclusive) cursor."""
+        page1 = json.dumps([_trigger_body(1), _trigger_body(2)]).encode()
+        page2 = json.dumps([_trigger_body(2), _trigger_body(3)]).encode()
+        page3 = json.dumps([_trigger_body(3)]).encode()
+
+        client = FakeClient(
+            responses=[(200, page1, {}), (200, page2, {}), (200, page3, {})],
+        )
+        tracker = YaTracker(client=client)
+
+        triggers = [t async for t in tracker.iter_triggers("DESIGN", per_page=1)]
+        assert [t.id for t in triggers] == ["1", "2", "3"]
+
+        assert client.calls[0]["params"] == {"perPage": "2"}
+        assert client.calls[1]["params"] == {"perPage": "2", "id": "2"}
+        assert client.calls[2]["params"] == {"perPage": "2", "id": "3"}
+
 
 class TestGetTriggerLogs:
     LOG_ENTRY: ClassVar[dict[str, Any]] = {
@@ -444,21 +462,41 @@ class TestGetTriggerLogs:
         assert call["url"].endswith("/queues/DEV/triggers/6/webhooks/log")
         assert call["params"] == {"issueId": "DEV-123", "limit": "100"}
 
-    async def test_renders_datetime_from_and_to_via_isoformat(self) -> None:
-        # Naive on purpose: the doc's `from`/`to` example carries no UTC
-        # offset (`YYYY-MM-DDThh:mm:ss`), unlike `startTime`/`endTime`.
+    async def test_renders_naive_datetime_from_and_to_and_warns(self) -> None:
+        # Naive on purpose: the docs render every timestamp as
+        # `YYYY-MM-DDThh:mm:ss.sss±hhmm`, so a value without an offset
+        # is sent as is and warns.
+        tracker, client = make_tracker([self.LOG_ENTRY])
+        with pytest.warns(UserWarning, match="naive datetime") as record:
+            await tracker.get_trigger_logs(
+                "DEV",
+                6,
+                from_=datetime(2025, 9, 23, 0, 0, 0),  # noqa: DTZ001
+                to=datetime(2025, 9, 23, 23, 59, 59),  # noqa: DTZ001
+            )
+
+        # the warning must point at the caller, not at library internals
+        assert record[0].filename == __file__
+
+        call = client.calls[0]
+        assert call["params"] == {
+            "from": "2025-09-23T00:00:00.000",
+            "to": "2025-09-23T23:59:59.000",
+        }
+
+    async def test_renders_aware_datetime_with_the_utc_offset(self) -> None:
         tracker, client = make_tracker([self.LOG_ENTRY])
         await tracker.get_trigger_logs(
             "DEV",
             6,
-            from_=datetime(2025, 9, 23, 0, 0, 0),  # noqa: DTZ001
-            to=datetime(2025, 9, 23, 23, 59, 59),  # noqa: DTZ001
+            from_=datetime(2025, 9, 23, tzinfo=timezone.utc),
+            to=datetime(2025, 9, 23, 23, 59, 59, tzinfo=timezone.utc),
         )
 
         call = client.calls[0]
         assert call["params"] == {
-            "from": "2025-09-23T00:00:00",
-            "to": "2025-09-23T23:59:59",
+            "from": "2025-09-23T00:00:00.000+0000",
+            "to": "2025-09-23T23:59:59.000+0000",
         }
 
     async def test_passes_string_from_and_to_through_untouched(self) -> None:

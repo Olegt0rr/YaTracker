@@ -6,7 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.issue_type import FullIssueType
 
 if TYPE_CHECKING:
-    from yatracker.types.localized_name import LocalizedName
+    from yatracker.types.localized_name import LocalizedNameInput
 
 
 class IssueTypes(BaseTracker):
@@ -29,7 +29,7 @@ class IssueTypes(BaseTracker):
     async def create_issue_type(
         self,
         key: str,
-        name: LocalizedName | dict[str, str],
+        name: LocalizedNameInput,
     ) -> FullIssueType:
         """Create an issue type.
 
@@ -57,7 +57,7 @@ class IssueTypes(BaseTracker):
         issue_type_id: str | int,
         *,
         version: str | int | None = None,
-        name: LocalizedName | dict[str, str] | None = None,
+        name: LocalizedNameInput | None = None,
     ) -> FullIssueType:
         """Edit an issue type.
 

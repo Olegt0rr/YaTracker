@@ -16,14 +16,12 @@ def _build_deadline(
     """Render a deadline as the `{"date", "deadlineType"}` object the API expects."""
     if deadline is None:
         return None
-    # stacklevel=4: warn -> to_tracker_datetime -> this helper -> public
-    # method -> user code
     if isinstance(deadline, ChecklistDeadline):
         return {
-            "date": to_tracker_datetime(deadline.date, stacklevel=4),
+            "date": to_tracker_datetime(deadline.date),
             "deadlineType": deadline.deadline_type,
         }
-    return {"date": to_tracker_datetime(deadline, stacklevel=4), "deadlineType": "date"}
+    return {"date": to_tracker_datetime(deadline), "deadlineType": "date"}
 
 
 class Checklists(BaseTracker):

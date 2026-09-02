@@ -31,6 +31,7 @@ __all__ = [
     "ComponentRef",
     "ComponentUserAccess",
     "CountryRef",
+    "CreatedIssueLink",
     "CycleTimeWidget",
     "Dashboard",
     "Duration",
@@ -79,6 +80,7 @@ __all__ = [
     "Issue",
     "IssueField",
     "IssueLink",
+    "IssueSuggest",
     "IssueType",
     "IssueTypeConfig",
     "LinkDirection",
@@ -86,6 +88,7 @@ __all__ = [
     "LinkType",
     "LocalField",
     "LocalizedName",
+    "LocalizedNameInput",
     "Macro",
     "MacroFieldChange",
     "Priority",
@@ -107,6 +110,7 @@ __all__ = [
     "Report",
     "ReportSearchResult",
     "ReportSort",
+    "Resolution",
     "Sprint",
     "Status",
     "Transition",
@@ -204,11 +208,19 @@ from .full_queue import FullQueue, QueueVersionRef
 from .gap import Gap, GapsResult, GapsSearchResult, UserGaps
 from .issue import Issue
 from .issue_field import IssueField
-from .issue_link import BaseLink, IssueLink, LinkDirection, LinkRelationship, LinkType
+from .issue_link import (
+    BaseLink,
+    CreatedIssueLink,
+    IssueLink,
+    LinkDirection,
+    LinkRelationship,
+    LinkType,
+)
+from .issue_suggest import IssueSuggest
 from .issue_type import FullIssueType, IssueType
 from .issue_type_config import IssueTypeConfig
 from .local_field import LocalField
-from .localized_name import LocalizedName
+from .localized_name import LocalizedName, LocalizedNameInput
 from .macro import Macro, MacroFieldChange
 from .priority import Priority
 from .project import Project, ProjectQueueRef
@@ -228,7 +240,7 @@ from .queue_version import QueueVersion
 from .ref import FieldRef, Ref
 from .remote_link import RemoteLink, RemoteLinkObject
 from .report import Report, ReportSearchResult, ReportSort
-from .resolution import FullResolution
+from .resolution import FullResolution, Resolution
 from .sprint import FullSprint, Sprint
 from .status import FullStatus, Status
 from .transition import Transition

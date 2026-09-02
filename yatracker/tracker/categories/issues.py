@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+import contextlib
 from typing import TYPE_CHECKING, Any, overload
 
-from yatracker.tracker.base import BaseTracker, IssueT_co
+from yatracker.exceptions import YaTrackerError
+from yatracker.tracker.base import (
+    BaseTracker,
+    IssueT_co,
+    SuggestT_co,
+    _iter_relative,
+    _relative_page_size,
+)
 from yatracker.types import (
     FullIssue,
     Issue,
-    IssueLink,
     IssueType,
     LinkRelationship,
     Priority,
@@ -14,11 +21,14 @@ from yatracker.types import (
     Transitions,
 )
 from yatracker.types.changelog import Changelog
+from yatracker.types.issue_link import CreatedIssueLink, IssueLink
+from yatracker.types.issue_suggest import IssueSuggest
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping
 
 SCROLL_ID_HEADER = "X-Scroll-Id"
+SCROLL_TOKEN_HEADER = "X-Scroll-Token"  # noqa: S105 (a header name, not a secret)
 
 
 def _get_header(headers: Mapping[str, str], name: str) -> str | None:
@@ -32,6 +42,31 @@ def _get_header(headers: Mapping[str, str], name: str) -> str | None:
         if key.lower() == lowered:
             return header_value
     return None
+
+
+def _scroll_params(
+    *,
+    scroll_type: str,
+    per_scroll: int,
+    order: str | None,
+    expand: str | None,
+    scroll_ttl_millis: int | None,
+    fields: str | None,
+) -> dict[str, str]:
+    """Build the query params of a scroll search page."""
+    params: dict[str, str] = {
+        "scrollType": scroll_type,
+        "perScroll": str(per_scroll),
+    }
+    if order:
+        params["order"] = order
+    if expand:
+        params["expand"] = expand
+    if scroll_ttl_millis is not None:
+        params["scrollTTLMillis"] = str(scroll_ttl_millis)
+    if fields:
+        params["fields"] = fields
+    return params
 
 
 class Issues(BaseTracker):
@@ -510,6 +545,15 @@ class Issues(BaseTracker):
         :meth:`find_issues` with an explicit ``scroll_id`` remains
         available when you need to drive the scroll session manually.
 
+        Every page holds a snapshot on the server until the scroll TTL
+        expires. When the loop is left early (``break``, an exception,
+        ...) the accumulated `X-Scroll-Id`/`X-Scroll-Token` pairs are
+        released with :meth:`clear_search_scroll` on a best-effort basis
+        — errors of that call are swallowed, and it does not run at all
+        if the generator is never closed (it is driven by
+        ``aclose()``/``shutdown_asyncgens``, which ``async for`` and
+        ``asyncio.run`` do for you).
+
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
         :param scroll_ttl_millis: lifetime of the scroll context, in ms.
@@ -535,45 +579,58 @@ class Issues(BaseTracker):
             type_=_type,
         )
 
-        params: dict[str, str] = {
-            "scrollType": scroll_type,
-            "perScroll": str(per_scroll),
-        }
-        if order:
-            params["order"] = order
-        if expand:
-            params["expand"] = expand
-        if scroll_ttl_millis is not None:
-            params["scrollTTLMillis"] = str(scroll_ttl_millis)
-        if fields:
-            params["fields"] = fields
+        params = _scroll_params(
+            scroll_type=scroll_type,
+            per_scroll=per_scroll,
+            order=order,
+            expand=expand,
+            scroll_ttl_millis=scroll_ttl_millis,
+            fields=fields,
+        )
 
-        while True:
-            data, headers = await self._client.request_with_headers(
-                method="POST",
-                uri="/issues/_search",
-                params=params,
-                payload=payload,
-            )
-            issues = self._decode(list[_type], data)  # type: ignore[valid-type]
-            if not issues:
-                return
+        pairs: dict[str, str] = {}
+        completed = False
+        try:
+            while True:
+                data, headers = await self._client.request_with_headers(
+                    method="POST",
+                    uri="/issues/_search",
+                    params=params,
+                    payload=payload,
+                )
+                scroll_id = _get_header(headers, SCROLL_ID_HEADER)
+                scroll_token = _get_header(headers, SCROLL_TOKEN_HEADER)
+                if scroll_id and scroll_token:
+                    pairs[scroll_id] = scroll_token
 
-            for issue in issues:
-                yield issue
+                issues = self._decode(list[_type], data)  # type: ignore[valid-type]
+                if not issues:
+                    completed = True
+                    return
 
-            scroll_id = _get_header(headers, SCROLL_ID_HEADER)
-            if not scroll_id:
-                return
+                for issue in issues:
+                    yield issue
 
-            params = {**params, "scrollId": scroll_id}
+                if not scroll_id:
+                    completed = True
+                    return
+
+                params = {**params, "scrollId": scroll_id}
+        finally:
+            # Best effort: the caller may have gone away already, and a
+            # failing release must not mask the original error.
+            if pairs and not completed:
+                with contextlib.suppress(YaTrackerError, OSError):
+                    await self.clear_search_scroll(pairs)
 
     async def clear_search_scroll(self, scroll_ids: Mapping[str, str]) -> bool:
         """Release the resources of a scroll search.
 
-        Every page of a scroll search (see :meth:`find_issues` and
-        :meth:`iter_issues`) holds a snapshot on the server until it
-        expires. Use this request to release them earlier.
+        Every page of a scroll search holds a snapshot on the server
+        until it expires. Use this request to release them earlier.
+        :meth:`iter_issues` calls it on your behalf when the iteration
+        is left before the scroll is exhausted; call it yourself when
+        you drive the scroll session manually.
 
         The docs show the request body as `{"srollId": "scrollToken"}`,
         which is a (misspelled) placeholder rather than a literal key:
@@ -607,46 +664,50 @@ class Issues(BaseTracker):
         fields: str | None = None,
         expand: str | None = None,
         embed: str | None = None,
-    ) -> list[FullIssue]: ...
+    ) -> list[IssueSuggest]: ...
 
     @overload
     async def suggest_issues(
         self,
         input_: str,
-        _type: type[IssueT_co] = ...,
+        _type: type[SuggestT_co] = ...,
         *,
         queue: str | None = None,
         full: bool | None = None,
         fields: str | None = None,
         expand: str | None = None,
         embed: str | None = None,
-    ) -> list[IssueT_co]: ...
+    ) -> list[SuggestT_co]: ...
 
     async def suggest_issues(
         self,
         input_: str,
-        _type: type[IssueT_co | FullIssue] = FullIssue,
+        _type: type[SuggestT_co | IssueSuggest] = IssueSuggest,
         *,
         queue: str | None = None,
         full: bool | None = None,
         fields: str | None = None,
         expand: str | None = None,
         embed: str | None = None,
-    ) -> list[IssueT_co] | list[FullIssue]:
+    ) -> list[SuggestT_co] | list[IssueSuggest]:
         """Get issue suggestions by a fragment of the issue name.
 
         Only the issues the user has access to are returned. The
-        response is a projection of the issue, not the whole issue, so
-        pass `full=True` together with the `fields`/`expand` selection
-        your `_type` needs — the default :class:`FullIssue` requires
-        the full field set.
+        response is a projection of the issue, not the whole issue: the
+        default :class:`IssueSuggest` decodes exactly that bare
+        projection. To get whole issues instead, pass
+        ``_type=FullIssue`` together with ``full=True`` and *without*
+        ``fields`` — a projection narrower than :class:`FullIssue`
+        requires fails to validate. With the default type ``full=True``
+        still works, the extra fields are simply ignored.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/issues/get-suggest
 
         :param input_: fragment of the issue name (query param "input").
             A space between words also matches any text in its place.
-        :param _type: you can use your own extended FullIssue type.
+        :param _type: model to decode the response with;
+            :class:`FullIssue` (with `full=True`) or your own model.
         :param queue: key of the queue to search in.
         :param full: whether to return the detailed information about
             every issue. Required to enable `fields`, `expand` and
@@ -726,38 +787,36 @@ class Issues(BaseTracker):
         """Iterate over the whole change history of an issue.
 
         Wraps :meth:`get_issue_changelog`: every page is requested with
-        the id of the last change of the previous one, and iteration
-        stops as soon as a page comes back empty or does not advance
-        past that cursor.
+        the id of the last change of the previous one (see
+        :func:`yatracker.tracker.base._iter_relative`).
 
         Source:
         https://yandex.ru/support/tracker/ru/api/issues/get-changelog
 
         :param issue_id: ID or key of the issue.
         :param per_page: number of changes per page (50 by default).
+            `per_page=1` is sent as 2: the cursor change is resent on
+            every page, so a page of one could never advance.
         :param field: id of the changed issue field to filter by.
         :param type_: key of the change type to filter by.
         """
-        id_: str | None = None
-        while True:
-            changes = await self.get_issue_changelog(
+        page_size = _relative_page_size(per_page)
+
+        async def fetch_page(id_: str | None) -> list[Changelog]:
+            return await self.get_issue_changelog(
                 issue_id,
                 id_=id_,
-                per_page=per_page,
+                per_page=page_size,
                 field=field,
                 type_=type_,
             )
-            # A page that does not advance past the cursor is either the
-            # last one (inclusive cursor) or a server ignoring `id`:
-            # stop instead of looping forever.
-            if not changes or changes[-1].id == id_:
-                return
 
-            for change in changes:
-                if change.id != id_:
-                    yield change
-
-            id_ = changes[-1].id
+        async for change in _iter_relative(
+            fetch_page,
+            items=lambda page: page,
+            key=lambda change: change.id,
+        ):
+            yield change
 
     async def get_issue_links(
         self,
@@ -781,8 +840,8 @@ class Issues(BaseTracker):
         self,
         issue_id: str,
         relationship: LinkRelationship | str,
-        issue: str | Issue,
-    ) -> IssueLink:
+        issue: str | Issue | FullIssue,
+    ) -> CreatedIssueLink:
         """Create a link between two issues.
 
         The link is created between the current issue (`issue_id`) and
@@ -797,21 +856,25 @@ class Issues(BaseTracker):
             "is parent task for", "duplicates", "is duplicated by",
             "is epic of" or "has epic" (see :class:`LinkRelationship`).
             The two epic links are only allowed for epics.
-        :param issue: ID or key of the issue to link.
-        :return: the created link.
+        :param issue: ID or key of the issue to link, or an
+            :class:`Issue` / :class:`FullIssue` object (its `key` is
+            sent).
+        :return: the created link. The API answers without `assignee`
+            and `status`, hence :class:`CreatedIssueLink` rather than
+            :class:`IssueLink`.
         """
         payload = {
             "relationship": relationship.value
             if isinstance(relationship, LinkRelationship)
             else relationship,
-            "issue": issue.key if isinstance(issue, Issue) else issue,
+            "issue": issue.key if isinstance(issue, (Issue, FullIssue)) else issue,
         }
         data = await self._client.request(
             method="POST",
             uri=f"/issues/{issue_id}/links",
             payload=payload,
         )
-        return self._decode(IssueLink, data)
+        return self._decode(CreatedIssueLink, data)
 
     async def unlink_issues(self, issue_id: str, link_id: str | int) -> bool:
         """Delete a link between two issues.

@@ -299,6 +299,9 @@ first_page = await tracker.find_issues(
 
 ```python
 issues = await tracker.suggest_issues("исправить ошибки")
+
+for issue in issues:
+    print(issue.key, issue.summary)
 ```
 
 Сигнатура:
@@ -307,14 +310,14 @@ issues = await tracker.suggest_issues("исправить ошибки")
 async def suggest_issues(
     self,
     input_: str,
-    _type: type[IssueT_co | FullIssue] = FullIssue,
+    _type: type[SuggestT_co | IssueSuggest] = IssueSuggest,
     *,
     queue: str | None = None,
     full: bool | None = None,
     fields: str | None = None,
     expand: str | None = None,
     embed: str | None = None,
-) -> list[IssueT_co] | list[FullIssue]: ...
+) -> list[SuggestT_co] | list[IssueSuggest]: ...
 ```
 
 1. `input_` — фрагмент текста в названии задачи (query-параметр `input`). Пробел между
@@ -328,24 +331,41 @@ async def suggest_issues(
    `"update_limits"`.
 6. `embed` — детали по тому, что запрошено в `expand`: `"attachments"`, `"comments"`,
    `"transitions"` или `"sla"`.
-7. `_type` — своя модель задачи вместо `FullIssue`.
+7. `_type` — модель, которой декодируется ответ. По умолчанию `IssueSuggest` — узкая
+   модель ровно под краткую проекцию ответа.
 
-!!! warning "Без `full=True` ответ — не полная задача"
+Модель `IssueSuggest`:
 
-    Без `full=True` API возвращает только краткую проекцию (`self`, `id`, `key`, `version`,
-    `summary`, `assignee`, `status`, ...), а не весь набор полей, которого по умолчанию
-    ожидает модель `FullIssue`. Если оставляете `_type` по умолчанию (`FullIssue`), всегда
-    передавайте `full=True` — иначе валидация ответа упадёт из-за отсутствующих
-    обязательных полей (см. [«Обработка ошибок»](errors.md)). Для лёгких запросов подсказок
-    без `full=True` передавайте `_type` с узкой моделью, у которой обязательны только поля
-    реального краткого ответа.
+| Поле        | Тип                  | Описание                          |
+|-------------|----------------------|-----------------------------------|
+| `url`       | `str`                | Ссылка на задачу (`self`)         |
+| `id`        | `str`                | Идентификатор задачи              |
+| `key`       | `str`                | Ключ задачи                       |
+| `version`   | `int`                | Версия задачи                     |
+| `summary`   | `str \| None`        | Название задачи                   |
+| `followers` | `list[User] \| None` | Наблюдатели задачи                |
+| `assignee`  | `User \| None`       | Исполнитель задачи                |
+| `status`    | `Status \| None`     | Статус задачи                     |
+
+!!! warning "По умолчанию возвращается краткая проекция, а не `FullIssue`"
+
+    API отдаёт краткую проекцию задачи (`self`, `id`, `key`, `version`, `summary`,
+    `followers`, `assignee`, `status`), а не весь набор полей `FullIssue`. Поэтому по
+    умолчанию ответ декодируется в `IssueSuggest`. `full=True` с типом по умолчанию тоже
+    работает — лишние поля просто игнорируются.
+
+    Если нужны полноценные задачи, передайте `_type=FullIssue` **вместе с `full=True` и
+    без `fields`**: `fields` урезает ответ, и `FullIssue` не пройдёт валидацию из-за
+    отсутствующих обязательных полей (см. [«Обработка ошибок»](errors.md)).
 
 ```python
-issues = await tracker.suggest_issues(
-    "исправить ошибки",
-    full=True,
-    fields="summary,status,assignee,followers",
-)
+from yatracker.types import FullIssue
+
+# краткая проекция (по умолчанию)
+issues = await tracker.suggest_issues("исправить ошибки", queue="WRITERS")
+
+# полноценные задачи
+issues = await tracker.suggest_issues("исправить ошибки", FullIssue, full=True)
 ```
 
 Источник: https://yandex.ru/support/tracker/ru/api/issues/get-suggest
@@ -387,6 +407,9 @@ async def iter_issues(
   отправкой запроса.
 - Итерация останавливается, когда очередная страница пуста или API перестаёт присылать
   заголовок `X-Scroll-Id`.
+- Если выйти из цикла досрочно (`break`, исключение), `iter_issues` сам вызовет
+  `clear_search_scroll` для накопленных пар `X-Scroll-Id` / `X-Scroll-Token` — подробнее
+  в предупреждении ниже.
 
 Если нужно управлять scroll-сессией вручную (например, встроить в свою пагинацию), можно
 по-прежнему пользоваться `find_issues`, передавая `scroll_id` явно.
@@ -423,13 +446,25 @@ released = await tracker.clear_search_scroll(
     качестве ключей реальные scroll id. Поэтому тело запроса — обычное отображение
     `{scroll_id: scroll_token}`, как и реализует `clear_search_scroll`.
 
-!!! warning "`iter_issues` не вызывает `clear_search_scroll`"
+!!! warning "Как освобождаются ресурсы scroll-поиска"
 
     `iter_issues` дочитывает scroll-сессию до конца (пока страница не окажется пустой или
-    API не перестанет присылать `X-Scroll-Id`), поэтому отдельно освобождать ресурсы обычно
-    не нужно. Но если вы прерываете итерацию досрочно (`break`) или ведёте scroll-сессию
-    вручную через `find_issues`, вызывайте `clear_search_scroll` сами — иначе снимок
-    результатов будет висеть на сервере до истечения `scroll_ttl_millis`.
+    API не перестанет присылать `X-Scroll-Id`) — в этом случае освобождать ресурсы не
+    нужно. Если же выйти из цикла досрочно (`break`, исключение), `iter_issues` вызовет
+    `clear_search_scroll` сам: он запоминает пары `X-Scroll-Id` / `X-Scroll-Token` со всех
+    прочитанных страниц и отправляет их разом при закрытии генератора. Освобождение
+    делается «как получится»: ошибки этого вызова гасятся, чтобы не подменять исходное
+    исключение.
+
+    Гарантии, что вызов произойдёт, нет: он привязан к закрытию асинхронного генератора
+    (`aclose()` или `shutdown_asyncgens` при завершении цикла событий — это делают за вас
+    `async for` вместе с `asyncio.run`). Если генератор так и не будет закрыт, снимок
+    результатов провисит на сервере до истечения `scroll_ttl_millis`.
+
+    Ведёте scroll-сессию вручную через `find_issues` — вызывайте `clear_search_scroll`
+    сами. Учтите, что `find_issues` не отдаёт заголовки ответа, поэтому получить
+    `X-Scroll-Id` и `X-Scroll-Token` через него нельзя: пары приходится собирать своим
+    HTTP-клиентом либо пользоваться `iter_issues`.
 
 Источник: https://yandex.ru/support/tracker/ru/api/issues/search-release
 
@@ -462,14 +497,24 @@ for link in links:
 async def get_issue_links(self, issue_id: str) -> list[IssueLink]: ...
 ```
 
-`IssueLink` описывает связь одной задачи с другой:
+`IssueLink` описывает связь одной задачи с другой (ответ `GET /issues/{id}/links`):
 
-- `type` — тип связи (`LinkType`, содержит подписи `inward`/`outward`);
-- `direction` — направление связи, `LinkDirection.INWARD` или `LinkDirection.OUTWARD`;
-- `object` — связанная задача (`Issue`);
-- `status` — текущий статус связанной задачи;
-- `name` — свойство-хелпер: возвращает подпись связи (`type.inward` или `type.outward` в
-  зависимости от `direction`) — удобно для вывода вроде «зависит от», «блокирует» и т. п.
+| Поле         | Тип              | Описание                                              |
+|--------------|------------------|-------------------------------------------------------|
+| `url`        | `str`            | Ссылка на связь (`self`)                              |
+| `id`         | `int`            | Идентификатор связи                                   |
+| `type`       | `LinkType`       | Тип связи, содержит подписи `inward`/`outward`         |
+| `direction`  | `LinkDirection`  | Направление связи: `INWARD` или `OUTWARD`              |
+| `object`     | `Issue`          | Связанная задача                                       |
+| `assignee`   | `User \| None`   | Исполнитель связанной задачи                           |
+| `status`     | `Status`         | Текущий статус связанной задачи                        |
+| `created_by` | `User`           | Автор связи                                            |
+| `updated_by` | `User \| None`   | Кто изменил связь                                      |
+| `created_at` | `datetime`       | Дата и время создания связи                            |
+| `updated_at` | `datetime \| None` | Дата и время изменения связи                        |
+
+`name` — свойство-хелпер: возвращает подпись связи (`type.inward` или `type.outward` в
+зависимости от `direction`) — удобно для вывода вроде «зависит от», «блокирует» и т. п.
 
 Кроме связей между задачами, Трекер поддерживает связи с объектами внешних приложений
 (например, коммитами или pull request'ами Bitbucket) — такие связи называются внешними
@@ -482,8 +527,8 @@ async def link_issues(
     self,
     issue_id: str,
     relationship: LinkRelationship | str,
-    issue: str | Issue,
-) -> IssueLink: ...
+    issue: str | Issue | FullIssue,
+) -> CreatedIssueLink: ...
 ```
 
 Создаёт связь между текущей задачей (`issue_id`) и другой (`issue`).
@@ -502,7 +547,25 @@ link = await tracker.link_issues("WRITERS-1", LinkRelationship.RELATES, "WRITERS
    `LinkRelationship` содержит ещё `CLONE` и `ORIGINAL`, но они относятся только к импорту
    задач, см. [«Импорт задач»](import.md).
 3. `issue` — ID/ключ связываемой задачи строкой, либо уже загруженный объект `Issue`
-   (тогда используется `issue.key`).
+   или `FullIssue` (тогда используется `issue.key`).
+
+Возвращается `CreatedIssueLink` — та же связь, что и в `get_issue_links`, но с
+необязательными `assignee` и `status`:
+
+| Поле       | Тип              | Описание                                             |
+|------------|------------------|------------------------------------------------------|
+| `assignee` | `User \| None`   | Исполнитель связанной задачи, в ответе отсутствует   |
+| `status`   | `Status \| None` | Статус связанной задачи, в ответе отсутствует        |
+
+Остальные поля совпадают с `IssueLink` (см. таблицу выше).
+
+!!! note "Почему отдельная модель"
+
+    В таблице параметров ответа документация перечисляет `assignee` и `status`, но пример
+    ответа `POST /issues/{id}/links` их не содержит. Поэтому у `CreatedIssueLink` оба поля
+    необязательны, а у `IssueLink` (ответ `GET /issues/{id}/links`, где они приходят
+    всегда) `status` остаётся обязательным — `link.status.key` у прочитанных связей
+    по-прежнему проходит проверку типов.
 
 Источник: https://yandex.ru/support/tracker/ru/api/issues/link-issue
 
@@ -539,7 +602,8 @@ await issue.unlink(link.id)
 ```
 
 * `issue.get_links()` — эквивалент `tracker.get_issue_links(issue.id)`.
-* `issue.link(relationship, issue)` — эквивалент `tracker.link_issues(issue.id, relationship, issue)`.
+* `issue.link(relationship, issue)` — эквивалент `tracker.link_issues(issue.id, relationship, issue)`
+  (возвращает `CreatedIssueLink`; вторым аргументом принимает строку, `Issue` или `FullIssue`).
 * `issue.unlink(link_id)` — эквивалент `tracker.unlink_issues(issue.id, link_id)`.
 
 ## История изменений
@@ -601,6 +665,13 @@ async for change in tracker.iter_issue_changelog("WRITERS-1", field="status"):
 Каждая следующая страница запрашивается с ID последнего изменения предыдущей; итерация
 останавливается, как только очередная страница пуста или не продвигается дальше текущего
 курсора (защита от зацикливания на случай, если сервер проигнорирует `id`).
+
+!!! note "`per_page=1` отправляется как `perPage=2`"
+
+    Курсор `id` включающий: изменение-курсор возвращается ещё раз в начале следующей
+    страницы. Поэтому страница из одной записи могла бы содержать только сам курсор, и
+    итерация остановилась бы после первой записи. Чтобы этого не происходило,
+    `per_page=1` отправляется в API как `perPage=2`.
 
 Задача, полученная через `get_issue`, тоже умеет отдавать свою историю без явного
 `issue_id`:

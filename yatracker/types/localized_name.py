@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["LocalizedName"]
+__all__ = ["LocalizedName", "LocalizedNameInput"]
 
 
 from .base import Base
@@ -26,3 +26,12 @@ class LocalizedName(Base):
 
     en: str | None = None
     ru: str | None = None
+
+
+LocalizedNameInput = LocalizedName | dict[str, str]
+"""Accepted shapes of a localized name in a request.
+
+Every method that sends a localized name takes either a
+:class:`LocalizedName` model or a plain ``{"ru": ..., "en": ...}`` dict;
+``_prepare_payload`` dumps the model and passes the dict through.
+"""

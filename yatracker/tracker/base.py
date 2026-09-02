@@ -14,14 +14,16 @@ from yatracker.utils.camel_case import camel_case
 from .client import AIOHTTPClient
 
 if TYPE_CHECKING:
-    from collections.abc import Collection
+    from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Sequence
     from types import TracebackType
 
     from .client import BaseClient
 
 T = TypeVar("T")
 B = TypeVar("B", bound=Base)
+PageT = TypeVar("PageT")
 IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
+SuggestT_co = TypeVar("SuggestT_co", bound=Base, covariant=True)
 
 logger = logging.getLogger(__name__)
 
@@ -169,6 +171,62 @@ def _if_match(version: str | int) -> dict[str, str]:
     (`If-Match: "2"`).
     """
     return {"If-Match": f'"{version}"'}
+
+
+async def _iter_relative(
+    fetch_page: Callable[[str | None], Awaitable[PageT]],
+    *,
+    items: Callable[[PageT], Sequence[T]],
+    key: Callable[[T], str],
+    has_next: Callable[[PageT], bool] | None = None,
+) -> AsyncIterator[T]:
+    """Walk over an id-cursor paginated endpoint, page by page.
+
+    Several Tracker endpoints (boards, triggers, users, changelog) share
+    the same relative pagination: items are sorted by id ascending and
+    the next page is requested with the id of the last item of the
+    current one. The docs describe that `id` as the item the next page
+    *starts from*, so the cursor item comes back at the top of the next
+    page and is filtered out here instead of being yielded twice.
+
+    A page that does not advance past the cursor is either the last one
+    (it only repeats the cursor item) or a server ignoring `id`: the
+    iteration stops before yielding anything, even when the endpoint
+    reports a next page, rather than looping forever.
+
+    :param fetch_page: coroutine fetching one page for a cursor
+        (`None` for the first page).
+    :param items: extract the items of a page.
+    :param key: extract the cursor value of an item.
+    :param has_next: whether the endpoint reports more pages; endpoints
+        that do not report it stop on the first non-advancing page.
+    """
+    cursor: str | None = None
+    while True:
+        page = await fetch_page(cursor)
+        batch = items(page)
+        if not batch or key(batch[-1]) == cursor:
+            return
+
+        for item in batch:
+            if key(item) != cursor:
+                yield item
+
+        if has_next is not None and not has_next(page):
+            return
+
+        cursor = key(batch[-1])
+
+
+def _relative_page_size(per_page: int | None) -> int | None:
+    """Bump a one-item page size for an inclusive id cursor.
+
+    The cursor item is resent at the top of every page, so a page of one
+    item can only ever contain the cursor itself: the iteration would
+    stop right after the first item. Two is the smallest size that still
+    advances.
+    """
+    return 2 if per_page == 1 else per_page
 
 
 def _encode_param(value: Any) -> str:  # noqa: ANN401

@@ -347,3 +347,26 @@ class TestIterUsers:
         _ = [user async for user in tracker.iter_users(expand="groups")]
 
         assert client.calls[0]["params"] == {"expand": "groups"}
+
+    async def test_per_page_one_is_sent_as_two(self) -> None:
+        """A one-user page could only ever hold the (inclusive) cursor."""
+        user_1, user_2, user_3 = ({**FULL_USER, "uid": i} for i in (1, 2, 3))
+        tracker, client = make_tracker(None)
+        client.responses = [
+            (
+                200,
+                json.dumps({"users": [user_1, user_2], "hasNext": True}).encode(),
+                {},
+            ),
+            (
+                200,
+                json.dumps({"users": [user_2, user_3], "hasNext": False}).encode(),
+                {},
+            ),
+        ]
+
+        users = [user async for user in tracker.iter_users(per_page=1)]
+
+        assert [u.uid for u in users] == ["1", "2", "3"]
+        assert client.calls[0]["params"] == {"perPage": "2"}
+        assert client.calls[1]["params"] == {"perPage": "2", "id": "2"}

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, _iter_relative, _relative_page_size
 from yatracker.types.user import FullUser, UsersPage
 
 if TYPE_CHECKING:
@@ -98,40 +98,34 @@ class Users(BaseTracker):
 
         Wraps :meth:`get_users_relative`: every page is requested with
         the uid of the last user of the previous one and iteration stops
-        when the API reports no next page. The docs describe the `id`
-        cursor as the user the next page *starts from*, so if the cursor
-        user comes back at the top of a page it is not yielded twice.
+        when the API reports no next page (see
+        :func:`yatracker.tracker.base._iter_relative`).
 
         Source:
         https://yandex.ru/support/tracker/ru/api/users/get-users-relative
 
         :param per_page: number of users per page (1 to 100).
+            `per_page=1` is sent as 2: the cursor user is resent on
+            every page, so a page of one could never advance.
         :param expand: additional fields to include in the response:
             "groups" - the groups the users belong to.
         """
-        id_: str | None = None
-        while True:
-            page = await self.get_users_relative(
-                per_page=per_page,
+        page_size = _relative_page_size(per_page)
+
+        async def fetch_page(id_: str | None) -> UsersPage:
+            return await self.get_users_relative(
+                per_page=page_size,
                 id_=id_,
                 expand=expand,
             )
-            users = page.users
-            # A page that does not advance past the cursor would be
-            # requested again forever (and re-yield users already seen
-            # on the previous page): stop before yielding anything,
-            # even if `hasNext` is true.
-            if not users or users[-1].uid == id_:
-                return
 
-            for user in users:
-                if user.uid != id_:
-                    yield user
-
-            if not page.has_next:
-                return
-
-            id_ = users[-1].uid
+        async for user in _iter_relative(
+            fetch_page,
+            items=lambda page: page.users,
+            key=lambda user: user.uid,
+            has_next=lambda page: page.has_next,
+        ):
+            yield user
 
     async def get_user(
         self,

@@ -67,7 +67,7 @@ field = await tracker.get_field("ruName")
 async def create_field(
     self,
     name: LocalizedName | dict[str, str],
-    field_id: str,
+    id_: str,
     category: str,
     type_: str,
     *,
@@ -88,7 +88,7 @@ from yatracker.types.localized_name import LocalizedName
 
 field = await tracker.create_field(
     name=LocalizedName(en="My field", ru="Моё поле"),
-    field_id="myglobalfield",
+    id_="myglobalfield",
     category="0000000000000003********",
     type_="ru.yandex.startrek.core.fields.StringFieldType",
     options_provider={
@@ -100,7 +100,8 @@ field = await tracker.create_field(
 
 1. `name` — локализованное название поля, `LocalizedName(en=..., ru=...)` или обычный
    словарь `{"en": ..., "ru": ...}`.
-2. `field_id` — идентификатор нового поля, отправляется как `id`.
+2. `id_` — идентификатор нового поля, отправляется как `id`. Завершающее подчёркивание
+   нужно, чтобы имя параметра не конфликтовало со встроенным `id` (как и у `type_`).
 3. `category` — идентификатор категории поля; список категорий отдаёт `GET /fields/categories`
    (см. `## Категории полей`).
 4. `type_` — тип поля, отправляется как `type`, см. `!!! tip` ниже.
@@ -292,7 +293,7 @@ async def create_local_field(
     self,
     queue_id: str | int,
     name: LocalizedName | dict[str, str],
-    field_id: str,
+    id_: str,
     category: str,
     type_: str,
     *,
@@ -314,7 +315,7 @@ from yatracker.types.localized_name import LocalizedName
 field = await tracker.create_local_field(
     "HELP",
     name=LocalizedName(en="User ID", ru="Идентификатор пользователя"),
-    field_id="userId",
+    id_="userId",
     category="0000000000000003********",
     type_="ru.yandex.startrek.core.fields.IntegerFieldType",
 )
@@ -322,9 +323,10 @@ field = await tracker.create_local_field(
 
 1. `queue_id` — идентификатор или ключ очереди.
 2. `name` — локализованное название поля.
-3. `field_id` — ключ нового локального поля, отправляется как `id`. Созданное поле получит
-   префиксованный идентификатор `<hex>--<field_id>` (значение `LocalField.id`), а `field_id`
-   останется его коротким `key`.
+3. `id_` — ключ нового локального поля, отправляется как `id` (завершающее подчёркивание
+   нужно, чтобы имя параметра не конфликтовало со встроенным `id`, как и у `type_`).
+   Созданное поле получит префиксованный идентификатор `<hex>--<id_>` (значение
+   `LocalField.id`), а `id_` останется его коротким `key`.
 4. `category` — идентификатор категории поля.
 5. `type_` — тип поля, см. `!!! tip` ниже.
 6. `options_provider` — выпадающий список значений поля, см. `!!! tip` ниже.
@@ -451,7 +453,9 @@ field = await tracker.update_local_field(
 ### `LocalizedName`
 
 Используется только в запросах (`name=`) — ответы возвращают название поля или категории
-как обычную строку.
+как обычную строку. Для аргументов `name=` в сигнатурах ниже определён псевдоним
+`LocalizedNameInput = LocalizedName | dict[str, str]`
+(`yatracker.types.localized_name`) — в коде удобнее писать его, а не союз целиком.
 
 | Поле | Тип | Описание |
 | --- | --- | --- |

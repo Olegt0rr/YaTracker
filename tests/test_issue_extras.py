@@ -16,7 +16,6 @@ https://yandex.ru/support/tracker/ru/api/issues/add-reaction-to-comment
 from __future__ import annotations
 
 import json
-from datetime import datetime  # noqa: TC003
 from typing import Any
 
 import pytest
@@ -25,14 +24,11 @@ from yatracker.exceptions import ObjectNotFoundError
 from yatracker.types import (
     FullIssue,
     Issue,
-    IssueLink,
-    IssueType,
     LinkRelationship,
-    Priority,
-    Queue,
-    User,
 )
 from yatracker.types.changelog import Changelog
+from yatracker.types.issue_link import CreatedIssueLink, IssueLink
+from yatracker.types.issue_suggest import IssueSuggest
 
 from tests.conftest import FakeClient, full_issue_body, make_tracker, sent_json
 
@@ -290,6 +286,37 @@ class TestIterIssueChangelog:
         assert seen == []
         assert len(client.calls) == 1
 
+    async def test_per_page_one_is_sent_as_two(self) -> None:
+        """A one-record page could only ever hold the (inclusive) cursor."""
+        page1 = [
+            self._record("c1", type_="IssueCreated"),
+            self._record("c2", type_="IssueUpdated"),
+        ]
+        page2 = [
+            self._record("c2", type_="IssueUpdated"),
+            self._record("c3", type_="IssueWorkflow"),
+        ]
+        page3 = [self._record("c3", type_="IssueWorkflow")]
+
+        client = FakeClient(
+            responses=[
+                (200, json.dumps(page1).encode(), {}),
+                (200, json.dumps(page2).encode(), {}),
+                (200, json.dumps(page3).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+
+        seen = [
+            change.id
+            async for change in tracker.iter_issue_changelog("TEST-27", per_page=1)
+        ]
+        assert seen == ["c1", "c2", "c3"]
+
+        assert client.calls[0]["params"] == {"perPage": "2"}
+        assert client.calls[1]["params"] == {"perPage": "2", "id": "c2"}
+        assert client.calls[2]["params"] == {"perPage": "2", "id": "c3"}
+
 
 class TestFullIssueGetChangelogDelegation:
     async def test_delegates_to_get_issue_changelog_with_self_id(self) -> None:
@@ -358,7 +385,8 @@ ISSUE_LINK_WITH_ASSIGNEE_AND_STATUS: dict[str, Any] = {
 }
 
 # `POST .../links` answers without `assignee`/`status` (only `GET .../links`
-# carries them), which is why `IssueLink.status`/`.assignee` are optional.
+# carries them), which is why it is decoded as `CreatedIssueLink`, where both
+# are optional, and not as `IssueLink`, where `status` is required.
 ISSUE_LINK_CREATED_WITHOUT_STATUS: dict[str, Any] = {
     "self": "https://api.tracker.yandex.net/v3/issues/TEST-1/links/1012345",
     "id": 1012345,
@@ -445,6 +473,33 @@ class TestLinkIssues:
         call = client.calls[0]
         assert sent_json(call) == {"relationship": "is subtask for", "issue": "TREK-2"}
 
+    async def test_sends_the_key_of_a_full_issue(self) -> None:
+        """`FullIssue` is not a subclass of `Issue`, it needs its own branch."""
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(key="TREK-2"), {}),
+                (201, json.dumps(ISSUE_LINK_CREATED_WITHOUT_STATUS).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        linked = await tracker.get_issue("TREK-2")
+        assert isinstance(linked, FullIssue)
+
+        await tracker.link_issues("TEST-1", LinkRelationship.RELATES, linked)
+
+        assert sent_json(client.calls[1]) == {
+            "relationship": "relates",
+            "issue": "TREK-2",
+        }
+
+    async def test_returns_a_created_issue_link_without_status(self) -> None:
+        tracker, _ = make_tracker(ISSUE_LINK_CREATED_WITHOUT_STATUS, status=201)
+        link = await tracker.link_issues("TEST-1", "relates", "TREK-2")
+
+        assert isinstance(link, CreatedIssueLink)
+        assert link.status is None
+        assert link.assignee is None
+
 
 class TestUnlinkIssues:
     async def test_deletes_and_returns_true(self) -> None:
@@ -474,6 +529,45 @@ class TestFullIssueLinkDelegation:
         assert call["url"].endswith(f"/issues/{issue.id}/links")
         assert sent_json(call) == {"relationship": "relates", "issue": "TREK-2"}
 
+    async def test_link_sends_the_key_of_an_issue_object(self) -> None:
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(), {}),
+                (201, json.dumps(ISSUE_LINK_CREATED_WITHOUT_STATUS).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        issue = await tracker.get_issue("TEST-1")
+
+        await issue.link(
+            "relates",
+            Issue(self="u", id="9", key="TREK-2", display="d"),
+        )
+
+        assert sent_json(client.calls[1]) == {
+            "relationship": "relates",
+            "issue": "TREK-2",
+        }
+
+    async def test_link_sends_the_key_of_a_full_issue(self) -> None:
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(), {}),
+                (200, full_issue_body(key="TREK-2"), {}),
+                (201, json.dumps(ISSUE_LINK_CREATED_WITHOUT_STATUS).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        issue = await tracker.get_issue("TEST-1")
+        linked = await tracker.get_issue("TREK-2")
+
+        await issue.link(LinkRelationship.RELATES, linked)
+
+        assert sent_json(client.calls[2]) == {
+            "relationship": "relates",
+            "issue": "TREK-2",
+        }
+
     async def test_unlink_delegates_to_unlink_issues(self) -> None:
         client = FakeClient(
             responses=[
@@ -494,23 +588,6 @@ class TestFullIssueLinkDelegation:
 # --------------------------------------------------------------------------
 # get-suggest
 # --------------------------------------------------------------------------
-
-
-class SuggestedIssue(FullIssue):
-    """Narrow projection of `FullIssue` matching the suggest response.
-
-    `GET /issues/_suggest` never returns the full issue shape, so the
-    fields `FullIssue` requires but the sample response omits become
-    optional here.
-    """
-
-    type: IssueType | None = None
-    priority: Priority | None = None
-    queue: Queue | None = None
-    favorite: bool | None = None
-    created_at: datetime | None = None
-    created_by: User | None = None
-    votes: int | None = None
 
 
 SUGGEST_RESPONSE: list[dict[str, Any]] = [
@@ -554,11 +631,38 @@ SUGGEST_RESPONSE: list[dict[str, Any]] = [
 
 
 class TestSuggestIssues:
-    async def test_with_narrow_custom_type_decodes_the_projection(self) -> None:
+    async def test_default_type_decodes_the_bare_documented_projection(self) -> None:
+        """The default `_type` must decode the doc's sample response."""
         tracker, client = make_tracker(SUGGEST_RESPONSE)
-        issues = await tracker.suggest_issues(
+        issues = await tracker.suggest_issues("исправить ошибки")
+
+        call = client.calls[0]
+        assert call["method"] == "GET"
+        assert call["url"].endswith("/issues/_suggest")
+        assert call["params"] == {"input": "исправить ошибки"}
+
+        assert len(issues) == 1
+        issue = issues[0]
+        assert isinstance(issue, IssueSuggest)
+        assert issue.url == "https://api.tracker.yandex.net/v3/issues/TEST-123"
+        assert issue.id == "11dac333333a"
+        assert issue.key == "TEST-123"
+        assert issue.version == 749
+        assert issue.summary == "My summary"
+        assert issue.followers is not None
+        assert [f.display for f in issue.followers] == [
+            "Имя Фамилия",
+            "Имя Фамилия2",
+        ]
+        assert issue.assignee is not None
+        assert issue.assignee.display == "Имя Фамилия3"
+        assert issue.status is not None
+        assert issue.status.key == "open"
+
+    async def test_sends_every_optional_query_param(self) -> None:
+        tracker, client = make_tracker(SUGGEST_RESPONSE)
+        await tracker.suggest_issues(
             "исправить ошибки",
-            SuggestedIssue,
             queue="TEST",
             full=True,
             fields="summary,status,assignee,followers",
@@ -566,10 +670,7 @@ class TestSuggestIssues:
             embed="comments",
         )
 
-        call = client.calls[0]
-        assert call["method"] == "GET"
-        assert call["url"].endswith("/issues/_suggest")
-        assert call["params"] == {
+        assert client.calls[0]["params"] == {
             "input": "исправить ошибки",
             "queue": "TEST",
             "full": "true",
@@ -578,28 +679,24 @@ class TestSuggestIssues:
             "embed": "comments",
         }
 
-        assert len(issues) == 1
-        issue = issues[0]
-        assert isinstance(issue, SuggestedIssue)
-        assert issue.key == "TEST-123"
-        assert issue.version == 749
-        assert issue.summary == "My summary"
-        assert issue.followers is not None
-        assert len(issue.followers) == 2
-        assert issue.assignee is not None
-        assert issue.assignee.display == "Имя Фамилия3"
-        assert issue.status.key == "open"
-        # not present in the suggest projection
-        assert issue.type is None
-        assert issue.priority is None
-        assert issue.queue is None
-        assert issue.created_by is None
+    async def test_accepts_a_custom_type(self) -> None:
+        class MySuggest(IssueSuggest):
+            pass
 
-    async def test_only_input_sends_a_bare_query_string(self) -> None:
         tracker, client = make_tracker(SUGGEST_RESPONSE)
-        await tracker.suggest_issues("текст", SuggestedIssue)
+        issues = await tracker.suggest_issues("текст", MySuggest)
 
         assert client.calls[0]["params"] == {"input": "текст"}
+        assert isinstance(issues[0], MySuggest)
+
+    async def test_accepts_full_issue_for_whole_issues(self) -> None:
+        """`_type=FullIssue` + `full=True` (and no `fields`) decodes whole issues."""
+        tracker, client = make_tracker([json.loads(full_issue_body())])
+        issues = await tracker.suggest_issues("текст", FullIssue, full=True)
+
+        assert client.calls[0]["params"] == {"input": "текст", "full": "true"}
+        assert isinstance(issues[0], FullIssue)
+        assert issues[0].key == "TEST-1"
 
 
 # --------------------------------------------------------------------------

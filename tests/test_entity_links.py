@@ -121,6 +121,17 @@ class TestGetEntityLinks:
         assert links[0].link_field_values.id is None
         assert links[0].link_field_values.summary is None
 
+    async def test_explicit_null_link_field_values_is_tolerated(self) -> None:
+        # the API sends `null` instead of an empty object when the request
+        # asked for no fields; it must not raise.
+        payload = [{"type": "depends on", "linkFieldValues": None}]
+        tracker, _ = make_tracker(payload)
+        links = await tracker.get_entity_links("project", "1")
+
+        assert links[0].relationship == "depends on"
+        assert links[0].link_field_values.id is None
+        assert links[0].link_field_values.summary is None
+
 
 # --- link_entities ---------------------------------------------------------------
 

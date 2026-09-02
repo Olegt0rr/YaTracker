@@ -16,6 +16,7 @@ import json
 from datetime import date
 from typing import Any
 
+import pytest
 from yatracker.types.component import Component
 from yatracker.types.queue_permissions import (
     ComponentGroupAccess,
@@ -609,6 +610,14 @@ class TestUpdateQueueAccess:
         )
 
         assert sent_json(client.calls[0]) == {"create": {"users": ["user1"]}}
+
+    async def test_no_permissions_raises(self) -> None:
+        tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)
+
+        with pytest.raises(ValueError, match="requires `create`"):
+            await tracker.update_queue_access("TESTQUEUE")
+
+        assert client.calls == []
 
     async def test_response_decodes_into_queue_permissions(self) -> None:
         tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)

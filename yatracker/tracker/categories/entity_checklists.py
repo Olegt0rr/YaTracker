@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from datetime import date, datetime
-from typing import TYPE_CHECKING, Any, cast
+from datetime import date, datetime, time, timezone
+from typing import TYPE_CHECKING, Any
 
 from yatracker.tracker.base import BaseTracker, _convert_value
 from yatracker.types.entity import (
@@ -10,7 +10,7 @@ from yatracker.types.entity import (
     EntityDeadline,
     EntityType,
 )
-from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
+from yatracker.utils.datetime import to_tracker_datetime
 
 from .entities import _entity_uri, _fields_params
 
@@ -61,7 +61,10 @@ class EntityChecklists(BaseTracker):
         :param assignee: Login or id of the assignee of the item.
         :param deadline: Deadline of the item: an `EntityDeadline`, a
             timezone-aware `datetime` or a `date` (both sent as type
-            `date`), or a ready-made API string.
+            `date`), or a ready-made API string. The API documents the
+            date as a full timestamp, so a bare `date` is sent as
+            midnight UTC; pass an aware `datetime` when the offset
+            matters.
         :param notify: Whether to notify the users mentioned in the
             entity (`True` by default).
         :param notify_author: Whether to notify the author of the
@@ -119,6 +122,11 @@ class EntityChecklists(BaseTracker):
         :param entity_id: Id (or short id) of the entity.
         :param items: Items to edit: `EntityChecklistItem` objects or
             dicts like `{"id": "...", "text": "...", "checked": True}`.
+            An `EntityChecklistItem` (e.g. one read back from the API)
+            is re-encoded into the request shape: its assignee is sent
+            as a user id and the read-only `text_html`,
+            `checklist_item_type` and `deadline.is_exceeded` are
+            dropped. A dict is sent as it is.
             A single item on its own raises `TypeError`.
         :param notify: Whether to notify the users mentioned in the
             entity (`True` by default).
@@ -143,9 +151,7 @@ class EntityChecklists(BaseTracker):
                 notify=notify,
                 notify_author=notify_author,
             ),
-            # the body is a JSON array; `request` serialises whatever it
-            # is given, only its annotation is narrower
-            payload=cast("dict[str, Any]", payload),
+            payload=payload,
         )
         return self._decode(Entity, data)
 
@@ -181,7 +187,10 @@ class EntityChecklists(BaseTracker):
         :param assignee: Login or id of the assignee of the item.
         :param deadline: Deadline of the item: an `EntityDeadline`, a
             timezone-aware `datetime` or a `date` (both sent as type
-            `date`), or a ready-made API string.
+            `date`), or a ready-made API string. The API documents the
+            date as a full timestamp, so a bare `date` is sent as
+            midnight UTC; pass an aware `datetime` when the offset
+            matters.
         :param notify: Whether to notify the users mentioned in the
             entity (`True` by default).
         :param notify_author: Whether to notify the author of the
@@ -348,6 +357,11 @@ def _build_deadline(
     An `EntityDeadline` (e.g. one read from another item) keeps its own
     `deadline_type`; a bare date, timestamp or ready-made API string is
     sent as type `date`. A deadline without a date is left out entirely.
+
+    Every checklist page of the documentation shows the date as a full
+    `YYYY-MM-DDThh:mm:ss.sss±hhmm` timestamp, so a bare `date` is sent
+    as midnight UTC. Pass a timezone-aware `datetime` when the offset
+    matters.
     """
     if deadline is None:
         return None
@@ -358,15 +372,17 @@ def _build_deadline(
     else:
         value, deadline_type = deadline, "date"
 
-    # `datetime` is a subclass of `date`, so it is rendered first: the
-    # API documents checklist deadlines as full timestamps.
-    # stacklevel=5: warn -> to_tracker_datetime -> this helper -> the
-    # payload helper -> the public method -> user code
+    # `datetime` is a subclass of `date`, so it is matched first
     rendered: str | None
     if isinstance(value, datetime):
-        rendered = to_tracker_datetime(value, stacklevel=5)
+        rendered = to_tracker_datetime(value)
+    elif isinstance(value, date):
+        rendered = to_tracker_datetime(
+            datetime.combine(value, time.min, tzinfo=timezone.utc),
+            warn=False,
+        )
     else:
-        rendered = to_tracker_date(value)
+        rendered = value
 
     if rendered is None:
         return None
@@ -394,14 +410,37 @@ def _checklist_item_payload(
     return payload
 
 
+def _encode_checklist_item(
+    item: EntityChecklistItem | dict[str, Any],
+) -> dict[str, Any]:
+    """Re-encode a checklist item into the request shape of the edit endpoint.
+
+    A dict is passed through verbatim: the caller then owns the exact
+    body. An `EntityChecklistItem` read back from the API, on the other
+    hand, carries fields the endpoint does not accept, so it is
+    rebuilt: `assignee` is sent as the id of the user (the endpoint
+    documents an id or a login, not an object), the deadline is
+    re-rendered by `_build_deadline`, and the read-only `textHtml`,
+    `checklistItemType` and `deadline.isExceeded` are dropped.
+    """
+    if not isinstance(item, EntityChecklistItem):
+        return _convert_value(item)
+
+    payload: dict[str, Any] = {"id": item.id}
+    if item.text is not None:
+        payload["text"] = item.text
+    if item.checked is not None:
+        payload["checked"] = item.checked
+    if item.assignee is not None:
+        payload["assignee"] = item.assignee.id
+    deadline = _build_deadline(item.deadline)
+    if deadline is not None:
+        payload["deadline"] = deadline
+    return payload
+
+
 def _checklist_items_payload(
-    # The bare types are part of the annotation only so that the runtime
-    # guard below is not dead code for a type checker: a single item is
-    # exactly the kind of value that would otherwise be iterated.
-    items: Sequence[EntityChecklistItem | dict[str, Any]]
-    | EntityChecklistItem
-    | dict[str, Any]
-    | str,
+    items: Sequence[EntityChecklistItem | dict[str, Any]],
 ) -> list[dict[str, Any]]:
     """Convert the items of `edit_entity_checklist` to the plain dicts the API wants."""
     if isinstance(items, (str, dict, EntityChecklistItem)):
@@ -411,7 +450,7 @@ def _checklist_items_payload(
         )
         raise TypeError(msg)
 
-    payload = [_convert_value(item) for item in items]
+    payload = [_encode_checklist_item(item) for item in items]
     if not payload:
         msg = "At least one checklist item is required."
         raise ValueError(msg)

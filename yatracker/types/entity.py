@@ -62,6 +62,15 @@ DateOrDatetime = Annotated[date_ | datetime, BeforeValidator(_parse_date_or_date
 """A field the API returns either as `YYYY-MM-DD` or as a full timestamp."""
 
 
+def _fields_or_empty(value: Any) -> Any:  # noqa: ANN401
+    """Read an explicit `null` as an empty set of fields.
+
+    The API sends `"linkFieldValues": null` when the request asked for
+    no fields, which a plain `EntityFields` would reject.
+    """
+    return {} if value is None else value
+
+
 class EntityRef(Base):
     """Short reference to an entity, embedded into `parentEntity`."""
 
@@ -223,7 +232,9 @@ class EntityLinkInfo(Base):
         validation_alias=AliasChoices("type", "relationship"),
         serialization_alias="relationship",
     )
-    link_field_values: EntityFields = field(default_factory=EntityFields)
+    link_field_values: Annotated[EntityFields, BeforeValidator(_fields_or_empty)] = (
+        field(default_factory=EntityFields)
+    )
 
 
 class Entity(Base):

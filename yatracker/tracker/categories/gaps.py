@@ -114,10 +114,16 @@ class Gaps(BaseTracker):
             )
             raise ValueError(msg)
 
+        # a plain loop, not a comprehension: on Python < 3.12 a comprehension
+        # adds a frame and the naive-datetime warning would point at this
+        # module instead of the caller (PEP 709 removed that frame later)
+        encoded: list[dict[str, Any]] = []
+        for gap in gaps:
+            encoded.append(_encode_gap(gap))  # noqa: PERF401
         data = await self._client.request(
             method="POST",
             uri="/gaps",
-            payload={"gaps": [_encode_gap(gap) for gap in gaps]},
+            payload={"gaps": encoded},
         )
         return self._decode(GapsResult, data).gaps
 

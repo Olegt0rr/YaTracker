@@ -41,6 +41,12 @@ class TestToTrackerDatetime:
             def utcoffset(self, dt: datetime | None) -> timedelta | None:  # noqa: ARG002
                 return None
 
+            def dst(self, dt: datetime | None) -> timedelta | None:  # noqa: ARG002
+                return None
+
+            def tzname(self, dt: datetime | None) -> str | None:  # noqa: ARG002
+                return None
+
         value = datetime(2024, 1, 1, tzinfo=NoOffset())
         with pytest.warns(UserWarning, match="naive datetime"):
             assert to_tracker_datetime(value) == "2024-01-01T00:00:00.000"

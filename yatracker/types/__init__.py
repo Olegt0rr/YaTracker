@@ -8,6 +8,7 @@ __all__ = [
     "Component",
     "ComponentRef",
     "Duration",
+    "FieldRef",
     "FullIssue",
     "FullQueue",
     "Issue",
@@ -17,6 +18,8 @@ __all__ = [
     "LinkDirection",
     "LinkRelationship",
     "LinkType",
+    "Macro",
+    "MacroFieldChange",
     "Priority",
     "Queue",
     "QueueField",
@@ -37,12 +40,14 @@ from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
 from .comment import Comment
 from .component import Component, ComponentRef
 from .duration import Duration
+from .field_ref import FieldRef
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
 from .issue_link import IssueLink, LinkDirection, LinkRelationship, LinkType
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
+from .macro import Macro, MacroFieldChange
 from .priority import Priority
 from .queue import Queue
 from .queue_field import QueueField

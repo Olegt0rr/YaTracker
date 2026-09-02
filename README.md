@@ -24,7 +24,7 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
   through the return types.
 * Supports both Yandex 360 (`X-Org-ID` + OAuth) and Yandex Cloud
   (`X-Cloud-Org-ID` + IAM) organizations.
-* Covers issues, queues, components, comments, worklogs, attachments,
+* Covers issues, queues, components, macros, comments, worklogs, attachments,
   priorities, bulk changes, and import of issues, comments, links and
   attachments.
 * Local (custom) queue fields are supported via your own model subclasses.

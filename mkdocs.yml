@@ -8,6 +8,7 @@ nav:
     - Задачи: issues.md
     - Очереди: queues.md
     - Компоненты: components.md
+    - Макросы: macros.md
     - Комментарии: comments.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md

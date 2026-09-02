@@ -16,7 +16,7 @@ from yatracker.types.entity_access import (
     EntityPermissions,
 )
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 # --- payload builders --------------------------------------------------------
 
@@ -25,12 +25,12 @@ PERMISSIONS_RESPONSE: dict[str, Any] = {
     "acl": {
         "READ": {
             "users": [
-                {
-                    "self": "https://api.tracker.yandex.net/v3/users/11",
-                    "id": "11",
-                    "display": "Имя Фамилия",
-                    "passportUid": 11,
-                },
+                user_ref(
+                    self="https://api.tracker.yandex.net/v3/users/11",
+                    id="11",
+                    display="Имя Фамилия",
+                    passportUid=11,
+                ),
             ],
             "groups": [
                 {

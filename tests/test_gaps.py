@@ -14,7 +14,7 @@ from typing import Any
 
 import pytest
 from yatracker import YaTracker
-from yatracker.tracker.categories.gaps import MAX_GAPS_PER_REQUEST
+from yatracker.tracker.categories.gaps import MAX_GAPS_PER_REQUEST, _encode_gap
 from yatracker.types.gap import Gap, GapsSearchResult
 
 from tests.conftest import FakeClient, make_tracker, sent_json
@@ -215,6 +215,76 @@ async def test_create_gaps_warns_on_naive_datetime() -> None:
 
     # the warning must point at the caller, not at library internals
     assert record[0].filename == __file__
+
+
+def test_encode_gap_with_only_from() -> None:
+    encoded = _encode_gap(
+        {"user": "u", "workflow": "vacation", "from_": "2026-07-01T00:00:00.000Z"},
+    )
+
+    assert encoded == {
+        "user": "u",
+        "workflow": "vacation",
+        "from": "2026-07-01T00:00:00.000Z",
+    }
+    assert "to" not in encoded
+
+
+def test_encode_gap_with_only_to() -> None:
+    encoded = _encode_gap(
+        {"user": "u", "workflow": "vacation", "to": "2026-07-15T00:00:00.000Z"},
+    )
+
+    assert encoded == {
+        "user": "u",
+        "workflow": "vacation",
+        "to": "2026-07-15T00:00:00.000Z",
+    }
+    assert "from" not in encoded
+
+
+async def test_create_gaps_sends_only_from_when_to_is_absent() -> None:
+    tracker, client = make_tracker(CREATE_GAPS_RESPONSE)
+    await tracker.create_gaps(
+        [
+            {
+                "user": "username1",
+                "workflow": "vacation",
+                "from_": "2026-07-01T00:00:00.000Z",
+            }
+        ],
+    )
+
+    call = client.calls[0]
+    body = sent_json(call)["gaps"][0]
+    assert body == {
+        "user": "username1",
+        "workflow": "vacation",
+        "from": "2026-07-01T00:00:00.000Z",
+    }
+    assert "to" not in body
+
+
+async def test_create_gaps_sends_only_to_when_from_is_absent() -> None:
+    tracker, client = make_tracker(CREATE_GAPS_RESPONSE)
+    await tracker.create_gaps(
+        [
+            {
+                "user": "username1",
+                "workflow": "vacation",
+                "to": "2026-07-15T00:00:00.000Z",
+            }
+        ],
+    )
+
+    call = client.calls[0]
+    body = sent_json(call)["gaps"][0]
+    assert body == {
+        "user": "username1",
+        "workflow": "vacation",
+        "to": "2026-07-15T00:00:00.000Z",
+    }
+    assert "from" not in body
 
 
 # --- create_gap ----------------------------------------------------------

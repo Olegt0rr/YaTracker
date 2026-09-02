@@ -244,6 +244,108 @@ class TestAddEntityChecklistItem:
         # the warning points at this file, not at the library internals
         assert record[0].filename == __file__
 
+    async def test_entity_deadline_without_a_date_is_not_sent(self) -> None:
+        # nothing to put in the `date` key, so the whole object is left
+        # out rather than sent half-built
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.add_entity_checklist_item(
+            "project",
+            "1",
+            "Item",
+            deadline=EntityDeadline(deadline_type="date"),
+        )
+
+        assert sent_json(client.calls[0]) == {"text": "Item"}
+
+
+# --- EntityChecklistItem request form ----------------------------------------
+
+
+class TestChecklistItemRequestForm:
+    """The model renders its own request body, whatever fields it has."""
+
+    async def test_only_the_id_is_sent_for_a_bare_item(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            [EntityChecklistItem(id="1")],
+        )
+
+        assert sent_json(client.calls[0]) == [{"id": "1"}]
+
+    async def test_text_without_checked(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            [EntityChecklistItem(id="1", text="Item")],
+        )
+
+        assert sent_json(client.calls[0]) == [{"id": "1", "text": "Item"}]
+
+    async def test_checked_without_text(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            [EntityChecklistItem(id="1", checked=False)],
+        )
+
+        # `False` is a value, not an absent field
+        assert sent_json(client.calls[0]) == [{"id": "1", "checked": False}]
+
+    async def test_deadline_of_the_item_is_rendered_as_a_timestamp(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            [
+                EntityChecklistItem(
+                    id="1",
+                    deadline=EntityDeadline(
+                        date=date(2021, 5, 9),
+                        deadline_type="date",
+                    ),
+                ),
+            ],
+        )
+
+        assert sent_json(client.calls[0]) == [
+            {
+                "id": "1",
+                "deadline": {
+                    "date": "2021-05-09T00:00:00.000+0000",
+                    "deadlineType": "date",
+                },
+            },
+        ]
+
+    async def test_empty_deadline_of_the_item_renders_empty(self) -> None:
+        # unlike the `deadline=` parameter of the single-item methods,
+        # a deadline carried by the item is rendered by the model and
+        # can only be as empty as the model is
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            [EntityChecklistItem(id="1", deadline=EntityDeadline())],
+        )
+
+        assert sent_json(client.calls[0]) == [{"id": "1", "deadline": {}}]
+
+    async def test_read_only_fields_are_dropped(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        item = EntityChecklistItem(
+            id="1",
+            text="Item",
+            text_html="<p>Item</p>",
+            checklist_item_type="standard",
+        )
+        await tracker.edit_entity_checklist("project", "1", [item])
+
+        assert sent_json(client.calls[0]) == [{"id": "1", "text": "Item"}]
+
 
 # --- deadline decoding regression (`date` -> `DateOrDatetime`) ---------------
 

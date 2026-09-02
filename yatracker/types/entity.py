@@ -29,8 +29,11 @@ from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import AliasChoices, BeforeValidator, ConfigDict, TypeAdapter
 
+from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
+
 from .attachment import Attachment
 from .base import Base, field, url_field
+from .checklist import ChecklistAssignee
 from .queue import Queue
 from .ref import Ref
 from .user import User
@@ -108,17 +111,79 @@ class EntityDeadline(Base):
     deadline_type: str | None = None
     is_exceeded: bool | None = None
 
+    def _render(self, *, as_timestamp: bool) -> dict[str, Any]:
+        """Render the deadline as the `{"date", "deadlineType"}` request object.
+
+        The read-only `isExceeded` is dropped and a naive `datetime` is
+        reported from here, so every caller warns the same way. A
+        deadline without a date renders without the `date` key.
+
+        :param as_timestamp: render a bare `date` as midnight UTC. The
+            checklist endpoints document the date as a full
+            `YYYY-MM-DDThh:mm:ss.sss±hhmm` timestamp, key results as a
+            plain `YYYY-MM-DD`.
+        """
+        payload: dict[str, Any] = {}
+        # `datetime` is a subclass of `date`, so it is matched first
+        if isinstance(self.date, datetime):
+            payload["date"] = to_tracker_datetime(self.date)
+        elif isinstance(self.date, date_):
+            payload["date"] = (
+                to_tracker_datetime(self.date)
+                if as_timestamp
+                else to_tracker_date(self.date)
+            )
+        if self.deadline_type is not None:
+            payload["deadlineType"] = self.deadline_type
+        return payload
+
+    def _to_request(self) -> dict[str, Any]:
+        """Render the deadline for a generic request body.
+
+        A bare `date` keeps its `YYYY-MM-DD` form here: that is what a
+        key result deadline looks like, and it is the only place a
+        deadline reaches a request body on its own. The checklist
+        endpoints ask for a timestamp through `_render` instead.
+        """
+        return self._render(as_timestamp=False)
+
 
 class EntityChecklistItem(Base):
-    """Single item of the entity checklist (`checklistItems` field)."""
+    """Single item of the entity checklist (`checklistItems` field).
+
+    The assignee of a checklist item is the trimmed-down user object of
+    :class:`~yatracker.types.checklist.ChecklistAssignee`: unlike the
+    assignee of a key result it carries no `self` reference.
+    """
 
     id: str
     text: str | None = None
     text_html: str | None = None
     checked: bool | None = None
-    assignee: User | None = None
+    assignee: ChecklistAssignee | None = None
     deadline: EntityDeadline | None = None
     checklist_item_type: str | None = None
+
+    def _to_request(self) -> dict[str, Any]:
+        """Render the item the way the checklist endpoints want it.
+
+        The read-only `textHtml` and `checklistItemType` are dropped and
+        the assignee is sent as a user id (the endpoints document an id
+        or a login, not an object). Fields that are not set are left
+        out.
+        """
+        payload: dict[str, Any] = {"id": self.id}
+        if self.text is not None:
+            payload["text"] = self.text
+        if self.checked is not None:
+            payload["checked"] = self.checked
+        if self.assignee is not None:
+            payload["assignee"] = self.assignee.id
+        if self.deadline is not None:
+            payload["deadline"] = self.deadline._render(  # noqa: SLF001
+                as_timestamp=True,
+            )
+        return payload
 
 
 class EntityMetricItem(Base):
@@ -140,7 +205,14 @@ class EntityKeyResultProgress(Base):
 
 
 class EntityKeyResult(Base):
-    """Single key result of a goal (`keyResultItems` field)."""
+    """Single key result of a goal (`keyResultItems` field).
+
+    Unlike a checklist item, a key result has no request form of its
+    own: the `remove` operator of `keyResultItems` matches the object
+    against the stored one, so it has to be sent exactly as the API
+    returned it. Its `assignee` is therefore the regular
+    :class:`~yatracker.types.user.User`, `self` link included.
+    """
 
     id: str
     text: str | None = None

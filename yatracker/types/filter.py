@@ -69,6 +69,19 @@ class FilterSort(Base):
     field: FieldRef
     is_ascending: bool | None = None
 
+    def _to_request(self) -> dict[str, Any]:
+        """Render the rule the way a request wants it.
+
+        A response entry carries the whole field object while a request
+        entry names the field by its key, so a rule read back from a
+        filter can be passed straight into the next request.
+        `is_ascending` is sent only when it is set.
+        """
+        encoded: dict[str, Any] = {"field": self.field.id}
+        if self.is_ascending is not None:
+            encoded["isAscending"] = self.is_ascending
+        return encoded
+
 
 class Filter(Base):
     """Saved issue filter.

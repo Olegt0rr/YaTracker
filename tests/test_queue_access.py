@@ -31,7 +31,7 @@ from yatracker.types.queue_version import QueueVersion
 from yatracker.types.ref import Ref
 from yatracker.types.user import User
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 # ---------------------------------------------------------------------------
 # Sample payloads, verbatim from the doc pages.
@@ -40,23 +40,23 @@ from tests.conftest import make_tracker, sent_json
 TAGS_BODY: list[str] = ["tag1", "tag2", "tag3"]
 
 USER_ACCESS_BODY: dict[str, Any] = {
-    "user": {
-        "self": "https://api.tracker.yandex.net/v3/users/11111111",
-        "id": "11111111",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 11111111,
-    },
+    "user": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/11111111",
+        id="11111111",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=11111111,
+    ),
     "permissions": {
         "CREATE": {
             "users": [
-                {
-                    "self": "https://api.tracker.yandex.net/v3/users/11111111",
-                    "id": "11111111",
-                    "display": "Имя Фамилия",
-                    "cloudUid": "ajeppa7dgp53",
-                    "passportUid": 11111111,
-                },
+                user_ref(
+                    self="https://api.tracker.yandex.net/v3/users/11111111",
+                    id="11111111",
+                    display="Имя Фамилия",
+                    cloudUid="ajeppa7dgp53",
+                    passportUid=11111111,
+                ),
             ],
             "groups": [
                 {
@@ -110,13 +110,13 @@ GROUP_ACCESS_BODY: dict[str, Any] = {
 }
 
 COMPONENT_USER_ACCESS_BODY: dict[str, Any] = {
-    "user": {
-        "self": "https://api.tracker.yandex.net/v3/users/11111111",
-        "id": "11111111",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 11111111,
-    },
+    "user": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/11111111",
+        id="11111111",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=11111111,
+    ),
     "component": {
         "self": "https://api.tracker.yandex.net/v3/components/1",
         "id": 1,
@@ -128,13 +128,13 @@ COMPONENT_USER_ACCESS_BODY: dict[str, Any] = {
             "key": "TEST",
             "display": "My queue",
         },
-        "lead": {
-            "self": "https://api.tracker.yandex.net/v3/users/11111111",
-            "id": "11111111",
-            "display": "Имя Фамилия",
-            "cloudUid": "ajeppa7dgp53",
-            "passportUid": 11111111,
-        },
+        "lead": user_ref(
+            self="https://api.tracker.yandex.net/v3/users/11111111",
+            id="11111111",
+            display="Имя Фамилия",
+            cloudUid="ajeppa7dgp53",
+            passportUid=11111111,
+        ),
         "assignAuto": False,
     },
     "permissions": {
@@ -167,13 +167,13 @@ COMPONENT_GROUP_ACCESS_BODY: dict[str, Any] = {
             "key": "TEST",
             "display": "My queue",
         },
-        "lead": {
-            "self": "https://api.tracker.yandex.net/v3/users/11111111",
-            "id": "11111111",
-            "display": "Имя Фамилия",
-            "cloudUid": "ajeppa7dgp53",
-            "passportUid": 11111111,
-        },
+        "lead": user_ref(
+            self="https://api.tracker.yandex.net/v3/users/11111111",
+            id="11111111",
+            display="Имя Фамилия",
+            cloudUid="ajeppa7dgp53",
+            passportUid=11111111,
+        ),
         "assignAuto": False,
     },
     "permissions": {
@@ -228,13 +228,13 @@ MANAGE_ACCESS_RESPONSE_BODY: dict[str, Any] = {
     "create": {
         "self": "https://api.tracker.yandex.net/v3/queues/TESTQUEUE/permissions/create",
         "users": [
-            {
-                "self": "https://api.tracker.yandex.net/v3/users/11111111",
-                "id": "11111111",
-                "display": "Имя Фамилия",
-                "cloudUid": "ajeppa7dgp53",
-                "passportUid": 11111111,
-            },
+            user_ref(
+                self="https://api.tracker.yandex.net/v3/users/11111111",
+                id="11111111",
+                display="Имя Фамилия",
+                cloudUid="ajeppa7dgp53",
+                passportUid=11111111,
+            ),
         ],
         "roles": [
             {
@@ -257,13 +257,13 @@ MANAGE_ACCESS_RESPONSE_BODY: dict[str, Any] = {
     "write": {
         "self": "https://api.tracker.yandex.net/v3/queues/TESTQUEUE/permissions/write",
         "users": [
-            {
-                "self": "https://api.tracker.yandex.net/v3/users/11111111",
-                "id": "11111111",
-                "display": "Имя Фамилия",
-                "cloudUid": "ajeppa7dgp53",
-                "passportUid": 11111111,
-            },
+            user_ref(
+                self="https://api.tracker.yandex.net/v3/users/11111111",
+                id="11111111",
+                display="Имя Фамилия",
+                cloudUid="ajeppa7dgp53",
+                passportUid=11111111,
+            ),
         ],
         "roles": [
             {
@@ -286,13 +286,13 @@ MANAGE_ACCESS_RESPONSE_BODY: dict[str, Any] = {
     "grant": {
         "self": "https://api.tracker.yandex.net/v3/queues/TESTQUEUE/permissions/grant",
         "users": [
-            {
-                "self": "https://api.tracker.yandex.net/v3/users/11111111",
-                "id": "11111111",
-                "display": "Имя Фамилия",
-                "cloudUid": "ajeppa7dgp53",
-                "passportUid": 11111111,
-            },
+            user_ref(
+                self="https://api.tracker.yandex.net/v3/users/11111111",
+                id="11111111",
+                display="Имя Фамилия",
+                cloudUid="ajeppa7dgp53",
+                passportUid=11111111,
+            ),
         ],
         "roles": [
             {
@@ -315,13 +315,13 @@ MANAGE_ACCESS_RESPONSE_BODY: dict[str, Any] = {
     "deny": {
         "self": "https://api.tracker.yandex.net/v3/queues/TESTQUEUE/permissions/deny",
         "users": [
-            {
-                "self": "https://api.tracker.yandex.net/v3/users/11111111",
-                "id": "11111111",
-                "display": "Имя Фамилия",
-                "cloudUid": "ajeppa7dgp53",
-                "passportUid": 11111111,
-            },
+            user_ref(
+                self="https://api.tracker.yandex.net/v3/users/11111111",
+                id="11111111",
+                display="Имя Фамилия",
+                cloudUid="ajeppa7dgp53",
+                passportUid=11111111,
+            ),
         ],
     },
 }

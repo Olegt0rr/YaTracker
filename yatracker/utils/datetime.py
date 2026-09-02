@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 import sys
 import warnings
-from datetime import date, datetime
+from datetime import date, datetime, time, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, overload
 
@@ -60,7 +60,7 @@ def to_tracker_datetime(
 
 @overload
 def to_tracker_datetime(
-    value: datetime | str,
+    value: date | datetime | str,
     *,
     stacklevel: int | None = ...,
     warn: bool = ...,
@@ -69,7 +69,7 @@ def to_tracker_datetime(
 
 @overload
 def to_tracker_datetime(
-    value: datetime | str | None,
+    value: date | datetime | str | None,
     *,
     stacklevel: int | None = ...,
     warn: bool = ...,
@@ -77,7 +77,7 @@ def to_tracker_datetime(
 
 
 def to_tracker_datetime(
-    value: datetime | str | None,
+    value: date | datetime | str | None,
     *,
     stacklevel: int | None = None,
     warn: bool = True,
@@ -88,6 +88,14 @@ def to_tracker_datetime(
     parameter. Strings and ``None`` are passed through verbatim, so a
     caller may always hand over a ready-made API string.
 
+    A bare ``date`` carries no time and no offset at all, so it is
+    rendered as midnight UTC (``YYYY-MM-DDT00:00:00.000+0000``). UTC is
+    picked rather than the local zone of the machine because the same
+    ``date`` then reaches the API as the same instant wherever the code
+    runs; pass an aware ``datetime`` when the offset matters. A bare
+    ``date`` never warns: it is not a naive ``datetime``, it is a value
+    that has no time to be naive about.
+
     A naive ``datetime`` is rendered without an offset and triggers a
     :class:`UserWarning`. By default the warning points at the first
     frame outside of the library, so callers do not have to count the
@@ -96,8 +104,12 @@ def to_tracker_datetime(
     own (the entities API does that once per request instead of once per
     value).
     """
+    # `datetime` is a subclass of `date`, so it is matched first
     if not isinstance(value, datetime):
-        return value
+        if isinstance(value, date):
+            value = datetime.combine(value, time.min, tzinfo=timezone.utc)
+        else:
+            return value
 
     # Python's definition of naive: no tzinfo, or a tzinfo without an offset
     if warn and value.utcoffset() is None:

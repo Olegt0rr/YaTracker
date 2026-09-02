@@ -196,6 +196,13 @@ class TestQueueEndpoints:
 
         assert client.calls[0]["params"] == {"expand": "all", "perPage": "10"}
 
+    async def test_get_queues_default_call_sends_no_params(self) -> None:
+        tracker, client = make_tracker([PLAIN_QUEUE])
+        queues = await tracker.get_queues()
+        assert len(queues) == 1
+
+        assert client.calls[0]["params"] is None
+
     async def test_restore_queue_uses_post(self) -> None:
         tracker, client = make_tracker(PLAIN_QUEUE)
         await tracker.restore_queue("TEST")

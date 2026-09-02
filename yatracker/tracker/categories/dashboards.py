@@ -45,8 +45,9 @@ def _encode_bucket(
 
     The request calls the grouping period `unit` while the response
     calls it `type`, so a :class:`WidgetBucket` read back from a widget
-    is renamed here (a widget can then be re-sent as is) and its unset
-    fields are dropped. Dicts are passed through verbatim.
+    is renamed by its own request form (a widget can then be re-sent as
+    is) and its unset fields are dropped. Dicts are passed through
+    verbatim.
     """
     if bucket is None:
         return None
@@ -55,12 +56,7 @@ def _encode_bucket(
         # through as is instead of being copied twice.
         return bucket
 
-    encoded = {
-        "unit": bucket.type,
-        "count": bucket.count,
-        "boardId": bucket.board_id,
-    }
-    return {key: value for key, value in encoded.items() if value is not None}
+    return bucket._to_request()  # noqa: SLF001
 
 
 class Dashboards(BaseTracker):

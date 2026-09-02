@@ -18,7 +18,7 @@ import pytest
 from yatracker.types.dashboard import CycleTimeWidget, Dashboard, WidgetBucket
 from yatracker.types.status import Status
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 BASE = "https://api.tracker.yandex.net/v3"
 
@@ -27,22 +27,22 @@ CREATE_DASHBOARD_RESPONSE: dict[str, Any] = {
     "id": 10,
     "version": 1,
     "name": "New Dashboard",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1187654321",
-        "id": "1187654321",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp531187654321",
-        "passportUid": 1187654321,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1187654321",
+        id="1187654321",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp531187654321",
+        passportUid=1187654321,
+    ),
     "createdAt": "2024-04-15T19:38:42.074+0000",
     "layout": "one-column",
-    "owner": {
-        "self": "https://api.tracker.yandex.net/v3/users/1187654321",
-        "id": "1187654321",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp531187654321",
-        "passportUid": 1187654321,
-    },
+    "owner": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1187654321",
+        id="1187654321",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp531187654321",
+        passportUid=1187654321,
+    ),
     "self": "https://api.tracker.yandex.net/v3/dashboards/10",
 }
 
@@ -50,13 +50,13 @@ CREATE_DASHBOARD_RESPONSE: dict[str, Any] = {
 WIDGET_RESPONSE: dict[str, Any] = {
     "id": 123456,
     "version": 1,
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1187654321",
-        "id": "1187654321",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp531187654321",
-        "passportUid": 1187654321,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1187654321",
+        id="1187654321",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp531187654321",
+        passportUid=1187654321,
+    ),
     "description": "My widget",
     "color": 0,
     "dashboard": {
@@ -86,13 +86,13 @@ WIDGET_RESPONSE: dict[str, Any] = {
     "datasetInfo": {
         "status": "created",
         "buildStartedAt": "2024-04-15T20:58:07.957+0000",
-        "builtBy": {
-            "self": "https://api.tracker.yandex.net/v3/users/1187654321",
-            "id": "1187654321",
-            "display": "Имя Фамилия",
-            "cloudUid": "ajeppa7dgp531187654321",
-            "passportUid": 1187654321,
-        },
+        "builtBy": user_ref(
+            self="https://api.tracker.yandex.net/v3/users/1187654321",
+            id="1187654321",
+            display="Имя Фамилия",
+            cloudUid="ajeppa7dgp531187654321",
+            passportUid=1187654321,
+        ),
     },
     "lines": {
         "standardDeviation": True,

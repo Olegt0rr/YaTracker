@@ -33,8 +33,9 @@ def _encode_sorts(
 
     A request entry is `{"field": "<field key>", "isAscending": <bool>}`,
     while a response entry carries the whole field object; accepting
-    :class:`FilterSort` as well lets a filter be re-sent as is. Dicts are
-    passed through verbatim, so custom keys keep working.
+    :class:`FilterSort` as well lets a filter be re-sent as is (the
+    model renders its own request form). Dicts are passed through
+    verbatim, so custom keys keep working.
     """
     if sorts is None:
         return None
@@ -44,10 +45,7 @@ def _encode_sorts(
     encoded: list[dict[str, Any]] = []
     for sort in checked:
         if isinstance(sort, FilterSort):
-            entry: dict[str, Any] = {"field": sort.field.id}
-            if sort.is_ascending is not None:
-                entry["isAscending"] = sort.is_ascending
-            encoded.append(entry)
+            encoded.append(sort._to_request())  # noqa: SLF001
         else:
             encoded.append(dict(sort))
     return encoded

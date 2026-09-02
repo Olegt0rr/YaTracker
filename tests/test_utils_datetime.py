@@ -127,6 +127,27 @@ class TestToTrackerDatetime:
                 "2024-01-01T00:00:00.000"
             )
 
+    def test_bare_date_becomes_midnight_utc(self) -> None:
+        # a `date` carries no time and no offset, so it is anchored to
+        # UTC rather than to the local zone of the machine
+        assert to_tracker_datetime(date(2024, 1, 31)) == (
+            "2024-01-31T00:00:00.000+0000"
+        )
+
+    def test_bare_date_never_warns(self) -> None:
+        # a `date` is not a naive `datetime`: it has no time to be naive
+        # about, so warning about it would only be noise
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            assert to_tracker_datetime(date(2024, 1, 31)) == (
+                "2024-01-31T00:00:00.000+0000"
+            )
+
+    def test_datetime_subclass_is_not_treated_as_a_date(self) -> None:
+        # `datetime` is a subclass of `date`; the time must survive
+        aware = datetime(2024, 1, 31, 18, 45, tzinfo=timezone.utc)
+        assert to_tracker_datetime(aware) == "2024-01-31T18:45:00.000+0000"
+
     def test_tzinfo_without_offset_counts_as_naive(self) -> None:
         class NoOffset(tzinfo):
             def utcoffset(self, dt: datetime | None) -> timedelta | None:  # noqa: ARG002

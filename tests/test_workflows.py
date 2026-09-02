@@ -18,7 +18,7 @@ from typing import Any
 from pydantic import TypeAdapter
 from yatracker.types.workflow import FullWorkflow, Workflow
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 # GET /workflows and GET /workflows/<id> response shape (identical sample on
 # both doc pages).
@@ -95,20 +95,20 @@ FULL_WORKFLOW: dict[str, Any] = {
     },
     "created": "2026-08-11T14:37:06.356+0000",
     "updated": "2026-08-11T14:37:06.356+0000",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
-    "updatedBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
+    "updatedBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
     "deleted": False,
     "type": "visual",
 }
@@ -212,20 +212,20 @@ POST_WORKFLOW_RESPONSE: dict[str, Any] = {
     },
     "created": "2026-08-11T14:37:06.356+0000",
     "updated": "2026-08-11T14:37:06.356+0000",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
-    "updatedBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
+    "updatedBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
     "deleted": False,
     "type": "visual",
 }
@@ -344,20 +344,20 @@ PATCH_WORKFLOW_RESPONSE: dict[str, Any] = {
     },
     "created": "2026-08-11T14:37:06.356+0000",
     "updated": "2026-08-11T15:10:00.000+0000",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
-    "updatedBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
+    "updatedBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
     "deleted": False,
     "type": "visual",
 }
@@ -447,20 +447,20 @@ PATCH_ACTION_RESPONSE: dict[str, Any] = {
     },
     "created": "2026-08-12T12:42:50.675+0000",
     "updated": "2026-08-12T14:00:19.614+0000",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
-    "updatedBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1100000000",
-        "id": "1100000000",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajeppa7dgp53",
-        "passportUid": 1100000000,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
+    "updatedBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1100000000",
+        id="1100000000",
+        display="Имя Фамилия",
+        cloudUid="ajeppa7dgp53",
+        passportUid=1100000000,
+    ),
     "deleted": False,
     "type": "visual",
 }

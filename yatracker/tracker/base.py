@@ -305,10 +305,15 @@ def _encode_param(value: Any) -> str:  # noqa: ANN401
 
 
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401
-    """Convert values to basic types."""
+    """Convert values to basic types.
+
+    A model is rendered through its own request form (`Base._to_request`)
+    rather than dumped verbatim, so a model read back from the API can
+    be passed straight into the next request body.
+    """
     match obj:
         case Base():
-            return obj.model_dump(mode="json", by_alias=True, exclude_none=True)
+            return obj._to_request()  # noqa: SLF001
         case list():
             return [_convert_value(o) for o in obj]
         case dict():

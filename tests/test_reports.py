@@ -12,7 +12,7 @@ from typing import Any
 import pytest
 from yatracker.types.report import Report, ReportSearchResult, ReportSort
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 # `POST /entities/report/` response sample.
 REPORT_RESPONSE: dict[str, Any] = {
@@ -21,13 +21,13 @@ REPORT_RESPONSE: dict[str, Any] = {
     "version": 1,
     "shortId": 142,
     "entityType": "report",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/8000000000000004",
-        "id": "8000000000000004",
-        "display": "Имя Фамилия",
-        "cloudUid": "aje71i6t2tuvanuoimem",
-        "passportUid": 1234567890,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/8000000000000004",
+        id="8000000000000004",
+        display="Имя Фамилия",
+        cloudUid="aje71i6t2tuvanuoimem",
+        passportUid=1234567890,
+    ),
     "createdAt": "2025-10-20T19:19:49.120+0000",
     "updatedAt": "2025-10-20T19:19:49.120+0000",
 }
@@ -39,13 +39,13 @@ SEARCH_REPORT_A: dict[str, Any] = {
     "version": 5,
     "shortId": 185,
     "entityType": "report",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/8000000000000005",
-        "id": "8000000000000005",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajemqnuerc0d4oaf598d",
-        "passportUid": 1987441286,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/8000000000000005",
+        id="8000000000000005",
+        display="Имя Фамилия",
+        cloudUid="ajemqnuerc0d4oaf598d",
+        passportUid=1987441286,
+    ),
     "createdAt": "2026-05-20T09:20:59.753+0000",
     "updatedAt": "2026-05-20T09:21:00.085+0000",
 }
@@ -55,13 +55,13 @@ SEARCH_REPORT_B: dict[str, Any] = {
     "version": 27,
     "shortId": 184,
     "entityType": "report",
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/8000000000000005",
-        "id": "8000000000000005",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajemqnuerc0d4oaf598d",
-        "passportUid": 1987441286,
-    },
+    "createdBy": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/8000000000000005",
+        id="8000000000000005",
+        display="Имя Фамилия",
+        cloudUid="ajemqnuerc0d4oaf598d",
+        passportUid=1987441286,
+    ),
     "createdAt": "2026-05-20T09:20:44.592+0000",
     "updatedAt": "2026-05-20T09:21:07.234+0000",
 }

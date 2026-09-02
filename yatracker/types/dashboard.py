@@ -70,6 +70,20 @@ class WidgetBucket(Base):
     count: int | None = None
     board_id: str | None = None
 
+    def _to_request(self) -> dict[str, Any]:
+        """Render the step size the way a request wants it.
+
+        The request calls the grouping period `unit` while the response
+        calls it `type`, so a bucket read back from a widget can be
+        passed straight into the next request. Unset fields are dropped.
+        """
+        encoded = {
+            "unit": self.type,
+            "count": self.count,
+            "boardId": self.board_id,
+        }
+        return {key: value for key, value in encoded.items() if value is not None}
+
 
 class WidgetLines(Base):
     """Time axis settings of a cycle time chart.

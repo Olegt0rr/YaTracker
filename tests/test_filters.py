@@ -14,7 +14,7 @@ import pytest
 from yatracker.types.filter import Filter, FilterSort
 from yatracker.types.ref import FieldRef
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import make_tracker, sent_json, user_ref
 
 BASE = "https://api.tracker.yandex.net/v3"
 
@@ -42,25 +42,25 @@ CREATE_FILTER_RESPONSE: dict[str, Any] = {
         },
         "WRITE": {
             "users": [
-                {
-                    "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-                    "id": "1234567890",
-                    "display": "Имя Фамилия",
-                    "cloudUid": "ajevuhegoiuhfasjhiu",
-                    "passportUid": 1234567890,
-                },
+                user_ref(
+                    self="https://api.tracker.yandex.net/v3/users/1234567890",
+                    id="1234567890",
+                    display="Имя Фамилия",
+                    cloudUid="ajevuhegoiuhfasjhiu",
+                    passportUid=1234567890,
+                ),
             ],
             "groups": [],
             "roles": [],
         },
     },
-    "owner": {
-        "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-        "id": "1234567890",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajevuhegoiuhfasjhiu",
-        "passportUid": 1234567890,
-    },
+    "owner": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1234567890",
+        id="1234567890",
+        display="Имя Фамилия",
+        cloudUid="ajevuhegoiuhfasjhiu",
+        passportUid=1234567890,
+    ),
 }
 
 # GET /v3/filters/<id> response sample.
@@ -109,25 +109,25 @@ GET_FILTER_RESPONSE: dict[str, Any] = {
         },
         "WRITE": {
             "users": [
-                {
-                    "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-                    "id": "1234567890",
-                    "display": "Имя Фамилия",
-                    "cloudUid": "ajevuhegoiuhfasjhiu",
-                    "passportUid": 1234567890,
-                },
+                user_ref(
+                    self="https://api.tracker.yandex.net/v3/users/1234567890",
+                    id="1234567890",
+                    display="Имя Фамилия",
+                    cloudUid="ajevuhegoiuhfasjhiu",
+                    passportUid=1234567890,
+                ),
             ],
             "groups": [],
             "roles": [],
         },
     },
-    "owner": {
-        "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-        "id": "1234567890",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajevuhegoiuhfasjhiu",
-        "passportUid": 1234567890,
-    },
+    "owner": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1234567890",
+        id="1234567890",
+        display="Имя Фамилия",
+        cloudUid="ajevuhegoiuhfasjhiu",
+        passportUid=1234567890,
+    ),
 }
 
 # PATCH /v3/filters/<id> response sample (sort by field object).
@@ -153,13 +153,13 @@ UPDATE_FILTER_RESPONSE: dict[str, Any] = {
     "permissions": {
         "WRITE": {
             "users": [
-                {
-                    "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-                    "id": "1234567890",
-                    "display": "Имя Фамилия",
-                    "cloudUid": "ajevuhegoiuhfasjhiu",
-                    "passportUid": 1234567890,
-                },
+                user_ref(
+                    self="https://api.tracker.yandex.net/v3/users/1234567890",
+                    id="1234567890",
+                    display="Имя Фамилия",
+                    cloudUid="ajevuhegoiuhfasjhiu",
+                    passportUid=1234567890,
+                ),
             ],
             "groups": [],
             "roles": [],
@@ -176,13 +176,13 @@ UPDATE_FILTER_RESPONSE: dict[str, Any] = {
             "roles": [],
         },
     },
-    "owner": {
-        "self": "https://api.tracker.yandex.net/v3/users/1234567890",
-        "id": "1234567890",
-        "display": "Имя Фамилия",
-        "cloudUid": "ajevuhegoiuhfasjhiu",
-        "passportUid": 1234567890,
-    },
+    "owner": user_ref(
+        self="https://api.tracker.yandex.net/v3/users/1234567890",
+        id="1234567890",
+        display="Имя Фамилия",
+        cloudUid="ajevuhegoiuhfasjhiu",
+        passportUid=1234567890,
+    ),
 }
 
 

@@ -1,6 +1,9 @@
 __all__ = [
     "Attachment",
     "Base",
+    "BulkChange",
+    "BulkChangeError",
+    "BulkChangeIssue",
     "Comment",
     "Component",
     "ComponentRef",
@@ -30,6 +33,7 @@ __all__ = [
 
 from .attachment import Attachment
 from .base import Base, field
+from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
 from .comment import Comment
 from .component import Component, ComponentRef
 from .duration import Duration

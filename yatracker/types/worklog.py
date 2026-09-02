@@ -4,13 +4,13 @@ __all__ = ["Worklog"]
 
 from datetime import datetime
 
-from .base import Base, field
+from .base import Base, url_field
 from .issue import Issue
 from .user import User
 
 
 class Worklog(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: int
     version: int
     issue: Issue

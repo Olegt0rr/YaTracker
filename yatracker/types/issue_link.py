@@ -5,7 +5,7 @@ __all__ = ["BaseLink", "IssueLink", "LinkDirection", "LinkRelationship", "LinkTy
 from datetime import datetime
 from enum import Enum
 
-from .base import Base, field
+from .base import Base, url_field
 from .issue import Issue
 from .status import Status
 from .user import User
@@ -41,7 +41,7 @@ class LinkRelationship(str, Enum):
 class LinkType(Base):
     """Represents issue link type."""
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     inward: str
     outward: str
@@ -53,7 +53,7 @@ class BaseLink(Base):
     Subclasses declare the `object` field: the linked entity.
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: int
     type: LinkType
     direction: LinkDirection

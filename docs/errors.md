@@ -8,6 +8,7 @@ from yatracker.exceptions import (
     AlreadyExistsError,
     NotAuthorizedError,
     ObjectNotFoundError,
+    PreconditionFailedError,
     SufficientRightsError,
     YaTrackerError,
 )
@@ -26,14 +27,15 @@ Exception
     ├── NotAuthorizedError    — 401 Unauthorized
     ├── SufficientRightsError — 403 Forbidden
     ├── ObjectNotFoundError   — 404 Not Found
-    └── AlreadyExistsError    — 409 Conflict
+    ├── AlreadyExistsError    — 409 Conflict
+    └── PreconditionFailedError — 412 Precondition Failed
 ```
 
 Проверка выполняется в `BaseClient._check_status()` сразу после получения
 ответа. Логика простая:
 
 * статус меньше `300` — ошибки нет, тело ответа отдаётся дальше на разбор;
-* `401`, `403`, `404`, `409` — соответствующее специализированное исключение;
+* `401`, `403`, `404`, `409`, `412` — соответствующее специализированное исключение;
 * **любой другой** статус от `300` и выше — базовый `YaTrackerError`,
   в текст которого попадает тело ответа, декодированное как UTF-8.
 
@@ -121,6 +123,26 @@ try:
 except AlreadyExistsError:
     # задача уже была создана раньше — просто продолжаем
     ...
+```
+
+### `PreconditionFailedError` — 412
+
+Версия, переданная в заголовке `If-Match`, устарела: объект успели изменить параллельно.
+Возникает у колонок досок (`create_board_column`, `update_board_column`,
+`delete_board_column` — там передаётся версия **доски**), у спринтов
+(`update_sprint`, `start_sprint`, `archive_sprint`) и у
+`update_board(version=...)`, если версия указана. Подробнее про версии и `If-Match`
+смотрите в разделе [«Доски и спринты»](boards.md).
+
+```python
+from yatracker.exceptions import PreconditionFailedError
+
+try:
+    sprint = await tracker.start_sprint(sprint.id, sprint.version)
+except PreconditionFailedError:
+    # версия устарела — перечитываем спринт и повторяем с актуальной версией
+    sprint = await tracker.get_sprint(sprint.id)
+    sprint = await tracker.start_sprint(sprint.id, sprint.version)
 ```
 
 ### `YaTrackerError` — всё остальное
@@ -282,9 +304,12 @@ async def with_retry(coro_factory, attempts: int = 3, delay: float = 1.0):
 
 !!! note "Не повторяйте всё подряд"
 
-    `NotAuthorizedError`, `SufficientRightsError`, `ObjectNotFoundError`
-    и `AlreadyExistsError` от повтора не исправятся — их лучше исключить
-    из логики ретраев и обработать отдельно.
+    `NotAuthorizedError`, `SufficientRightsError`, `ObjectNotFoundError`,
+    `AlreadyExistsError` и `PreconditionFailedError` от повтора не исправятся —
+    их лучше исключить из логики ретраев и обработать отдельно. Для
+    `PreconditionFailedError` «обработать» означает перечитать объект и
+    повторить запрос с его актуальной версией, а не просто повторить тот же
+    запрос ещё раз.
 
 ## Логирование
 

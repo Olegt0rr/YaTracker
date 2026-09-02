@@ -18,6 +18,7 @@ from yatracker.exceptions import (
     AlreadyExistsError,
     NotAuthorizedError,
     ObjectNotFoundError,
+    PreconditionFailedError,
     SufficientRightsError,
     YaTrackerError,
 )
@@ -254,6 +255,9 @@ class BaseClient(ABC):
 
         if status == HTTPStatus.CONFLICT:
             raise AlreadyExistsError
+
+        if status == HTTPStatus.PRECONDITION_FAILED:
+            raise PreconditionFailedError
 
         raise YaTrackerError(body.decode("utf-8", errors="replace"))
 

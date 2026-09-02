@@ -12,6 +12,7 @@ from yatracker.exceptions import (
     AlreadyExistsError,
     NotAuthorizedError,
     ObjectNotFoundError,
+    PreconditionFailedError,
     SufficientRightsError,
     YaTrackerError,
 )
@@ -32,6 +33,7 @@ if TYPE_CHECKING:
         (403, SufficientRightsError),
         (404, ObjectNotFoundError),
         (409, AlreadyExistsError),
+        (412, PreconditionFailedError),
         (500, YaTrackerError),
     ],
 )

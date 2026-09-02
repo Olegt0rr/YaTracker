@@ -3,6 +3,7 @@ from __future__ import annotations
 __all__ = ["FullQueue", "QueueVersionRef"]
 
 from .base import Base, url_field
+from .component import ComponentRef
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority
@@ -30,9 +31,9 @@ class FullQueue(Base):
     """Queue with all its details.
 
     Fields that the API only returns for an explicit `expand` request
-    (`team`, `types`, `versions`, `workflows`, `issueTypesConfig`) are
-    optional, so a plain `GET /queues` or `GET /queues/{id}` response
-    can be decoded as well.
+    (`team`, `types`, `versions`, `components`, `workflows`,
+    `issueTypesConfig`) are optional, so a plain `GET /queues` or
+    `GET /queues/{id}` response can be decoded as well.
 
     Source:
     https://yandex.ru/support/tracker/ru/concepts/queues/get-queue
@@ -53,6 +54,7 @@ class FullQueue(Base):
     team_users: list[User] | None = None
     issue_types: list[IssueType] | None = None
     versions: list[QueueVersionRef] | None = None
+    components: list[ComponentRef] | None = None
     # v3 returns a `{workflow: [issue type, ...]}` mapping, v2 a plain array
     workflows: dict[str, list[IssueType]] | list[Workflow] | None = None
     deny_voting: bool | None = None

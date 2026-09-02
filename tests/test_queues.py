@@ -13,18 +13,10 @@ import json
 from typing import Any
 
 from pydantic import TypeAdapter
-from yatracker import YaTracker
 from yatracker.types import FullQueue, QueueField
 
-from tests.conftest import FakeClient, sent_json
+from tests.conftest import USER, make_tracker, sent_json
 
-USER = {
-    "self": "https://api.tracker.yandex.net/v3/users/1111",
-    "id": "1111",
-    "display": "Имя Фамилия",
-    "cloudUid": "ajeppa7dgp53",
-    "passportUid": 1111,
-}
 ISSUE_TYPE = {
     "self": "https://api.tracker.yandex.net/v3/issuetypes/1",
     "id": "1",
@@ -113,15 +105,6 @@ QUEUE_FIELD: dict[str, Any] = {
     "queryProvider": {"type": "StringOptionalQueryProvider"},
     "order": 222,
 }
-
-
-def make_tracker(
-    payload: Any = None,
-    status: int = 200,
-) -> tuple[YaTracker, FakeClient]:
-    body = b"{}" if payload is None else json.dumps(payload).encode()
-    client = FakeClient(status=status, body=body)
-    return YaTracker(client=client), client
 
 
 class TestFullQueueDecoding:

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from datetime import datetime
-from warnings import warn
+from typing import TYPE_CHECKING
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import Worklog
 from yatracker.types.duration import Duration
+from yatracker.utils.datetime import to_tracker_datetime
+
+if TYPE_CHECKING:
+    from datetime import datetime
 
 
 class Worklogs(BaseTracker):
@@ -21,8 +24,7 @@ class Worklogs(BaseTracker):
         Source:
         https://cloud.yandex.ru/docs/tracker/concepts/issues/new-worklog
         """
-        if isinstance(start, datetime):
-            start = start.isoformat(timespec="milliseconds")
+        start = to_tracker_datetime(start)
 
         if isinstance(duration, Duration):
             duration = duration.to_iso()
@@ -139,21 +141,8 @@ def _process_created_at(
     if not created_at_from or not created_at_to:
         return None
 
-    if isinstance(created_at_from, datetime):
-        if created_at_from.tzinfo is None:
-            warn(
-                "Tracker API may works wrong with naive datetime. "
-                "Please, use Timezone-Aware objects.",
-                UserWarning,
-                stacklevel=2,
-            )
-        created_at_from = created_at_from.isoformat(timespec="milliseconds")
-
-    if isinstance(created_at_to, datetime):
-        created_at_to = created_at_to.isoformat(timespec="milliseconds")
-
-    created_at: dict[str, str] = {
-        "from": created_at_from,
-        "to": created_at_to,
+    # stacklevel=4: helper -> this function -> get_worklog -> user code
+    return {
+        "from": to_tracker_datetime(created_at_from, stacklevel=4),
+        "to": to_tracker_datetime(created_at_to, stacklevel=4),
     }
-    return created_at

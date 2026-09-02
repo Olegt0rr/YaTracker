@@ -25,6 +25,7 @@ __all__ = [
     "QueueField",
     "QueueVersion",
     "QueueVersionRef",
+    "Ref",
     "Sprint",
     "Status",
     "Transition",
@@ -40,18 +41,18 @@ from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
 from .comment import Comment
 from .component import Component, ComponentRef
 from .duration import Duration
-from .field_ref import FieldRef
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
 from .issue_link import IssueLink, LinkDirection, LinkRelationship, LinkType
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
-from .macro import Macro, MacroFieldChange
+from .macro import FieldRef, Macro, MacroFieldChange
 from .priority import Priority
 from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion
+from .ref import Ref
 from .sprint import Sprint
 from .status import Status
 from .transition import Transition

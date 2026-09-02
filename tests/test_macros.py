@@ -14,7 +14,7 @@ import json
 from typing import Any
 
 from pydantic import TypeAdapter
-from yatracker.types import Macro
+from yatracker.types import FieldRef, Macro, MacroFieldChange, Ref
 
 from tests.conftest import make_tracker, sent_json
 
@@ -74,6 +74,40 @@ class TestMacroDecoding:
         assert macro.body is None
         assert macro.issue_update == []
 
+    def test_null_issue_update_decodes_as_empty_list(self) -> None:
+        """An explicit `"issueUpdate": null` must not fail the whole list."""
+        payload = {**MACRO, "issueUpdate": None}
+        macro = TypeAdapter(Macro).validate_json(json.dumps(payload))
+        assert macro.issue_update == []
+
+    def test_non_object_update_decodes(self) -> None:
+        """Tolerate a plain value or `null` in `update`.
+
+        The docs only show `{op: value}`; a value echoed back for a
+        `set`/clear change must not break decoding either.
+        """
+        payload = {
+            **MACRO,
+            "issueUpdate": [
+                {"field": {"self": "f", "id": "description"}, "update": "New task"},
+                {"field": {"self": "f", "id": "resolution"}, "update": None},
+                {"field": {"self": "f", "id": "assignee"}},
+            ],
+        }
+        macro = TypeAdapter(Macro).validate_json(json.dumps(payload))
+        assert [c.update for c in macro.issue_update] == ["New task", None, None]
+        assert macro.issue_update[0].field.display is None
+
+    def test_issue_update_payload_is_request_shaped(self) -> None:
+        macro = TypeAdapter(Macro).validate_json(json.dumps(MACRO))
+        assert macro.issue_update_payload() == {"tags": {"add": ["tag 1", "tag 2"]}}
+
+    def test_field_ref_is_a_ref(self) -> None:
+        change = MacroFieldChange.model_validate(MACRO["issueUpdate"][0])
+        assert isinstance(change.field, FieldRef)
+        assert isinstance(change.field, Ref)
+        assert change.field.url.endswith("/fields/tags")
+
 
 class TestMacroEndpoints:
     async def test_get_macros_decodes_list(self) -> None:
@@ -87,6 +121,12 @@ class TestMacroEndpoints:
         assert call["method"] == "GET"
         assert call["url"].endswith("/queues/1/macros")
         assert call["params"] is None
+
+    async def test_get_macros_passes_pagination(self) -> None:
+        tracker, client = make_tracker([MACRO])
+        await tracker.get_macros("TEST", per_page=100, page=2)
+
+        assert client.calls[0]["params"] == {"perPage": "100", "page": "2"}
 
     async def test_get_macro(self) -> None:
         tracker, client = make_tracker(MACRO)
@@ -137,6 +177,46 @@ class TestMacroEndpoints:
                 "tags": {"add": "New tag"},
                 "resolution": None,
             },
+        }
+
+    async def test_create_macro_encodes_issue_update_keys(self) -> None:
+        """Keys follow `bulk_update_issues`.
+
+        Identifiers are camel-cased, local-field ids are sent verbatim,
+        values are untouched.
+        """
+        tracker, client = make_tracker(MACRO, status=201)
+        await tracker.create_macro(
+            "TEST",
+            "Test macro",
+            issue_update={
+                "story_points": 5,
+                "storyPoints": 5,
+                "64a51c6d866ea82411abe756--userId": None,
+                "tags": {"add": ["snake_case value"]},
+            },
+        )
+
+        assert sent_json(client.calls[0])["issueUpdate"] == {
+            "storyPoints": 5,
+            "64a51c6d866ea82411abe756--userId": None,
+            "tags": {"add": ["snake_case value"]},
+        }
+
+    async def test_update_macro_accepts_response_entries(self) -> None:
+        """`macro.issue_update` (response shape) can be re-sent as is."""
+        macro = TypeAdapter(Macro).validate_json(json.dumps(MACRO))
+        tracker, client = make_tracker(MACRO)
+        await tracker.update_macro(
+            "TEST",
+            3,
+            macro.name,
+            issue_update=macro.issue_update,
+        )
+
+        assert sent_json(client.calls[0]) == {
+            "name": "My macro",
+            "issueUpdate": {"tags": {"add": ["tag 1", "tag 2"]}},
         }
 
     async def test_update_macro_excludes_ids_from_body(self) -> None:

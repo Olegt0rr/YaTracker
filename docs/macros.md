@@ -19,10 +19,15 @@ https://yandex.cloud/ru/docs/tracker/about-api
 ### get_macros
 
 ```python
-async def get_macros(self, queue_id: str | int) -> list[Macro]: ...
+async def get_macros(
+    self,
+    queue_id: str | int,
+    per_page: int | None = None,
+    page: int | None = None,
+) -> list[Macro]: ...
 ```
 
-Возвращает список всех макросов очереди.
+Возвращает список макросов очереди.
 
 ```python
 macros = await tracker.get_macros("WRITERS")
@@ -32,6 +37,12 @@ for macro in macros:
 ```
 
 1. `queue_id` — ключ или идентификатор очереди.
+2. `per_page` — количество макросов на странице (по умолчанию 50).
+3. `page` — номер страницы (по умолчанию 1).
+
+В справочнике этого запроса параметры пагинации не описаны, но Трекер разбивает на
+страницы по 50 объектов любые списки. Если макросов в очереди больше, используйте
+`per_page` и `page`.
 
 Источник: https://yandex.ru/support/tracker/ru/get-macroses
 
@@ -65,7 +76,7 @@ async def create_macro(
     name: str,
     *,
     body: str | None = None,
-    issue_update: dict[str, Any] | None = None,
+    issue_update: dict[str, Any] | Iterable[MacroFieldChange] | None = None,
 ) -> Macro: ...
 ```
 
@@ -98,6 +109,12 @@ macro = await tracker.create_macro(
         библиотекой и уходит в запрос как JSON `null` (в отличие от `None` у именованных
         параметров верхнего уровня, которые в запрос просто не попадают).
 
+    Ключи-идентификаторы приводятся к camelCase так же, как в `bulk_update_issues`
+    (`story_points` → `storyPoints`); идентификаторы локальных полей вида
+    `64a51c6d866ea82411abe756--userId` отправляются как есть. Вместо словаря можно
+    передать `macro.issue_update` другого макроса — список `MacroFieldChange` будет
+    преобразован в формат запроса автоматически.
+
 Источник: https://yandex.ru/support/tracker/ru/post-macros
 
 ## Изменение и удаление макроса
@@ -112,7 +129,7 @@ async def update_macro(
     name: str,
     *,
     body: str | dict[str, Any] | None = None,
-    issue_update: dict[str, Any] | None = None,
+    issue_update: dict[str, Any] | Iterable[MacroFieldChange] | None = None,
 ) -> Macro: ...
 ```
 
@@ -133,8 +150,10 @@ macro = await tracker.update_macro(
    передавать `name` при каждом изменении, даже если оно не меняется.
 4. `body` — новый текст комментария в том же формате, что и в `create_macro`; либо
    `{"unset": 1}` — специальное значение, которое удаляет текст комментария из макроса.
-5. `issue_update` — новый набор изменений полей, в том же формате, что и в
-   `create_macro`.
+5. `issue_update` — набор изменений полей, который должен применять макрос, в том же
+   формате, что и в `create_macro`. Считайте его полным набором, а не патчем: API не
+   описывает слияние с уже сохранёнными изменениями, поэтому, чтобы их сохранить,
+   начинайте с `macro.issue_update_payload()` или передайте `macro.issue_update` целиком.
 
 !!! note "У макросов нет версии"
 
@@ -166,15 +185,17 @@ await tracker.delete_macro("WRITERS", 3)
     ключи которого — идентификаторы полей задачи (как показано выше). В ответе же
     (`Macro.issue_update`) Трекер возвращает список объектов `MacroFieldChange`: у
     каждого есть `field` (`FieldRef` с `url`, `id`, `display` — короткая ссылка на
-    изменённое поле) и `update` — словарь оператора и значения, например
-    `{"add": ["tag 1", "tag 2"]}`. Форматы запроса и ответа не совпадают, и путать их
-    не стоит.
+    изменённое поле) и `update` — как правило, словарь оператора и значения, например
+    `{"add": ["tag 1", "tag 2"]}`. Перевести ответ обратно в формат запроса можно
+    методом `macro.issue_update_payload()` — он возвращает словарь
+    `{field.id: update}`; `create_macro` и `update_macro` также принимают
+    `macro.issue_update` напрямую.
 
 ## Типичный сценарий
 
 Запустить макрос через API нельзя — его выполняет пользователь из интерфейса Трекера.
 Зато можно получить макросы очереди, найти нужный по имени, посмотреть, что он будет
-делать, и при необходимости поменять его текст или изменения полей:
+делать, и дописать к его изменениям полей ещё одно, не потеряв существующие:
 
 ```python
 macros = await tracker.get_macros("WRITERS")
@@ -187,6 +208,9 @@ macro = await tracker.update_macro(
     "WRITERS",
     macro_id=macro.id,
     name=macro.name,
-    issue_update={"tags": {"add": "проверено"}},
+    issue_update={
+        **macro.issue_update_payload(),
+        "tags": {"add": "проверено"},
+    },
 )
 ```

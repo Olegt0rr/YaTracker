@@ -4,10 +4,11 @@ __all__ = ["Component", "ComponentRef"]
 
 from .base import Base, field
 from .queue import Queue
+from .ref import Ref
 from .user import User
 
 
-class ComponentRef(Base):
+class ComponentRef(Ref):
     """Short component reference embedded into queue and issue objects.
 
     Issue payloads carry only `self`, `id` and `display` for every
@@ -17,10 +18,6 @@ class ComponentRef(Base):
     Should the API embed full objects there, only these three fields are
     kept — use `get_queue_components` for the full ones.
     """
-
-    url: str = field(alias="self")
-    id: str
-    display: str | None = None
 
 
 class Component(Base):

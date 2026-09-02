@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["FullQueue", "QueueVersionRef"]
 
-from .base import Base, field
+from .base import Base, url_field
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority
@@ -20,7 +20,7 @@ class QueueVersionRef(Base):
     https://yandex.ru/support/tracker/ru/concepts/queues/get-queue
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     # not sent by the v2 API
     display: str | None = None
@@ -38,7 +38,7 @@ class FullQueue(Base):
     https://yandex.ru/support/tracker/ru/concepts/queues/get-queue
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     key: str
     version: int

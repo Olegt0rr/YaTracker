@@ -95,3 +95,52 @@ issue = await tracker.create_issue(
 
 print(issue.user_id)
 ```
+
+### Поле `url` и ключ `self`
+
+Ключ `self` в ответах трекера содержит ссылку на объект. В моделях библиотеки он читается в
+поле `url`. Трекер выставляет `self` сам, записать его нельзя, поэтому именованный аргумент
+`url=` в `create_issue`, `edit_issue`, `move_issue` и других методах уходит в API как есть –
+ключом `url`, а не `self`. Модели, вложенные в тело запроса (например, `parent=Issue(...)`),
+сериализуются в том же виде, в каком пришли из API, – с ключом `self`. Если в вашей очереди
+есть пользовательское поле `url` (например, ссылка на задачу в старой системе при миграции),
+достаточно передать его напрямую:
+
+```python
+issue = await tracker.create_issue(
+    summary="New Issue",
+    queue="HELP",
+    url="https://old-tracker/ticket/42",
+)
+```
+
+Чтобы читать такое поле из ответа, объявите его в дочернем классе под другим python-именем –
+`url` уже занято ссылкой на объект:
+
+```python
+from yatracker.types import FullIssue, field
+
+
+class MigratedIssue(FullIssue):
+    source_url: str | None = field(default=None, alias="url")
+
+
+issue = await tracker.get_issue("HELP-1", _type=MigratedIssue)
+print(issue.url)  # ссылка на задачу в API (ключ self)
+print(issue.source_url)  # пользовательское поле url
+```
+
+Если передать такую модель в `_type` при записи, `source_url=` тоже преобразуется в ключ
+`url`, а одновременная передача `url=` и `source_url=` завершится `ValueError`, чтобы одно
+из значений не потерялось молча:
+
+```python
+issue = await tracker.edit_issue(
+    "HELP-1",
+    source_url="https://old-tracker/ticket/42",
+    _type=MigratedIssue,
+)
+```
+
+Без `_type` библиотека ничего не знает о `source_url` и отправит его как обычное поле
+`sourceUrl`.

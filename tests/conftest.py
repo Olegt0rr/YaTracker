@@ -73,15 +73,6 @@ def full_issue_body(**overrides: Any) -> bytes:
     return json.dumps(issue).encode()
 
 
-def json_payload(call: dict[str, Any]) -> Any:
-    """Decode the JSON body captured in a call.
-
-    Reaches into aiohttp's private ``BytesPayload._value`` in one place so
-    tests don't repeat the reach-through.
-    """
-    return json.loads(bytes(call["data"]._value))
-
-
 def multipart_dispparams(call: dict[str, Any]) -> Any:
     """Disposition params of the first multipart field captured in a call.
 

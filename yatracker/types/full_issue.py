@@ -5,7 +5,7 @@ __all__ = ["FullIssue"]
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from .base import Base, field
+from .base import Base, url_field
 from .comment import Comment
 from .issue import Issue
 from .issue_type import IssueType
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class FullIssue(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     key: str
     version: int

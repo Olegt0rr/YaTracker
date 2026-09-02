@@ -1,4 +1,5 @@
 __all__ = [
+    "Application",
     "Attachment",
     "Base",
     "BulkChange",
@@ -22,6 +23,8 @@ __all__ = [
     "QueueField",
     "QueueVersion",
     "QueueVersionRef",
+    "RemoteLink",
+    "RemoteLinkObject",
     "Sprint",
     "Status",
     "Transition",
@@ -31,6 +34,7 @@ __all__ = [
     "field",
 ]
 
+from .application import Application
 from .attachment import Attachment
 from .base import Base, field
 from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
@@ -47,6 +51,7 @@ from .priority import Priority
 from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion
+from .remote_link import RemoteLink, RemoteLinkObject
 from .sprint import Sprint
 from .status import Status
 from .transition import Transition

@@ -60,7 +60,9 @@ class ChecklistItem(Base):
     ----------
     id - Checklist item ID.
     text - Text of the checklist item.
-    checked - Flag showing that the item is marked as done.
+    checked - Flag showing that the item is marked as done. The API
+        does not document it as always present, so it defaults to
+        `False`.
     text_html - Text of the checklist item in HTML format.
     assignee - Assignee of the checklist item.
     deadline - Deadline of the checklist item.
@@ -70,7 +72,7 @@ class ChecklistItem(Base):
 
     id: str
     text: str
-    checked: bool
+    checked: bool = False
     text_html: str | None = None
     assignee: ChecklistAssignee | None = None
     deadline: ChecklistDeadline | None = None

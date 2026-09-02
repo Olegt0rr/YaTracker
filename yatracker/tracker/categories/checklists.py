@@ -3,33 +3,27 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, overload
 
 from yatracker.tracker.base import BaseTracker, IssueT_co
-from yatracker.types import ChecklistItem, FullIssue
+from yatracker.types import ChecklistDeadline, ChecklistItem, FullIssue
 from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
     from datetime import datetime
 
 
-def _build_payload(
-    *,
-    text: str,
-    checked: bool | None,
-    assignee: str | int | None,
-    deadline: str | None,
-) -> dict[str, Any]:
-    """Build a checklist item payload, skipping unset fields.
-
-    `checked=False` is a meaningful value and is sent as is; only
-    ``None`` means "leave it out".
-    """
-    payload: dict[str, Any] = {"text": text}
-    if checked is not None:
-        payload["checked"] = checked
-    if assignee is not None:
-        payload["assignee"] = str(assignee)
-    if deadline is not None:
-        payload["deadline"] = {"date": deadline, "deadlineType": "date"}
-    return payload
+def _build_deadline(
+    deadline: ChecklistDeadline | datetime | str | None,
+) -> dict[str, Any] | None:
+    """Render a deadline as the `{"date", "deadlineType"}` object the API expects."""
+    if deadline is None:
+        return None
+    # stacklevel=4: warn -> to_tracker_datetime -> this helper -> public
+    # method -> user code
+    if isinstance(deadline, ChecklistDeadline):
+        return {
+            "date": to_tracker_datetime(deadline.date, stacklevel=4),
+            "deadlineType": deadline.deadline_type,
+        }
+    return {"date": to_tracker_datetime(deadline, stacklevel=4), "deadlineType": "date"}
 
 
 class Checklists(BaseTracker):
@@ -56,7 +50,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -67,7 +61,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
         _type: type[IssueT_co] = ...,
     ) -> IssueT_co: ...
 
@@ -78,7 +72,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
     ) -> IssueT_co | FullIssue:
         """Add an item to the checklist of an issue.
@@ -90,20 +84,19 @@ class Checklists(BaseTracker):
         :param text: text of the checklist item.
         :param checked: mark the item as done.
         :param assignee: login or ID of the checklist item assignee.
-        :param deadline: deadline of the checklist item. A timezone-aware
-            `datetime` is rendered the way the API expects; a string is
-            sent verbatim, so a ready-made API value may be passed.
+        :param deadline: deadline of the checklist item. A
+            `ChecklistDeadline` (e.g. one read from another item) is sent
+            with its own `deadline_type`; a timezone-aware `datetime` or
+            a ready-made API string is sent as type `date`.
         :param _type: you can use your own extended FullIssue type.
 
         Fields left as ``None`` are not sent.
 
         :return: the whole issue (not the created item).
         """
-        payload = _build_payload(
-            text=text,
-            checked=checked,
-            assignee=assignee,
-            deadline=to_tracker_datetime(deadline),
+        payload = self._prepare_payload(
+            {**locals(), "deadline": _build_deadline(deadline)},
+            exclude=["issue_id"],
         )
         data = await self._client.request(
             method="POST",
@@ -121,7 +114,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -133,7 +126,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
         _type: type[IssueT_co] = ...,
     ) -> IssueT_co: ...
 
@@ -145,7 +138,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
     ) -> IssueT_co | FullIssue:
         """Edit an item of the checklist of an issue.
@@ -166,20 +159,21 @@ class Checklists(BaseTracker):
         :param text: text of the checklist item.
         :param checked: mark the item as done.
         :param assignee: login or ID of the checklist item assignee.
-        :param deadline: deadline of the checklist item. A timezone-aware
-            `datetime` is rendered the way the API expects; a string is
-            sent verbatim, so a ready-made API value may be passed.
+        :param deadline: deadline of the checklist item. A
+            `ChecklistDeadline` (e.g. one read from another item) is sent
+            with its own `deadline_type`; a timezone-aware `datetime` or
+            a ready-made API string is sent as type `date`.
         :param _type: you can use your own extended FullIssue type.
 
-        Fields left as ``None`` are not sent, i.e. they stay unchanged.
+        Fields left as ``None`` are not sent. The API documentation does
+        not describe how absent fields are treated, so do not rely on
+        them keeping their current values.
 
         :return: the whole issue (not the edited item).
         """
-        payload = _build_payload(
-            text=text,
-            checked=checked,
-            assignee=assignee,
-            deadline=to_tracker_datetime(deadline),
+        payload = self._prepare_payload(
+            {**locals(), "deadline": _build_deadline(deadline)},
+            exclude=["issue_id", "item_id"],
         )
         data = await self._client.request(
             method="PATCH",

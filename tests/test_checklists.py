@@ -17,7 +17,7 @@ from typing import Any
 import pytest
 from pydantic import TypeAdapter
 from yatracker import YaTracker
-from yatracker.types import ChecklistItem, FullIssue
+from yatracker.types import ChecklistDeadline, ChecklistItem, FullIssue
 
 from tests.conftest import FakeClient, full_issue_body, make_tracker, sent_json
 
@@ -50,6 +50,12 @@ MINIMAL_CHECKLIST_ITEM: dict[str, Any] = {
     "id": "5fde5f0a1aee261d87654321",
     "text": "Minimal item",
     "checked": True,
+}
+
+# The API omits `checked` for items that are not done.
+UNCHECKED_CHECKLIST_ITEM: dict[str, Any] = {
+    "id": "5fde5f0a1aee261d11223344",
+    "text": "Item without the checked flag",
 }
 
 
@@ -89,6 +95,12 @@ class TestChecklistItemDecoding:
         assert item.assignee is None
         assert item.deadline is None
         assert item.checklist_item_type is None
+
+    def test_item_without_checked_decodes_as_not_done(self) -> None:
+        item = TypeAdapter(ChecklistItem).validate_json(
+            json.dumps(UNCHECKED_CHECKLIST_ITEM),
+        )
+        assert item.checked is False
 
 
 class TestGetChecklist:
@@ -157,6 +169,50 @@ class TestAddChecklistItem:
             "ORG-3",
             "List item text",
             deadline="2021-05-09T00:00:00.000+0000",
+        )
+
+        assert sent_json(client.calls[0])["deadline"] == {
+            "date": "2021-05-09T00:00:00.000+0000",
+            "deadlineType": "date",
+        }
+
+    async def test_int_assignee_is_sent_verbatim(self) -> None:
+        tracker, client = make_tracker(status=200)
+        client.body = self._issue_response()
+
+        await tracker.add_checklist_item("ORG-3", "List item text", assignee=1111)
+
+        assert sent_json(client.calls[0])["assignee"] == 1111
+
+    async def test_checklist_deadline_keeps_its_own_type(self) -> None:
+        tracker, client = make_tracker(status=200)
+        client.body = self._issue_response()
+
+        await tracker.add_checklist_item(
+            "ORG-3",
+            "List item text",
+            deadline=ChecklistDeadline(
+                date=datetime(2021, 5, 9, tzinfo=timezone.utc),
+                deadline_type="absolute",
+            ),
+        )
+
+        assert sent_json(client.calls[0])["deadline"] == {
+            "date": "2021-05-09T00:00:00.000+0000",
+            "deadlineType": "absolute",
+        }
+
+    async def test_decoded_deadline_round_trips(self) -> None:
+        item = TypeAdapter(ChecklistItem).validate_json(json.dumps(CHECKLIST_ITEM))
+        assert item.deadline is not None
+
+        tracker, client = make_tracker(status=200)
+        client.body = self._issue_response()
+
+        await tracker.add_checklist_item(
+            "ORG-3",
+            "List item text",
+            deadline=item.deadline,
         )
 
         assert sent_json(client.calls[0])["deadline"] == {
@@ -246,12 +302,8 @@ class TestDeleteChecklistItem:
 
 
 class TestDeleteChecklist:
-    async def test_sends_delete_and_decodes_truncated_issue(self) -> None:
+    async def test_sends_delete_and_decodes_issue(self) -> None:
         tracker, client = make_tracker(status=200)
-        # The docs example for this endpoint is truncated to:
-        # self,id,key,version,lastCommentUpdatedAt,summary,checklistDone,
-        # checklistTotal,status -- combined here with the fields `FullIssue`
-        # requires.
         client.body = full_issue_body(
             lastCommentUpdatedAt="2024-01-01T00:00:00.000+0000",
             checklistDone="0",
@@ -395,6 +447,63 @@ class TestFullIssueChecklistHelpers:
         call = client.calls[1]
         assert call["method"] == "DELETE"
         assert call["url"].endswith("/issues/1/checklistItems")
+
+    async def test_naive_deadline_warning_points_at_the_caller(self) -> None:
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(), {}),
+                (200, full_issue_body(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        issue = await tracker.get_issue("TEST-1")
+
+        with pytest.warns(UserWarning, match="naive datetime") as record:
+            await issue.add_checklist_item(
+                "List item text",
+                deadline=datetime(2021, 5, 9),  # noqa: DTZ001
+            )
+
+        assert record[0].filename == __file__
+        assert sent_json(client.calls[1])["deadline"] == {
+            "date": "2021-05-09T00:00:00.000",
+            "deadlineType": "date",
+        }
+
+    async def test_explicit_type_overrides_type_of_self(self) -> None:
+        class MyIssue(FullIssue):
+            pass
+
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(), {}),
+                (200, full_issue_body(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        issue = await tracker.get_issue("TEST-1", _type=MyIssue)
+
+        added = await issue.add_checklist_item("x", _type=FullIssue)
+        assert type(added) is FullIssue
+
+    async def test_explicit_type_saves_a_subclass_with_extra_required_field(
+        self,
+    ) -> None:
+        class IssueWithExtra(FullIssue):
+            my_field: str
+
+        client = FakeClient(
+            responses=[
+                (200, full_issue_body(myField="value"), {}),
+                (200, full_issue_body(), {}),  # the response lacks `myField`
+            ],
+        )
+        tracker = YaTracker(client=client)
+        issue = await tracker.get_issue("TEST-1", _type=IssueWithExtra)
+        assert isinstance(issue, IssueWithExtra)
+
+        deleted = await issue.delete_checklist(_type=FullIssue)
+        assert type(deleted) is FullIssue
 
     async def test_helpers_return_subclass_via_type_of_self(self) -> None:
         class MyIssue(FullIssue):

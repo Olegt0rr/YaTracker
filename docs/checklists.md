@@ -54,7 +54,7 @@ async def add_checklist_item(
     *,
     checked: bool | None = None,
     assignee: str | int | None = None,
-    deadline: datetime | str | None = None,
+    deadline: ChecklistDeadline | datetime | str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
 ) -> IssueT_co | FullIssue: ...
 ```
@@ -82,9 +82,12 @@ issue = await tracker.add_checklist_item(
 1. `issue_id` — ID или ключ задачи.
 2. `text` — текст пункта (обязателен).
 3. `checked` — отметить пункт выполненным сразу при создании.
-4. `assignee` — логин или числовой ID исполнителя пункта.
-5. `deadline` — срок выполнения: timezone-aware `datetime` (рекомендуется) либо готовая
-   строка вида `YYYY-MM-DDThh:mm:ss.sss±hhmm`, которую библиотека передаст как есть.
+4. `assignee` — логин или числовой идентификатор исполнителя пункта; передаётся как есть
+   (число уходит в запрос как число, без преобразования в строку).
+5. `deadline` — срок выполнения. Принимает `ChecklistDeadline` (например, взятый из поля
+   `deadline` другого пункта чек-листа — тогда он отправится вместе со своим `deadline_type`),
+   timezone-aware `datetime` (рекомендуется; отправляется со значением типа `date`) либо
+   готовую строку вида `YYYY-MM-DDThh:mm:ss.sss±hhmm`, которую библиотека передаст как есть.
 6. `_type` — своя модель задачи вместо `FullIssue`, как и в остальных методах работы с
    задачами (см. [«Работа с пользовательскими полями»](custom_fields.md)).
 
@@ -109,7 +112,7 @@ async def edit_checklist_item(
     *,
     checked: bool | None = None,
     assignee: str | int | None = None,
-    deadline: datetime | str | None = None,
+    deadline: ChecklistDeadline | datetime | str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
 ) -> IssueT_co | FullIssue: ...
 ```
@@ -129,8 +132,11 @@ issue = await tracker.edit_checklist_item(
 2. `item_id` — идентификатор пункта чек-листа (`item.id`).
 3. `text` — текст пункта. API считает это поле обязательным даже при редактировании, поэтому
    если нужно поменять только `checked` (или другое поле), передавайте прежний текст пункта
-   (`item.text`) — иначе Трекер затрёт текст пустым значением.
-4. `checked`, `assignee`, `deadline` — необязательные поля, как и в `add_checklist_item`.
+   (`item.text`).
+4. `checked`, `assignee`, `deadline` — необязательные поля, как и в `add_checklist_item`. Поля,
+   оставленные `None`, в запрос не попадают; при этом официальная документация API не описывает,
+   что происходит с полями, отсутствующими в запросе, поэтому полагаться на то, что они сохранят
+   прежнее значение, не стоит — явно передавайте те поля, которые хотите сохранить.
 5. `_type` — своя модель задачи вместо `FullIssue`.
 
 !!! warning "Расхождение с документацией API"
@@ -201,6 +207,7 @@ issue = await tracker.delete_checklist("WRITERS-1")
 issue = await tracker.get_issue("WRITERS-1")
 
 items = await issue.get_checklist()
+item = items[0]
 issue = await issue.add_checklist_item("Написать тесты")
 issue = await issue.edit_checklist_item(item.id, item.text, checked=True)
 issue = await issue.delete_checklist_item(item.id)
@@ -210,8 +217,13 @@ issue = await issue.delete_checklist()
 * `issue.get_checklist()` — эквивалент `tracker.get_checklist(issue.id)`.
 * `issue.add_checklist_item(text, **kwargs)` — эквивалент `tracker.add_checklist_item(issue.id, text, **kwargs)`.
 * `issue.edit_checklist_item(item_id, text, **kwargs)` — эквивалент `tracker.edit_checklist_item(issue.id, item_id, text, **kwargs)`.
-* `issue.delete_checklist_item(item_id)` — эквивалент `tracker.delete_checklist_item(issue.id, item_id)`.
-* `issue.delete_checklist()` — эквивалент `tracker.delete_checklist(issue.id)`.
+* `issue.delete_checklist_item(item_id, **kwargs)` — эквивалент `tracker.delete_checklist_item(issue.id, item_id, **kwargs)`.
+* `issue.delete_checklist(**kwargs)` — эквивалент `tracker.delete_checklist(issue.id, **kwargs)`.
+
+Во всех этих методах `**kwargs` передаются напрямую в соответствующий метод `YaTracker`. Параметр
+`_type` по умолчанию равен классу самой задачи (`type(self)`), но его можно переопределить явно —
+например, `await issue.delete_checklist(_type=FullIssue)`, если ваш подкласс задачи требует полей,
+которых нет в ответе на запрос чек-листа.
 
 `FullIssue` также получает три новых поля, заполняемые чек-листом задачи:
 
@@ -221,8 +233,13 @@ issue = await issue.delete_checklist()
 | `checklist_total` | `int \| None`                | Общее количество пунктов чек-листа    |
 | `checklist_done`  | `int \| None`                | Количество выполненных пунктов        |
 
-Все три поля не гарантированы в каждом ответе API (например, `get_issue` без чек-листа в
-задаче вернёт `None`), но всегда заполняются в ответах методов из этого раздела.
+Все три поля равны `None`, если ответ API их не содержит. Например, `get_issue` для задачи без
+чек-листа вернёт `None` для всех трёх полей, а `delete_checklist` — который отправляет
+`DELETE /checklistItems` — получает в ответе `checklistDone` и `checklistTotal`, но не
+`checklistItems`, поэтому у возвращённой задачи `issue.checklist_items` тоже окажется `None`
+(при этом `get_checklist` возвращает не задачу, а список — `list[ChecklistItem]`, — и на него
+это не распространяется). Перед использованием этих полей проверяйте их на `None`, например
+`issue.checklist_items or []`.
 
 ## Модели `ChecklistItem`, `ChecklistAssignee`, `ChecklistDeadline`
 
@@ -235,7 +252,7 @@ issue = await issue.delete_checklist()
 |-----------------------|------------------------------|-------------------------------------------------|
 | `id`                  | `str`                        | Идентификатор пункта                            |
 | `text`                | `str`                        | Текст пункта                                    |
-| `checked`             | `bool`                       | Отмечен ли пункт выполненным                    |
+| `checked`             | `bool`                       | Отмечен ли пункт выполненным (по умолчанию `False`, если поле отсутствует в ответе API) |
 | `text_html`           | `str \| None`                | HTML-версия текста (присутствует не всегда)     |
 | `assignee`            | `ChecklistAssignee \| None`  | Исполнитель пункта, если назначен               |
 | `deadline`            | `ChecklistDeadline \| None`  | Срок выполнения, если задан                     |

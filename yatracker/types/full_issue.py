@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 
 from typing_extensions import Self
 
+from yatracker.utils.datetime import to_tracker_datetime
+
 from .base import Base, field
 from .checklist import ChecklistItem
 from .comment import Comment
@@ -91,12 +93,20 @@ class FullIssue(Base):
     async def add_checklist_item(self, text: str, **kwargs) -> Self:
         """Add an item to the checklist of self.
 
+        The result is decoded as `type(self)`; pass `_type` explicitly to
+        override it (e.g. `_type=FullIssue` when the subclass requires
+        fields the checklist response does not carry).
+
         :return: the updated issue.
         """
+        # Render a `datetime` deadline here so the naive-datetime warning
+        # points at the caller of this helper, not at the frames below.
+        if isinstance(kwargs.get("deadline"), datetime):
+            kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"])
+        kwargs.setdefault("_type", type(self))
         return await self._tracker.add_checklist_item(
             self.id,
             text,
-            _type=type(self),
             **kwargs,
         )
 
@@ -106,33 +116,51 @@ class FullIssue(Base):
         The API requires `text` even when only `checked` has to be
         toggled, so pass the current text of the item to keep it.
 
+        The result is decoded as `type(self)`; pass `_type` explicitly to
+        override it (e.g. `_type=FullIssue` when the subclass requires
+        fields the checklist response does not carry).
+
         :return: the updated issue.
         """
+        # Render a `datetime` deadline here so the naive-datetime warning
+        # points at the caller of this helper, not at the frames below.
+        if isinstance(kwargs.get("deadline"), datetime):
+            kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"])
+        kwargs.setdefault("_type", type(self))
         return await self._tracker.edit_checklist_item(
             self.id,
             item_id,
             text,
-            _type=type(self),
             **kwargs,
         )
 
-    async def delete_checklist_item(self, item_id: str) -> Self:
+    async def delete_checklist_item(self, item_id: str, **kwargs) -> Self:
         """Delete an item from the checklist of self.
+
+        The result is decoded as `type(self)`; pass `_type` explicitly to
+        override it (e.g. `_type=FullIssue` when the subclass requires
+        fields the checklist response does not carry).
 
         :return: the updated issue.
         """
+        kwargs.setdefault("_type", type(self))
         return await self._tracker.delete_checklist_item(
             self.id,
             item_id,
-            _type=type(self),
+            **kwargs,
         )
 
-    async def delete_checklist(self) -> Self:
+    async def delete_checklist(self, **kwargs) -> Self:
         """Delete the whole checklist of self.
+
+        The result is decoded as `type(self)`; pass `_type` explicitly to
+        override it (e.g. `_type=FullIssue` when the subclass requires
+        fields the checklist response does not carry).
 
         :return: the updated issue.
         """
-        return await self._tracker.delete_checklist(self.id, _type=type(self))
+        kwargs.setdefault("_type", type(self))
+        return await self._tracker.delete_checklist(self.id, **kwargs)
 
     async def get_links(self) -> list[IssueLink]:
         """Get issue links."""

@@ -96,17 +96,27 @@ class Issues(BaseTracker):
         self,
         issue_id: str,
         version: str | int | None = None,
+        *,
+        _type: type[IssueT_co],
         **kwargs,
-    ) -> FullIssue: ...
+    ) -> IssueT_co: ...
+
+    @overload
+    async def edit_issue(
+        self,
+        issue_id: str,
+        version: str | int | None,
+        _type: type[IssueT_co],
+        **kwargs,
+    ) -> IssueT_co: ...
 
     @overload
     async def edit_issue(
         self,
         issue_id: str,
         version: str | int | None = None,
-        _type: type[IssueT_co] = ...,
         **kwargs,
-    ) -> IssueT_co: ...
+    ) -> FullIssue: ...
 
     async def edit_issue(
         self,
@@ -146,7 +156,7 @@ class Issues(BaseTracker):
         assignee: list[str] | None = None,
         unique: str | None = None,
         attachment_ids: list[str] | None = None,
-        _type: type[IssueT_co] = ...,
+        _type: type[IssueT_co],
         **kwargs,
     ) -> IssueT_co: ...
 
@@ -210,7 +220,7 @@ class Issues(BaseTracker):
         move_all_fields: bool = False,
         initial_status: bool = False,
         expand: str | None = None,
-        _type: type[IssueT_co] = ...,
+        _type: type[IssueT_co],
         **kwargs,
     ) -> IssueT_co: ...
 
@@ -439,6 +449,37 @@ class Issues(BaseTracker):
         return self._decode(list[_type], data)  # type: ignore[valid-type]
 
     # ruff: noqa: PLR0913
+    @overload
+    def iter_issues(
+        self,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        queue: str | None = None,
+        *,
+        scroll_type: str = "sorted",
+        per_scroll: int = 100,
+        scroll_ttl_millis: int | None = None,
+        fields: str | None = None,
+    ) -> AsyncIterator[FullIssue]: ...
+
+    @overload
+    def iter_issues(
+        self,
+        filter_: dict[str, str] | None = None,
+        query: str | None = None,
+        order: str | None = None,
+        expand: str | None = None,
+        queue: str | None = None,
+        _type: type[IssueT_co] = ...,
+        *,
+        scroll_type: str = "sorted",
+        per_scroll: int = 100,
+        scroll_ttl_millis: int | None = None,
+        fields: str | None = None,
+    ) -> AsyncIterator[IssueT_co]: ...
+
     async def iter_issues(
         self,
         filter_: dict[str, str] | None = None,

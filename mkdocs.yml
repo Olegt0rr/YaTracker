@@ -9,6 +9,7 @@ nav:
     - Очереди: queues.md
     - Компоненты: components.md
     - Макросы: macros.md
+    - Доски и спринты: boards.md
     - Комментарии: comments.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md

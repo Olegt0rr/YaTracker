@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["FieldRef", "Macro", "MacroFieldChange"]
+__all__ = ["Macro", "MacroFieldChange"]
 
 from typing import Any
 
@@ -8,19 +8,7 @@ from pydantic import field_validator
 
 from .base import Base, field, url_field
 from .queue import Queue
-from .ref import Ref
-
-
-class FieldRef(Ref):
-    """Short issue-field reference embedded into macro payloads.
-
-    Attributes
-    ----------
-    url - Reference to the object.
-    id - Field ID.
-    display - Field name displayed in the interface.
-
-    """
+from .ref import FieldRef
 
 
 class MacroFieldChange(Base):

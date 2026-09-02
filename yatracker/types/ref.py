@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["Ref"]
+__all__ = ["FieldRef", "Ref"]
 
 from .base import Base, url_field
 
@@ -24,3 +24,18 @@ class Ref(Base):
     url: str = url_field()
     id: str
     display: str | None = None
+
+
+class FieldRef(Ref):
+    """Short issue-field reference.
+
+    Embedded into macro payloads (`Macro.issue_update`) and used by the
+    deprecated `estimateBy` field of a board.
+
+    Attributes
+    ----------
+    url - Reference to the object.
+    id - Field ID.
+    display - Field name displayed in the interface.
+
+    """

@@ -6,6 +6,7 @@ from .base import BaseTracker
 from .categories import (
     Applications,
     Attachments,
+    Boards,
     BulkChanges,
     Comments,
     Components,
@@ -15,6 +16,7 @@ from .categories import (
     Macros,
     Priorities,
     Queues,
+    Sprints,
     Worklogs,
 )
 
@@ -28,6 +30,8 @@ class YaTracker(
     Priorities,
     Components,
     Macros,
+    Boards,
+    Sprints,
     Attachments,
     Worklogs,
     BulkChanges,

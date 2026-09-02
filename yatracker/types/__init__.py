@@ -20,6 +20,22 @@ __all__ = [
     "ComponentRef",
     "CountryRef",
     "Duration",
+    "Entity",
+    "EntityChecklistItem",
+    "EntityDeadline",
+    "EntityEvent",
+    "EntityEventChange",
+    "EntityEventField",
+    "EntityEvents",
+    "EntityFields",
+    "EntityKeyResult",
+    "EntityKeyResultProgress",
+    "EntityLink",
+    "EntityMetricItem",
+    "EntityParent",
+    "EntityRef",
+    "EntitySearchResult",
+    "EntityType",
     "FieldRef",
     "FullIssue",
     "FullQueue",
@@ -34,6 +50,8 @@ __all__ = [
     "Macro",
     "MacroFieldChange",
     "Priority",
+    "Project",
+    "ProjectQueueRef",
     "Queue",
     "QueueField",
     "QueueVersion",
@@ -67,6 +85,24 @@ from .checklist import ChecklistAssignee, ChecklistDeadline, ChecklistItem
 from .comment import Comment
 from .component import Component, ComponentRef
 from .duration import Duration
+from .entity import (
+    Entity,
+    EntityChecklistItem,
+    EntityDeadline,
+    EntityEvent,
+    EntityEventChange,
+    EntityEventField,
+    EntityEvents,
+    EntityFields,
+    EntityKeyResult,
+    EntityKeyResultProgress,
+    EntityLink,
+    EntityMetricItem,
+    EntityParent,
+    EntityRef,
+    EntitySearchResult,
+    EntityType,
+)
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
@@ -81,6 +117,7 @@ from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .macro import Macro, MacroFieldChange
 from .priority import Priority
+from .project import Project, ProjectQueueRef
 from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion

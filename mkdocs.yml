@@ -8,6 +8,8 @@ nav:
     - Задачи: issues.md
     - Очереди: queues.md
     - Компоненты: components.md
+    - Проекты (устаревший API): projects.md
+    - Проекты, портфели и цели: entities.md
     - Макросы: macros.md
     - Доски и спринты: boards.md
     - Комментарии: comments.md

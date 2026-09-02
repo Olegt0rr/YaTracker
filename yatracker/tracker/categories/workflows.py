@@ -3,5 +3,5 @@ from __future__ import annotations
 from yatracker.tracker.base import BaseTracker
 
 
-class Users(BaseTracker):
-    """Users API methods (to be implemented)."""
+class Workflows(BaseTracker):
+    """Workflows API methods (to be implemented)."""

@@ -8,6 +8,7 @@ from pydantic import TypeAdapter
 from typing_extensions import Self
 
 from yatracker.types.base import Base
+from yatracker.types.full_issue import FullIssue
 from yatracker.utils.camel_case import camel_case
 
 from .client import AIOHTTPClient
@@ -20,6 +21,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T")
 B = TypeVar("B", bound=Base)
+IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
 
 logger = logging.getLogger(__name__)
 

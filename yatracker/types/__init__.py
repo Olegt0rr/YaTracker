@@ -9,6 +9,9 @@ __all__ = [
     "IssueLink",
     "IssueType",
     "IssueTypeConfig",
+    "LinkDirection",
+    "LinkRelationship",
+    "LinkType",
     "Priority",
     "Queue",
     "QueueField",
@@ -30,7 +33,7 @@ from .duration import Duration
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
-from .issue_link import IssueLink
+from .issue_link import IssueLink, LinkDirection, LinkRelationship, LinkType
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority

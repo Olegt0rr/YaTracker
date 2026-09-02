@@ -4,6 +4,13 @@ repo_name: Olegt0rr/YaTracker
 nav:
   - О библиотеке: index.md
   - С чего начать: howto.md
+  - Работа с API:
+    - Задачи: issues.md
+    - Очереди: queues.md
+    - Комментарии: comments.md
+    - Учёт времени: worklogs.md
+    - Прикреплённые файлы: attachments.md
+  - Обработка ошибок: errors.md
   - Дополнительные возможности:
     - Работа с пользовательскими полями: custom_fields.md
 

@@ -18,6 +18,8 @@ from yatracker.exceptions import (
     AlreadyExistsError,
     NotAuthorizedError,
     ObjectNotFoundError,
+    PreconditionFailedError,
+    PreconditionRequiredError,
     SufficientRightsError,
     YaTrackerError,
 )
@@ -173,15 +175,21 @@ class BaseClient(ABC):
         params: dict[str, Any] | None = None,
         payload: dict[str, Any] | None = None,
         form: FormData | None = None,
+        headers: dict[str, str] | None = None,
         **kwargs,
     ) -> bytes:
-        """Make request and return the response body."""
+        """Make request and return the response body.
+
+        :param headers: extra request headers (e.g. `If-Match`), merged
+            with the default ones by the transport.
+        """
         body, _ = await self.request_with_headers(
             method=method,
             uri=uri,
             params=params,
             payload=payload,
             form=form,
+            headers=headers,
             **kwargs,
         )
         return body
@@ -193,6 +201,7 @@ class BaseClient(ABC):
         params: dict[str, Any] | None = None,
         payload: dict[str, Any] | None = None,
         form: FormData | None = None,
+        headers: dict[str, str] | None = None,
         **kwargs,
     ) -> tuple[bytes, Mapping[str, str]]:
         """Make request and return both the response body and its headers.
@@ -200,6 +209,11 @@ class BaseClient(ABC):
         Some endpoints only expose their pagination state via response
         headers (e.g. `X-Scroll-Id`, `X-Total-Pages`, `X-Total-Count`),
         which are unreachable through :meth:`request`.
+
+        :param headers: extra request headers (e.g. `If-Match`). They are
+            forwarded to :meth:`_make_request` as the `headers` kwarg
+            only when given, so transports must merge them with the
+            default headers.
         """
         bytes_payload: FormData | BytesPayload | None
         if form is not None:
@@ -216,7 +230,10 @@ class BaseClient(ABC):
         if not uri.startswith("http"):
             uri = f"{self._base_url}/{self._api_version}{uri}"
 
-        status, body, headers = await self._make_request(
+        if headers is not None:
+            kwargs["headers"] = headers
+
+        status, body, response_headers = await self._make_request(
             method=method,
             url=uri,
             params=params,
@@ -224,7 +241,7 @@ class BaseClient(ABC):
             **kwargs,
         )
         self._check_status(status, body)
-        return body, headers
+        return body, response_headers
 
     @abstractmethod
     async def _make_request(
@@ -233,7 +250,13 @@ class BaseClient(ABC):
         url: StrOrURL,
         **kwargs,
     ) -> tuple[int, bytes, Mapping[str, str]]:
-        """Get raw response from via http-client.
+        """Get the raw response from the HTTP client.
+
+        Custom transports must forward every kwarg to the underlying
+        HTTP call: `params`, `data` (an aiohttp payload or `FormData`)
+        and, when present, `headers` — per-request headers such as
+        `If-Match`, which have to be merged with the default ones.
+        Dropping `headers` silently disables optimistic locking.
 
         :returns: tuple of (status_code, response_body, response_headers).
         """
@@ -254,6 +277,12 @@ class BaseClient(ABC):
 
         if status == HTTPStatus.CONFLICT:
             raise AlreadyExistsError
+
+        if status == HTTPStatus.PRECONDITION_FAILED:
+            raise PreconditionFailedError
+
+        if status == HTTPStatus.PRECONDITION_REQUIRED:
+            raise PreconditionRequiredError
 
         raise YaTrackerError(body.decode("utf-8", errors="replace"))
 

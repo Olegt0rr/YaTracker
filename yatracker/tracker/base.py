@@ -160,6 +160,17 @@ def _encode_key(key: str) -> str:
     return camel_case(key) if key.isidentifier() else key
 
 
+def _if_match(version: str | int) -> dict[str, str]:
+    """Build the `If-Match` header carrying an object version.
+
+    Board columns and sprints are optimistically locked: the API wants the
+    current version in `If-Match` and answers 412 when it is stale. The
+    value is an entity tag, so it is quoted the way the docs show it
+    (`If-Match: "2"`).
+    """
+    return {"If-Match": f'"{version}"'}
+
+
 def _encode_param(value: Any) -> str:  # noqa: ANN401
     """Encode a query param value the way the Tracker API expects it."""
     if isinstance(value, bool):

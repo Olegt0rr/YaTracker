@@ -8,10 +8,12 @@ from yatracker.types import (
     Issue,
     IssueLink,
     IssueType,
+    LinkRelationship,
     Priority,
     Transition,
     Transitions,
 )
+from yatracker.types.changelog import Changelog
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping
@@ -566,6 +568,197 @@ class Issues(BaseTracker):
 
             params = {**params, "scrollId": scroll_id}
 
+    async def clear_search_scroll(self, scroll_ids: Mapping[str, str]) -> bool:
+        """Release the resources of a scroll search.
+
+        Every page of a scroll search (see :meth:`find_issues` and
+        :meth:`iter_issues`) holds a snapshot on the server until it
+        expires. Use this request to release them earlier.
+
+        The docs show the request body as `{"srollId": "scrollToken"}`,
+        which is a (misspelled) placeholder rather than a literal key:
+        the parameter table names the value `scrollId` and the full
+        example sends real scroll ids as the keys of the object. So the
+        body is a plain mapping of a scroll id to its scroll token, and
+        all the pairs of the search have to be sent at once — one pair
+        per page of the search results.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-release
+
+        :param scroll_ids: mapping of every `X-Scroll-Id` returned by
+            the search to the matching `X-Scroll-Token`.
+        :return: `True` if the resources were released.
+        """
+        await self._client.request(
+            method="POST",
+            uri="/system/search/scroll/_clear",
+            payload=dict(scroll_ids),
+        )
+        return True
+
+    @overload
+    async def suggest_issues(
+        self,
+        input_: str,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[FullIssue]: ...
+
+    @overload
+    async def suggest_issues(
+        self,
+        input_: str,
+        _type: type[IssueT_co] = ...,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[IssueT_co]: ...
+
+    async def suggest_issues(
+        self,
+        input_: str,
+        _type: type[IssueT_co | FullIssue] = FullIssue,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[IssueT_co] | list[FullIssue]:
+        """Get issue suggestions by a fragment of the issue name.
+
+        Only the issues the user has access to are returned. The
+        response is a projection of the issue, not the whole issue, so
+        pass `full=True` together with the `fields`/`expand` selection
+        your `_type` needs — the default :class:`FullIssue` requires
+        the full field set.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-suggest
+
+        :param input_: fragment of the issue name (query param "input").
+            A space between words also matches any text in its place.
+        :param _type: you can use your own extended FullIssue type.
+        :param queue: key of the queue to search in.
+        :param full: whether to return the detailed information about
+            every issue. Required to enable `fields`, `expand` and
+            `embed`.
+        :param fields: comma-separated list of the issue fields to
+            return.
+        :param expand: additional information to include in the
+            response: "all", "html", "attachments", "comments", "links",
+            "localLinkRefs", "aliases", "transitions", "permissions",
+            "sla" or "update_limits".
+        :param embed: more details about what was asked in `expand`:
+            "attachments", "comments", "transitions" or "sla".
+        :return: list of the issues found.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri="/issues/_suggest",
+            params=self._prepare_params(
+                input_=input_,
+                queue=queue,
+                full=full,
+                fields=fields,
+                expand=expand,
+                embed=embed,
+            ),
+        )
+        return self._decode(list[_type], data)  # type: ignore[valid-type]
+
+    async def get_issue_changelog(
+        self,
+        issue_id: str,
+        *,
+        id_: str | None = None,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> list[Changelog]:
+        """Get one page of the change history of an issue.
+
+        The API returns 50 changes per page by default; use `per_page`
+        and the `id_` cursor (or :meth:`iter_issue_changelog`) to read
+        the rest.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-changelog
+
+        :param issue_id: ID or key of the issue.
+        :param id_: id of the change the requested ones follow
+            (query param "id"). Omit it to get the first page.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by, e.g.
+            "checklistItems" or "status".
+        :param type_: key of the change type to filter by, e.g.
+            "IssueWorkflow" (query param "type").
+        :return: list of the changelog records.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri=f"/issues/{issue_id}/changelog",
+            params=self._prepare_params(
+                id_=id_,
+                per_page=per_page,
+                field=field,
+                type_=type_,
+            ),
+        )
+        return self._decode(list[Changelog], data)
+
+    async def iter_issue_changelog(
+        self,
+        issue_id: str,
+        *,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> AsyncIterator[Changelog]:
+        """Iterate over the whole change history of an issue.
+
+        Wraps :meth:`get_issue_changelog`: every page is requested with
+        the id of the last change of the previous one, and iteration
+        stops as soon as a page comes back empty or does not advance
+        past that cursor.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-changelog
+
+        :param issue_id: ID or key of the issue.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by.
+        :param type_: key of the change type to filter by.
+        """
+        id_: str | None = None
+        while True:
+            changes = await self.get_issue_changelog(
+                issue_id,
+                id_=id_,
+                per_page=per_page,
+                field=field,
+                type_=type_,
+            )
+            # A page that does not advance past the cursor is either the
+            # last one (inclusive cursor) or a server ignoring `id`:
+            # stop instead of looping forever.
+            if not changes or changes[-1].id == id_:
+                return
+
+            for change in changes:
+                if change.id != id_:
+                    yield change
+
+            id_ = changes[-1].id
+
     async def get_issue_links(
         self,
         issue_id: str,
@@ -574,12 +767,67 @@ class Issues(BaseTracker):
 
         Use this request to get information about links between issues.
         The issue is selected by its ID or key.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-links
         """
         data = await self._client.request(
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
         return self._decode(list[IssueLink], data)
+
+    async def link_issues(
+        self,
+        issue_id: str,
+        relationship: LinkRelationship | str,
+        issue: str | Issue,
+    ) -> IssueLink:
+        """Create a link between two issues.
+
+        The link is created between the current issue (`issue_id`) and
+        the linked one (`issue`).
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/link-issue
+
+        :param issue_id: ID or key of the current issue.
+        :param relationship: type of the link: "relates",
+            "is dependent by", "depends on", "is subtask for",
+            "is parent task for", "duplicates", "is duplicated by",
+            "is epic of" or "has epic" (see :class:`LinkRelationship`).
+            The two epic links are only allowed for epics.
+        :param issue: ID or key of the issue to link.
+        :return: the created link.
+        """
+        payload = {
+            "relationship": relationship.value
+            if isinstance(relationship, LinkRelationship)
+            else relationship,
+            "issue": issue.key if isinstance(issue, Issue) else issue,
+        }
+        data = await self._client.request(
+            method="POST",
+            uri=f"/issues/{issue_id}/links",
+            payload=payload,
+        )
+        return self._decode(IssueLink, data)
+
+    async def unlink_issues(self, issue_id: str, link_id: str | int) -> bool:
+        """Delete a link between two issues.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/delete-link-issue
+
+        :param issue_id: ID or key of the current issue.
+        :param link_id: ID of the link with the other issue.
+        :return: `True` if the link was deleted.
+        """
+        await self._client.request(
+            method="DELETE",
+            uri=f"/issues/{issue_id}/links/{link_id}",
+        )
+        return True
 
     async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.

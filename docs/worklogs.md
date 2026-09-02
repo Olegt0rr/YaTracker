@@ -190,3 +190,4 @@ worklogs = await tracker.get_worklog(
 | `updated_at` | `datetime \| None` | Дата и время последнего изменения             |
 | `start`      | `datetime`         | Момент начала работы                          |
 | `duration`   | `str`              | Затраченное время в формате ISO 8601 duration |
+| `comment`    | `str \| None`      | Комментарий к записи (если задан)             |

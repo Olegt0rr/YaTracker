@@ -1,7 +1,418 @@
 from __future__ import annotations
 
-from yatracker.tracker.base import BaseTracker
+from datetime import date, datetime
+from typing import TYPE_CHECKING, Any, cast
+
+from yatracker.tracker.base import BaseTracker, _convert_value
+from yatracker.types.entity import (
+    Entity,
+    EntityChecklistItem,
+    EntityDeadline,
+    EntityType,
+)
+from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
+
+from .entities import _entity_uri, _fields_params
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 class EntityChecklists(BaseTracker):
-    """EntityChecklists API methods (to be implemented)."""
+    """Checklists of projects and portfolios (`/entities`).
+
+    The whole checklist is also reachable through the entity itself:
+    `get_entity(..., fields="checklistItems")` reads it and
+    `update_entity(..., checklist_items=[...])` rewrites it.
+
+    Every method here answers with the whole entity, not with the
+    checklist, so ask for the items with `fields="checklistItems"`.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist
+    """
+
+    async def add_entity_checklist_item(  # noqa: PLR0913
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        text: str,
+        *,
+        checked: bool | None = None,
+        assignee: str | int | None = None,
+        deadline: EntityDeadline | datetime | date | str | None = None,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
+        """Add an item to the checklist of an entity.
+
+        The item is appended to the end of the list; the checklist is
+        created if the entity does not have one yet.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param text: Text of the checklist item.
+        :param checked: Mark the item as done.
+        :param assignee: Login or id of the assignee of the item.
+        :param deadline: Deadline of the item: an `EntityDeadline`, a
+            timezone-aware `datetime` or a `date` (both sent as type
+            `date`), or a ready-made API string.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :param fields: Fields to return in the response (a
+            comma-separated string or a sequence of names).
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :return: The whole entity, not the created item.
+        """
+        payload = _checklist_item_payload(
+            text=text,
+            checked=checked,
+            assignee=assignee,
+            deadline=deadline,
+        )
+
+        data = await self._client.request(
+            method="POST",
+            uri=_entity_uri(entity_type, str(entity_id), "checklistItems"),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
+            payload=payload,
+        )
+        return self._decode(Entity, data)
+
+    async def edit_entity_checklist(  # noqa: PLR0913
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        items: Sequence[EntityChecklistItem | dict[str, Any]],
+        *,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
+        """Edit several items of the checklist of an entity at once.
+
+        Every item is identified by its `id` and needs its `text`; the
+        optional fields that are not repeated are reset to their default
+        value (an empty string, `0`, `null` or `false`), so pass back
+        the values that should stay as they are. The number of items
+        cannot change here: use `add_entity_checklist_item` and
+        `delete_entity_checklist_item` for that.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param items: Items to edit: `EntityChecklistItem` objects or
+            dicts like `{"id": "...", "text": "...", "checked": True}`.
+            A single item on its own raises `TypeError`.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :param fields: Fields to return in the response.
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :raises TypeError: If `items` is a bare item instead of a
+            sequence.
+        :raises ValueError: If there are no items to edit.
+        :return: The whole entity, not the edited items.
+        """
+        payload = _checklist_items_payload(items)
+
+        data = await self._client.request(
+            method="PATCH",
+            uri=_entity_uri(entity_type, str(entity_id), "checklistItems"),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
+            # the body is a JSON array; `request` serialises whatever it
+            # is given, only its annotation is narrower
+            payload=cast("dict[str, Any]", payload),
+        )
+        return self._decode(Entity, data)
+
+    async def edit_entity_checklist_item(  # noqa: PLR0913
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        item_id: str,
+        *,
+        text: str | None = None,
+        checked: bool | None = None,
+        assignee: str | int | None = None,
+        deadline: EntityDeadline | datetime | date | str | None = None,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
+        """Edit a single item of the checklist of an entity.
+
+        Fields left as `None` are not sent. The documentation does not
+        say how the fields that are not sent are treated, so do not rely
+        on them keeping their current values.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist-item
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param item_id: Id of the checklist item to edit.
+        :param text: Text of the checklist item.
+        :param checked: Mark the item as done.
+        :param assignee: Login or id of the assignee of the item.
+        :param deadline: Deadline of the item: an `EntityDeadline`, a
+            timezone-aware `datetime` or a `date` (both sent as type
+            `date`), or a ready-made API string.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :param fields: Fields to return in the response.
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :raises ValueError: If there is nothing to change.
+        :return: The whole entity, not the edited item.
+        """
+        payload = _checklist_item_payload(
+            text=text,
+            checked=checked,
+            assignee=assignee,
+            deadline=deadline,
+        )
+        if not payload:
+            msg = "This operation requires at least one field to change."
+            raise ValueError(msg)
+
+        data = await self._client.request(
+            method="PATCH",
+            uri=_entity_uri(
+                entity_type,
+                str(entity_id),
+                "checklistItems",
+                str(item_id),
+            ),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
+            payload=payload,
+        )
+        return self._decode(Entity, data)
+
+    async def move_entity_checklist_item(  # noqa: PLR0913
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        item_id: str,
+        before: str,
+        *,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
+        """Move an item of the checklist of an entity.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/move-checklist-item
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param item_id: Id of the checklist item to move.
+        :param before: Id of the checklist item to insert the moved item
+            before.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :param fields: Fields to return in the response.
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :return: The whole entity, not the moved item.
+        """
+        data = await self._client.request(
+            method="POST",
+            uri=_entity_uri(
+                entity_type,
+                str(entity_id),
+                "checklistItems",
+                str(item_id),
+                "_move",
+            ),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
+            payload={"before": before},
+        )
+        return self._decode(Entity, data)
+
+    async def delete_entity_checklist_item(
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        item_id: str,
+        *,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+    ) -> bool:
+        """Delete an item from the checklist of an entity.
+
+        The action cannot be undone. The API answers with the entity and
+        its remaining checklist items; read them back with
+        `get_entity(..., fields="checklistItems")` when they are needed.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist-item
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param item_id: Id of the checklist item to delete.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :return: `True` if the item was deleted.
+        """
+        await self._client.request(
+            method="DELETE",
+            uri=_entity_uri(
+                entity_type,
+                str(entity_id),
+                "checklistItems",
+                str(item_id),
+            ),
+            params=_fields_params(None, notify=notify, notify_author=notify_author),
+        )
+        return True
+
+    async def delete_entity_checklist(
+        self,
+        entity_type: EntityType,
+        entity_id: str | int,
+        *,
+        notify: bool | None = None,
+        notify_author: bool | None = None,
+    ) -> bool:
+        """Delete every item of the checklist of an entity.
+
+        The action cannot be undone.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist
+
+        :param entity_type: "project" or "portfolio".
+        :param entity_id: Id (or short id) of the entity.
+        :param notify: Whether to notify the users mentioned in the
+            entity (`True` by default).
+        :param notify_author: Whether to notify the author of the
+            change (`False` by default).
+        :return: `True` if the checklist was deleted.
+        """
+        await self._client.request(
+            method="DELETE",
+            uri=_entity_uri(entity_type, str(entity_id), "checklistItems"),
+            params=_fields_params(None, notify=notify, notify_author=notify_author),
+        )
+        return True
+
+
+def _build_deadline(
+    deadline: EntityDeadline | datetime | date | str | None,
+) -> dict[str, Any] | None:
+    """Render a deadline as the `{"date", "deadlineType"}` object the API expects.
+
+    An `EntityDeadline` (e.g. one read from another item) keeps its own
+    `deadline_type`; a bare date, timestamp or ready-made API string is
+    sent as type `date`. A deadline without a date is left out entirely.
+    """
+    if deadline is None:
+        return None
+
+    if isinstance(deadline, EntityDeadline):
+        value: datetime | date | str | None = deadline.date
+        deadline_type = deadline.deadline_type or "date"
+    else:
+        value, deadline_type = deadline, "date"
+
+    # `datetime` is a subclass of `date`, so it is rendered first: the
+    # API documents checklist deadlines as full timestamps.
+    # stacklevel=5: warn -> to_tracker_datetime -> this helper -> the
+    # payload helper -> the public method -> user code
+    rendered: str | None
+    if isinstance(value, datetime):
+        rendered = to_tracker_datetime(value, stacklevel=5)
+    else:
+        rendered = to_tracker_date(value)
+
+    if rendered is None:
+        return None
+    return {"date": rendered, "deadlineType": deadline_type}
+
+
+def _checklist_item_payload(
+    *,
+    text: str | None,
+    checked: bool | None,
+    assignee: str | int | None,
+    deadline: EntityDeadline | datetime | date | str | None,
+) -> dict[str, Any]:
+    """Build the body of a single checklist item; `None` fields are left out."""
+    payload: dict[str, Any] = {}
+    if text is not None:
+        payload["text"] = text
+    if checked is not None:
+        payload["checked"] = checked
+    if assignee is not None:
+        payload["assignee"] = assignee
+    built_deadline = _build_deadline(deadline)
+    if built_deadline is not None:
+        payload["deadline"] = built_deadline
+    return payload
+
+
+def _checklist_items_payload(
+    # The bare types are part of the annotation only so that the runtime
+    # guard below is not dead code for a type checker: a single item is
+    # exactly the kind of value that would otherwise be iterated.
+    items: Sequence[EntityChecklistItem | dict[str, Any]]
+    | EntityChecklistItem
+    | dict[str, Any]
+    | str,
+) -> list[dict[str, Any]]:
+    """Convert the items of `edit_entity_checklist` to the plain dicts the API wants."""
+    if isinstance(items, (str, dict, EntityChecklistItem)):
+        msg = (
+            f"`items` must be a sequence of checklist items, got "
+            f"{type(items).__name__}. Pass a sequence of items, e.g. `[item]`."
+        )
+        raise TypeError(msg)
+
+    payload = [_convert_value(item) for item in items]
+    if not payload:
+        msg = "At least one checklist item is required."
+        raise ValueError(msg)
+    return payload

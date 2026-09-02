@@ -24,11 +24,17 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
   through the return types.
 * Supports both Yandex 360 (`X-Org-ID` + OAuth) and Yandex Cloud
   (`X-Cloud-Org-ID` + IAM) organizations.
-* Covers issues, queues, components, projects (both the legacy `/projects`
-  API and the entities API behind projects, portfolios and goals), macros,
-  boards (including columns and sprints), comments, checklists, worklogs,
-  attachments, priorities, bulk changes, external applications and remote
-  links, and import of issues, comments, links and attachments.
+* Covers the whole documented Tracker API: issues (including changelog,
+  links, suggest and reports), queues (fields, versions, tags, access
+  rights, triggers, autoactions, workflows), components, projects (both the
+  legacy `/projects` API and the entities API behind projects, portfolios
+  and goals, with their comments, attachments, checklists, links and access
+  rights), macros, boards (including columns and sprints), comments and
+  reactions, checklists, worklogs, attachments, users, administration
+  dictionaries (issue types, statuses, resolutions, priorities), global and
+  local fields, filters, dashboards, absences (gaps), bulk changes, external
+  applications and remote links, and import of issues, comments, links,
+  attachments and worklogs.
 * Local (custom) queue fields are supported via your own model subclasses.
 * Pluggable transport: swap `aiohttp` for any client by subclassing
   `BaseClient`.

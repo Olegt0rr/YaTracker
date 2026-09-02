@@ -384,13 +384,23 @@ def _fields_params(
     fields: str | Sequence[str] | None,
     *,
     expand: str | None = None,
+    notify: bool | None = None,
+    notify_author: bool | None = None,
 ) -> dict[str, str] | None:
-    """Build the `fields`/`expand` query params."""
+    """Build the `fields`/`expand`/`notify` query params.
+
+    Shared with the sub-resources of an entity (checklists, links,
+    ...), whose endpoints take the same parameters.
+    """
     params: dict[str, str] = {}
     if fields:
         params["fields"] = fields if isinstance(fields, str) else ",".join(fields)
     if expand:
         params["expand"] = expand
+    if notify is not None:
+        params["notify"] = str(notify).lower()
+    if notify_author is not None:
+        params["notifyAuthor"] = str(notify_author).lower()
     return params or None
 
 

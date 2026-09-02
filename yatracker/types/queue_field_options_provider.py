@@ -12,3 +12,5 @@ class QueueFieldOptionsProvider(Base):
     # mapping a key to an array, e.g. {"DIRECT": ["First", ...]}
     values: dict[str, list] | list | None = None
     defaults: list | None = None
+    # sent back by the `/fields` and `/queues/{id}/localFields` endpoints
+    need_validation: bool | None = None

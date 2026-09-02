@@ -69,8 +69,16 @@ class BaseLink(Base):
 
 
 class IssueLink(BaseLink):
-    """Represents issue link."""
+    """Represents issue link.
+
+    `assignee` and `status` describe the linked issue (the one in
+    `object`). `GET /issues/{id}/links` sends both, while the response
+    of `POST /issues/{id}/links` carries neither, so both are optional.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/issues/get-links
+    """
 
     object: Issue
     assignee: User | None = None
-    status: Status
+    status: Status | None = None

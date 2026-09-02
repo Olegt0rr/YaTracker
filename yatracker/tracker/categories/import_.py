@@ -11,6 +11,7 @@ from yatracker.types import (
     FullIssue,
     IssueLink,
     LinkRelationship,
+    Worklog,
 )
 from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
 
@@ -247,6 +248,48 @@ class Imports(BaseTracker):
             payload=payload,
         )
         return self._decode(IssueLink, data)
+
+    async def import_worklog(
+        self,
+        issue_id: str,
+        duration: str,
+        created_at: datetime | str,
+        created_by: str | int,
+        start: datetime | str,
+        *,
+        comment: str | None = None,
+        **kwargs,
+    ) -> Worklog:
+        """Import a worklog, preserving its original author and timestamps.
+
+        The request requires organization admin rights.
+
+        :param issue_id: id or key of the issue to import the worklog into.
+        :param duration: time spent, an ISO 8601 duration such as
+                            "PT1H", "P6W" or "P0Y0M30DT2H10M25S".
+        :param created_at: creation moment, a datetime or an API string.
+                            It must lie between the creation and the last
+                            update of the issue.
+        :param created_by: login or id of the worklog author.
+        :param start: moment the work on the issue started, a datetime
+                            or an API string.
+        :param comment: comment text saved with the worklog. It shows up
+                            in the time-tracking report.
+        :param kwargs: any other worklog field.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/import/import-worklogs
+        """
+        created_at = to_tracker_datetime(created_at)
+        start = to_tracker_datetime(start)
+
+        payload = self._prepare_payload(locals(), exclude=["issue_id"])
+        data = await self._client.request(
+            method="POST",
+            uri=f"/issues/{issue_id}/worklogs/_import",
+            payload=payload,
+        )
+        return self._decode(Worklog, data)
 
     async def import_attachment(
         self,

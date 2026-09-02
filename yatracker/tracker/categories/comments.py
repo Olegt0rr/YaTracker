@@ -99,6 +99,33 @@ class Comments(BaseTracker):
         )
         return self._decode(Comment, data)
 
+    async def add_comment_reaction(
+        self,
+        issue_id: str,
+        comment_id: str | int,
+        reaction: str,
+    ) -> Comment:
+        """Add a reaction to an issue comment.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/add-reaction-to-comment
+
+        :param issue_id: ID or key of the issue.
+        :param comment_id: ID of the comment, either the numeric `id`
+            or the string `longId`.
+        :param reaction: name of the reaction: "LIKE", "DISLIKE",
+            "LAUGH", "HOORAY", "CONFUSED", "HEART", "ROCKET", "EYES",
+            "FIRE", "OK", "FACEPALM" or "CHECK". The list is owned by
+            the server, so it is not enforced here.
+        :return: the comment with the updated `reactions_count` and
+            `own_reactions`.
+        """
+        data = await self._client.request(
+            method="POST",
+            uri=f"/issues/{issue_id}/comments/{comment_id}/reactions/{reaction}",
+        )
+        return self._decode(Comment, data)
+
     async def delete_comment(self, issue_id: str, comment_id: str | int) -> bool:
         """Delete issue comment.
 

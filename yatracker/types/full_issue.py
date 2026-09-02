@@ -25,7 +25,8 @@ from .user import User
 if TYPE_CHECKING:
     import builtins
 
-    from .issue_link import IssueLink
+    from .changelog import Changelog
+    from .issue_link import IssueLink, LinkRelationship
 
 IssueT = TypeVar("IssueT", bound="FullIssue")
 
@@ -238,3 +239,48 @@ class FullIssue(Base):
     async def get_links(self) -> list[IssueLink]:
         """Get issue links."""
         return await self._tracker.get_issue_links(self.id)
+
+    async def link(
+        self,
+        relationship: LinkRelationship | str,
+        issue: str | Issue,
+    ) -> IssueLink:
+        """Create a link between self and another issue.
+
+        :param relationship: type of the link, e.g. "relates"
+            (see `LinkRelationship`).
+        :param issue: ID or key of the issue to link.
+        :return: the created link.
+        """
+        return await self._tracker.link_issues(self.id, relationship, issue)
+
+    async def unlink(self, link_id: str | int) -> bool:
+        """Delete a link between self and another issue.
+
+        :param link_id: ID of the link.
+        :return: `True` if the link was deleted.
+        """
+        return await self._tracker.unlink_issues(self.id, link_id)
+
+    async def get_changelog(
+        self,
+        *,
+        id_: str | None = None,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> list[Changelog]:
+        """Get one page of the change history of self.
+
+        :param id_: id of the change the requested ones follow.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by.
+        :param type_: key of the change type to filter by.
+        """
+        return await self._tracker.get_issue_changelog(
+            self.id,
+            id_=id_,
+            per_page=per_page,
+            field=field,
+            type_=type_,
+        )

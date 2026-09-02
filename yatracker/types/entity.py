@@ -12,6 +12,7 @@ __all__ = [
     "EntityKeyResult",
     "EntityKeyResultProgress",
     "EntityLink",
+    "EntityLinkInfo",
     "EntityMetricItem",
     "EntityParent",
     "EntityRef",
@@ -25,7 +26,7 @@ from datetime import date as date_
 from datetime import datetime
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import BeforeValidator, ConfigDict, TypeAdapter
+from pydantic import AliasChoices, BeforeValidator, ConfigDict, TypeAdapter
 
 from .attachment import Attachment
 from .base import Base, field, url_field
@@ -77,9 +78,19 @@ class EntityParent(Base):
 
 
 class EntityDeadline(Base):
-    """Deadline of a checklist item or a key result."""
+    """Deadline of a checklist item or a key result.
 
-    date: date_ | None = None
+    The API documents `date` as a full timestamp
+    (`YYYY-MM-DDThh:mm:ss.sss±hhmm`) for checklist items and as a plain
+    `YYYY-MM-DD` date for key results, so it is read as whichever of the
+    two the response actually carries. `deadline_type` is `date` or
+    `quarter`.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/entities/about-entities
+    """
+
+    date: DateOrDatetime | None = None
     deadline_type: str | None = None
     is_exceeded: bool | None = None
 
@@ -146,6 +157,9 @@ class EntityFields(Base):
     # the parent config into this one.
     model_config = ConfigDict(extra="allow")
 
+    # not part of the `fields` block of an entity, but `fields=id` is a
+    # valid selector for `linkFieldValues` of `get_entity_links`
+    id: str | None = None
     summary: str | None = None
     description: str | None = None
     author: User | None = None
@@ -181,6 +195,35 @@ class EntityLink(Base):
 
     relationship: str
     entity: str
+
+
+class EntityLinkInfo(Base):
+    """Link of an entity, as returned by `GET /entities/<type>/<id>/links`.
+
+    The response sample names the kind of the link `type` while the
+    parameter table calls it `relationship`, so both keys are accepted
+    and the value is exposed as `relationship`, like in
+    :class:`EntityLink`.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/entities/links/get-links
+
+    Attributes
+    ----------
+    relationship - Kind of the link: "depends on", "is dependent by",
+    "works towards", "parent entity", "child entity" or
+    "is supported by".
+    link_field_values - Fields of the linked entity: the ones listed in
+    the `fields` parameter of the request, so everything is optional.
+
+    """
+
+    relationship: str | None = field(
+        default=None,
+        validation_alias=AliasChoices("type", "relationship"),
+        serialization_alias="relationship",
+    )
+    link_field_values: EntityFields = field(default_factory=EntityFields)
 
 
 class Entity(Base):

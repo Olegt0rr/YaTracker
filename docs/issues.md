@@ -292,6 +292,64 @@ first_page = await tracker.find_issues(
     продолжения сессии — он приходит в заголовке ответа `X-Scroll-Id`, а не в теле. Чтобы не
     работать со скроллингом вручную, используйте `iter_issues` ниже.
 
+### suggest_issues
+
+Отдельный метод для подсказок по фрагменту названия задачи (то, что показывает интерфейс
+Трекера при наборе текста в поиске):
+
+```python
+issues = await tracker.suggest_issues("исправить ошибки")
+```
+
+Сигнатура:
+
+```python
+async def suggest_issues(
+    self,
+    input_: str,
+    _type: type[IssueT_co | FullIssue] = FullIssue,
+    *,
+    queue: str | None = None,
+    full: bool | None = None,
+    fields: str | None = None,
+    expand: str | None = None,
+    embed: str | None = None,
+) -> list[IssueT_co] | list[FullIssue]: ...
+```
+
+1. `input_` — фрагмент текста в названии задачи (query-параметр `input`). Пробел между
+   словами также совпадает с любым текстом на его месте.
+2. `queue` — ограничить поиск одной очередью.
+3. `full` — вернуть подробную информацию о каждой задаче вместо краткой проекции; по
+   умолчанию `False`. Обязателен, чтобы включить `fields`, `expand` и `embed`.
+4. `fields` — список полей задачи через запятую.
+5. `expand` — дополнительные данные: `"all"`, `"html"`, `"attachments"`, `"comments"`,
+   `"links"`, `"localLinkRefs"`, `"aliases"`, `"transitions"`, `"permissions"`, `"sla"` или
+   `"update_limits"`.
+6. `embed` — детали по тому, что запрошено в `expand`: `"attachments"`, `"comments"`,
+   `"transitions"` или `"sla"`.
+7. `_type` — своя модель задачи вместо `FullIssue`.
+
+!!! warning "Без `full=True` ответ — не полная задача"
+
+    Без `full=True` API возвращает только краткую проекцию (`self`, `id`, `key`, `version`,
+    `summary`, `assignee`, `status`, ...), а не весь набор полей, которого по умолчанию
+    ожидает модель `FullIssue`. Если оставляете `_type` по умолчанию (`FullIssue`), всегда
+    передавайте `full=True` — иначе валидация ответа упадёт из-за отсутствующих
+    обязательных полей (см. [«Обработка ошибок»](errors.md)). Для лёгких запросов подсказок
+    без `full=True` передавайте `_type` с узкой моделью, у которой обязательны только поля
+    реального краткого ответа.
+
+```python
+issues = await tracker.suggest_issues(
+    "исправить ошибки",
+    full=True,
+    fields="summary,status,assignee,followers",
+)
+```
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/get-suggest
+
 ## Итерация по всем задачам
 
 Чтобы прочитать больше 10 000 задач без ручного управления scroll-сессией, используйте
@@ -332,6 +390,48 @@ async def iter_issues(
 
 Если нужно управлять scroll-сессией вручную (например, встроить в свою пагинацию), можно
 по-прежнему пользоваться `find_issues`, передавая `scroll_id` явно.
+
+### clear_search_scroll
+
+Каждая страница scroll-поиска держит на сервере снимок результатов до истечения
+`scroll_ttl_millis`. Чтобы освободить ресурсы раньше, используйте `clear_search_scroll`:
+
+```python
+async def clear_search_scroll(self, scroll_ids: Mapping[str, str]) -> bool: ...
+```
+
+```python
+released = await tracker.clear_search_scroll(
+    {
+        "<X-Scroll-Id страницы 1>": "<X-Scroll-Token страницы 1>",
+        "<X-Scroll-Id страницы 2>": "<X-Scroll-Token страницы 2>",
+    }
+)
+```
+
+- `scroll_ids` — отображение `{идентификатор страницы: токен страницы}`. Идентификатор —
+  это заголовок ответа `X-Scroll-Id`, токен — `X-Scroll-Token`, которые Трекер присылает на
+  каждую страницу поиска с активным scroll (`POST /issues/_search` с `scrollType`). Нужно
+  передать пары для **всех** страниц одного поиска разом — по одной паре на каждую
+  полученную страницу.
+
+!!! note "Опечатка в официальной документации"
+
+    Страница API показывает тело запроса как `{"srollId": "scrollToken"}` — это
+    placeholder с опечаткой (`sroll` вместо `scroll`), а не буквальное имя ключа: в
+    описании параметров ключ назван `scrollId`, а полный пример запроса использует в
+    качестве ключей реальные scroll id. Поэтому тело запроса — обычное отображение
+    `{scroll_id: scroll_token}`, как и реализует `clear_search_scroll`.
+
+!!! warning "`iter_issues` не вызывает `clear_search_scroll`"
+
+    `iter_issues` дочитывает scroll-сессию до конца (пока страница не окажется пустой или
+    API не перестанет присылать `X-Scroll-Id`), поэтому отдельно освобождать ресурсы обычно
+    не нужно. Но если вы прерываете итерацию досрочно (`break`) или ведёте scroll-сессию
+    вручную через `find_issues`, вызывайте `clear_search_scroll` сами — иначе снимок
+    результатов будет висеть на сервере до истечения `scroll_ttl_millis`.
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/search-release
 
 ## Приоритеты
 
@@ -374,6 +474,185 @@ async def get_issue_links(self, issue_id: str) -> list[IssueLink]: ...
 Кроме связей между задачами, Трекер поддерживает связи с объектами внешних приложений
 (например, коммитами или pull request'ами Bitbucket) — такие связи называются внешними
 ссылками. Про них подробно рассказано в разделе [«Внешние приложения»](applications.md).
+
+### link_issues
+
+```python
+async def link_issues(
+    self,
+    issue_id: str,
+    relationship: LinkRelationship | str,
+    issue: str | Issue,
+) -> IssueLink: ...
+```
+
+Создаёт связь между текущей задачей (`issue_id`) и другой (`issue`).
+
+```python
+from yatracker.types.issue_link import LinkRelationship
+
+link = await tracker.link_issues("WRITERS-1", LinkRelationship.RELATES, "WRITERS-2")
+```
+
+1. `issue_id` — ID или ключ текущей задачи.
+2. `relationship` — тип связи: значение `LinkRelationship` либо обычная строка.
+   Документированы значения `"relates"`, `"is dependent by"`, `"depends on"`,
+   `"is subtask for"`, `"is parent task for"`, `"duplicates"`, `"is duplicated by"`,
+   `"is epic of"` и `"has epic"` (два последних — только для задач типа «Эпик»).
+   `LinkRelationship` содержит ещё `CLONE` и `ORIGINAL`, но они относятся только к импорту
+   задач, см. [«Импорт задач»](import.md).
+3. `issue` — ID/ключ связываемой задачи строкой, либо уже загруженный объект `Issue`
+   (тогда используется `issue.key`).
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/link-issue
+
+### unlink_issues
+
+```python
+async def unlink_issues(self, issue_id: str, link_id: str | int) -> bool: ...
+```
+
+Удаляет связь. Возвращает `True` при успешном удалении.
+
+```python
+await tracker.unlink_issues("WRITERS-1", link.id)
+```
+
+1. `issue_id` — ID или ключ текущей задачи.
+2. `link_id` — ID связи (поле `IssueLink.id`, полученное из `get_issue_links` или
+   `link_issues`).
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/delete-link-issue
+
+### Методы на объекте задачи
+
+Как и другие методы, работающие с одной задачей, `get_issue_links`, `link_issues` и
+`unlink_issues` продублированы на `FullIssue`, чтобы не передавать `issue_id` вручную —
+они действуют на ту задачу, у которой были вызваны:
+
+```python
+issue = await tracker.get_issue("WRITERS-1")
+
+links = await issue.get_links()
+link = await issue.link("relates", "WRITERS-2")
+await issue.unlink(link.id)
+```
+
+* `issue.get_links()` — эквивалент `tracker.get_issue_links(issue.id)`.
+* `issue.link(relationship, issue)` — эквивалент `tracker.link_issues(issue.id, relationship, issue)`.
+* `issue.unlink(link_id)` — эквивалент `tracker.unlink_issues(issue.id, link_id)`.
+
+## История изменений
+
+```python
+changes = await tracker.get_issue_changelog("WRITERS-1")
+for change in changes:
+    print(change.type, change.updated_at)
+```
+
+Сигнатура:
+
+```python
+async def get_issue_changelog(
+    self,
+    issue_id: str,
+    *,
+    id_: str | None = None,
+    per_page: int | None = None,
+    field: str | None = None,
+    type_: str | None = None,
+) -> list[Changelog]: ...
+```
+
+- `issue_id` — ID или ключ задачи.
+- `id_` — курсор пагинации: вернуть изменения, идущие после изменения с данным ID
+  (query-параметр `id`). Без него возвращается первая страница.
+- `per_page` — количество записей на странице (по умолчанию 50).
+- `field` — ID изменившегося поля задачи, например `"checklistItems"` или `"status"`, —
+  отфильтровать историю только по нему.
+- `type_` — ключ типа изменения (query-параметр `type`), например `"IssueWorkflow"`.
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/get-changelog
+
+Если изменений больше, чем `per_page` (по умолчанию — 50), нужно постранично дочитывать
+историю, передавая `id_` последней полученной записи.
+
+### iter_issue_changelog
+
+Чтобы не управлять пагинацией вручную, используйте `iter_issue_changelog` — асинхронный
+генератор поверх `get_issue_changelog`:
+
+```python
+async def iter_issue_changelog(
+    self,
+    issue_id: str,
+    *,
+    per_page: int | None = None,
+    field: str | None = None,
+    type_: str | None = None,
+) -> AsyncIterator[Changelog]: ...
+```
+
+```python
+async for change in tracker.iter_issue_changelog("WRITERS-1", field="status"):
+    print(change.updated_by.display, change.fields)
+```
+
+Каждая следующая страница запрашивается с ID последнего изменения предыдущей; итерация
+останавливается, как только очередная страница пуста или не продвигается дальше текущего
+курсора (защита от зацикливания на случай, если сервер проигнорирует `id`).
+
+Задача, полученная через `get_issue`, тоже умеет отдавать свою историю без явного
+`issue_id`:
+
+```python
+issue = await tracker.get_issue("WRITERS-1")
+changes = await issue.get_changelog()
+```
+
+`issue.get_changelog(...)` — эквивалент `tracker.get_issue_changelog(issue.id, ...)`.
+Итератора на `FullIssue` нет — для постраничного чтения истории задачи вызывайте
+`tracker.iter_issue_changelog(issue.id, ...)` напрямую.
+
+### Модель `Changelog`
+
+| Поле                | Тип                                       | Описание                                |
+|---------------------|--------------------------------------------|--------------------------------------------|
+| `url`               | `str`                                      | Ссылка на запись изменения (`self`)       |
+| `id`                | `str`                                      | ID изменения                              |
+| `issue`             | `Issue`                                    | Задача, к которой относится изменение     |
+| `updated_at`        | `datetime`                                 | Дата и время изменения                    |
+| `updated_by`        | `User`                                     | Пользователь, внёсший изменение           |
+| `type`              | `str`                                      | Тип изменения, например `"IssueWorkflow"` или `"IssueCommentAdded"` (полный список — в предупреждении ниже) |
+| `transport`         | `str \| None`                              | Служебный параметр                        |
+| `fields`            | `list[ChangelogField] \| None`             | Изменённые поля задачи                    |
+| `comments`          | `ChangelogComments \| None`                | Комментарии, добавленные изменением       |
+| `executed_triggers` | `list[ChangelogExecutedTrigger] \| None`   | Сработавшие триггеры                      |
+
+`ChangelogField` (элемент `fields`):
+
+| Поле    | Тип        | Описание                                                                     |
+|---------|------------|---------------------------------------------------------------------------------|
+| `field` | `FieldRef` | Ссылка на изменённое поле задачи                                              |
+| `from_` | `Any`      | Значение поля до изменения (API-ключ `from`) — не типизировано специально: одиночное поле шлёт строку, многозначное — список объектов, объектное — `{self, id, key, display}`. `None`, если поле было пустым |
+| `to`    | `Any`      | Значение поля после изменения, в том же формате, что `from_`                  |
+
+`ChangelogComments` (поле `comments`) хранит только документированный блок `added` — список
+`Ref` на добавленные комментарии, где `display` — текст комментария.
+
+`ChangelogExecutedTrigger` (элемент `executed_triggers`) хранит `trigger` (`Ref`), `success`
+(`bool | None`) и `message` (`str | None`) — что выполнил сработавший триггер.
+
+!!! note "Список значений `type`"
+
+    `type` — обычная строка, а не enum: набор значений принадлежит серверу и может
+    расшириться. На момент написания документированы `IssueCreated`, `IssueUpdated`,
+    `IssueMoved`, `IssueCloned`, `IssueCommentAdded`, `IssueCommentUpdated`,
+    `IssueCommentRemoved`, `IssueWorklogAdded`, `IssueWorklogUpdated`,
+    `IssueWorklogRemoved`, `IssueCommentReactionAdded`, `IssueCommentReactionRemoved`,
+    `IssueVoteAdded`, `IssueVoteRemoved`, `IssueLinked`, `IssueLinkChanged`,
+    `IssueUnlinked`, `RelatedIssueResolutionChanged`, `IssueAttachmentAdded`,
+    `IssueAttachmentRemoved` и `IssueWorkflow`.
 
 ## Переходы по workflow (transitions)
 

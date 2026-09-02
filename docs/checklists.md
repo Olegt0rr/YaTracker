@@ -68,14 +68,14 @@ issue = await tracker.add_checklist_item("WRITERS-1", "Написать тест
 С дополнительными параметрами:
 
 ```python
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 issue = await tracker.add_checklist_item(
     issue_id="WRITERS-1",
     text="Написать тесты",
     checked=False,
     assignee="login",
-    deadline=datetime(2026, 9, 10, tzinfo=UTC),
+    deadline=datetime(2026, 9, 10, tzinfo=timezone.utc),
 )
 ```
 

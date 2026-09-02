@@ -33,3 +33,21 @@ class AlreadyExistsError(YaTrackerError):
         super().__init__(
             "An issue with the same value of the unique parameter already exists.",
         )
+
+
+class PreconditionFailedError(YaTrackerError):
+    def __init__(self) -> None:
+        super().__init__(
+            "The object was changed meanwhile: the version passed in the "
+            "`If-Match` header is stale. Re-read the object and retry with "
+            "its current version.",
+        )
+
+
+class PreconditionRequiredError(YaTrackerError):
+    def __init__(self) -> None:
+        super().__init__(
+            "The request requires the object version in the `If-Match` "
+            "header, but none was sent. Pass the current `version` of "
+            "the object.",
+        )

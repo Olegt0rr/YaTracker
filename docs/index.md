@@ -27,18 +27,21 @@ print(issue.key, issue.status)
 | Задачи | `get_issue`, `create_issue`, `edit_issue`, `move_issue`, `find_issues`, `iter_issues`, `count_issues`, `get_issue_links`, `get_transitions`, `execute_transition` | [Задачи](issues.md) |
 | Очереди | `get_queue`, `get_queues`, `create_queue`, `delete_queue`, `restore_queue`, `delete_tag_from_queue`, `get_queue_fields`, `get_queue_versions` | [Очереди](queues.md) |
 | Компоненты | `get_components`, `get_queue_components`, `create_component`, `update_component` | [Компоненты](components.md) |
+| Доски | `get_boards`, `get_boards_paginated`, `iter_boards`, `get_board`, `create_board`, `update_board`, `delete_board`, `get_board_columns`, `get_board_column`, `create_board_column`, `update_board_column`, `delete_board_column` | [Доски и спринты](boards.md) |
+| Спринты | `get_sprints`, `get_sprint`, `create_sprint`, `update_sprint`, `start_sprint`, `archive_sprint`, `delete_sprint` | [Доски и спринты](boards.md) |
 | Комментарии | `get_comments`, `post_comment`, `edit_comment`, `delete_comment` | [Комментарии](comments.md) |
 | Чек-листы | `get_checklist`, `add_checklist_item`, `edit_checklist_item`, `delete_checklist_item`, `delete_checklist` | [Чек-листы](checklists.md) |
 | Учёт времени | `post_worklog`, `edit_worklog`, `delete_worklog`, `get_issue_worklog`, `get_worklog` | [Учёт времени](worklogs.md) |
 | Вложения | `get_attachments`, `attach_file`, `upload_temp_file`, `download_attachment`, `download_thumbnail`, `delete_attachment` | [Вложения](attachments.md) |
 | Массовые операции | `bulk_update_issues`, `bulk_transition_issues`, `bulk_move_issues`, `get_bulk_change`, `get_bulk_change_issues`, `wait_bulk_change` | [Массовые операции](bulk_changes.md) |
 | Импорт | `import_issue`, `import_comment`, `import_link`, `import_attachment` | [Импорт](import.md) |
+| Внешние приложения | `get_applications`, `get_remote_links`, `add_remote_link`, `delete_remote_link` | [Внешние приложения](applications.md) |
 | Приоритеты | `get_priorities` | — |
 
 !!! note "Покрытие API"
 
     Библиотека покрывает не весь API Трекера. Разделы, которых нет в таблице выше
-    (макросы, доски, проекты и т.д.),
+    (макросы, проекты и т.д.),
     пока не реализованы. Если вам нужен отсутствующий метод — вы всегда можете
     выполнить запрос напрямую через `tracker._client.request(...)`
     или прислать pull request.
@@ -81,6 +84,15 @@ tracker = YaTracker(client=MyHttpxClient(...))
 Сессия создаётся лениво — при первом запросе, и переиспользуется до вызова
 `close()`.
 
+!!! warning "Заголовки запроса"
+
+    `_make_request()` получает все параметры запроса именованными аргументами: `params`,
+    `data` (тело в виде `aiohttp`-payload или `FormData`) и, когда они нужны, `headers` —
+    дополнительные заголовки вроде `If-Match` у досок и спринтов. Свой транспорт обязан
+    передавать их в HTTP-вызов и объединять `headers` с заголовками по умолчанию
+    (`Authorization`, `X-Org-ID`): если их молча отбросить, оптимистичная блокировка
+    перестанет работать без единой ошибки.
+
 ### pydantic
 
 В качестве основы для моделирования объектов API используется библиотека `pydantic` (v2),
@@ -111,7 +123,8 @@ reveal_type(issue)  # HelpIssue
     * Свойство `self` в моделях переименовано в `url`: в python это имя занято
       первым аргументом методов.
     * Все свойства `camelCase` переименованы в `pythonic_case`
-      и конвертируются обратно при отправке запроса.
+      и конвертируются обратно при отправке запроса. Аргумент `url=` при этом
+      уходит в API как `url`, а вложенные в запрос модели сохраняют ключ `self`.
     * Имена методов придуманы автором библиотеки: в API Трекера собственных
       имён у методов нет.
 

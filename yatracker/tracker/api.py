@@ -4,15 +4,19 @@ import logging
 
 from .base import BaseTracker
 from .categories import (
+    Applications,
     Attachments,
+    Boards,
     BulkChanges,
     Checklists,
     Comments,
     Components,
+    ExternalLinks,
     Imports,
     Issues,
     Priorities,
     Queues,
+    Sprints,
     Worklogs,
 )
 
@@ -26,10 +30,14 @@ class YaTracker(
     Checklists,
     Priorities,
     Components,
+    Boards,
+    Sprints,
     Attachments,
     Worklogs,
     BulkChanges,
     Imports,
+    Applications,
+    ExternalLinks,
     BaseTracker,
 ):
     """Represents Yandex Tracker API client.

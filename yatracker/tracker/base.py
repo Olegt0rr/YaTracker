@@ -89,16 +89,25 @@ class BaseTracker:
         if kwargs:
             payload.update(kwargs)
 
-        if type_ is not None:
-            return _rename_and_clear(type_, payload, exclude)
+        return _rename_and_clear(type_, payload, exclude)
 
-        return {
-            _encode_key(k): _convert_value(v)
-            for k, v in payload.items()
-            if k not in {"self", "cls", *exclude}
-            and not k.startswith("_")
-            and v is not None
+    @staticmethod
+    def _prepare_params(**kwargs: Any) -> dict[str, str] | None:  # noqa: ANN401
+        """Build query params from keyword arguments.
+
+        ``None`` values are dropped, booleans are encoded as ``"true"`` /
+        ``"false"`` and everything else is stringified, because aiohttp
+        (yarl) rejects ``bool`` and ``None`` query values with a
+        ``TypeError``. Keys are camel-cased like payload keys. Returns
+        ``None`` when nothing is left, so the result can be passed to
+        ``request(params=...)`` directly.
+        """
+        params = {
+            _encode_key(key): _encode_param(value)
+            for key, value in kwargs.items()
+            if value is not None
         }
+        return params or None
 
     async def close(self) -> None:
         """Close gracefully."""
@@ -126,7 +135,13 @@ def _get_adapter(type_: type[T]) -> TypeAdapter[T]:
 
 @lru_cache
 def _field_names(type_: type[Base]) -> dict[str, str]:
-    """Map model field names to their encoded (wire) names."""
+    """Map model field names to their encoded (wire) names.
+
+    Only ``alias`` is consulted. The ``url`` field binds the API's
+    ``self`` key through ``validation_alias``/``serialization_alias``
+    (see ``yatracker.types.base.url_field``) while its ``alias`` stays
+    ``url``, so a ``url`` kwarg is never renamed to ``self`` here.
+    """
     return {
         name: field_info.alias or camel_case(name)
         for name, field_info in type_.model_fields.items()
@@ -145,6 +160,24 @@ def _encode_key(key: str) -> str:
     return camel_case(key) if key.isidentifier() else key
 
 
+def _if_match(version: str | int) -> dict[str, str]:
+    """Build the `If-Match` header carrying an object version.
+
+    Board columns and sprints are optimistically locked: the API wants the
+    current version in `If-Match` and answers 412 when it is stale. The
+    value is an entity tag, so it is quoted the way the docs show it
+    (`If-Match: "2"`).
+    """
+    return {"If-Match": f'"{version}"'}
+
+
+def _encode_param(value: Any) -> str:  # noqa: ANN401
+    """Encode a query param value the way the Tracker API expects it."""
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return str(value)
+
+
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401
     """Convert values to basic types."""
     match obj:
@@ -159,20 +192,24 @@ def _convert_value(obj: Any) -> Any:  # noqa: ANN401
 
 
 def _rename_and_clear(
-    type_: type[B],
+    type_: type[Base] | None,
     payload: dict[str, Any],
     exclude: Collection[str],
 ) -> dict[str, Any]:
     """Replace kwarg keys with the model's encoded field names.
 
     Keys that are not fields of `type_` (e.g. `query`, `filter_`,
-    custom fields passed via **kwargs) are kept and converted to
-    camelCase instead of being dropped. Keys that are not Python
-    identifiers (local-field ids like ``<id>--userId``) are kept as is.
+    custom fields passed via **kwargs), or every key when `type_` is
+    None, are kept and converted to camelCase instead of being dropped.
+    Keys that are not Python identifiers (local-field ids like
+    ``<id>--userId``) are kept as is. Two keys that would land on the
+    same wire name raise `ValueError` rather than silently overwriting
+    each other.
     """
     renamed: dict[str, Any] = {}
+    sources: dict[str, str] = {}
     exclude = {"self", "cls", *exclude}
-    encode_names = _field_names(type_)
+    encode_names = _field_names(type_) if type_ is not None else {}
 
     for name, raw_value in payload.items():
         if name in exclude or name.startswith("_"):
@@ -182,6 +219,15 @@ def _rename_and_clear(
         if value is None:
             continue
 
-        renamed[encode_names.get(name) or _encode_key(name)] = value
+        wire_name = encode_names.get(name) or _encode_key(name)
+        if wire_name in renamed:
+            msg = (
+                f"Payload keys {sources[wire_name]!r} and {name!r} both map "
+                f"to the API field {wire_name!r}; pass only one of them."
+            )
+            raise ValueError(msg)
+
+        renamed[wire_name] = value
+        sources[wire_name] = name
 
     return renamed

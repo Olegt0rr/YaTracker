@@ -5,7 +5,7 @@ __all__ = ["BulkChange", "BulkChangeError", "BulkChangeIssue"]
 from datetime import datetime
 from typing import Any
 
-from .base import Base, field
+from .base import Base, field, url_field
 from .issue import Issue
 from .user import User
 
@@ -35,7 +35,7 @@ class BulkChangeIssue(Base):
 class BulkChange(Base):
     """Represents a bulk change (mass edit) operation."""
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     created_by: User
     created_at: datetime

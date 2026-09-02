@@ -5,14 +5,14 @@ __all__ = ["Attachment"]
 
 from datetime import datetime
 
-from .base import Base, field
+from .base import Base, url_field
 from .user import User
 
 
 class Attachment(Base):
     """Represents attachment object."""
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     name: str
     content: str

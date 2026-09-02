@@ -89,3 +89,41 @@ def multipart_dispparams(call: dict[str, Any]) -> Any:
     don't repeat the reach-through.
     """
     return call["data"]._fields[0][0]
+
+
+def sent_json(call: dict[str, Any]) -> Any:
+    """Decode the JSON body of a captured call.
+
+    Reaches into aiohttp's private ``BytesPayload._value`` in one place.
+    """
+    return json.loads(bytes(call["data"]._value))
+
+
+def comment_body(**overrides: Any) -> bytes:
+    """Build a canned ``Comment`` JSON body, with optional field overrides."""
+    comment = {
+        "self": "https://api/comments/1",
+        "id": 1,
+        "text": "hello",
+        "createdBy": {"self": "u", "id": "1", "display": "User"},
+        "createdAt": "2024-01-01T00:00:00.000+0000",
+        "version": 1,
+    }
+    comment.update(overrides)
+    return json.dumps(comment).encode()
+
+
+def attachment_body(**overrides: Any) -> bytes:
+    """Build a canned ``Attachment`` JSON body, with optional field overrides."""
+    attachment = {
+        "self": "https://api/attachments/1",
+        "id": "1",
+        "name": "a.txt",
+        "content": "https://api/attachments/1/a.txt",
+        "createdBy": {"self": "u", "id": "1", "display": "User"},
+        "createdAt": "2024-01-01T00:00:00.000+0000",
+        "mimetype": "text/plain",
+        "size": 4,
+    }
+    attachment.update(overrides)
+    return json.dumps(attachment).encode()

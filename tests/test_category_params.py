@@ -9,7 +9,6 @@ from __future__ import annotations
 import io
 import json
 from datetime import datetime, timezone
-from typing import Any
 
 import pytest
 from yatracker import YaTracker
@@ -17,7 +16,14 @@ from yatracker.types import Duration, IssueType, IssueTypeConfig, Worklog
 from yatracker.types.resolution import Resolution
 from yatracker.types.workflow import Workflow
 
-from tests.conftest import FakeClient, full_issue_body, multipart_dispparams
+from tests.conftest import (
+    FakeClient,
+    attachment_body,
+    comment_body,
+    full_issue_body,
+    multipart_dispparams,
+    sent_json,
+)
 
 
 def priority_body() -> bytes:
@@ -30,19 +36,6 @@ def priority_body() -> bytes:
                 "display": "Normal",
             },
         ],
-    ).encode()
-
-
-def comment_body() -> bytes:
-    return json.dumps(
-        {
-            "self": "https://api/comments/1",
-            "id": 1,
-            "text": "hello",
-            "createdBy": {"self": "u", "id": "1", "display": "User"},
-            "createdAt": "2024-01-01T00:00:00.000+0000",
-            "version": 1,
-        },
     ).encode()
 
 
@@ -84,21 +77,6 @@ def single_worklog_body() -> bytes:
             "createdAt": "2024-01-01T00:00:00.000+0000",
             "start": "2024-01-01T00:00:00.000+0000",
             "duration": "PT2H",
-        },
-    ).encode()
-
-
-def attachment_body() -> bytes:
-    return json.dumps(
-        {
-            "self": "https://api/attachments/1",
-            "id": "1",
-            "name": "a.txt",
-            "content": "https://api/attachments/1/a.txt",
-            "createdBy": {"self": "u", "id": "1", "display": "User"},
-            "createdAt": "2024-01-01T00:00:00.000+0000",
-            "mimetype": "text/plain",
-            "size": 4,
         },
     ).encode()
 
@@ -383,10 +361,6 @@ def full_queue_body() -> bytes:
     ).encode()
 
 
-def sent_json(call: dict[str, Any]) -> Any:
-    return json.loads(bytes(call["data"]._value))
-
-
 # --- worklogs ---------------------------------------------------------------
 
 
@@ -406,7 +380,7 @@ async def test_post_worklog_sends_start_duration_and_comment() -> None:
     assert call["method"] == "POST"
     assert call["url"].endswith("/issues/TEST-1/worklog/")
     assert sent_json(call) == {
-        "start": "2024-01-01T00:00:00.000+00:00",
+        "start": "2024-01-01T00:00:00.000+0000",
         "duration": "PT2H30M",
         "comment": "done",
     }
@@ -472,8 +446,8 @@ async def test_get_worklog_search_sends_created_by_and_range() -> None:
     assert sent_json(call) == {
         "createdBy": "user1",
         "createdAt": {
-            "from": "2024-01-01T00:00:00.000+00:00",
-            "to": "2024-02-01T00:00:00.000+00:00",
+            "from": "2024-01-01T00:00:00.000+0000",
+            "to": "2024-02-01T00:00:00.000+0000",
         },
     }
 
@@ -502,6 +476,18 @@ async def test_get_worklog_warns_on_naive_datetime() -> None:
     assert sent_json(client.calls[0])["createdAt"]["to"] == (
         "2024-02-01T00:00:00.000+0000"
     )
+
+
+async def test_get_worklog_warns_on_naive_datetime_to() -> None:
+    client = FakeClient(body=worklog_body())
+    tracker = YaTracker(client=client)
+    with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+        await tracker.get_worklog(
+            created_at_from="2024-01-01T00:00:00.000+0000",
+            created_at_to=datetime(2024, 2, 1),  # noqa: DTZ001
+        )
+    # the warning must point at the caller, not at library internals
+    assert record[0].filename == __file__
 
 
 # --- issues -----------------------------------------------------------------

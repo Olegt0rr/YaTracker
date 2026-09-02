@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any, overload
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, IssueT_co
 from yatracker.types import (
     FullIssue,
     Issue,
@@ -15,8 +15,6 @@ from yatracker.types import (
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping
-
-IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
 
 SCROLL_ID_HEADER = "X-Scroll-Id"
 

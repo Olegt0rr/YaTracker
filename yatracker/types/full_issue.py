@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from .base import Base, field
 from .comment import Comment
+from .component import ComponentRef
 from .issue import Issue
 from .issue_type import IssueType
 from .priority import Priority
@@ -30,6 +31,7 @@ class FullIssue(Base):
     parent: Issue | None = None
     description: str | None = None
     sprint: list[Sprint] | None = None
+    components: list[ComponentRef] | None = None
     type: IssueType
     priority: Priority
     followers: list[User] | None = None

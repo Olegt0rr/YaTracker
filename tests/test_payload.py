@@ -14,7 +14,7 @@ from yatracker.tracker.base import (
     _encode_key,
     _field_names,
 )
-from yatracker.types import FullIssue, Issue, IssueType, QueueField, field
+from yatracker.types import FullIssue, Issue, IssueType, QueueField, User, field
 from yatracker.types.base import Base
 
 from tests.conftest import FakeClient, full_issue_body, sent_json
@@ -22,6 +22,7 @@ from tests.conftest import FakeClient, full_issue_body, sent_json
 ISSUE = Issue(url="https://api/issue/1", id="1", key="TEST-1", display="Test")
 ISSUE_TYPE = IssueType(url="https://api/type/1", id="1", key="bug", display="Bug")
 LOCAL_FIELD = "64a51c6d866ea82411abe756--userId"
+USER = User(url="https://api/users/4", id="4", display="User")
 
 
 class TestEncodeKey:
@@ -84,6 +85,46 @@ class TestConvertValue:
         tracker = YaTracker(client=client)
         await tracker.edit_issue("TEST-1", sorts=(ISSUE,))
         assert sent_json(client.calls[0])["sorts"] == [_convert_value(ISSUE)]
+
+
+class TestUserOnTheWire:
+    """A `User` read back from the API can be passed into the next request."""
+
+    def test_optional_identifiers_are_omitted_when_unset(self) -> None:
+        assert _convert_value(USER) == {
+            "self": "https://api/users/4",
+            "id": "4",
+            "display": "User",
+        }
+
+    async def test_user_reaches_the_wire_without_the_missing_keys(self) -> None:
+        client = FakeClient(body=full_issue_body())
+        tracker = YaTracker(client=client)
+        await tracker.edit_issue("TEST-1", assignee=USER)
+        assert sent_json(client.calls[0])["assignee"] == {
+            "self": "https://api/users/4",
+            "id": "4",
+            "display": "User",
+        }
+
+    async def test_user_keeps_the_identifiers_it_has(self) -> None:
+        user = User(
+            url="https://api/users/4",
+            id="4",
+            display="User",
+            passport_uid=1120000000049224,
+            cloud_uid="ajeppa7dgp1uhsp1mus3",
+        )
+        client = FakeClient(body=full_issue_body())
+        tracker = YaTracker(client=client)
+        await tracker.edit_issue("TEST-1", assignee=user)
+        assert sent_json(client.calls[0])["assignee"] == {
+            "self": "https://api/users/4",
+            "id": "4",
+            "display": "User",
+            "passportUid": 1120000000049224,
+            "cloudUid": "ajeppa7dgp1uhsp1mus3",
+        }
 
 
 class TestPreparePayload:

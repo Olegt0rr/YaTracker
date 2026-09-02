@@ -160,6 +160,29 @@ async def test_find_issues_accepts_a_sequence_of_fields() -> None:
     assert client.calls[0]["params"] == {"fields": "key,summary"}
 
 
+async def test_find_issues_sends_the_relative_pagination_cursor() -> None:
+    """A `queue=` search paginates relatively via the `id` query param."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(
+        queue="TEST",
+        per_page=10,
+        id_="5f2ad1314033c53616b50cd9",
+    )
+    call = client.calls[0]
+    assert call["params"] == {"perPage": "10", "id": "5f2ad1314033c53616b50cd9"}
+    assert sent_json(call) == {"queue": "TEST"}
+
+
+async def test_find_issues_omits_the_cursor_when_not_given() -> None:
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(queue="TEST")
+    call = client.calls[0]
+    assert call["params"] == {}
+    assert "id" not in sent_json(call)
+
+
 async def test_find_issues_scroll_params_not_in_body() -> None:
     client = FakeClient(body=b"[]")
     tracker = YaTracker(client=client)

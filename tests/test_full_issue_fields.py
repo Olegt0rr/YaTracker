@@ -146,6 +146,43 @@ class TestProject:
         assert "project" not in issue._to_request()
 
 
+class TestTags:
+    """`tags` is a documented response parameter, absent from the samples."""
+
+    def test_decodes_the_documented_key(self) -> None:
+        payload = {**SEARCH_ISSUE, "tags": ["tag1", "tag2"]}
+        assert FullIssue.model_validate(payload).tags == ["tag1", "tag2"]
+
+    def test_stays_none_without_the_key(self) -> None:
+        assert "tags" not in SEARCH_ISSUE
+        assert FullIssue.model_validate(SEARCH_ISSUE).tags is None
+
+    def test_is_dropped_from_a_request_body_when_none(self) -> None:
+        issue = FullIssue.model_validate(SEARCH_ISSUE)
+        assert "tags" not in issue._to_request()
+
+    async def test_find_issues_decodes_it(self) -> None:
+        tracker, _ = make_tracker([{**SEARCH_ISSUE, "tags": ["release"]}])
+        issues = await tracker.find_issues(query="Queue: TREK")
+        assert issues[0].tags == ["release"]
+
+
+class TestUserReference:
+    """The short `User` carries the account identifiers, too."""
+
+    def test_decodes_passport_and_cloud_uid(self) -> None:
+        issue = FullIssue.model_validate(SEARCH_ISSUE)
+        assert issue.created_by.passport_uid == 1120000000000001
+        assert issue.created_by.cloud_uid == "ajeppa7dgp531234abcd"
+
+    def test_stays_none_without_the_keys(self) -> None:
+        short_user = {k: v for k, v in USER.items() if k in {"self", "id", "display"}}
+        payload = {**SEARCH_ISSUE, "createdBy": short_user}
+        issue = FullIssue.model_validate(payload)
+        assert issue.created_by.passport_uid is None
+        assert issue.created_by.cloud_uid is None
+
+
 class TestSearchResponse:
     async def test_find_issues_decodes_both_fields(self) -> None:
         tracker, _ = make_tracker([SEARCH_ISSUE])

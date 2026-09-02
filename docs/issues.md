@@ -67,12 +67,13 @@ issue = await tracker.get_issue("WRITERS-42", expand="transitions")
 (см. раздел «Именование полей» выше), а ключ `self` доступен как `url`.
 Полный список полей задачи смотрите в официальном справочнике:
 <https://yandex.ru/support/tracker/ru/api/issues/get-issue>. Ниже — поля, названия которых
-не выводятся из ключа API напрямую:
+не выводятся из ключа API напрямую или отсутствуют в примерах ответа:
 
 | Поле                     | Тип                   | Описание                                                                                     |
 |--------------------------|-----------------------|----------------------------------------------------------------------------------------------|
 | `last_comment_update_at` | `datetime \| None`    | Дата и время последнего комментария. API-ключ — `lastCommentUpdatedAt` (а не `lastCommentUpdateAt`), поэтому у поля задан явный алиас |
 | `project`                | `EntityParent \| None` | Проекты и портфели задачи: `primary` — основной, `secondary` — список дополнительных (тот же вид `{primary, secondary}`, что и у `parentEntity`) |
+| `tags`                   | `list[str] \| None`   | Теги задачи. Параметр документирован для ответа `POST /issues/_search`, но не встречается в примерах ответа, поэтому необязательный |
 
 ```python
 issue = await tracker.get_issue("WRITERS-42")
@@ -267,6 +268,7 @@ async def find_issues(
     query2: dict[str, Any] | None = None,
     per_page: int | None = None,
     page: int | None = None,
+    id_: str | None = None,
     scroll_type: str | None = None,
     per_scroll: int | None = None,
     scroll_ttl_millis: int | None = None,
@@ -285,6 +287,8 @@ async def find_issues(
 - `filter_id` — идентификатор сохранённого фильтра (body-параметр `filterId`).
 - `query2` — фильтр на [языке запросов 2.0](https://yandex.ru/support/tracker/ru/api/issues/search-issues),
   объект, который уходит в теле запроса как `query2`.
+- `id_` — курсор страницы при относительной пагинации (query-параметр `id`), берётся из
+  заголовка `Link` предыдущего ответа. Имеет смысл только для формы поиска `queue`.
 - `fields` — проекция полей ответа, как и в `get_issue` (строка через запятую или
   последовательность имён): непойменованные поля не придут, так
   что `_type` должен соответствовать выбранной проекции.
@@ -299,6 +303,27 @@ issues = await tracker.find_issues(
     page=2,
 )
 ```
+
+!!! warning "Для поиска по `queue` параметр `page` не работает"
+
+    Для формы поиска `queue` API использует относительную пагинацию: `page` игнорируется,
+    а ссылка на следующую страницу приходит в заголовке ответа
+    `Link: <...?id=...&perPage=...>; rel="next"`. Значение `id` из этого заголовка нужно
+    передать в следующий вызов как `id_`:
+
+    ```python
+    first_page = await tracker.find_issues(queue="WRITERS", per_page=50)
+    # id из заголовка Link предыдущего ответа
+    next_page = await tracker.find_issues(
+        queue="WRITERS",
+        per_page=50,
+        id_="5f2ad1314033c53616b50cd9",
+    )
+    ```
+
+    Сам заголовок `Link` `find_issues` не отдаёт, поэтому для полного обхода очереди проще
+    использовать `iter_issues` — он подмешивает `queue` в `filter_` и листает результат
+    через scroll API.
 
 Если в ответе больше 10 000 задач, обычная пагинация не подойдёт — используйте scroll API:
 передайте `scroll_type` (`"sorted"` или `"unsorted"`) и `per_scroll`/`scroll_ttl_millis`,

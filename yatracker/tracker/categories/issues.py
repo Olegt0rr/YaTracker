@@ -405,6 +405,7 @@ class Issues(BaseTracker):
         query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
@@ -428,6 +429,7 @@ class Issues(BaseTracker):
         query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
@@ -450,6 +452,7 @@ class Issues(BaseTracker):
         query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
@@ -468,6 +471,13 @@ class Issues(BaseTracker):
         continue it. Scroll is not supported together with the ``keys``
         or ``queue`` search forms (the API answers HTTP 400).
 
+        A ``queue=`` search is the exception: the API paginates it
+        relatively and ignores ``page`` there. Every response carries a
+        ``Link: <...?id=...&perPage=...>; rel="next"`` header whose
+        ``id`` is the cursor of the next page — pass it back as ``id_``,
+        or use :meth:`iter_issues` (which folds ``queue`` into the
+        ``filter`` form and scrolls) to read the whole queue.
+
         ``fields`` projects the response: non-listed fields are omitted,
         so pass a ``_type`` whose required fields match the projection —
         the default FullIssue needs the full field set. It takes a
@@ -485,6 +495,10 @@ class Issues(BaseTracker):
             "attachments" or "comments".
         :param keys: keys of the issues to return, comma-separated.
         :param queue: key of the queue to search in.
+        :param id_: cursor of the page to return under relative
+            pagination (query param "id"), taken from the ``Link``
+            header of the previous response. Only meaningful for a
+            ``queue=`` search; omit it to get the first page.
         :param filter_id: id of a saved filter (body param "filterId").
         :param query2: filter written in the query language 2.0, as the
             object the API documents (body param "query2").
@@ -505,6 +519,7 @@ class Issues(BaseTracker):
                 "order",
                 "per_page",
                 "page",
+                "id_",
                 "scroll_type",
                 "per_scroll",
                 "scroll_ttl_millis",
@@ -514,26 +529,25 @@ class Issues(BaseTracker):
             type_=_type,
         )
 
-        params: dict[str, str] = {}
-        if order:
-            params["order"] = order
-        if expand:
-            params["expand"] = expand
-        if per_page is not None:
-            params["perPage"] = str(per_page)
-        if page is not None:
-            params["page"] = str(page)
-        if scroll_type:
-            params["scrollType"] = scroll_type
-        if per_scroll is not None:
-            params["perScroll"] = str(per_scroll)
-        if scroll_ttl_millis is not None:
-            params["scrollTTLMillis"] = str(scroll_ttl_millis)
-        if scroll_id:
-            params["scrollId"] = scroll_id
-        joined_fields = _join_fields(fields)
-        if joined_fields:
-            params["fields"] = joined_fields
+        # not `_prepare_params`: the wire names of the scroll
+        # parameters ("scrollTTLMillis") are not the camel-cased ones.
+        raw_params: dict[str, Any] = {
+            "order": order,
+            "expand": expand,
+            "perPage": per_page,
+            "page": page,
+            "id": id_,
+            "scrollType": scroll_type,
+            "perScroll": per_scroll,
+            "scrollTTLMillis": scroll_ttl_millis,
+            "scrollId": scroll_id,
+            "fields": _join_fields(fields),
+        }
+        params: dict[str, str] = {
+            name: str(value)
+            for name, value in raw_params.items()
+            if value is not None and value != ""
+        }
 
         data = await self._client.request(
             method="POST",

@@ -11,14 +11,29 @@ from .ref import Ref
 class User(Base):
     """Short user reference embedded into other API objects.
 
-    Issues, queues, comments and the like carry only `self`, `id` and
-    `display` for a user. Use :class:`FullUser` (returned by the
-    `/users` and `/myself` endpoints) for the whole account.
+    Issues, queues, comments and the like carry `self`, `id` and
+    `display` for a user, plus the account identifiers `passportUid`
+    and `cloudUid`. Use :class:`FullUser` (returned by the `/users` and
+    `/myself` endpoints) for the whole account.
+
+    Attributes
+    ----------
+    url - Reference to the user account (the API `self` key).
+    id - User ID.
+    display - Name of the user displayed in the interface.
+    passport_uid - Unique ID of the user account in Yandex 360 for
+    Business / Yandex ID. Documented as a number and absent from some
+    older responses, hence optional.
+    cloud_uid - Unique ID of the user in Yandex Identity Hub. Absent
+    from some responses, hence optional.
+
     """
 
     url: str = url_field()
     id: str
     display: str
+    passport_uid: int | None = None
+    cloud_uid: str | None = None
 
 
 class FullUser(Base):

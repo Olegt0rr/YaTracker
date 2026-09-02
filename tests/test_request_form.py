@@ -281,18 +281,14 @@ class TestVerbatimModels:
         )
 
         sent = sent_json(client.calls[1])["fields"]["keyResultItems"]["remove"]
-        # the assignee stays the object the API sent (`User` keeps only
-        # the documented `self`/`id`/`display`), not a bare id, and the
-        # deadline keeps its response shape
+        # the assignee stays the object the API sent — `self`, `id`,
+        # `display` and the account identifiers `passportUid`/`cloudUid`
+        # — not a bare id, and the deadline keeps its response shape
         assert sent == {
             "id": "6789000",
             "type": "binary",
             "text": "My key result",
-            "assignee": {
-                "self": USER["self"],
-                "id": USER["id"],
-                "display": USER["display"],
-            },
+            "assignee": USER,
             "deadline": {"date": "2025-06-03", "deadlineType": "date"},
         }
 

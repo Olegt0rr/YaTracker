@@ -77,6 +77,9 @@ class FullIssue(Base):
         alias="lastCommentUpdatedAt",
     )
     aliases: list[str] | None = None
+    # documented as a top-level response parameter of `POST
+    # /issues/_search` ("Теги задачи", array of strings)
+    tags: list[str] | None = None
     updated_by: User | None = None
     created_at: datetime
     created_by: User

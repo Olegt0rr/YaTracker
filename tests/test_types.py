@@ -213,6 +213,38 @@ class TestPrintable:
         assert "text='hello'" in str(comment)
 
 
+class TestUser:
+    """The short user reference also carries the account identifiers."""
+
+    def test_decodes_the_account_identifiers(self) -> None:
+        payload = {
+            **USER,
+            "passportUid": 1120000000049224,
+            "cloudUid": "ajeppa7dgp1uhsp1mus3",
+        }
+        user = User.model_validate(payload)
+        assert user.passport_uid == 1120000000049224
+        assert user.cloud_uid == "ajeppa7dgp1uhsp1mus3"
+
+    def test_stays_none_without_the_keys(self) -> None:
+        user = User.model_validate(USER)
+        assert user.passport_uid is None
+        assert user.cloud_uid is None
+
+    def test_request_dump_omits_the_missing_identifiers(self) -> None:
+        assert User.model_validate(USER)._to_request() == {
+            "self": "https://api/users/4",
+            "id": "4",
+            "display": "User",
+        }
+
+    def test_request_dump_keeps_the_identifiers_when_set(self) -> None:
+        payload = {**USER, "passportUid": 1120000000049224, "cloudUid": "aje"}
+        dumped = User.model_validate(payload)._to_request()
+        assert dumped["passportUid"] == 1120000000049224
+        assert dumped["cloudUid"] == "aje"
+
+
 class TestIssueLink:
     @pytest.mark.parametrize(
         ("direction", "expected"),

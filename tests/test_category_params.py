@@ -17,7 +17,7 @@ from yatracker.types import Duration, IssueType, IssueTypeConfig, Worklog
 from yatracker.types.resolution import Resolution
 from yatracker.types.workflow import Workflow
 
-from tests.conftest import FakeClient, full_issue_body
+from tests.conftest import FakeClient, full_issue_body, multipart_dispparams
 
 
 def priority_body() -> bytes:
@@ -266,25 +266,37 @@ async def test_edit_worklog_body_excludes_query_params() -> None:
     assert "queryParams" not in payload
 
 
-async def test_attach_file_uses_file_field_name() -> None:
+async def test_attach_file_multipart_form() -> None:
     client = FakeClient(body=attachment_body())
     tracker = YaTracker(client=client)
     await tracker.attach_file("TEST-1", io.BytesIO(b"data"), filename="a.txt")
 
-    form = client.calls[0]["data"]
-    field_names = [f[0]["name"] for f in form._fields]
-    assert "file" in field_names
-    assert "file_data" not in field_names
+    dispparams = multipart_dispparams(client.calls[0])
+    assert dispparams["name"] == "file"
+    assert dispparams["filename"] == "a.txt"
+    assert client.calls[0]["params"] == {"filename": "a.txt"}
 
 
-async def test_upload_temp_file_uses_file_field_name() -> None:
+async def test_attach_file_without_filename_falls_back_to_field_name() -> None:
+    """Without explicit filename aiohttp falls back to the field name for BytesIO."""
+    client = FakeClient(body=attachment_body())
+    tracker = YaTracker(client=client)
+    await tracker.attach_file("TEST-1", io.BytesIO(b"data"))
+
+    dispparams = multipart_dispparams(client.calls[0])
+    assert dispparams["filename"] == "file"
+    assert client.calls[0]["params"] is None
+
+
+async def test_upload_temp_file_multipart_form() -> None:
     client = FakeClient(body=attachment_body())
     tracker = YaTracker(client=client)
     await tracker.upload_temp_file(io.BytesIO(b"data"), filename="a.txt")
 
-    form = client.calls[0]["data"]
-    field_names = [f[0]["name"] for f in form._fields]
-    assert "file" in field_names
+    dispparams = multipart_dispparams(client.calls[0])
+    assert dispparams["name"] == "file"
+    assert dispparams["filename"] == "a.txt"
+    assert client.calls[0]["params"] == {"filename": "a.txt"}
 
 
 def issue_link_body() -> bytes:

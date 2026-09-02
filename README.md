@@ -25,8 +25,8 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
 * Supports both Yandex 360 (`X-Org-ID` + OAuth) and Yandex Cloud
   (`X-Cloud-Org-ID` + IAM) organizations.
 * Covers issues, queues, components, projects (both the legacy `/projects`
-  API and the entities API behind projects, portfolios and goals), boards
-  (including columns and sprints), comments, checklists, worklogs,
+  API and the entities API behind projects, portfolios and goals), macros,
+  boards (including columns and sprints), comments, checklists, worklogs,
   attachments, priorities, bulk changes, external applications and remote
   links, and import of issues, comments, links and attachments.
 * Local (custom) queue fields are supported via your own model subclasses.

@@ -8,13 +8,13 @@ __all__ = [
     "BoardColumnRef",
     "BoardRef",
     "CountryRef",
-    "FieldRef",
 ]
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 from .base import Base, url_field
+from .ref import FieldRef, Ref
 from .status import Status
 from .user import User
 
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from .sprint import FullSprint
 
 
-class BoardRef(Base):
+class BoardRef(Ref):
     """Short board reference embedded into a sprint object.
 
     Sprint payloads carry only `self`, `id` and `display` for the board
@@ -32,12 +32,8 @@ class BoardRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-sprint
     """
 
-    url: str = url_field()
-    id: str
-    display: str | None = None
 
-
-class BoardColumnRef(Base):
+class BoardColumnRef(Ref):
     """Short column reference embedded into a board object.
 
     A board payload carries only `self`, `id` and `display` for every
@@ -47,33 +43,13 @@ class BoardColumnRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
 
-    url: str = url_field()
-    id: str
-    display: str | None = None
 
-
-class FieldRef(Base):
-    """Short field reference used by the deprecated `estimateBy` field.
-
-    Source:
-    https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
-    """
-
-    url: str = url_field()
-    id: str
-    display: str | None = None
-
-
-class CountryRef(Base):
+class CountryRef(Ref):
     """Short country reference used by the deprecated `country` field.
 
     Source:
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
-
-    url: str = url_field()
-    id: str
-    display: str | None = None
 
 
 class BoardCalendar(Base):

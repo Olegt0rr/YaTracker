@@ -29,6 +29,7 @@ print(issue.key, issue.status)
 | Компоненты | `get_components`, `get_queue_components`, `create_component`, `update_component` | [Компоненты](components.md) |
 | Проекты (устаревший API) | `get_projects`, `get_project`, `create_project`, `update_project`, `delete_project`, `get_project_queues` | [Проекты (устаревший API)](projects.md) |
 | Проекты, портфели и цели | `create_entity`, `get_entity`, `update_entity`, `delete_entity`, `search_entities`, `iter_entities`, `bulk_update_entities`, `get_entity_events` | [Проекты, портфели и цели](entities.md) |
+| Макросы | `get_macros`, `get_macro`, `create_macro`, `update_macro`, `delete_macro` | [Макросы](macros.md) |
 | Доски | `get_boards`, `get_boards_paginated`, `iter_boards`, `get_board`, `create_board`, `update_board`, `delete_board`, `get_board_columns`, `get_board_column`, `create_board_column`, `update_board_column`, `delete_board_column` | [Доски и спринты](boards.md) |
 | Спринты | `get_sprints`, `get_sprint`, `create_sprint`, `update_sprint`, `start_sprint`, `archive_sprint`, `delete_sprint` | [Доски и спринты](boards.md) |
 | Комментарии | `get_comments`, `post_comment`, `edit_comment`, `delete_comment` | [Комментарии](comments.md) |
@@ -43,7 +44,7 @@ print(issue.key, issue.status)
 !!! note "Покрытие API"
 
     Библиотека покрывает не весь API Трекера. Разделы, которых нет в таблице выше
-    (макросы и т.д.),
+    (пользователи и т.д.),
     пока не реализованы. Если вам нужен отсутствующий метод — вы всегда можете
     выполнить запрос напрямую через `tracker._client.request(...)`
     или прислать pull request.

@@ -9,6 +9,7 @@ from .external_links import ExternalLinks
 from .import_ import Imports
 from .issue_boards import Boards
 from .issues import Issues
+from .macros import Macros
 from .priorities import Priorities
 from .projects import Projects
 from .queues import Queues
@@ -27,6 +28,7 @@ __all__ = [
     "ExternalLinks",
     "Imports",
     "Issues",
+    "Macros",
     "Priorities",
     "Projects",
     "Queues",

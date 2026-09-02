@@ -38,14 +38,16 @@ class ExternalLinks(BaseTracker):
         :param key: key of the object in the external application.
         :param origin: ID of the external application. Use
             `get_applications` to list the available ones.
-        :param relationship: type of the link. The API docs recommend
-            "RELATES".
+        :param relationship: type of the link. The API docs document
+            only the uppercase "RELATES" for this endpoint. Do not pass
+            `LinkRelationship` here: its lowercase values belong to the
+            issue-link and import APIs.
         :param backlink: ask the external application to create
             a mirrored link on its side.
         :return: created remote link.
         """
         payload = self._prepare_payload(locals(), exclude=["issue_id", "backlink"])
-        params = None if backlink is None else {"backlink": str(backlink).lower()}
+        params = self._prepare_params(backlink=backlink)
 
         data = await self._client.request(
             method="POST",

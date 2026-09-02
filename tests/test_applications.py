@@ -13,11 +13,17 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import pytest
 from pydantic import TypeAdapter
 from yatracker import YaTracker
-from yatracker.types import Application, LinkDirection, RemoteLink
+from yatracker.types import (
+    Application,
+    LinkDirection,
+    RemoteLink,
+    RemoteLinkObject,
+)
 
-from tests.conftest import FakeClient, make_tracker, sent_json
+from tests.conftest import USER, FakeClient, make_tracker, sent_json
 
 # `GET /applications` list item.
 APPLICATION: dict[str, Any] = {
@@ -32,11 +38,13 @@ APPLICATION: dict[str, Any] = {
 REMOTE_LINK: dict[str, Any] = {
     "self": "https://api.tracker.yandex.net/v3/issues/TEST-1/remotelinks/51000001",
     "id": 51000001,
+    # The official sample uses "Связана" for both directions; distinct
+    # labels are used here so that the `name` direction tests can fail.
     "type": {
         "self": "https://api.tracker.yandex.net/v3/linktypes/relates",
         "id": "relates",
-        "inward": "Связана",
-        "outward": "Связана",
+        "inward": "Связана (inward)",
+        "outward": "Связана (outward)",
     },
     "direction": "outward",
     "object": {
@@ -53,16 +61,8 @@ REMOTE_LINK: dict[str, Any] = {
             "name": "test-app",
         },
     },
-    "createdBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1111",
-        "id": "1111",
-        "display": "Имя Фамилия",
-    },
-    "updatedBy": {
-        "self": "https://api.tracker.yandex.net/v3/users/1111",
-        "id": "1111",
-        "display": "Имя Фамилия",
-    },
+    "createdBy": USER,
+    "updatedBy": USER,
     "createdAt": "2021-07-14T18:59:54.552+0000",
     "updatedAt": "2021-07-14T18:59:54.552+0000",
 }
@@ -97,13 +97,19 @@ class TestRemoteLinkDecoding:
         assert link.updated_at is not None
         assert link.updated_at.tzinfo is not None
         # OUTWARD direction -> `.name` reads `type.outward`
-        assert link.name == link.type.outward
+        assert link.name == "Связана (outward)"
 
     def test_inward_direction_uses_type_inward_for_name(self) -> None:
         payload = {**REMOTE_LINK, "direction": "inward"}
         link = TypeAdapter(RemoteLink).validate_json(json.dumps(payload))
         assert link.direction == LinkDirection.INWARD
-        assert link.name == link.type.inward
+        assert link.name == "Связана (inward)"
+
+    def test_object_is_remote_link_object(self) -> None:
+        link = TypeAdapter(RemoteLink).validate_json(json.dumps(REMOTE_LINK))
+        # `RemoteLinkObject` is part of the public API of `yatracker.types`
+        assert isinstance(link.object, RemoteLinkObject)
+        assert isinstance(link.object.application, Application)
 
     def test_decodes_without_updated_by_and_updated_at(self) -> None:
         payload = {
@@ -175,31 +181,26 @@ class TestExternalLinksEndpoints:
             "relationship": "DUPLICATES",
         }
 
-    async def test_add_remote_link_backlink_true_sets_query_param(self) -> None:
+    @pytest.mark.parametrize(
+        ("backlink", "expected"),
+        [(True, "true"), (False, "false")],
+    )
+    async def test_add_remote_link_backlink_sets_query_param(
+        self,
+        backlink: bool,  # noqa: FBT001
+        expected: str,
+    ) -> None:
         tracker, client = make_tracker(REMOTE_LINK)
         await tracker.add_remote_link(
             "TEST-1",
             key="TEST-17",
             origin="ru.yandex.bitbucket",
-            backlink=True,
+            backlink=backlink,
         )
 
         call = client.calls[0]
-        assert call["params"] == {"backlink": "true"}
+        assert call["params"] == {"backlink": expected}
         # `backlink` is a query param only, never part of the body
-        assert "backlink" not in sent_json(call)
-
-    async def test_add_remote_link_backlink_false_sets_query_param(self) -> None:
-        tracker, client = make_tracker(REMOTE_LINK)
-        await tracker.add_remote_link(
-            "TEST-1",
-            key="TEST-17",
-            origin="ru.yandex.bitbucket",
-            backlink=False,
-        )
-
-        call = client.calls[0]
-        assert call["params"] == {"backlink": "false"}
         assert "backlink" not in sent_json(call)
 
     async def test_delete_remote_link(self) -> None:

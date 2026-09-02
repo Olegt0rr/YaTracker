@@ -100,6 +100,24 @@ class BaseTracker:
             and v is not None
         }
 
+    @staticmethod
+    def _prepare_params(**kwargs: Any) -> dict[str, str] | None:  # noqa: ANN401
+        """Build query params from keyword arguments.
+
+        ``None`` values are dropped, booleans are encoded as ``"true"`` /
+        ``"false"`` and everything else is stringified, because aiohttp
+        (yarl) rejects ``bool`` and ``None`` query values with a
+        ``TypeError``. Keys are camel-cased like payload keys. Returns
+        ``None`` when nothing is left, so the result can be passed to
+        ``request(params=...)`` directly.
+        """
+        params = {
+            _encode_key(key): _encode_param(value)
+            for key, value in kwargs.items()
+            if value is not None
+        }
+        return params or None
+
     async def close(self) -> None:
         """Close gracefully."""
         await self._client.close()
@@ -143,6 +161,13 @@ def _encode_key(key: str) -> str:
     the API would silently ignore the field.
     """
     return camel_case(key) if key.isidentifier() else key
+
+
+def _encode_param(value: Any) -> str:  # noqa: ANN401
+    """Encode a query param value the way the Tracker API expects it."""
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return str(value)
 
 
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401

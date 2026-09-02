@@ -2,12 +2,9 @@ from __future__ import annotations
 
 __all__ = ["RemoteLink", "RemoteLinkObject"]
 
-from datetime import datetime
-
 from .application import Application
 from .base import Base, field
-from .issue_link import LinkDirection, LinkType
-from .user import User
+from .issue_link import BaseLink
 
 
 class RemoteLinkObject(Base):
@@ -28,20 +25,11 @@ class RemoteLinkObject(Base):
     application: Application
 
 
-class RemoteLink(Base):
-    """Represents a link between an issue and an object of an external app."""
+class RemoteLink(BaseLink):
+    """Represents a link between an issue and an object of an external app.
 
-    url: str = field(alias="self")
-    id: int
-    type: LinkType
-    direction: LinkDirection
+    Shares `type`, `direction`, the `name` helper and the audit fields
+    with `IssueLink`; only `object` differs.
+    """
+
     object: RemoteLinkObject
-    created_by: User
-    updated_by: User | None = None
-    created_at: datetime
-    updated_at: datetime | None = None
-
-    @property
-    def name(self) -> str:
-        """Get link name from links type based on direction."""
-        return getattr(self.type, self.direction)

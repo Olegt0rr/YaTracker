@@ -119,6 +119,19 @@ class TestPreparePayload:
         assert result == {LOCAL_FIELD: 42, "perPage": 1}
 
 
+class TestPrepareParams:
+    def test_bools_are_lowercased_and_keys_camel_cased(self) -> None:
+        result = BaseTracker._prepare_params(backlink=True, notify_author=False)
+        assert result == {"backlink": "true", "notifyAuthor": "false"}
+
+    def test_none_values_are_dropped(self) -> None:
+        assert BaseTracker._prepare_params(backlink=None, per_page=None) is None
+
+    def test_other_values_are_stringified(self) -> None:
+        result = BaseTracker._prepare_params(per_page=50, page=None, expand="all")
+        assert result == {"perPage": "50", "expand": "all"}
+
+
 class TestLocalFieldsOnTheWire:
     async def test_edit_issue_sends_local_field_verbatim(self) -> None:
         client = FakeClient(body=full_issue_body())

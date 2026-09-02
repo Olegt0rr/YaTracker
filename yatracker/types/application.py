@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["Application"]
 
-from .base import Base, field
+from .base import Base, url_field
 
 
 class Application(Base):
@@ -19,7 +19,7 @@ class Application(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     type: str
     name: str

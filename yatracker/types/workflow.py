@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["Workflow"]
 
-from .base import Base, field
+from .base import Base, url_field
 
 
 class Workflow(Base):
@@ -12,7 +12,7 @@ class Workflow(Base):
     https://yandex.ru/support/tracker/ru/concepts/queues/get-queue
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str
     # not sent inside `issueTypesConfig` blocks

@@ -4,12 +4,12 @@ __all__ = ["Comment"]
 
 from datetime import datetime
 
-from .base import Base, field
+from .base import Base, url_field
 from .user import User
 
 
 class Comment(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: int
     text: str
     created_by: User

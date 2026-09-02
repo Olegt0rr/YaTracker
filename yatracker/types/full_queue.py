@@ -7,11 +7,12 @@ from .component import ComponentRef
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority
+from .ref import Ref
 from .user import User
 from .workflow import Workflow
 
 
-class QueueVersionRef(Base):
+class QueueVersionRef(Ref):
     """Short version reference embedded into a queue object.
 
     The queue payload carries only `self`, `id` and `display` for every
@@ -19,12 +20,9 @@ class QueueVersionRef(Base):
 
     Source:
     https://yandex.ru/support/tracker/ru/concepts/queues/get-queue
-    """
 
-    url: str = url_field()
-    id: str
-    # not sent by the v2 API
-    display: str | None = None
+    `display` is not sent by the v2 API.
+    """
 
 
 class FullQueue(Base):

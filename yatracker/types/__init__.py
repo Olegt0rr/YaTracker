@@ -31,11 +31,14 @@ __all__ = [
     "LinkDirection",
     "LinkRelationship",
     "LinkType",
+    "Macro",
+    "MacroFieldChange",
     "Priority",
     "Queue",
     "QueueField",
     "QueueVersion",
     "QueueVersionRef",
+    "Ref",
     "RemoteLink",
     "RemoteLinkObject",
     "Sprint",
@@ -58,7 +61,6 @@ from .board import (
     BoardColumnRef,
     BoardRef,
     CountryRef,
-    FieldRef,
 )
 from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
 from .checklist import ChecklistAssignee, ChecklistDeadline, ChecklistItem
@@ -77,10 +79,12 @@ from .issue_link import (
 )
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
+from .macro import Macro, MacroFieldChange
 from .priority import Priority
 from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion
+from .ref import FieldRef, Ref
 from .remote_link import RemoteLink, RemoteLinkObject
 from .sprint import FullSprint, Sprint
 from .status import Status

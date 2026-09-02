@@ -8,6 +8,7 @@ nav:
     - Задачи: issues.md
     - Очереди: queues.md
     - Компоненты: components.md
+    - Макросы: macros.md
     - Доски и спринты: boards.md
     - Комментарии: comments.md
     - Чек-листы: checklists.md

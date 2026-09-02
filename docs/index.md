@@ -32,6 +32,7 @@ print(issue.key, issue.status)
 | Вложения | `get_attachments`, `attach_file`, `upload_temp_file`, `download_attachment`, `download_thumbnail`, `delete_attachment` | [Вложения](attachments.md) |
 | Массовые операции | `bulk_update_issues`, `bulk_transition_issues`, `bulk_move_issues`, `get_bulk_change`, `get_bulk_change_issues`, `wait_bulk_change` | [Массовые операции](bulk_changes.md) |
 | Импорт | `import_issue`, `import_comment`, `import_link`, `import_attachment` | [Импорт](import.md) |
+| Внешние приложения | `get_applications`, `get_remote_links`, `add_remote_link`, `delete_remote_link` | [Внешние приложения](applications.md) |
 | Приоритеты | `get_priorities` | — |
 
 !!! note "Покрытие API"

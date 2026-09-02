@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["IssueLink", "LinkDirection", "LinkRelationship", "LinkType"]
+__all__ = ["BaseLink", "IssueLink", "LinkDirection", "LinkRelationship", "LinkType"]
 
 from datetime import datetime
 from enum import Enum
@@ -47,22 +47,30 @@ class LinkType(Base):
     outward: str
 
 
-class IssueLink(Base):
-    """Represents issue link."""
+class BaseLink(Base):
+    """Fields shared by issue links and remote links.
+
+    Subclasses declare the `object` field: the linked entity.
+    """
 
     url: str = url_field()
     id: int
     type: LinkType
     direction: LinkDirection
-    object: Issue
     created_by: User
     updated_by: User | None = None
     created_at: datetime
     updated_at: datetime | None = None
-    assignee: User | None = None
-    status: Status
 
     @property
     def name(self) -> str:
         """Get link name from links type based on direction."""
         return getattr(self.type, self.direction)
+
+
+class IssueLink(BaseLink):
+    """Represents issue link."""
+
+    object: Issue
+    assignee: User | None = None
+    status: Status

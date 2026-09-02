@@ -286,23 +286,21 @@ class TestIterIssueChangelog:
         assert seen == []
         assert len(client.calls) == 1
 
-    async def test_per_page_one_is_sent_as_two(self) -> None:
-        """A one-record page could only ever hold the (inclusive) cursor."""
-        page1 = [
-            self._record("c1", type_="IssueCreated"),
-            self._record("c2", type_="IssueUpdated"),
-        ]
-        page2 = [
-            self._record("c2", type_="IssueUpdated"),
-            self._record("c3", type_="IssueWorkflow"),
-        ]
+    async def test_per_page_one_is_sent_unchanged(self) -> None:
+        """The changelog cursor is exclusive: a page of one still advances."""
+        # `id` is documented as the change the requested ones *follow*,
+        # so the fake server never resends the cursor record.
+        page1 = [self._record("c1", type_="IssueCreated")]
+        page2 = [self._record("c2", type_="IssueUpdated")]
         page3 = [self._record("c3", type_="IssueWorkflow")]
+        page4: list[dict[str, Any]] = []
 
         client = FakeClient(
             responses=[
                 (200, json.dumps(page1).encode(), {}),
                 (200, json.dumps(page2).encode(), {}),
                 (200, json.dumps(page3).encode(), {}),
+                (200, json.dumps(page4).encode(), {}),
             ],
         )
         tracker = YaTracker(client=client)
@@ -313,9 +311,10 @@ class TestIterIssueChangelog:
         ]
         assert seen == ["c1", "c2", "c3"]
 
-        assert client.calls[0]["params"] == {"perPage": "2"}
-        assert client.calls[1]["params"] == {"perPage": "2", "id": "c2"}
-        assert client.calls[2]["params"] == {"perPage": "2", "id": "c3"}
+        assert client.calls[0]["params"] == {"perPage": "1"}
+        assert client.calls[1]["params"] == {"perPage": "1", "id": "c1"}
+        assert client.calls[2]["params"] == {"perPage": "1", "id": "c2"}
+        assert client.calls[3]["params"] == {"perPage": "1", "id": "c3"}
 
 
 class TestFullIssueGetChangelogDelegation:

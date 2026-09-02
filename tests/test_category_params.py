@@ -171,6 +171,29 @@ async def test_find_issues_scroll_params_not_in_body() -> None:
     assert payload == {"query": "Key: TEST-1"}
 
 
+async def test_find_issues_sends_filter_id_and_query2() -> None:
+    """Both documented body params of `POST /issues/_search` reach the wire."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(filter_id=1234)
+    assert sent_json(client.calls[0]) == {"filterId": 1234}
+
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(query2={"query": {"queue": {"$eq": "TEST"}}})
+    assert sent_json(client.calls[0]) == {
+        "query2": {"query": {"queue": {"$eq": "TEST"}}},
+    }
+
+
+async def test_find_issues_sends_the_search_forms_as_given() -> None:
+    """The forms are alternatives; deciding between them is the API's job."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(queue="TEST", filter_id=1234)
+    assert sent_json(client.calls[0]) == {"queue": "TEST", "filterId": 1234}
+
+
 async def test_get_comments_sends_expand_perpage_and_id() -> None:
     client = FakeClient(body=b"[]")
     tracker = YaTracker(client=client)

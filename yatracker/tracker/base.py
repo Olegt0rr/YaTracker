@@ -341,16 +341,33 @@ def _convert_value(obj: Any) -> Any:  # noqa: ANN401
     A model is rendered through its own request form (`Base._to_request`)
     rather than dumped verbatim, so a model read back from the API can
     be passed straight into the next request body.
+
+    Every collection is rendered as a JSON array, tuples and sets
+    included: `pydantic_core.to_json` would serialize them, but without
+    walking into them, so a model inside one would be dumped verbatim
+    instead of going through its request form. A set is sorted when its
+    elements are comparable, to keep the request reproducible, and left
+    in iteration order otherwise.
     """
     match obj:
         case Base():
             return obj._to_request()  # noqa: SLF001
-        case list():
+        case list() | tuple():
             return [_convert_value(o) for o in obj]
+        case set() | frozenset():
+            return [_convert_value(o) for o in _sorted_if_possible(obj)]
         case dict():
             return {k: _convert_value(v) for k, v in obj.items()}
         case _:
             return obj
+
+
+def _sorted_if_possible(values: Collection[Any]) -> Collection[Any]:
+    """Sort a set of values, unless they cannot be compared to each other."""
+    try:
+        return sorted(values)
+    except TypeError:
+        return values
 
 
 def _rename_and_clear(

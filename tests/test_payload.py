@@ -62,6 +62,29 @@ class TestConvertValue:
             {"issue": _convert_value(ISSUE)},
         ]
 
+    def test_tuple_is_rendered_as_an_array_of_converted_items(self) -> None:
+        # `pydantic_core.to_json` would serialize the tuple without
+        # walking into it, dumping the model verbatim
+        assert _convert_value((ISSUE,)) == [_convert_value(ISSUE)]
+
+    def test_set_is_rendered_as_a_sorted_array(self) -> None:
+        assert _convert_value({"b", "a"}) == ["a", "b"]
+
+    def test_frozenset_is_rendered_as_an_array(self) -> None:
+        assert _convert_value(frozenset({2, 1})) == [1, 2]
+
+    def test_set_of_incomparable_items_keeps_the_iteration_order(self) -> None:
+        # a `str` cannot be compared to an `int`, so sorting is skipped
+        # instead of failing with a `TypeError`
+        values = {1, "a"}
+        assert _convert_value(values) == list(values)
+
+    async def test_model_inside_a_tuple_reaches_the_wire_as_a_key(self) -> None:
+        client = FakeClient(body=full_issue_body())
+        tracker = YaTracker(client=client)
+        await tracker.edit_issue("TEST-1", sorts=(ISSUE,))
+        assert sent_json(client.calls[0])["sorts"] == [_convert_value(ISSUE)]
+
 
 class TestPreparePayload:
     def test_create_issue_style_payload(self) -> None:

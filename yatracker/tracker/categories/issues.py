@@ -9,7 +9,6 @@ from yatracker.tracker.base import (
     SuggestT_co,
     _iter_relative,
     _join_fields,
-    _relative_page_size,
 )
 from yatracker.types import (
     FullIssue,
@@ -402,6 +401,8 @@ class Issues(BaseTracker):
         keys: str | None = None,
         queue: str | None = None,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
         scroll_type: str | None = None,
@@ -423,6 +424,8 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
         scroll_type: str | None = None,
@@ -443,6 +446,8 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
         scroll_type: str | None = None,
@@ -467,7 +472,31 @@ class Issues(BaseTracker):
         so pass a ``_type`` whose required fields match the projection —
         the default FullIssue needs the full field set. It takes a
         comma-separated string or a sequence of field names.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-issues
+
+        :param filter_: filter by field values, e.g.
+            ``{"queue": "TREK", "assignee": "empty()"}``.
+        :param query: filter written in the query language.
+        :param order: sorting of the result, ``[+/-]<field key>``; only
+            together with ``filter_``.
+        :param expand: additional data in the response: "transitions",
+            "attachments" or "comments".
+        :param keys: keys of the issues to return, comma-separated.
+        :param queue: key of the queue to search in.
+        :param filter_id: id of a saved filter (body param "filterId").
+        :param query2: filter written in the query language 2.0, as the
+            object the API documents (body param "query2").
+        :param _type: you can use your own extended FullIssue type.
         :return:
+
+        The search forms — ``queue``, ``keys``, ``filter_``,
+        ``filter_id``, ``query`` and ``query2`` — are alternatives
+        rather than filters to combine: the API answers a pair by the
+        one with the higher priority (``queue``, then ``keys``, then
+        ``filter``, then ``query``) and rejects three or four of them
+        with HTTP 400.
         """
         payload = self._prepare_payload(
             locals(),
@@ -524,6 +553,8 @@ class Issues(BaseTracker):
         expand: str | None = None,
         queue: str | None = None,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
@@ -540,6 +571,8 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
@@ -555,6 +588,8 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
@@ -603,6 +638,19 @@ class Issues(BaseTracker):
         or, without a context manager, ``gen = tracker.iter_issues(...)``
         and ``await gen.aclose()``.
 
+        :param filter_: filter by field values, e.g.
+            ``{"queue": "TREK", "assignee": "empty()"}``.
+        :param query: filter written in the query language.
+        :param order: sorting of the result, ``[+/-]<field key>``; only
+            together with ``filter_``.
+        :param expand: additional data in the response: "transitions",
+            "attachments" or "comments".
+        :param queue: key of the queue to search in; folded into
+            ``filter_`` before the request is sent.
+        :param filter_id: id of a saved filter (body param "filterId").
+        :param query2: filter written in the query language 2.0, as the
+            object the API documents (body param "query2").
+        :param _type: you can use your own extended FullIssue type.
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
         :param scroll_ttl_millis: lifetime of the scroll context, in ms.
@@ -611,6 +659,11 @@ class Issues(BaseTracker):
             from the response, so pass a ``_type`` whose required fields
             match the projection — the default :class:`FullIssue` needs
             the full field set.
+
+        The search forms (``filter_``, ``filter_id``, ``query``,
+        ``query2`` and the ``queue`` folded into ``filter_``) are
+        alternatives, like in :meth:`find_issues`: the API rejects three
+        or four of them with HTTP 400.
         """
         if queue is not None:
             filter_ = {**(filter_ or {}), "queue": queue}
@@ -854,23 +907,25 @@ class Issues(BaseTracker):
         the id of the last change of the previous one (see
         :func:`yatracker.tracker.base._iter_relative`).
 
+        Unlike the boards, users and triggers cursors, the changelog one
+        is exclusive — the docs describe `id` as the change the
+        requested ones *follow* — so `per_page` is sent unchanged, a
+        page of one item included.
+
         Source:
         https://yandex.ru/support/tracker/ru/api/issues/get-changelog
 
         :param issue_id: ID or key of the issue.
         :param per_page: number of changes per page (50 by default).
-            `per_page=1` is sent as 2: the cursor change is resent on
-            every page, so a page of one could never advance.
         :param field: id of the changed issue field to filter by.
         :param type_: key of the change type to filter by.
         """
-        page_size = _relative_page_size(per_page)
 
         async def fetch_page(id_: str | None) -> list[Changelog]:
             return await self.get_issue_changelog(
                 issue_id,
                 id_=id_,
-                per_page=page_size,
+                per_page=per_page,
                 field=field,
                 type_=type_,
             )

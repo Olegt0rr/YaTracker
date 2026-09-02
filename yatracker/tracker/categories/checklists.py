@@ -7,11 +7,11 @@ from yatracker.types import ChecklistDeadline, ChecklistItem, FullIssue
 from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
-    from datetime import datetime
+    from datetime import date, datetime
 
 
 def _build_deadline(
-    deadline: ChecklistDeadline | datetime | str | None,
+    deadline: ChecklistDeadline | datetime | date | str | None,
 ) -> dict[str, Any] | None:
     """Render a deadline as the `{"date", "deadlineType"}` object the API expects."""
     if deadline is None:
@@ -48,7 +48,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -59,7 +59,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
         _type: type[IssueT_co] = ...,
     ) -> IssueT_co: ...
 
@@ -70,7 +70,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
     ) -> IssueT_co | FullIssue:
         """Add an item to the checklist of an issue.
@@ -84,8 +84,9 @@ class Checklists(BaseTracker):
         :param assignee: login or ID of the checklist item assignee.
         :param deadline: deadline of the checklist item. A
             `ChecklistDeadline` (e.g. one read from another item) is sent
-            with its own `deadline_type`; a timezone-aware `datetime` or
-            a ready-made API string is sent as type `date`.
+            with its own `deadline_type`; a timezone-aware `datetime`, a
+            bare `date` (rendered as midnight UTC) or a ready-made API
+            string is sent as type `date`.
         :param _type: you can use your own extended FullIssue type.
 
         Fields left as ``None`` are not sent.
@@ -112,7 +113,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -124,7 +125,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
         _type: type[IssueT_co] = ...,
     ) -> IssueT_co: ...
 
@@ -136,7 +137,7 @@ class Checklists(BaseTracker):
         *,
         checked: bool | None = None,
         assignee: str | int | None = None,
-        deadline: ChecklistDeadline | datetime | str | None = None,
+        deadline: ChecklistDeadline | datetime | date | str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
     ) -> IssueT_co | FullIssue:
         """Edit an item of the checklist of an issue.
@@ -159,8 +160,9 @@ class Checklists(BaseTracker):
         :param assignee: login or ID of the checklist item assignee.
         :param deadline: deadline of the checklist item. A
             `ChecklistDeadline` (e.g. one read from another item) is sent
-            with its own `deadline_type`; a timezone-aware `datetime` or
-            a ready-made API string is sent as type `date`.
+            with its own `deadline_type`; a timezone-aware `datetime`, a
+            bare `date` (rendered as midnight UTC) or a ready-made API
+            string is sent as type `date`.
         :param _type: you can use your own extended FullIssue type.
 
         Fields left as ``None`` are not sent. The API documentation does

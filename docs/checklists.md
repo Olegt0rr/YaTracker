@@ -54,7 +54,7 @@ async def add_checklist_item(
     *,
     checked: bool | None = None,
     assignee: str | int | None = None,
-    deadline: ChecklistDeadline | datetime | str | None = None,
+    deadline: ChecklistDeadline | datetime | date | str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
 ) -> IssueT_co | FullIssue: ...
 ```
@@ -86,7 +86,8 @@ issue = await tracker.add_checklist_item(
    (число уходит в запрос как число, без преобразования в строку).
 5. `deadline` — срок выполнения. Принимает `ChecklistDeadline` (например, взятый из поля
    `deadline` другого пункта чек-листа — тогда он отправится вместе со своим `deadline_type`),
-   timezone-aware `datetime` (рекомендуется; отправляется со значением типа `date`) либо
+   timezone-aware `datetime` (рекомендуется; отправляется со значением типа `date`),
+   обычный `date` (отправляется как полночь UTC) либо
    готовую строку вида `YYYY-MM-DDThh:mm:ss.sss±hhmm`, которую библиотека передаст как есть.
 6. `_type` — своя модель задачи вместо `FullIssue`, как и в остальных методах работы с
    задачами (см. [«Работа с пользовательскими полями»](custom_fields.md)).
@@ -112,7 +113,7 @@ async def edit_checklist_item(
     *,
     checked: bool | None = None,
     assignee: str | int | None = None,
-    deadline: ChecklistDeadline | datetime | str | None = None,
+    deadline: ChecklistDeadline | datetime | date | str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
 ) -> IssueT_co | FullIssue: ...
 ```

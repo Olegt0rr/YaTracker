@@ -484,21 +484,51 @@ def _prepare_fields(
     or at a recursive call instead of at the user's code. The warning
     points at the first frame outside of the library, however many
     internal helpers there are in between.
+
+    Bare values are found by walking the payload, while a model renders
+    itself (`EntityDeadline._render`, for one) and warns on its own, so
+    the rendering runs with the naive warnings captured and a payload
+    mixing the two shapes still warns exactly once. Any other warning
+    raised while rendering is re-emitted from where it came.
     """
     merged = {
         **(values or {}),
         **{key: value for key, value in kwargs.items() if value is not None},
     }
-    if _has_naive_datetime(merged):
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        prepared = {
+            _encode_key(key): _convert_entity_value(value)
+            for key, value in merged.items()
+        }
+
+    naive = [warning for warning in caught if _is_naive_warning(warning)]
+    for warning in caught:
+        if warning not in naive:
+            warnings.warn_explicit(
+                warning.message,
+                warning.category,
+                warning.filename,
+                warning.lineno,
+            )
+
+    if naive or _has_naive_datetime(merged):
         warnings.warn(
             NAIVE_DATETIME_WARNING,
             UserWarning,
             stacklevel=user_stacklevel(sys._getframe(0)),  # noqa: SLF001
         )
 
-    return {
-        _encode_key(key): _convert_entity_value(value) for key, value in merged.items()
-    }
+    return prepared
+
+
+def _is_naive_warning(warning: warnings.WarningMessage) -> bool:
+    """Tell whether a captured warning is the naive-datetime one."""
+    return (
+        issubclass(warning.category, UserWarning)
+        and str(warning.message) == NAIVE_DATETIME_WARNING
+    )
 
 
 def _prepare_links(

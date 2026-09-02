@@ -154,6 +154,29 @@ async def test_iter_issues_folds_queue_into_filter() -> None:
     assert "queue" not in body
 
 
+async def test_iter_issues_sends_filter_id_and_query2() -> None:
+    client = FakeClient(responses=[(200, b"[]", {})])
+    tracker = YaTracker(client=client)
+
+    _ = [issue async for issue in tracker.iter_issues(filter_id=1234)]
+
+    assert json.loads(bytes(client.calls[0]["data"]._value)) == {"filterId": 1234}
+
+    client = FakeClient(responses=[(200, b"[]", {})])
+    tracker = YaTracker(client=client)
+
+    _ = [
+        issue
+        async for issue in tracker.iter_issues(
+            query2={"query": {"queue": {"$eq": "TEST"}}},
+        )
+    ]
+
+    assert json.loads(bytes(client.calls[0]["data"]._value)) == {
+        "query2": {"query": {"queue": {"$eq": "TEST"}}},
+    }
+
+
 async def test_iter_issues_releases_the_scroll_on_early_break() -> None:
     """Leaving the loop early must free the server-side snapshots."""
     client = FakeClient(

@@ -38,8 +38,8 @@ async def create_gap(
     self,
     user: str | int,
     workflow: str,
-    from_: datetime | str,
-    to: datetime | str,
+    from_: datetime | date | str,
+    to: datetime | date | str,
     *,
     id_: str | None = None,
     full_day: bool | None = None,
@@ -64,7 +64,8 @@ gap = await tracker.create_gap(
 1. `user` — логин или идентификатор сотрудника.
 2. `workflow` — тип отсутствия, см. раздел выше.
 3. `from_` — начало отсутствия: timezone-aware `datetime` (библиотека сама
-   отформатирует его в ISO 8601 с миллисекундами и смещением часового пояса) или
+   отформатирует его в ISO 8601 с миллисекундами и смещением часового пояса),
+   обычный `date` (отправляется как полночь UTC) или
    готовая строка API. Должно быть меньше `to`. Отправляется как `from`.
 4. `to` — конец отсутствия, тот же формат. Должно быть больше `from_`.
 5. `id_` — идентификатор, который будет присвоен записи (не больше 128 символов).
@@ -119,8 +120,8 @@ gaps = await tracker.create_gaps(
    Каждая запись — словарь с ключами
    `user`, `workflow`, `from_` (или `from`) и `to`, а также необязательными `id`,
    `full_day` и `work_in_absence`. Ключи приводятся к camelCase так же, как в остальной
-   библиотеке (`full_day` → `fullDay`), а `from_`/`to` принимают и `datetime`, и готовую
-   строку API.
+   библиотеке (`full_day` → `fullDay`), а `from_`/`to` принимают и `datetime`, и `date`,
+   и готовую строку API.
 
 Возвращает список **фактически сохранённых** записей: если какая-то запись оказалась
 устаревшей (например, дублирующийся `id` или невалидный диапазон дат для конкретной
@@ -144,8 +145,8 @@ async def search_gaps(
     self,
     users: Sequence[str | int],
     *,
-    from_: datetime | str | None = None,
-    to: datetime | str | None = None,
+    from_: datetime | date | str | None = None,
+    to: datetime | date | str | None = None,
     per_page: int | None = None,
     page: int | None = None,
 ) -> GapsSearchResult: ...
@@ -170,8 +171,9 @@ for user_gaps in result.user_gaps:
    генератор), не пустая и не больше 100 элементов; иначе `ValueError`. Одиночный логин
    вместо коллекции (`users="login1"`) бросает `TypeError`: иначе строка была бы
    разобрана по символам.
-2. `from_` — начало окна поиска. Текущий момент по умолчанию.
-3. `to` — конец окна поиска. Должно быть строго больше `from_`.
+2. `from_` — начало окна поиска: `datetime`, `date` (полночь UTC) или строка API.
+   Текущий момент по умолчанию.
+3. `to` — конец окна поиска, в тех же форматах. Должно быть строго больше `from_`.
 4. `per_page` — количество **сотрудников** на странице (по умолчанию 50).
 5. `page` — номер страницы (по умолчанию 1).
 
@@ -195,8 +197,8 @@ async def iter_gaps(
     self,
     users: Sequence[str | int],
     *,
-    from_: datetime | str | None = None,
-    to: datetime | str | None = None,
+    from_: datetime | date | str | None = None,
+    to: datetime | date | str | None = None,
     per_page: int | None = None,
 ) -> AsyncIterator[UserGaps]: ...
 ```

@@ -23,6 +23,8 @@ from yatracker import YaTracker
 from yatracker.types import BulkChange
 from yatracker.types.entity import (
     Entity,
+    EntityChecklistItem,
+    EntityDeadline,
     EntityEvents,
     EntityFields,
     EntityLink,
@@ -1033,6 +1035,50 @@ class TestNaiveDatetimeWarning:
                 "1",
                 values={"start": NAIVE, "dates": [NAIVE, NAIVE]},
                 end=NAIVE,
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
+    async def test_a_bare_value_and_a_model_warn_once_together(self) -> None:
+        """The walk finds the bare value, the model warns while rendering."""
+        tracker, client = make_tracker(entity_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.update_entity(
+                "project",
+                "1",
+                values={
+                    "start": NAIVE,
+                    "checklistItems": [
+                        EntityChecklistItem(
+                            id="1", deadline=EntityDeadline(date=NAIVE)
+                        ),
+                    ],
+                },
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+        fields = sent_json(client.calls[0])["fields"]
+        assert fields["start"] == "2023-11-23T10:00:00.000"
+        assert fields["checklistItems"][0]["deadline"] == {
+            "date": "2023-11-23T10:00:00.000",
+            "deadlineType": "date",
+        }
+
+    async def test_a_model_alone_still_warns_once(self) -> None:
+        tracker, _ = make_tracker(entity_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.update_entity(
+                "project",
+                "1",
+                values={
+                    "checklistItems": [
+                        EntityChecklistItem(
+                            id="1", deadline=EntityDeadline(date=NAIVE)
+                        ),
+                    ],
+                },
             )
 
         assert len(record) == 1

@@ -61,6 +61,27 @@ async def get_issue(
 issue = await tracker.get_issue("WRITERS-42", expand="transitions")
 ```
 
+### Модель `FullIssue`
+
+`FullIssue` повторяет ответ API: поля называются так же, только в `snake_case`
+(см. раздел «Именование полей» выше), а ключ `self` доступен как `url`.
+Полный список полей задачи смотрите в официальном справочнике:
+<https://yandex.ru/support/tracker/ru/api/issues/get-issue>. Ниже — поля, названия которых
+не выводятся из ключа API напрямую:
+
+| Поле                     | Тип                   | Описание                                                                                     |
+|--------------------------|-----------------------|----------------------------------------------------------------------------------------------|
+| `last_comment_update_at` | `datetime \| None`    | Дата и время последнего комментария. API-ключ — `lastCommentUpdatedAt` (а не `lastCommentUpdateAt`), поэтому у поля задан явный алиас |
+| `project`                | `EntityParent \| None` | Проекты и портфели задачи: `primary` — основной, `secondary` — список дополнительных (тот же вид `{primary, secondary}`, что и у `parentEntity`) |
+
+```python
+issue = await tracker.get_issue("WRITERS-42")
+
+if issue.project is not None and issue.project.primary is not None:
+    print(issue.project.primary.display)
+print(issue.last_comment_update_at)
+```
+
 ## Создание задачи
 
 ```python
@@ -242,6 +263,8 @@ async def find_issues(
     queue: str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
     *,
+    filter_id: int | str | None = None,
+    query2: dict[str, Any] | None = None,
     per_page: int | None = None,
     page: int | None = None,
     scroll_type: str | None = None,
@@ -259,6 +282,9 @@ async def find_issues(
 - `expand` — дополнительные данные в ответе (`"transitions"`, `"attachments"`).
 - `keys` — прямой поиск по ключам задач (через запятую), альтернатива `filter_`/`query`.
 - `queue` — ограничить поиск одной очередью (альтернативная форма запроса).
+- `filter_id` — идентификатор сохранённого фильтра (body-параметр `filterId`).
+- `query2` — фильтр на [языке запросов 2.0](https://yandex.ru/support/tracker/ru/api/issues/search-issues),
+  объект, который уходит в теле запроса как `query2`.
 - `fields` — проекция полей ответа, как и в `get_issue` (строка через запятую или
   последовательность имён): непойменованные поля не придут, так
   что `_type` должен соответствовать выбранной проекции.
@@ -293,6 +319,16 @@ first_page = await tracker.find_issues(
     ответит ошибкой HTTP 400. Кроме того, `find_issues` не может отдать вам `scrollId` для
     продолжения сессии — он приходит в заголовке ответа `X-Scroll-Id`, а не в теле. Чтобы не
     работать со скроллингом вручную, используйте `iter_issues` ниже.
+
+!!! warning "Формы поиска — альтернативы, а не фильтры"
+
+    `queue`, `keys`, `filter_`, `filter_id`, `query` и `query2` не комбинируются. Если
+    передать два параметра, API ответит по тому, у кого приоритет выше (`queue`, затем
+    `keys`, затем `filter`, затем `query`); три или четыре параметра API отвергает с
+    HTTP 400 («Вы можете использовать только ключи, очередь или поисковый запрос»).
+    Библиотека отправляет всё, что вы передали, как есть — выбор формы поиска остаётся за
+    вами. То же самое относится к `iter_issues`, где `queue` сначала подмешивается
+    в `filter_`.
 
 ### suggest_issues
 
@@ -394,6 +430,8 @@ async def iter_issues(
     queue: str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
     *,
+    filter_id: int | str | None = None,
+    query2: dict[str, Any] | None = None,
     scroll_type: str = "sorted",
     per_scroll: int = 100,
     scroll_ttl_millis: int | None = None,
@@ -407,6 +445,10 @@ async def iter_issues(
 - `queue` — здесь нет отдельного параметра `keys`: форма поиска по `keys` не совместима со
   scroll API, а `queue`, если передан, автоматически подмешивается в `filter_` перед
   отправкой запроса.
+- `filter_id` — идентификатор сохранённого фильтра (body-параметр `filterId`), как в
+  `find_issues`.
+- `query2` — фильтр на языке запросов 2.0, как в `find_issues`. Комбинировать формы поиска
+  не следует (см. предупреждение выше).
 - Итерация останавливается, когда очередная страница пуста или API перестаёт присылать
   заголовок `X-Scroll-Id`.
 - `scrollType` и `perScroll` — параметры **только первого** запроса серии; со второго
@@ -689,12 +731,13 @@ async for change in tracker.iter_issue_changelog("WRITERS-1", field="status"):
 останавливается, как только очередная страница пуста или не продвигается дальше текущего
 курсора (защита от зацикливания на случай, если сервер проигнорирует `id`).
 
-!!! note "`per_page=1` отправляется как `perPage=2`"
+!!! note "`per_page` передаётся в API как есть"
 
-    Курсор `id` включающий: изменение-курсор возвращается ещё раз в начале следующей
-    страницы. Поэтому страница из одной записи могла бы содержать только сам курсор, и
-    итерация остановилась бы после первой записи. Чтобы этого не происходило,
-    `per_page=1` отправляется в API как `perPage=2`.
+    Курсор `id` у истории изменений **исключающий**: в документации это «идентификатор
+    изменения, за которым следуют запрашиваемые изменения», то есть сам курсор в следующей
+    страницу не попадает. Поэтому даже `per_page=1` продвигает итерацию и уходит в API
+    как `perPage=1` (в отличие от досок, пользователей и триггеров, где курсор включающий
+    и размер страницы 1 приходится увеличивать).
 
 Задача, полученная через `get_issue`, тоже умеет отдавать свою историю без явного
 `issue_id`:

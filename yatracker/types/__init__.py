@@ -1,6 +1,9 @@
 __all__ = [
     "Attachment",
     "Base",
+    "BulkChange",
+    "BulkChangeError",
+    "BulkChangeIssue",
     "Comment",
     "Duration",
     "FullIssue",
@@ -28,6 +31,7 @@ __all__ = [
 
 from .attachment import Attachment
 from .base import Base, field
+from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
 from .comment import Comment
 from .duration import Duration
 from .full_issue import FullIssue

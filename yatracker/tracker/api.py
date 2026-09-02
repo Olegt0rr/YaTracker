@@ -5,6 +5,7 @@ import logging
 from .base import BaseTracker
 from .categories import (
     Attachments,
+    BulkChanges,
     Comments,
     Imports,
     Issues,
@@ -23,6 +24,7 @@ class YaTracker(
     Priorities,
     Attachments,
     Worklogs,
+    BulkChanges,
     Imports,
     BaseTracker,
 ):

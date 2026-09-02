@@ -10,6 +10,7 @@ nav:
     - Комментарии: comments.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md
+    - Массовые операции: bulk_changes.md
     - Импорт: import.md
   - Обработка ошибок: errors.md
   - Дополнительные возможности:

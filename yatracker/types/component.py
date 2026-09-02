@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["Component", "ComponentRef"]
 
-from .base import Base, field
+from .base import Base, url_field
 from .queue import Queue
 from .user import User
 
@@ -18,7 +18,7 @@ class ComponentRef(Base):
     kept — use `get_queue_components` for the full ones.
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -41,7 +41,7 @@ class Component(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     version: int
     name: str

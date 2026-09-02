@@ -1,6 +1,7 @@
 from .applications import Applications
 from .attached_files import Attachments
 from .bulk_operations import BulkChanges
+from .checklists import Checklists
 from .comments import Comments
 from .components import Components
 from .external_links import ExternalLinks
@@ -18,6 +19,7 @@ __all__ = [
     "Attachments",
     "Boards",
     "BulkChanges",
+    "Checklists",
     "Comments",
     "Components",
     "ExternalLinks",

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone, tzinfo
 
 import pytest
 from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
@@ -35,6 +35,15 @@ class TestToTrackerDatetime:
             result = to_tracker_datetime(datetime(2024, 1, 1), stacklevel=2)  # noqa: DTZ001
         assert result == "2024-01-01T00:00:00.000"
         assert record[0].filename == __file__
+
+    def test_tzinfo_without_offset_counts_as_naive(self) -> None:
+        class NoOffset(tzinfo):
+            def utcoffset(self, dt: datetime | None) -> timedelta | None:  # noqa: ARG002
+                return None
+
+        value = datetime(2024, 1, 1, tzinfo=NoOffset())
+        with pytest.warns(UserWarning, match="naive datetime"):
+            assert to_tracker_datetime(value) == "2024-01-01T00:00:00.000"
 
 
 class TestToTrackerDate:

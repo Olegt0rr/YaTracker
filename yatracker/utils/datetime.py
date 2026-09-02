@@ -49,7 +49,8 @@ def to_tracker_datetime(
     if not isinstance(value, datetime):
         return value
 
-    if value.tzinfo is None:
+    # Python's definition of naive: no tzinfo, or a tzinfo without an offset
+    if value.utcoffset() is None:
         warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
 
     milliseconds = value.microsecond // 1000

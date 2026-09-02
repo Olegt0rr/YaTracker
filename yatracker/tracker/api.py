@@ -6,6 +6,7 @@ from .base import BaseTracker
 from .categories import (
     Attachments,
     Comments,
+    Components,
     Issues,
     Priorities,
     Queues,
@@ -20,6 +21,7 @@ class YaTracker(
     Issues,
     Comments,
     Priorities,
+    Components,
     Attachments,
     Worklogs,
     BaseTracker,

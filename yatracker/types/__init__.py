@@ -2,6 +2,8 @@ __all__ = [
     "Attachment",
     "Base",
     "Comment",
+    "Component",
+    "ComponentRef",
     "Duration",
     "FullIssue",
     "FullQueue",
@@ -26,6 +28,7 @@ __all__ = [
 from .attachment import Attachment
 from .base import Base, field
 from .comment import Comment
+from .component import Component, ComponentRef
 from .duration import Duration
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef

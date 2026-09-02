@@ -35,8 +35,8 @@ queue = await tracker.get_queue("WRITERS")
 print(queue.key, queue.name, queue.lead.display)
 ```
 
-Часть полей (`team_users`, `issue_types`, `versions`, `workflows`, `issue_types_config`)
-Трекер возвращает только по запросу — через параметр `expand`:
+Часть полей (`team_users`, `issue_types`, `versions`, `components`, `workflows`,
+`issue_types_config`) Трекер возвращает только по запросу — через параметр `expand`:
 
 ```python
 queue = await tracker.get_queue("WRITERS", expand="all")

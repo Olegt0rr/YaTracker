@@ -7,6 +7,7 @@ nav:
   - Работа с API:
     - Задачи: issues.md
     - Очереди: queues.md
+    - Компоненты: components.md
     - Комментарии: comments.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from yatracker import YaTracker
 from yatracker.tracker.client import BaseClient
 
 
@@ -50,6 +51,62 @@ class FakeClient(BaseClient):
 
     async def close(self) -> None:
         return
+
+
+def make_tracker(
+    payload: Any = None,
+    status: int = 200,
+) -> tuple[YaTracker, FakeClient]:
+    """Build a tracker over a ``FakeClient`` serving one canned JSON payload."""
+    body = b"{}" if payload is None else json.dumps(payload).encode()
+    client = FakeClient(status=status, body=body)
+    return YaTracker(client=client), client
+
+
+def sent_json(call: dict[str, Any]) -> Any:
+    """Decode the JSON body attached to a captured request."""
+    return json.loads(call["data"]._value)
+
+
+# Sample user from the official docs, embedded into queue/component payloads.
+USER: dict[str, Any] = {
+    "self": "https://api.tracker.yandex.net/v3/users/1111",
+    "id": "1111",
+    "display": "Имя Фамилия",
+    "cloudUid": "ajeppa7dgp53",
+    "passportUid": 1111,
+}
+
+
+def full_queue_body(**overrides: Any) -> dict[str, Any]:
+    """Build a minimal ``FullQueue`` payload (``GET /queues/{id}`` shape).
+
+    Mirrors ``full_issue_body``; returns a dict so tests can also embed it
+    or dump it with ``json.dumps``.
+    """
+    queue: dict[str, Any] = {
+        "self": "https://api.tracker.yandex.net/v3/queues/TEST",
+        "id": "3",
+        "key": "TEST",
+        "version": 5,
+        "name": "Test",
+        "lead": USER,
+        "assignAuto": False,
+        "defaultType": {
+            "self": "https://api.tracker.yandex.net/v3/issuetypes/1",
+            "id": "1",
+            "key": "task",
+            "display": "Задача",
+        },
+        "defaultPriority": {
+            "self": "https://api.tracker.yandex.net/v3/priorities/3",
+            "id": "3",
+            "key": "normal",
+            "display": "Средний",
+        },
+    }
+    queue.update(overrides)
+    return queue
 
 
 def full_issue_body(**overrides: Any) -> bytes:

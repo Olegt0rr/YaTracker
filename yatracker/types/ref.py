@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["Ref"]
 
-from .base import Base, field
+from .base import Base, url_field
 
 
 class Ref(Base):
@@ -21,6 +21,6 @@ class Ref(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None

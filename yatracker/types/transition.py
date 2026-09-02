@@ -2,13 +2,13 @@ from __future__ import annotations
 
 __all__ = ["Transition"]
 
-from .base import Base, field
+from .base import Base, url_field
 from .status import Status
 
 
 class Transition(Base):
     id: str
-    url: str = field(alias="self")
+    url: str = url_field()
     display: str
     to: Status
 

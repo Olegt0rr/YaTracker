@@ -34,7 +34,8 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
 
 ## Attention!
 * All `self` properties are renamed to `url`, because `self` is a reserved
-  name in Python.
+  name in Python. A `url=` keyword argument is sent to the API as `url`;
+  models embedded in a request body keep the API's `self` key.
 * All `camelCase` properties are renamed to `pythonic_case`.
 * All datetime values are converted to Python `datetime.datetime` objects.
 * Methods are named by the author, because the Yandex API has no clear

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 __all__ = ["Priority"]
 
-from .base import Base, field
+from .base import Base, url_field
 
 
 class Priority(Base):
@@ -22,7 +22,7 @@ class Priority(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     key: str
     display: str | None = None

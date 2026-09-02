@@ -6,7 +6,7 @@ from typing import Any
 
 from pydantic import field_validator
 
-from .base import Base, field
+from .base import Base, field, url_field
 from .queue import Queue
 from .ref import Ref
 
@@ -56,7 +56,7 @@ class Macro(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     queue: Queue
     name: str

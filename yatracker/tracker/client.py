@@ -250,7 +250,7 @@ class BaseClient(ABC):
         url: StrOrURL,
         **kwargs,
     ) -> tuple[int, bytes, Mapping[str, str]]:
-        """Get raw response from via http-client.
+        """Get the raw response from the HTTP client.
 
         Custom transports must forward every kwarg to the underlying
         HTTP call: `params`, `data` (an aiohttp payload or `FormData`)

@@ -4,13 +4,13 @@ __all__ = ["FullSprint", "Sprint"]
 
 from datetime import date, datetime
 
-from .base import Base, field
+from .base import Base, url_field
 from .board import BoardRef
 from .user import User
 
 
 class Sprint(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str
 
@@ -27,7 +27,7 @@ class FullSprint(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-sprint
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     version: int
     name: str

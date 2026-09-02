@@ -14,7 +14,7 @@ __all__ = [
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
-from .base import Base, field
+from .base import Base, url_field
 from .status import Status
 from .user import User
 
@@ -32,7 +32,7 @@ class BoardRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-sprint
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -47,7 +47,7 @@ class BoardColumnRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -59,7 +59,7 @@ class FieldRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -71,7 +71,7 @@ class CountryRef(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -94,7 +94,7 @@ class Board(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     version: int
     name: str
@@ -125,7 +125,7 @@ class BoardColumn(Base):
     https://yandex.cloud/ru/docs/tracker/concepts/boards/get-column
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     name: str
     statuses: list[Status] | None = None

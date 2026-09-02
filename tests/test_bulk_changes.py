@@ -8,6 +8,7 @@ BulkChangeError types, and the model shortcuts they expose.
 
 from __future__ import annotations
 
+import asyncio
 import json
 from datetime import datetime, timezone
 from typing import Any
@@ -87,7 +88,10 @@ def bulk_change_issue_payload(**overrides: Any) -> dict[str, Any]:
 
 
 def patch_sleep(monkeypatch: pytest.MonkeyPatch) -> list[float]:
-    """Replace ``asyncio.sleep`` in the bulk_operations module with a no-op.
+    """Replace ``asyncio.sleep`` with a no-op for the duration of the test.
+
+    The bulk_operations module calls ``asyncio.sleep`` through the ``asyncio``
+    module, so the patch is process-wide, not module-scoped.
 
     Returns the list into which each requested delay is recorded.
     """
@@ -285,6 +289,33 @@ class TestBulkUpdateIssues:
         )
 
         assert sent_json(client.calls[0])["values"] == {"storyPoints": 2}
+
+    async def test_local_field_key_in_kwargs_is_kept_verbatim(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        local_field = "64a51c6d866ea82411abe756--userId"
+        await tracker.bulk_update_issues(["TEST-1"], **{local_field: 42})
+
+        assert sent_json(client.calls[0])["values"] == {local_field: 42}
+
+    async def test_local_field_key_in_both_sources_is_merged_once(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        local_field = "64a51c6d866ea82411abe756--userId"
+        await tracker.bulk_update_issues(
+            ["TEST-1"],
+            values={local_field: 1},
+            **{local_field: 2},
+        )
+
+        assert sent_json(client.calls[0])["values"] == {local_field: 2}
+
+    async def test_underscore_prefixed_key_is_kept_verbatim(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_update_issues(["TEST-1"], values={"_raw": 1})
+
+        assert sent_json(client.calls[0])["values"] == {"_raw": 1}
 
     @pytest.mark.parametrize("query", ["", "   "])
     async def test_empty_query_filter_raises_value_error(self, query: str) -> None:
@@ -792,7 +823,7 @@ class TestWaitBulkChange:
         assert client.calls == []
         assert sleeps == []
 
-    async def test_404_after_operation_was_seen_is_not_retried(
+    async def test_404_after_operation_was_seen_uses_the_same_budget(
         self,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
@@ -805,11 +836,75 @@ class TestWaitBulkChange:
             ],
         )
         tracker = YaTracker(client=client)
+        result = await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", interval=1)
+
+        assert result.status == "COMPLETE"
+        assert len(client.calls) == 3
+
+    async def test_404_budget_is_not_replenished_by_success(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        patch_sleep(monkeypatch)
+        client = FakeClient(
+            responses=[
+                *[(404, b"{}", {})] * NOT_FOUND_RETRIES,
+                (200, bulk_change_body(status="RUNNING"), {}),
+                (404, b"{}", {}),
+                (200, bulk_change_body(status="COMPLETE"), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
 
         with pytest.raises(ObjectNotFoundError):
             await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", interval=1)
 
-        assert len(client.calls) == 2
+        assert len(client.calls) == NOT_FOUND_RETRIES + 2
+
+    async def test_finished_hand_made_model_is_adopted_by_tracker(self) -> None:
+        client = FakeClient(body=b"[]")
+        tracker = YaTracker(client=client)
+        bulk_change = BulkChange.model_validate(bulk_change_payload(status="COMPLETE"))
+        assert bulk_change._tracker is None
+
+        result = await tracker.wait_bulk_change(bulk_change)
+        issues = await result.get_issues()
+
+        assert result is bulk_change
+        assert issues == []
+        assert client.calls[0]["url"].endswith(
+            "/v3/bulkchange/1ab23cd4e5678901abcdef12/issues"
+        )
+
+    async def test_transport_timeout_is_not_masked(self) -> None:
+        class TimingOutClient(FakeClient):
+            async def _make_request(self, *args: Any, **kwargs: Any) -> Any:  # noqa: ARG002
+                msg = "connection timed out"
+                raise asyncio.TimeoutError(msg)
+
+        tracker = YaTracker(client=TimingOutClient())
+
+        with pytest.raises(asyncio.TimeoutError, match="connection timed out"):
+            await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", timeout=60)
+
+    async def test_sleep_is_capped_by_the_remaining_time(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        sleeps = patch_sleep(monkeypatch)
+        client = FakeClient(
+            responses=[
+                (200, bulk_change_body(status="RUNNING"), {}),
+                (200, bulk_change_body(status="COMPLETE"), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        await tracker.wait_bulk_change(
+            "1ab23cd4e5678901abcdef12", interval=60, timeout=5
+        )
+
+        assert len(sleeps) == 1
+        assert 0 < sleeps[0] <= 5
 
     @pytest.mark.parametrize("timeout", [0, -1])
     async def test_timeout_must_be_positive(self, timeout: float) -> None:
@@ -823,15 +918,14 @@ class TestWaitBulkChange:
 
         assert client.calls == []
 
-    async def test_interval_must_be_positive(self) -> None:
+    @pytest.mark.parametrize("interval", [0, -1])
+    async def test_interval_must_be_positive(self, interval: float) -> None:
         tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
         with pytest.raises(ValueError, match="interval"):
-            await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", interval=0)
-
-    async def test_negative_interval_raises_value_error(self) -> None:
-        tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
-        with pytest.raises(ValueError, match="interval"):
-            await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", interval=-1)
+            await tracker.wait_bulk_change(
+                "1ab23cd4e5678901abcdef12",
+                interval=interval,
+            )
 
     async def test_timeout_raises(self) -> None:
         """A never-finishing operation, awaited with a tiny real timeout."""

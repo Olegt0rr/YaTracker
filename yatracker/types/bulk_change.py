@@ -63,7 +63,7 @@ class BulkChange(Base):
 
     async def refresh(self) -> BulkChange:
         """Get the current state of the operation."""
-        return await self._tracker.get_bulk_change(self.id)
+        return await self._tracker.get_bulk_change(self)
 
     async def wait(
         self,
@@ -91,4 +91,4 @@ class BulkChange(Base):
 
         Only the issues that finished with an error are returned.
         """
-        return await self._tracker.get_bulk_change_issues(self.id)
+        return await self._tracker.get_bulk_change_issues(self)

@@ -38,7 +38,7 @@ async def main() -> None:
 
     # if something went wrong, inspect per-issue errors
     if bulk_change.is_failed:
-        for result in await tracker.get_bulk_change_issues(bulk_change.id):
+        for result in await bulk_change.get_issues():
             if result.error is not None:
                 print(result.issue.key, result.error.errors)
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, NoReturn, overload
+from typing import TYPE_CHECKING, Any
 
 from yatracker.exceptions import ObjectNotFoundError
 from yatracker.tracker.base import BaseTracker, _convert_value
@@ -13,9 +13,10 @@ if TYPE_CHECKING:
 
     from yatracker.types import FullIssue, FullQueue, Issue, Queue, Transition
 
-# Right after creation the API may answer 404 for the new operation id for a
-# short while. This many consecutive 404s are tolerated until the operation
-# has been seen at least once.
+# The API may answer 404 for an existing operation id: right after creation
+# for a short while, and occasionally later when a poll lands on a lagging
+# replica. This many 404 answers are tolerated over the whole wait; the budget
+# is never replenished, so a genuinely missing operation still surfaces.
 NOT_FOUND_RETRIES = 10
 
 
@@ -41,9 +42,9 @@ class BulkChanges(BaseTracker):
                        that are not Python identifiers (e.g. local field
                        ids like `"<id>--name"`) are sent as is.
         :param notify: Whether to notify the issue subscribers.
-        :param kwargs: Extra fields merged on top of `values`. `None`
-                       values are dropped; to clear a field, pass it via
-                       `values`.
+        :param kwargs: Extra fields merged on top of `values`, encoded the
+                       same way. `None` values are dropped; to clear a
+                       field, pass it via `values`.
 
         Source:
         https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-update-issues
@@ -56,7 +57,7 @@ class BulkChanges(BaseTracker):
         else:
             prepared_issues = _prepare_issue_keys(issues)
 
-        prepared_values = self._prepare_values(values, kwargs)
+        prepared_values = _prepare_values(values, kwargs)
         if not prepared_values:
             msg = "Bulk update requires at least one field in `values`."
             raise ValueError(msg)
@@ -73,18 +74,6 @@ class BulkChanges(BaseTracker):
         )
         return self._decode(BulkChange, data)
 
-    @overload
-    async def bulk_transition_issues(
-        self,
-        issues: str,
-        transition: str | Transition,
-        values: dict[str, Any] | None = None,
-        *,
-        notify: bool | None = None,
-        **kwargs: Any,  # noqa: ANN401
-    ) -> NoReturn: ...
-
-    @overload
     async def bulk_transition_issues(
         self,
         issues: Sequence[str | Issue | FullIssue],
@@ -93,22 +82,12 @@ class BulkChanges(BaseTracker):
         *,
         notify: bool | None = None,
         **kwargs: Any,  # noqa: ANN401
-    ) -> BulkChange: ...
-
-    async def bulk_transition_issues(
-        self,
-        issues: Sequence[str | Issue | FullIssue] | str,
-        transition: str | Transition,
-        values: dict[str, Any] | None = None,
-        *,
-        notify: bool | None = None,
-        **kwargs: Any,
     ) -> BulkChange:
         """Move multiple issues to a new status at once.
 
         :param issues: Sequence of issue keys (or `Issue` objects). Unlike
                        `bulk_update_issues`, a filter string is not
-                       supported by this endpoint.
+                       supported by this endpoint (`TypeError`).
         :param transition: Transition id (or a `Transition` object).
         :param values: Fields to set while performing the transition,
                        e.g. `{"resolution": "fixed"}`.
@@ -123,7 +102,7 @@ class BulkChanges(BaseTracker):
             "issues": _prepare_issue_keys(issues),
         }
 
-        prepared_values = self._prepare_values(values, kwargs)
+        prepared_values = _prepare_values(values, kwargs)
         if prepared_values:
             payload["values"] = prepared_values
 
@@ -135,21 +114,7 @@ class BulkChanges(BaseTracker):
         )
         return self._decode(BulkChange, data)
 
-    @overload
-    async def bulk_move_issues(
-        self,
-        issues: str,
-        queue: str | Queue | FullQueue,
-        values: dict[str, Any] | None = None,
-        *,
-        move_all_fields: bool | None = None,
-        initial_status: bool | None = None,
-        notify: bool | None = None,
-        **kwargs: Any,  # noqa: ANN401
-    ) -> NoReturn: ...
-
-    @overload
-    async def bulk_move_issues(
+    async def bulk_move_issues(  # noqa: PLR0913
         self,
         issues: Sequence[str | Issue | FullIssue],
         queue: str | Queue | FullQueue,
@@ -159,24 +124,12 @@ class BulkChanges(BaseTracker):
         initial_status: bool | None = None,
         notify: bool | None = None,
         **kwargs: Any,  # noqa: ANN401
-    ) -> BulkChange: ...
-
-    async def bulk_move_issues(  # noqa: PLR0913
-        self,
-        issues: Sequence[str | Issue | FullIssue] | str,
-        queue: str | Queue | FullQueue,
-        values: dict[str, Any] | None = None,
-        *,
-        move_all_fields: bool | None = None,
-        initial_status: bool | None = None,
-        notify: bool | None = None,
-        **kwargs: Any,
     ) -> BulkChange:
         """Move multiple issues to another queue at once.
 
         :param issues: Sequence of issue keys (or `Issue` objects). Unlike
                        `bulk_update_issues`, a filter string is not
-                       supported by this endpoint.
+                       supported by this endpoint (`TypeError`).
         :param queue: Target queue key (or a `Queue`/`FullQueue` object).
         :param values: Fields to set while moving the issues.
         :param move_all_fields: Move components, versions and projects
@@ -193,7 +146,7 @@ class BulkChanges(BaseTracker):
             "issues": _prepare_issue_keys(issues),
         }
 
-        prepared_values = self._prepare_values(values, kwargs)
+        prepared_values = _prepare_values(values, kwargs)
         if prepared_values:
             payload["values"] = prepared_values
 
@@ -264,7 +217,12 @@ class BulkChanges(BaseTracker):
                             An already finished object is returned as is.
         :param interval: Delay between status checks (seconds).
         :param timeout: Maximum time to wait (seconds), `None` for no limit.
+                        The deadline is checked between status requests,
+                        so an in-flight request is not interrupted.
         :raises TimeoutError: If the operation is not finished in time.
+                              Transport errors of the status requests
+                              (including the client's own timeouts)
+                              propagate unchanged.
 
         Source:
         https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-move-info
@@ -278,66 +236,83 @@ class BulkChanges(BaseTracker):
             raise ValueError(msg)
 
         if isinstance(bulk_change, BulkChange) and bulk_change.is_finished:
+            # A hand-made model (e.g. restored from storage) has no tracker
+            # yet; adopt it so the shortcuts keep working.
+            if bulk_change._tracker is None:  # noqa: SLF001
+                bulk_change._tracker = self  # noqa: SLF001
             return bulk_change
 
-        waiter = self._wait_bulk_change(_bulk_change_id(bulk_change), interval)
-        if timeout is None:
-            return await waiter
-
-        try:
-            return await asyncio.wait_for(waiter, timeout)
-        except asyncio.TimeoutError as exc:
-            # On Python 3.10 `asyncio.TimeoutError` is not the builtin one.
-            msg = f"Bulk change operation is not finished in {timeout} seconds."
-            raise TimeoutError(msg) from exc
+        return await self._wait_bulk_change(
+            _bulk_change_id(bulk_change),
+            interval,
+            timeout,
+        )
 
     async def _wait_bulk_change(
         self,
         bulk_change_id: str,
         interval: float,
+        timeout: float | None,
     ) -> BulkChange:
         """Poll the operation until it reaches a terminal status."""
-        not_found = 0
+        loop = asyncio.get_running_loop()
+        deadline = None if timeout is None else loop.time() + timeout
+        not_found_budget = NOT_FOUND_RETRIES
+
         while True:
             try:
                 bulk_change = await self.get_bulk_change(bulk_change_id)
             except ObjectNotFoundError:
-                # Tolerate 404 only until the operation has been seen once.
-                not_found += 1
-                if not_found > NOT_FOUND_RETRIES:
+                if not_found_budget <= 0:
                     raise
+                not_found_budget -= 1
             else:
                 if bulk_change.is_finished:
                     return bulk_change
-                not_found = NOT_FOUND_RETRIES
 
-            await asyncio.sleep(interval)
+            if deadline is None:
+                await asyncio.sleep(interval)
+                continue
 
-    def _prepare_values(
-        self,
-        values: dict[str, Any] | None,
-        kwargs: dict[str, Any],
-    ) -> dict[str, Any]:
-        """Merge explicit `values` with the fields passed as keyword arguments.
+            remaining = deadline - loop.time()
+            if remaining <= 0:
+                msg = f"Bulk change operation is not finished in {timeout} seconds."
+                raise TimeoutError(msg)
+            await asyncio.sleep(min(interval, remaining))
 
-        Top-level keys of both sources are encoded the same way, so a
-        field passed twice ends up as a single key with the `kwargs`
-        value winning.
-        """
-        prepared = {
+
+def _prepare_values(
+    values: dict[str, Any] | None,
+    kwargs: dict[str, Any],
+) -> dict[str, Any]:
+    """Merge explicit `values` with the fields passed as keyword arguments.
+
+    Top-level keys of both sources are encoded the same way, so a field
+    passed twice ends up as a single key with the `kwargs` value winning.
+    `None` keyword arguments are dropped, like in `edit_issue`.
+    """
+    prepared = {
+        _encode_key(key): _convert_value(value) for key, value in (values or {}).items()
+    }
+    prepared.update(
+        {
             _encode_key(key): _convert_value(value)
-            for key, value in (values or {}).items()
-        }
-        prepared.update(self._prepare_payload(kwargs))
-        return prepared
+            for key, value in kwargs.items()
+            if value is not None
+        },
+    )
+    return prepared
 
 
 def _encode_key(key: str) -> str:
     """Convert a snake_case field name to camelCase, keeping raw ids intact.
 
-    Local field keys look like `"<id>--name"` and must not be touched.
+    Local field keys look like `"<id>--name"` and must not be touched;
+    the same goes for anything else that is not a plain identifier.
     """
-    return camel_case(key) if key.isidentifier() else key
+    if key.isidentifier() and not key.startswith("_"):
+        return camel_case(key)
+    return key
 
 
 def _prepare_issue_keys(issues: Sequence[str | Issue | FullIssue] | str) -> list[str]:

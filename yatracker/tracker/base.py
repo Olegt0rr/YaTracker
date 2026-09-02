@@ -5,6 +5,7 @@ from functools import lru_cache
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from pydantic import TypeAdapter
+from typing_extensions import Self
 
 from yatracker.types.base import Base
 from yatracker.utils.camel_case import camel_case
@@ -101,8 +102,7 @@ class BaseTracker:
         """Close gracefully."""
         await self._client.close()
 
-    # ruff: noqa: PYI034
-    async def __aenter__(self) -> BaseTracker:
+    async def __aenter__(self) -> Self:
         """Return async Tracker with async context."""
         return self
 

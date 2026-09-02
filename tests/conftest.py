@@ -71,3 +71,12 @@ def full_issue_body(**overrides: Any) -> bytes:
     }
     issue.update(overrides)
     return json.dumps(issue).encode()
+
+
+def multipart_dispparams(call: dict[str, Any]) -> Any:
+    """Disposition params of the first multipart field captured in a call.
+
+    Reaches into aiohttp's private ``FormData._fields`` in one place so tests
+    don't repeat the reach-through.
+    """
+    return call["data"]._fields[0][0]

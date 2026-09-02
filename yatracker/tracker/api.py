@@ -26,10 +26,10 @@ class YaTracker(
 ):
     """Represents Yandex Tracker API client.
 
-    API docs: https://cloud.yandex.com/en/docs/tracker/about-api
+    API docs: https://yandex.cloud/en/docs/tracker/about-api
 
     Attention!
-        All 'self' properties renamed to 'link' because it's incompatible with Python.
+        All 'self' properties renamed to 'url' because it's incompatible with Python.
         All camelCase properties renamed to pythonic_case.
         Methods named by author, cause Yandex API has no clear method names.
         For help you to recognize method names full description is attached.

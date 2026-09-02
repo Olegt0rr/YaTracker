@@ -22,6 +22,7 @@ PATTERN = re.compile(
 class Duration:
     years: int = 0
     months: int = 0
+    weeks: int = 0
     days: int = 0
     hours: int = 0
     minutes: int = 0
@@ -42,6 +43,8 @@ class Duration:
             duration = f"{duration}{self.years}Y"
         if self.months:
             duration = f"{duration}{self.months}M"
+        if self.weeks:
+            duration = f"{duration}{self.weeks}W"
         if self.days:
             duration = f"{duration}{self.days}D"
         if time:

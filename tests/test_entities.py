@@ -987,10 +987,60 @@ class TestEntityShortcuts:
         assert len(client.calls) == 1
 
 
+# --- set rendering -----------------------------------------------------------
+
+
+class TestSetFieldRendering:
+    """A set has no order of its own, so it is sorted before it is sent.
+
+    Iteration order depends on `PYTHONHASHSEED`, which would make the
+    request body differ between runs; `_convert_value` in
+    `yatracker.tracker.base` sorts sets for the same reason.
+    """
+
+    async def test_a_top_level_set_is_sorted(self) -> None:
+        tags = {"gamma", "alpha", "delta", "beta"}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", values={"tags": tags})
+
+        assert sent_json(client.calls[0])["fields"]["tags"] == sorted(tags)
+
+    async def test_a_nested_frozenset_is_sorted(self) -> None:
+        tags = frozenset({"gamma", "alpha", "delta", "beta"})
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", tags={"add": tags})
+
+        assert sent_json(client.calls[0])["fields"]["tags"]["add"] == sorted(tags)
+
+    async def test_a_set_of_kwargs_is_sorted_too(self) -> None:
+        queues = {30, 10, 20}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", issue_queues=queues)
+
+        assert sent_json(client.calls[0])["fields"]["issueQueues"] == sorted(queues)
+
+    async def test_an_unsortable_set_is_kept_as_is(self) -> None:
+        # `sorted` raises `TypeError` on mixed types; the values must
+        # still reach the body, in whatever order the set yields them
+        values = {"a", 1}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", values={"tags": values})
+
+        assert sorted(
+            sent_json(client.calls[0])["fields"]["tags"],
+            key=repr,
+        ) == sorted(values, key=repr)
+
+
 # --- naive datetime warning --------------------------------------------------
 
 NAIVE = datetime(2023, 11, 23, 10, 0)  # noqa: DTZ001
 AWARE = datetime(2023, 11, 23, 10, 0, tzinfo=timezone.utc)
+
+
+def _emit_unrelated() -> None:
+    """Warn from a fixed location, so a `default` filter can dedupe it."""
+    warnings.warn("unrelated", DeprecationWarning, stacklevel=1)
 
 
 class TestNaiveDatetimeWarning:
@@ -1102,6 +1152,21 @@ class TestNaiveDatetimeWarning:
         await pages.aclose()
 
         assert record[0].filename == __file__
+
+    async def test_an_unrelated_warning_is_still_deduplicated(self) -> None:
+        # rendering used to run inside `warnings.catch_warnings`, which
+        # bumps the filters version and thereby resets the
+        # `__warningregistry__` of every module: a `default` filter then
+        # stopped deduplicating in the caller's own code
+        tracker, _ = make_tracker(entity_payload())
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("default")
+            _emit_unrelated()
+            await tracker.update_entity("project", "1", values={"start": AWARE})
+            _emit_unrelated()
+
+        assert [str(warning.message) for warning in caught] == ["unrelated"]
 
     async def test_aware_datetime_does_not_warn(self) -> None:
         tracker, client = make_tracker(CREATED_ENTITY)

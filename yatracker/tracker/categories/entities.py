@@ -11,8 +11,10 @@ from yatracker.tracker.base import (
     _convert_value,
     _encode_key,
     _join_fields,
+    _sorted_if_possible,
 )
 from yatracker.types import BulkChange
+from yatracker.types.base import Base
 from yatracker.types.entity import (
     Entity,
     EntityEvents,
@@ -22,6 +24,7 @@ from yatracker.types.entity import (
 )
 from yatracker.utils.datetime import (
     NAIVE_DATETIME_WARNING,
+    suppress_naive_warnings,
     to_tracker_date,
     to_tracker_datetime,
     user_stacklevel,
@@ -485,35 +488,25 @@ def _prepare_fields(
     points at the first frame outside of the library, however many
     internal helpers there are in between.
 
-    Bare values are found by walking the payload, while a model renders
-    itself (`EntityDeadline._render`, for one) and warns on its own, so
-    the rendering runs with the naive warnings captured and a payload
-    mixing the two shapes still warns exactly once. Any other warning
-    raised while rendering is re-emitted from where it came.
+    Naive values are found by walking the payload, models included, and
+    the rendering itself runs under `suppress_naive_warnings`, so a
+    model that warns on its own (`EntityDeadline._render`, for one) does
+    not add a second warning. Any other warning raised while rendering
+    propagates as usual.
     """
     merged = {
         **(values or {}),
         **{key: value for key, value in kwargs.items() if value is not None},
     }
+    has_naive = _has_naive_datetime(merged)
 
-    with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter("always")
+    with suppress_naive_warnings():
         prepared = {
             _encode_key(key): _convert_entity_value(value)
             for key, value in merged.items()
         }
 
-    naive = [warning for warning in caught if _is_naive_warning(warning)]
-    for warning in caught:
-        if warning not in naive:
-            warnings.warn_explicit(
-                warning.message,
-                warning.category,
-                warning.filename,
-                warning.lineno,
-            )
-
-    if naive or _has_naive_datetime(merged):
+    if has_naive:
         warnings.warn(
             NAIVE_DATETIME_WARNING,
             UserWarning,
@@ -521,14 +514,6 @@ def _prepare_fields(
         )
 
     return prepared
-
-
-def _is_naive_warning(warning: warnings.WarningMessage) -> bool:
-    """Tell whether a captured warning is the naive-datetime one."""
-    return (
-        issubclass(warning.category, UserWarning)
-        and str(warning.message) == NAIVE_DATETIME_WARNING
-    )
 
 
 def _prepare_links(
@@ -542,10 +527,20 @@ def _prepare_links(
 
 
 def _has_naive_datetime(obj: Any) -> bool:  # noqa: ANN401
-    """Tell whether a value contains a naive `datetime` at any depth."""
+    """Tell whether a value contains a naive `datetime` at any depth.
+
+    Models are walked as well: a naive `EntityDeadline.date` inside an
+    `EntityChecklistItem` is a naive value of the payload just like a
+    bare one, and it is rendered with the warnings suppressed.
+    """
     match obj:
         case datetime():
             return obj.utcoffset() is None
+        case Base():
+            return any(
+                _has_naive_datetime(value)
+                for value in (*obj.__dict__.values(), *(obj.model_extra or {}).values())
+            )
         case dict():
             return any(_has_naive_datetime(value) for value in obj.values())
         case list() | tuple() | set() | frozenset():
@@ -558,15 +553,19 @@ def _convert_entity_value(obj: Any) -> Any:  # noqa: ANN401
     """Convert a field value to a basic type, rendering dates as the API wants.
 
     Naive datetimes are reported by `_prepare_fields`, so the rendering
-    helper is asked to stay quiet here.
+    helper is asked to stay quiet here. A set is rendered as a sorted
+    array when its elements can be compared, like in `_convert_value`.
     """
     match obj:
         case datetime():
             return to_tracker_datetime(obj, warn=False)
         case date():
             return to_tracker_date(obj)
-        case list() | tuple() | set() | frozenset():
+        case list() | tuple():
             return [_convert_entity_value(item) for item in obj]
+        case set() | frozenset():
+            # sorted like in `_convert_value`, to keep the body reproducible
+            return [_convert_entity_value(item) for item in _sorted_if_possible(obj)]
         case dict():
             return {key: _convert_entity_value(value) for key, value in obj.items()}
         case _:

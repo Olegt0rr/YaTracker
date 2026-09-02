@@ -145,6 +145,48 @@ class TestProject:
         issue = FullIssue.model_validate(payload)
         assert "project" not in issue._to_request()
 
+    def test_decodes_the_v2_shape_as_the_primary_project(self) -> None:
+        # with `api_version="v2"` the `project` object is the primary
+        # project itself, not the `{primary, secondary}` pair
+        primary = SEARCH_ISSUE["project"]["primary"]
+        issue = FullIssue.model_validate({**SEARCH_ISSUE, "project": primary})
+
+        assert issue.project is not None
+        assert issue.project.primary is not None
+        assert issue.project.primary.id == "1"
+        assert issue.project.primary.display == "New project"
+        assert issue.project.primary.url == (
+            "https://api.tracker.yandex.net/v3/projects/1"
+        )
+        assert issue.project.secondary == []
+
+    def test_an_empty_v3_object_stays_empty(self) -> None:
+        # no `id` and no `primary`/`secondary`: nothing to promote
+        issue = FullIssue.model_validate({**SEARCH_ISSUE, "project": {}})
+
+        assert issue.project is not None
+        assert issue.project.primary is None
+        assert issue.project.secondary == []
+
+    def test_a_v3_object_with_only_secondary_is_left_alone(self) -> None:
+        secondary = [SEARCH_ISSUE["project"]["primary"]]
+        issue = FullIssue.model_validate(
+            {**SEARCH_ISSUE, "project": {"secondary": secondary}},
+        )
+
+        assert issue.project is not None
+        assert issue.project.primary is None
+        assert [ref.id for ref in issue.project.secondary] == ["1"]
+
+    async def test_find_issues_decodes_the_v2_shape(self) -> None:
+        primary = SEARCH_ISSUE["project"]["primary"]
+        tracker, _ = make_tracker([{**SEARCH_ISSUE, "project": primary}])
+        issues = await tracker.find_issues(query="Queue: TREK")
+
+        assert issues[0].project is not None
+        assert issues[0].project.primary is not None
+        assert issues[0].project.primary.display == "New project"
+
 
 class TestTags:
     """`tags` is a documented response parameter, absent from the samples."""

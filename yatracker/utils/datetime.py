@@ -5,15 +5,19 @@ from __future__ import annotations
 import os
 import sys
 import warnings
+from contextlib import contextmanager
+from contextvars import ContextVar
 from datetime import date, datetime, time, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, overload
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
     from types import FrameType
 
 __all__ = [
     "NAIVE_DATETIME_WARNING",
+    "suppress_naive_warnings",
     "to_tracker_date",
     "to_tracker_datetime",
     "user_stacklevel",
@@ -23,6 +27,34 @@ NAIVE_DATETIME_WARNING = (
     "Tracker API may work incorrectly with naive datetime. "
     "Please use Timezone-Aware objects."
 )
+
+_NAIVE_WARNINGS_SUPPRESSED: ContextVar[bool] = ContextVar(
+    "yatracker_naive_warnings_suppressed",
+    default=False,
+)
+
+
+@contextmanager
+def suppress_naive_warnings() -> Iterator[None]:
+    """Render naive datetimes without warning about them.
+
+    A caller that walks a whole payload (the entities API does) reports
+    the naive values once, from its own frame, and the helpers rendering
+    the individual values must stay quiet while it does. A
+    :class:`~contextvars.ContextVar` is used rather than
+    `warnings.catch_warnings`, which is not thread-safe and resets the
+    `__warningregistry__` of every module in the process, breaking the
+    deduplication of `once`/`default` filters in the user's own code.
+
+    Only the naive-datetime warning is silenced; anything else raised
+    while rendering propagates as usual.
+    """
+    token = _NAIVE_WARNINGS_SUPPRESSED.set(True)
+    try:
+        yield
+    finally:
+        _NAIVE_WARNINGS_SUPPRESSED.reset(token)
+
 
 # Every module of the library lives under this prefix, so a frame whose
 # file does not start with it belongs to the code that called us.
@@ -102,7 +134,8 @@ def to_tracker_datetime(
     helpers in between; pass ``stacklevel`` explicitly to override that.
     Pass ``warn=False`` when the caller warns about naive values on its
     own (the entities API does that once per request instead of once per
-    value).
+    value); a caller that cannot reach every rendering site can silence
+    them all with :func:`suppress_naive_warnings` instead.
     """
     # `datetime` is a subclass of `date`, so it is matched first
     if not isinstance(value, datetime):
@@ -112,7 +145,7 @@ def to_tracker_datetime(
             return value
 
     # Python's definition of naive: no tzinfo, or a tzinfo without an offset
-    if warn and value.utcoffset() is None:
+    if warn and not _NAIVE_WARNINGS_SUPPRESSED.get() and value.utcoffset() is None:
         if stacklevel is None:
             stacklevel = user_stacklevel(sys._getframe(0))  # noqa: SLF001
         warnings.warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)

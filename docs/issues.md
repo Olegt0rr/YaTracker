@@ -72,7 +72,7 @@ issue = await tracker.get_issue("WRITERS-42", expand="transitions")
 | Поле                     | Тип                   | Описание                                                                                     |
 |--------------------------|-----------------------|----------------------------------------------------------------------------------------------|
 | `last_comment_update_at` | `datetime \| None`    | Дата и время последнего комментария. API-ключ — `lastCommentUpdatedAt` (а не `lastCommentUpdateAt`), поэтому у поля задан явный алиас |
-| `project`                | `EntityParent \| None` | Проекты и портфели задачи: `primary` — основной, `secondary` — список дополнительных (тот же вид `{primary, secondary}`, что и у `parentEntity`) |
+| `project`                | `EntityParent \| None` | Проекты и портфели задачи: `primary` — основной, `secondary` — список дополнительных (тот же вид `{primary, secondary}`, что и у `parentEntity`). С `api_version="v2"` API присылает в `project` только основной проект (объект `{self, id, display}`) — библиотека сама кладёт его в `primary`, а `secondary` остаётся пустым, поэтому код читается одинаково для обеих версий |
 | `tags`                   | `list[str] \| None`   | Теги задачи. Параметр документирован для ответа `POST /issues/_search`, но не встречается в примерах ответа, поэтому необязательный |
 
 ```python

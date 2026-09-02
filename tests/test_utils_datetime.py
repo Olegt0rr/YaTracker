@@ -12,6 +12,7 @@ from typing import Any
 import pytest
 import yatracker
 from yatracker.utils.datetime import (
+    suppress_naive_warnings,
     to_tracker_date,
     to_tracker_datetime,
     user_stacklevel,
@@ -162,6 +163,71 @@ class TestToTrackerDatetime:
         value = datetime(2024, 1, 1, tzinfo=NoOffset())
         with pytest.warns(UserWarning, match="naive datetime"):
             assert to_tracker_datetime(value) == "2024-01-01T00:00:00.000"
+
+
+def _emit_unrelated() -> None:
+    """Warn from a fixed location, so a `default` filter can dedupe it."""
+    warnings.warn("unrelated", DeprecationWarning, stacklevel=1)
+
+
+class TestSuppressNaiveWarnings:
+    """The naive-datetime warning is silenced, nothing else is."""
+
+    NAIVE = datetime(2024, 1, 1)  # noqa: DTZ001
+
+    def test_the_value_is_still_rendered(self) -> None:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            with suppress_naive_warnings():
+                assert to_tracker_datetime(self.NAIVE) == "2024-01-01T00:00:00.000"
+
+    def test_the_warning_comes_back_afterwards(self) -> None:
+        with suppress_naive_warnings():
+            to_tracker_datetime(self.NAIVE)
+
+        with pytest.warns(UserWarning, match="naive datetime"):
+            to_tracker_datetime(self.NAIVE)
+
+    def test_the_flag_is_restored_after_an_exception(self) -> None:
+        msg = "boom"
+        with pytest.raises(RuntimeError, match=msg), suppress_naive_warnings():
+            raise RuntimeError(msg)
+
+        with pytest.warns(UserWarning, match="naive datetime"):
+            to_tracker_datetime(self.NAIVE)
+
+    def test_nested_blocks_restore_the_outer_state(self) -> None:
+        with suppress_naive_warnings():
+            with suppress_naive_warnings():
+                to_tracker_datetime(self.NAIVE)
+
+            # still inside the outer block: nothing to hear yet
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                to_tracker_datetime(self.NAIVE)
+
+        with pytest.warns(UserWarning, match="naive datetime"):
+            to_tracker_datetime(self.NAIVE)
+
+    def test_other_warnings_still_propagate(self) -> None:
+        with (
+            suppress_naive_warnings(),
+            pytest.warns(DeprecationWarning, match="unrelated"),
+        ):
+            warnings.warn("unrelated", DeprecationWarning, stacklevel=1)
+
+    def test_the_registry_of_the_caller_is_not_reset(self) -> None:
+        # `warnings.catch_warnings` bumps the filters version, which
+        # resets the `__warningregistry__` of every module, so a
+        # `default` filter stops deduplicating in the caller's own code
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("default")
+            _emit_unrelated()
+            with suppress_naive_warnings():
+                to_tracker_datetime(self.NAIVE)
+            _emit_unrelated()
+
+        assert [str(warning.message) for warning in caught] == ["unrelated"]
 
 
 class TestToTrackerDate:

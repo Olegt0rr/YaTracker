@@ -5,6 +5,7 @@ __all__ = ["FullIssue"]
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, overload
 
+from pydantic import field_validator
 from typing_extensions import Self
 
 from yatracker.utils.datetime import to_tracker_datetime
@@ -67,7 +68,8 @@ class FullIssue(Base):
     favorite: bool
     assignee: User | None = None
     # projects and portfolios the issue belongs to; the API sends them
-    # in the same `{primary, secondary}` shape as `parentEntity`
+    # in the same `{primary, secondary}` shape as `parentEntity`, except
+    # with `api_version="v2"` (see `_wrap_v2_project`)
     project: EntityParent | None = None
 
     # the API sends this one as `lastCommentUpdatedAt`, not as the
@@ -88,6 +90,28 @@ class FullIssue(Base):
     status: Status
     previous_status: Status | None = None
     direction: str | None = None
+
+    @field_validator("project", mode="before")
+    @classmethod
+    def _wrap_v2_project(cls, value: Any) -> Any:  # noqa: ANN401
+        """Read the v2 `project` object as the primary project.
+
+        With `api_version="v2"` the `project` object holds the primary
+        project itself (a bare `{self, id, display}` reference) instead
+        of the v3 `{primary, secondary}` pair, which `extra="ignore"`
+        would otherwise decode as an empty `EntityParent`.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-issues
+        """
+        if (
+            isinstance(value, dict)
+            and "primary" not in value
+            and "secondary" not in value
+            and "id" in value
+        ):
+            return {"primary": value, "secondary": []}
+        return value
 
     async def get_transitions(self) -> Transitions:
         """Return dict and list-like Transitions object.

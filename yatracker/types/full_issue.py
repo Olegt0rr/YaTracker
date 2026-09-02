@@ -3,7 +3,7 @@ from __future__ import annotations
 __all__ = ["FullIssue"]
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any, overload
 
 from typing_extensions import Self
 
@@ -25,10 +25,12 @@ from .user import User
 if TYPE_CHECKING:
     import builtins
 
+    # Imported for typing only: `yatracker.tracker.base` imports this
+    # module, so a runtime import would be circular.
+    from yatracker.tracker.base import IssueT
+
     from .changelog import Changelog
     from .issue_link import CreatedIssueLink, IssueLink, LinkRelationship
-
-IssueT = TypeVar("IssueT", bound="FullIssue")
 
 
 def _render_deadline(kwargs: dict[str, Any]) -> dict[str, Any]:

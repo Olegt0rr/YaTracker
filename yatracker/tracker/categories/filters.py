@@ -2,17 +2,32 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, _check_sequence
 from yatracker.types.filter import Filter, FilterSort
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterable
 
 # ruff: noqa: PLR0913
 
 
+def _encode_fields(fields: str | Iterable[str] | None) -> list[str] | None:
+    """Bring the displayed `fields` to the request format.
+
+    The API wants an array of field keys; a comma-separated string is
+    accepted as well (like the `fields` query parameter of the entities
+    endpoints) and split, so it does not go out as a JSON string the API
+    would reject.
+    """
+    if fields is None:
+        return None
+    if isinstance(fields, str):
+        return [part.strip() for part in fields.split(",") if part.strip()]
+    return list(fields)
+
+
 def _encode_sorts(
-    sorts: Sequence[FilterSort | dict[str, Any]] | None,
+    sorts: Iterable[FilterSort | dict[str, Any]] | None,
 ) -> list[dict[str, Any]] | None:
     """Bring `sorts` to the request format.
 
@@ -24,8 +39,10 @@ def _encode_sorts(
     if sorts is None:
         return None
 
+    checked = _check_sequence(sorts, "sorts", "sorting rules", "sort")
+
     encoded: list[dict[str, Any]] = []
-    for sort in sorts:
+    for sort in checked:
         if isinstance(sort, FilterSort):
             entry: dict[str, Any] = {"field": sort.field.id}
             if sort.is_ascending is not None:
@@ -50,8 +67,8 @@ class Filters(BaseTracker):
         *,
         filter_: dict[str, Any] | None = None,
         query: str | None = None,
-        fields: Sequence[str] | None = None,
-        sorts: Sequence[FilterSort | dict[str, Any]] | None = None,
+        fields: str | Iterable[str] | None = None,
+        sorts: Iterable[FilterSort | dict[str, Any]] | None = None,
         group_by: str | dict[str, Any] | None = None,
         folder: str | dict[str, Any] | None = None,
         **kwargs,
@@ -70,17 +87,21 @@ class Filters(BaseTracker):
         :param query: filtering conditions in the query language. Use
             either `query` or `filter_`, not both.
         :param fields: issue fields displayed in the Tracker interface,
-            e.g. `["key", "summary", "status"]`. Affects the interface
+            e.g. `["key", "summary", "status"]`. A comma-separated
+            string (`"key,summary,status"`) is accepted as well and is
+            split into the array the API expects. Affects the interface
             only, not the result of `/issues/_search`.
         :param sorts: sorting rules, e.g.
             `[{"field": "created", "isAscending": False}]`. The entries
-            of another filter's `sorts` are accepted as well.
+            of another filter's `sorts` are accepted as well. A single
+            rule on its own raises `TypeError`.
         :param group_by: issue field the result is grouped by in the
             interface.
         :param folder: folder to save the filter in.
         :param kwargs: any other filter field.
         :return: created filter.
         """
+        fields = _encode_fields(fields)
         sorts = _encode_sorts(sorts)
         payload = self._prepare_payload(locals())
         data = await self._client.request(
@@ -112,8 +133,8 @@ class Filters(BaseTracker):
         name: str | None = None,
         filter_: dict[str, Any] | None = None,
         query: str | None = None,
-        fields: Sequence[str] | None = None,
-        sorts: Sequence[FilterSort | dict[str, Any]] | None = None,
+        fields: str | Iterable[str] | None = None,
+        sorts: Iterable[FilterSort | dict[str, Any]] | None = None,
         group_by: str | dict[str, Any] | None = None,
         folder: str | dict[str, Any] | None = None,
         **kwargs,
@@ -135,7 +156,7 @@ class Filters(BaseTracker):
         :param query: new filtering conditions in the query language.
             Use either `query` or `filter_`, not both.
         :param fields: new list of issue fields displayed in the Tracker
-            interface.
+            interface, see `create_filter`. Replaces the whole list.
         :param sorts: new sorting rules, see `create_filter`.
         :param group_by: issue field the result is grouped by in the
             interface.
@@ -143,6 +164,7 @@ class Filters(BaseTracker):
         :param kwargs: any other filter field.
         :return: updated filter.
         """
+        fields = _encode_fields(fields)
         sorts = _encode_sorts(sorts)
         payload = self._prepare_payload(locals(), exclude=["filter_id"])
         data = await self._client.request(

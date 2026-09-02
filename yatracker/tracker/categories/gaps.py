@@ -1,35 +1,19 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker, _encode_key
+from yatracker.tracker.base import BaseTracker, _check_sequence, _encode_key
 from yatracker.types.gap import Gap, GapsResult, GapsSearchResult, UserGaps
 from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Mapping
+    from collections.abc import AsyncIterator, Mapping, Sequence
     from datetime import datetime
 
 # ruff: noqa: PLR0913
 
 #: The API rejects a request carrying more absence records than this.
 MAX_GAPS_PER_REQUEST = 100
-
-
-def _check_sequence(values: object, param: str, item: str, example: str) -> None:
-    """Reject a bare value passed where a sequence is expected.
-
-    A bare `str` would be iterated character by character: every
-    character would end up as a separate value and the
-    `MAX_GAPS_PER_REQUEST` guard would pass for it.
-    """
-    if isinstance(values, str) or not isinstance(values, Sequence):
-        msg = (
-            f"`{param}` must be a sequence of {item}, got "
-            f"{type(values).__name__}. Pass a sequence, e.g. `[{example}]`."
-        )
-        raise TypeError(msg)
 
 
 def _encode_gap(gap: Mapping[str, Any]) -> dict[str, Any]:
@@ -115,14 +99,25 @@ class Gaps(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/gaps/post-gaps
 
-        :param gaps: absence records to create, at most 100. Every
+        :param gaps: absence records to create, at most 100 (any
+            collection of them: a list, a tuple, a generator, ...). Every
             record is a mapping with the `user`, `workflow`, `from_`
             (or `from`) and `to` keys and the optional `id`, `full_day`
             and `work_in_absence` ones; keys are camel-cased and the
             moments accept a `datetime`.
+        :raises TypeError: If `gaps` is a single record instead of a
+            sequence of records.
+        :raises ValueError: If there is no record at all or more than
+            100 of them.
         :return: records that were actually saved (outdated ones are
             not returned by the API).
         """
+        gaps = _check_sequence(gaps, "gaps", "absence records", "gap")
+
+        if not gaps:
+            msg = "At least one absence record is required."
+            raise ValueError(msg)
+
         if len(gaps) > MAX_GAPS_PER_REQUEST:
             msg = (
                 f"At most {MAX_GAPS_PER_REQUEST} absence records can be "
@@ -156,7 +151,8 @@ class Gaps(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/gaps/search-gaps
 
-        :param users: logins or ids of the employees, at most 100.
+        :param users: logins or ids of the employees, at most 100 (any
+            collection of them: a list, a set, a generator, ...).
         :param from_: start of the search window, a datetime or an API
             string. The current moment by default.
         :param to: end of the search window, a datetime or an API
@@ -165,9 +161,22 @@ class Gaps(BaseTracker):
         :param page: page number (1 by default).
         :raises TypeError: If `users` is a bare login instead of a
             sequence.
+        :raises ValueError: If there is no employee at all or more than
+            100 of them.
         :return: page of absence records grouped by employee.
         """
-        _check_sequence(users, "users", "logins or ids", "'login1'")
+        users = _check_sequence(users, "users", "logins or ids", "'login1'")
+
+        if not users:
+            msg = "At least one employee is required."
+            raise ValueError(msg)
+
+        if len(users) > MAX_GAPS_PER_REQUEST:
+            msg = (
+                f"At most {MAX_GAPS_PER_REQUEST} employees can be "
+                f"searched at once, got {len(users)}."
+            )
+            raise ValueError(msg)
 
         from_ = to_tracker_datetime(from_)
         to = to_tracker_datetime(to)
@@ -213,6 +222,8 @@ class Gaps(BaseTracker):
         :raises TypeError: If `users` is a bare login instead of a
             sequence. Like any other error of a generator body, it is
             raised on the first iteration.
+        :raises ValueError: If there is no employee at all or more than
+            100 of them.
         """
         page = 1
         while True:
@@ -260,10 +271,15 @@ class Gaps(BaseTracker):
             comma-separated `gapIds` query parameter.
         :raises TypeError: If `gap_ids` is a bare id instead of a
             sequence.
-        :raises ValueError: If there are more than 100 ids.
+        :raises ValueError: If there is no id at all or more than 100
+            of them.
         :return: True on success.
         """
-        _check_sequence(gap_ids, "gap_ids", "absence record ids", "gap.id")
+        gap_ids = _check_sequence(gap_ids, "gap_ids", "absence record ids", "gap.id")
+
+        if not gap_ids:
+            msg = "At least one absence record id is required."
+            raise ValueError(msg)
 
         if len(gap_ids) > MAX_GAPS_PER_REQUEST:
             msg = (

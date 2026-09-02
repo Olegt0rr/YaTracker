@@ -1,20 +1,28 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterable, Mapping
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from pydantic import TypeAdapter
 from typing_extensions import Self
 
 from yatracker.types.base import Base
 from yatracker.types.full_issue import FullIssue
+from yatracker.types.full_queue import FullQueue
 from yatracker.utils.camel_case import camel_case
 
 from .client import AIOHTTPClient
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Sequence
+    from collections.abc import (
+        AsyncIterator,
+        Awaitable,
+        Callable,
+        Collection,
+        Sequence,
+    )
     from types import TracebackType
 
     from .client import BaseClient
@@ -22,7 +30,12 @@ if TYPE_CHECKING:
 T = TypeVar("T")
 B = TypeVar("B", bound=Base)
 PageT = TypeVar("PageT")
+IssueT = TypeVar("IssueT", bound=FullIssue)
 IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
+QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+#: `SuggestT_co` stays bound to `Base` rather than to `IssueSuggest`:
+#: `suggest_issues(..., full=True)` answers with whole issues, so a
+#: `FullIssue` is a legitimate `_type` there.
 SuggestT_co = TypeVar("SuggestT_co", bound=Base, covariant=True)
 
 logger = logging.getLogger(__name__)
@@ -76,6 +89,31 @@ class BaseTracker:
         """
         adapter = _get_adapter(type_)  # type: ignore[arg-type]
         return adapter.validate_json(data, context={"tracker": self})
+
+    def _decode_single(self, type_: type[T], data: bytes) -> T:
+        """Decode one object out of a response documented as an array.
+
+        A handful of endpoints (create/edit a status, create/edit an
+        issue type, create a queue version) show the created object
+        wrapped into a one-element JSON array, while their siblings
+        answer with a bare object. Both shapes are accepted here and the
+        single object is returned.
+
+        :raises ValueError: if the API answered with an empty array.
+        """
+        decoded: Any = self._decode(
+            list[type_] | type_,  # type: ignore[valid-type,arg-type]
+            data,
+        )
+        if isinstance(decoded, list):
+            if not decoded:
+                msg = (
+                    f"The API answered with an empty array where a single "
+                    f"{getattr(type_, '__name__', type_)} object was expected."
+                )
+                raise ValueError(msg)
+            decoded = decoded[0]
+        return cast("T", decoded)
 
     @staticmethod
     def _prepare_payload(
@@ -160,6 +198,36 @@ def _encode_key(key: str) -> str:
     the API would silently ignore the field.
     """
     return camel_case(key) if key.isidentifier() else key
+
+
+def _check_sequence(values: object, param: str, item: str, example: str) -> list[Any]:
+    """Materialize a collection passed where several items are expected.
+
+    Only the "bare single value" shapes are rejected: a `str`/`bytes`
+    would be iterated character by character, a mapping key by key and a
+    :class:`Base` model field by field, so the request would go out
+    silently mangled instead of failing. Everything else iterable is
+    accepted — a set, a `dict.keys()` view or a generator are legitimate
+    ways to pass several ids — and returned as a list, so the callers
+    can measure it and walk it more than once.
+
+    :param param: name of the offending parameter, as the caller wrote it.
+    :param item: what the collection holds, e.g. "issue keys".
+    :param example: one element, to show in the suggested call.
+    :raises TypeError: if `values` is a single value rather than a
+        collection of them.
+    :return: the items as a list.
+    """
+    if isinstance(values, (str, bytes, Mapping, Base)) or not isinstance(
+        values,
+        Iterable,
+    ):
+        msg = (
+            f"`{param}` must be a sequence of {item}, got "
+            f"{type(values).__name__}. Pass a sequence, e.g. `[{example}]`."
+        )
+        raise TypeError(msg)
+    return list(values)
 
 
 def _if_match(version: str | int) -> dict[str, str]:

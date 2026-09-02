@@ -975,6 +975,38 @@ class TestModelShortcuts:
         )
 
 
+# --- collections accepted for `issues` ---------------------------------------
+
+
+class TestIssueCollections:
+    async def test_bulk_transition_accepts_a_set_of_keys(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_transition_issues({"TEST-1", "TEST-2"}, "close")
+
+        assert sorted(sent_json(client.calls[0])["issues"]) == ["TEST-1", "TEST-2"]
+
+    async def test_bulk_move_accepts_a_generator_of_keys(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_move_issues(
+            (key for key in ("TEST-1", "TEST-2")),
+            "NEWQUEUE",
+        )
+
+        assert sent_json(client.calls[0])["issues"] == ["TEST-1", "TEST-2"]
+
+    async def test_bulk_move_rejects_a_single_issue_model(self) -> None:
+        """A pydantic model iterates over its fields."""
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        issue = Issue(self="s", id="1", key="TEST-1", display="Test 1")
+        with pytest.raises(TypeError, match="sequence of issue keys"):
+            await tracker.bulk_move_issues(issue, "NEWQUEUE")  # type: ignore[arg-type]
+
+        assert client.calls == []
+
+
 # --- exports -----------------------------------------------------------------
 
 

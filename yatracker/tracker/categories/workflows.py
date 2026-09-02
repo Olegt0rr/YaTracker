@@ -8,6 +8,8 @@ from yatracker.types.workflow import FullWorkflow
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+    from yatracker.types.localized_name import LocalizedNameInput
+
 # ruff: noqa: PLR0913
 
 
@@ -183,8 +185,8 @@ class Workflows(BaseTracker):
         version: str | int,
         *,
         new_id: str | None = None,
-        name: dict[str, str] | None = None,
-        description: dict[str, str] | None = None,
+        name: LocalizedNameInput | None = None,
+        description: LocalizedNameInput | None = None,
         target: str | int | dict[str, Any] | None = None,
         screen: dict[str, Any] | None = None,
         conditions: Sequence[dict[str, Any]] | None = None,
@@ -201,13 +203,15 @@ class Workflows(BaseTracker):
         :param action_id: ID of the action inside the step, e.g.
             `close`.
         :param version: current version of the workflow, sent as the
-            `version` query parameter. The request fails with
-            :class:`PreconditionFailedError` (412) if the workflow was
-            changed meanwhile.
+            `version` query parameter. Unlike `update_workflow` (412),
+            this endpoint reports a stale version as a conflict:
+            :class:`AlreadyExistsError` (409).
         :param new_id: new ID of the action, sent as `id`.
-        :param name: new action name, a localized object such as
+        :param name: new action name in every language, e.g.
+            `LocalizedName(ru="Завершить", en="Complete")` or
             `{"ru": "Завершить", "en": "Complete"}`.
-        :param description: new action description, a localized object.
+        :param description: new action description in every language,
+            same shape as `name`.
         :param target: new target status: a status key (string), a
             status id (number) or an object (`{"key": ...}` /
             `{"id": ...}` / `{"name": ...}`).

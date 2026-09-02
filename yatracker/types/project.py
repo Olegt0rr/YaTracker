@@ -3,13 +3,16 @@ from __future__ import annotations
 __all__ = ["Project", "ProjectQueueRef"]
 
 from datetime import date
-from typing import Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any, overload
 
 from .base import Base, url_field
 from .full_queue import FullQueue
 from .user import User
 
-QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+if TYPE_CHECKING:
+    # Imported for typing only: `yatracker.tracker.base` imports this
+    # module's package, so a runtime import would be circular.
+    from yatracker.tracker.base import QueueT_co
 
 
 class ProjectQueueRef(Base):

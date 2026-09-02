@@ -3,19 +3,19 @@ from __future__ import annotations
 from datetime import date, datetime, time, timezone
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker, _convert_value
+from yatracker.tracker.base import BaseTracker, _check_sequence, _convert_value
 from yatracker.types.entity import (
+    ChecklistEntityType,
     Entity,
     EntityChecklistItem,
     EntityDeadline,
-    EntityType,
 )
 from yatracker.utils.datetime import to_tracker_datetime
 
 from .entities import _entity_uri, _fields_params
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterable, Sequence
 
 
 class EntityChecklists(BaseTracker):
@@ -28,13 +28,17 @@ class EntityChecklists(BaseTracker):
     Every method here answers with the whole entity, not with the
     checklist, so ask for the items with `fields="checklistItems"`.
 
+    Only projects and portfolios have a checklist, so every method here
+    takes a `ChecklistEntityType` ("project" or "portfolio") rather than
+    the wider `EntityType` of the other entity categories.
+
     Source:
     https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist
     """
 
     async def add_entity_checklist_item(  # noqa: PLR0913
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         text: str,
         *,
@@ -54,7 +58,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param text: Text of the checklist item.
         :param checked: Mark the item as done.
@@ -97,7 +102,7 @@ class EntityChecklists(BaseTracker):
 
     async def edit_entity_checklist(  # noqa: PLR0913
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         items: Sequence[EntityChecklistItem | dict[str, Any]],
         *,
@@ -118,7 +123,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param items: Items to edit: `EntityChecklistItem` objects or
             dicts like `{"id": "...", "text": "...", "checked": True}`.
@@ -157,7 +163,7 @@ class EntityChecklists(BaseTracker):
 
     async def edit_entity_checklist_item(  # noqa: PLR0913
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         item_id: str,
         *,
@@ -179,7 +185,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist-item
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param item_id: Id of the checklist item to edit.
         :param text: Text of the checklist item.
@@ -231,7 +238,7 @@ class EntityChecklists(BaseTracker):
 
     async def move_entity_checklist_item(  # noqa: PLR0913
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         item_id: str,
         before: str,
@@ -246,7 +253,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/move-checklist-item
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param item_id: Id of the checklist item to move.
         :param before: Id of the checklist item to insert the moved item
@@ -281,7 +289,7 @@ class EntityChecklists(BaseTracker):
 
     async def delete_entity_checklist_item(
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         item_id: str,
         *,
@@ -297,7 +305,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist-item
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param item_id: Id of the checklist item to delete.
         :param notify: Whether to notify the users mentioned in the
@@ -320,7 +329,7 @@ class EntityChecklists(BaseTracker):
 
     async def delete_entity_checklist(
         self,
-        entity_type: EntityType,
+        entity_type: ChecklistEntityType,
         entity_id: str | int,
         *,
         notify: bool | None = None,
@@ -333,7 +342,8 @@ class EntityChecklists(BaseTracker):
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist
 
-        :param entity_type: "project" or "portfolio".
+        :param entity_type: "project" or "portfolio" (the checklist
+            endpoints are not documented for goals).
         :param entity_id: Id (or short id) of the entity.
         :param notify: Whether to notify the users mentioned in the
             entity (`True` by default).
@@ -440,17 +450,11 @@ def _encode_checklist_item(
 
 
 def _checklist_items_payload(
-    items: Sequence[EntityChecklistItem | dict[str, Any]],
+    items: Iterable[EntityChecklistItem | dict[str, Any]],
 ) -> list[dict[str, Any]]:
     """Convert the items of `edit_entity_checklist` to the plain dicts the API wants."""
-    if isinstance(items, (str, dict, EntityChecklistItem)):
-        msg = (
-            f"`items` must be a sequence of checklist items, got "
-            f"{type(items).__name__}. Pass a sequence of items, e.g. `[item]`."
-        )
-        raise TypeError(msg)
-
-    payload = [_encode_checklist_item(item) for item in items]
+    checked = _check_sequence(items, "items", "checklist items", "item")
+    payload = [_encode_checklist_item(item) for item in checked]
     if not payload:
         msg = "At least one checklist item is required."
         raise ValueError(msg)

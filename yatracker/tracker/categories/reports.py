@@ -63,8 +63,8 @@ class Reports(BaseTracker):
             `[ReportSort(order_by="updated", order_asc=False)]`.
         :param type_: export type. The only documented value is
             "issueFilterExport".
-        :raises ValueError: if more than one of `query`, `filter_` and
-            `filter_id` is given.
+        :raises ValueError: if none of `query`, `filter_` and
+            `filter_id` is given, or if more than one of them is.
         :return: the created report.
         """
         given = [
@@ -76,6 +76,12 @@ class Reports(BaseTracker):
             )
             if value is not None
         ]
+        if not given:
+            msg = (
+                "Pass one of `query`, `filter_` and `filter_id`: the API "
+                "needs to know which issues to export."
+            )
+            raise ValueError(msg)
         if len(given) > 1:
             msg = (
                 f"Pass only one of `query`, `filter_` and `filter_id`, "

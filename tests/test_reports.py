@@ -215,13 +215,19 @@ class TestCreateReport:
         # the request must not have been sent
         assert client.calls == []
 
-    async def test_with_no_filter_kind_is_allowed(self) -> None:
-        """The API-side validation of an empty filter is not this client's job."""
+    async def test_raises_value_error_when_no_filter_kind_is_given(self) -> None:
+        """The reference requires one of `query`, `filter` and `filterId`."""
         tracker, client = make_tracker(REPORT_RESPONSE)
-        await tracker.create_report("name")
+        with pytest.raises(ValueError, match="Pass one of"):
+            await tracker.create_report("name")
+        # the request must not have been sent
+        assert client.calls == []
 
-        parameters = sent_json(client.calls[0])["fields"]["parameters"]
-        assert parameters["filter"] == {}
+    async def test_sorts_alone_is_not_a_filter_kind(self) -> None:
+        tracker, client = make_tracker(REPORT_RESPONSE)
+        with pytest.raises(ValueError, match="Pass one of"):
+            await tracker.create_report("name", sorts=[{"orderBy": "key"}])
+        assert client.calls == []
 
 
 class TestSearchReports:

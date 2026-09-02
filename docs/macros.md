@@ -44,7 +44,7 @@ for macro in macros:
 страницы по 50 объектов любые списки. Если макросов в очереди больше, используйте
 `per_page` и `page`.
 
-Источник: https://yandex.ru/support/tracker/ru/get-macroses
+Источник: https://yandex.ru/support/tracker/ru/api/get-macroses
 
 ### get_macro
 
@@ -63,7 +63,7 @@ print(macro.name, macro.body)
 1. `queue_id` — ключ или идентификатор очереди.
 2. `macro_id` — идентификатор макроса.
 
-Источник: https://yandex.ru/support/tracker/ru/get-macros
+Источник: https://yandex.ru/support/tracker/ru/api/get-macros
 
 ## Создание макроса
 
@@ -115,7 +115,7 @@ macro = await tracker.create_macro(
     передать `macro.issue_update` другого макроса — список `MacroFieldChange` будет
     преобразован в формат запроса автоматически.
 
-Источник: https://yandex.ru/support/tracker/ru/post-macros
+Источник: https://yandex.ru/support/tracker/ru/api/post-macros
 
 ## Изменение и удаление макроса
 
@@ -160,7 +160,7 @@ macro = await tracker.update_macro(
     В отличие от компонентов, у макросов нет параметра `version` — конфликт
     параллельного изменения через `PATCH` не отслеживается.
 
-Источник: https://yandex.ru/support/tracker/ru/patch-macros
+Источник: https://yandex.ru/support/tracker/ru/api/patch-macros
 
 ### delete_macro
 
@@ -177,7 +177,7 @@ await tracker.delete_macro("WRITERS", 3)
 1. `queue_id` — ключ или идентификатор очереди.
 2. `macro_id` — идентификатор макроса.
 
-Источник: https://yandex.ru/support/tracker/ru/delete-macros
+Источник: https://yandex.ru/support/tracker/ru/api/delete-macros
 
 !!! note "Асимметрия запроса и ответа"
 

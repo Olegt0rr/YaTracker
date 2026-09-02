@@ -410,6 +410,16 @@ class TestEditEntityChecklist:
                 {"id": "1", "text": "Item"},  # type: ignore[arg-type]
             )
 
+    async def test_items_accept_a_generator(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.edit_entity_checklist(
+            "project",
+            "1",
+            (item for item in ({"text": "One"}, {"text": "Two"})),
+        )
+
+        assert sent_json(client.calls[0]) == [{"text": "One"}, {"text": "Two"}]
+
     async def test_bare_model_item_raises_type_error(self) -> None:
         tracker, _ = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
         with pytest.raises(TypeError, match="sequence of checklist items"):

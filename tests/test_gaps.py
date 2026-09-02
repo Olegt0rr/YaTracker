@@ -442,3 +442,68 @@ async def test_iter_gaps_rejects_bare_string() -> None:
             pass
 
     assert client.calls == []
+
+
+async def test_create_gaps_rejects_a_single_mapping() -> None:
+    """A single record would be iterated key by key."""
+    tracker, client = make_tracker(CREATE_GAPS_RESPONSE)
+    with pytest.raises(TypeError, match="sequence of absence records"):
+        await tracker.create_gaps(
+            {"user": "username1", "workflow": "vacation"},  # type: ignore[arg-type]
+        )
+
+    assert client.calls == []
+
+
+async def test_create_gaps_rejects_an_empty_sequence() -> None:
+    tracker, client = make_tracker(CREATE_GAPS_RESPONSE)
+    with pytest.raises(ValueError, match="At least one absence record"):
+        await tracker.create_gaps([])
+
+    assert client.calls == []
+
+
+async def test_delete_gaps_rejects_an_empty_sequence() -> None:
+    tracker, client = make_tracker(status=204)
+    with pytest.raises(ValueError, match="At least one absence record id"):
+        await tracker.delete_gaps([])
+
+    assert client.calls == []
+
+
+async def test_search_gaps_rejects_an_empty_sequence() -> None:
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    with pytest.raises(ValueError, match="At least one employee"):
+        await tracker.search_gaps([])
+
+    assert client.calls == []
+
+
+async def test_search_gaps_rejects_too_many_users() -> None:
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    with pytest.raises(ValueError, match="100"):
+        await tracker.search_gaps(["login"] * (MAX_GAPS_PER_REQUEST + 1))
+
+    assert client.calls == []
+
+
+async def test_search_gaps_accepts_a_set_of_logins() -> None:
+    """Any collection works, not only a list: a set renders as an array."""
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    await tracker.search_gaps({"username1", "username2"})
+
+    assert sorted(sent_json(client.calls[0])["users"]) == ["username1", "username2"]
+
+
+async def test_search_gaps_accepts_a_generator_of_logins() -> None:
+    tracker, client = make_tracker(SEARCH_GAPS_RESPONSE)
+    await tracker.search_gaps(login for login in ("username1", "username2"))
+
+    assert sent_json(client.calls[0])["users"] == ["username1", "username2"]
+
+
+async def test_delete_gaps_accepts_a_set_of_ids() -> None:
+    tracker, client = make_tracker(status=204)
+    assert await tracker.delete_gaps({"id-1", "id-2"}) is True
+
+    assert sorted(client.calls[0]["params"]["gapIds"].split(",")) == ["id-1", "id-2"]

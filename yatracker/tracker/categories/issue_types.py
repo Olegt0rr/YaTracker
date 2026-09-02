@@ -42,7 +42,12 @@ class IssueTypes(BaseTracker):
         :param name: name of the issue type in every language, e.g.
             `LocalizedName(ru="Клиент", en="Customer")` or
             `{"ru": "Клиент", "en": "Customer"}`.
+        :raises ValueError: if the API answered with an empty array.
         :return: created issue type.
+
+        The reference shows the created issue type wrapped into a
+        one-element array, while other single-object endpoints answer
+        with a bare object; both shapes are accepted.
         """
         payload = self._prepare_payload(locals())
         data = await self._client.request(
@@ -50,7 +55,7 @@ class IssueTypes(BaseTracker):
             uri="/issuetypes",
             payload=payload,
         )
-        return self._decode(FullIssueType, data)
+        return self._decode_single(FullIssueType, data)
 
     async def update_issue_type(
         self,
@@ -77,6 +82,11 @@ class IssueTypes(BaseTracker):
 
         Fields left as ``None`` are not sent, i.e. they stay unchanged.
 
+        The reference shows the updated issue type wrapped into a
+        one-element array, while other single-object endpoints answer
+        with a bare object; both shapes are accepted.
+
+        :raises ValueError: if the API answered with an empty array.
         :return: updated issue type.
         """
         payload = self._prepare_payload(
@@ -90,4 +100,4 @@ class IssueTypes(BaseTracker):
             params=params,
             payload=payload,
         )
-        return self._decode(FullIssueType, data)
+        return self._decode_single(FullIssueType, data)

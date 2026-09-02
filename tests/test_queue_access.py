@@ -461,6 +461,12 @@ class TestCreateQueueVersion:
         )
         assert isinstance(version, MyVersion)
 
+    async def test_empty_array_response_raises_value_error(self) -> None:
+        """An empty array must not surface as a bare `IndexError`."""
+        tracker, _client = make_tracker([])
+        with pytest.raises(ValueError, match="empty array"):
+            await tracker.create_queue_version("TESTQUEUE", "version 0.1")
+
 
 class TestGetQueueUserAccess:
     async def test_uses_user_permissions_path_and_decodes(self) -> None:

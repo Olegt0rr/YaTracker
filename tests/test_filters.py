@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
+import pytest
 from yatracker.types.filter import Filter, FilterSort
 from yatracker.types.ref import FieldRef
 
@@ -383,3 +384,46 @@ async def test_update_filter_decodes_sorts_field_object() -> None:
     assert filter_.sorts[0].field.id == "priority"
     assert filter_.sorts[0].field.display == "Приоритет"
     assert filter_.sorts[0].is_ascending is False
+
+
+async def test_create_filter_rejects_a_bare_sort() -> None:
+    """A single rule (a dict or a `FilterSort`) would be iterated key by key."""
+    tracker, client = make_tracker(CREATE_FILTER_RESPONSE)
+    with pytest.raises(TypeError, match="sequence of sorting rules"):
+        await tracker.create_filter(
+            "Test",
+            sorts={"field": "created"},  # type: ignore[arg-type]
+        )
+
+    assert client.calls == []
+
+
+async def test_update_filter_rejects_a_bare_filter_sort_model() -> None:
+    tracker, client = make_tracker(UPDATE_FILTER_RESPONSE)
+    sort = FilterSort(field=FieldRef(self="s", id="created"), is_ascending=True)
+    with pytest.raises(TypeError, match="sequence of sorting rules"):
+        await tracker.update_filter(12345, sorts=sort)  # type: ignore[arg-type]
+
+    assert client.calls == []
+
+
+async def test_create_filter_splits_a_comma_separated_fields_string() -> None:
+    """The API wants an array; a string must not go out as a JSON string."""
+    tracker, client = make_tracker(CREATE_FILTER_RESPONSE)
+    await tracker.create_filter("Test", fields="key, summary ,status")
+
+    assert sent_json(client.calls[0])["fields"] == ["key", "summary", "status"]
+
+
+async def test_update_filter_splits_a_comma_separated_fields_string() -> None:
+    tracker, client = make_tracker(UPDATE_FILTER_RESPONSE)
+    await tracker.update_filter(12345, fields="key,summary")
+
+    assert sent_json(client.calls[0])["fields"] == ["key", "summary"]
+
+
+async def test_create_filter_accepts_a_tuple_of_fields() -> None:
+    tracker, client = make_tracker(CREATE_FILTER_RESPONSE)
+    await tracker.create_filter("Test", fields=("key", "summary"))
+
+    assert sent_json(client.calls[0])["fields"] == ["key", "summary"]

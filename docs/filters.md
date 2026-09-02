@@ -28,8 +28,8 @@ async def create_filter(
     *,
     filter_: dict[str, Any] | None = None,
     query: str | None = None,
-    fields: Sequence[str] | None = None,
-    sorts: Sequence[FilterSort | dict[str, Any]] | None = None,
+    fields: str | Iterable[str] | None = None,
+    sorts: Iterable[FilterSort | dict[str, Any]] | None = None,
     group_by: str | dict[str, Any] | None = None,
     folder: str | dict[str, Any] | None = None,
     **kwargs,
@@ -56,8 +56,11 @@ filter_ = await tracker.create_filter(
 3. `query` — условия фильтрации на языке запросов. Используйте либо `query`, либо
    `filter_`, не оба одновременно — иначе поведение API не гарантировано.
 4. `fields` — список полей задачи, которые будут показаны в интерфейсе Трекера при
-   применении фильтра. На результат `/issues/_search` не влияет.
-5. `sorts` — правила сортировки результата, см. раздел «Сортировки» ниже.
+   применении фильтра. На результат `/issues/_search` не влияет. Кроме коллекции имён
+   принимается и строка через запятую (`"key,summary,status"`) — она разбивается на
+   массив, которого ждёт API.
+5. `sorts` — правила сортировки результата, см. раздел «Сортировки» ниже. Одиночное
+   правило вместо коллекции (словарь или `FilterSort`) бросает `TypeError`.
 6. `group_by` — поле, по которому результат группируется в интерфейсе; строка (ключ
    поля) или готовый объект.
 7. `folder` — папка, в которую сохраняется фильтр; строка или готовый объект.
@@ -94,8 +97,8 @@ async def update_filter(
     name: str | None = None,
     filter_: dict[str, Any] | None = None,
     query: str | None = None,
-    fields: Sequence[str] | None = None,
-    sorts: Sequence[FilterSort | dict[str, Any]] | None = None,
+    fields: str | Iterable[str] | None = None,
+    sorts: Iterable[FilterSort | dict[str, Any]] | None = None,
     group_by: str | dict[str, Any] | None = None,
     folder: str | dict[str, Any] | None = None,
     **kwargs,

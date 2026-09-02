@@ -18,15 +18,11 @@ https://yandex.ru/support/tracker/ru/api/admin/patch-status
 Note on a documentation quirk: the create/patch issue-type and
 create/patch status pages render their *response* body wrapped in a
 JSON array (``[{...}]``), unlike create/patch priority and
-create/patch resolution, which render a plain object. The
-implementation decodes a single object for every one of these
-methods (``self._decode(FullIssueType, data)`` etc., never
-``list[...]``), which matches every other admin dictionary endpoint
-and the shape actually documented for the *list* endpoints (a real
-array of such objects). This suite therefore feeds the object form
-(the inner element of the documented array) as the canned response
-for issue-type/status create and update calls, and notes the
-discrepancy here rather than treating it as a bug.
+create/patch resolution, which render a plain object. These four
+methods therefore decode through ``_decode_single``, which accepts
+both shapes and returns the single object; an empty array raises
+``ValueError`` instead of ``IndexError``. Both shapes are covered
+below.
 """
 
 from __future__ import annotations
@@ -34,6 +30,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import pytest
 from pydantic import TypeAdapter
 from yatracker.types.issue_type import FullIssueType, IssueType
 from yatracker.types.localized_name import LocalizedName
@@ -189,6 +186,26 @@ class TestIssueTypeEndpoints:
         call = client.calls[0]
         assert call["params"] is None
         assert sent_json(call) == {"name": {"ru": "Покупатель"}}
+
+    async def test_create_issue_type_accepts_the_documented_array_shape(self) -> None:
+        tracker, _ = make_tracker([ISSUE_TYPE_CREATED], status=201)
+        issue_type = await tracker.create_issue_type("client", {"ru": "Клиент"})
+        assert issue_type.id == "23"
+
+    async def test_update_issue_type_accepts_the_documented_array_shape(self) -> None:
+        tracker, _ = make_tracker([ISSUE_TYPE_PATCHED])
+        issue_type = await tracker.update_issue_type(23, name={"ru": "Покупатель"})
+        assert issue_type.version == 2
+
+    async def test_create_issue_type_raises_on_an_empty_array(self) -> None:
+        tracker, _ = make_tracker([], status=201)
+        with pytest.raises(ValueError, match="empty array"):
+            await tracker.create_issue_type("client", {"ru": "Клиент"})
+
+    async def test_update_issue_type_raises_on_an_empty_array(self) -> None:
+        tracker, _ = make_tracker([])
+        with pytest.raises(ValueError, match="empty array"):
+            await tracker.update_issue_type(23, name={"ru": "Покупатель"})
 
 
 # --------------------------------------------------------------------------
@@ -590,3 +607,23 @@ class TestStatusEndpoints:
         call = client.calls[0]
         assert call["params"] is None
         assert sent_json(call) == {"type": "paused"}
+
+    async def test_create_status_accepts_the_documented_array_shape(self) -> None:
+        tracker, _ = make_tracker([STATUS_CREATED], status=201)
+        status = await tracker.create_status("myStatus", {"ru": "Мой"}, "paused")
+        assert status.id == "29"
+
+    async def test_update_status_accepts_the_documented_array_shape(self) -> None:
+        tracker, _ = make_tracker([STATUS_PATCHED])
+        status = await tracker.update_status(29, type_="paused")
+        assert status.version == 2
+
+    async def test_create_status_raises_on_an_empty_array(self) -> None:
+        tracker, _ = make_tracker([], status=201)
+        with pytest.raises(ValueError, match="empty array"):
+            await tracker.create_status("myStatus", {"ru": "Мой"}, "paused")
+
+    async def test_update_status_raises_on_an_empty_array(self) -> None:
+        tracker, _ = make_tracker([])
+        with pytest.raises(ValueError, match="empty array"):
+            await tracker.update_status(29, type_="paused")

@@ -11,6 +11,14 @@
     асинхронными. В примерах ниже вызовы показаны так, как будто мы уже находимся внутри
     корутины.
 
+!!! note "Тип сущности — только проект или портфель"
+
+    Все методы этой страницы принимают `entity_type` типа
+    `ChecklistEntityType = Literal["project", "portfolio"]` (экспортируется из
+    `yatracker.types`), а не более широкий `EntityType`, в который входит ещё и `"goal"`:
+    чек-листы задокументированы только для проектов и портфелей. Проверка статическая —
+    во время выполнения значение уходит в URL как есть.
+
 !!! note "Чек-лист — это тоже поле сущности"
 
     Весь чек-лист целиком доступен и через саму сущность: `get_entity(..., fields="checklistItems")`
@@ -47,7 +55,7 @@ for item in project.fields.checklist_items or []:
 ```python
 async def add_entity_checklist_item(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     text: str,
     *,
@@ -123,7 +131,7 @@ for item in entity.fields.checklist_items or []:
 ```python
 async def edit_entity_checklist(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     items: Sequence[EntityChecklistItem | dict[str, Any]],
     *,
@@ -183,7 +191,7 @@ entity = await tracker.edit_entity_checklist(
 ```python
 async def edit_entity_checklist_item(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     item_id: str,
     *,
@@ -233,7 +241,7 @@ entity = await tracker.edit_entity_checklist_item(
 ```python
 async def move_entity_checklist_item(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     item_id: str,
     before: str,
@@ -272,7 +280,7 @@ entity = await tracker.move_entity_checklist_item(
 ```python
 async def delete_entity_checklist_item(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     item_id: str,
     *,
@@ -311,7 +319,7 @@ await tracker.delete_entity_checklist_item(
 ```python
 async def delete_entity_checklist(
     self,
-    entity_type: EntityType,
+    entity_type: ChecklistEntityType,
     entity_id: str | int,
     *,
     notify: bool | None = None,

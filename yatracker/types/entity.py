@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 __all__ = [
+    "ChecklistEntityType",
     "Entity",
     "EntityChecklistItem",
     "EntityDeadline",
@@ -31,6 +32,7 @@ from pydantic import AliasChoices, BeforeValidator, ConfigDict, TypeAdapter
 from .attachment import Attachment
 from .base import Base, field, url_field
 from .queue import Queue
+from .ref import Ref
 from .user import User
 
 if TYPE_CHECKING:
@@ -38,6 +40,13 @@ if TYPE_CHECKING:
 
 EntityType = Literal["project", "portfolio", "goal"]
 """Kind of entity: a project, a portfolio of projects or a goal."""
+
+ChecklistEntityType = Literal["project", "portfolio"]
+"""Kind of entity that has a checklist.
+
+The checklist endpoints are documented for projects and portfolios
+only; goals have none.
+"""
 
 _DATE_ADAPTER = TypeAdapter(date_)
 _DATETIME_ADAPTER = TypeAdapter(datetime)
@@ -71,12 +80,8 @@ def _fields_or_empty(value: Any) -> Any:  # noqa: ANN401
     return {} if value is None else value
 
 
-class EntityRef(Base):
+class EntityRef(Ref):
     """Short reference to an entity, embedded into `parentEntity`."""
-
-    url: str = url_field()
-    id: str
-    display: str | None = None
 
 
 class EntityParent(Base):

@@ -219,10 +219,10 @@ category = await tracker.create_field_category(
 async def update_field_category(
     self,
     category_id: str | int,
+    name: LocalizedName | dict[str, str],
+    order: int,
     *,
     version: str | int | None = None,
-    name: LocalizedName | dict[str, str] | None = None,
-    order: int | None = None,
     description: str | None = None,
 ) -> FieldCategory: ...
 ```
@@ -231,19 +231,27 @@ async def update_field_category(
 
 ```python
 category = await tracker.update_field_category(
-    category_id=category.id,
+    category.id,
+    {"ru": "Моя категория", "en": "My category"},
+    100,
     version=category.version,
-    order=100,
 )
 ```
 
 1. `category_id` — идентификатор изменяемой категории.
-2. `version` — текущая версия категории (`category.version`), отправляется как
+2. `name` — новое название категории: `LocalizedName(ru=..., en=...)` или словарь
+   `{"ru": ..., "en": ...}`.
+3. `order` — новый вес категории при отображении в интерфейсе.
+4. `version` — текущая версия категории (`category.version`), отправляется как
    query-параметр `?version=`. Изменения вносятся только в текущую версию категории.
-3. `name`, `order`, `description` — новые значения соответствующих параметров, как в
-   `create_field_category`.
+5. `description` — новое описание категории. Если оставить `None`, поле не отправляется и
+   остаётся без изменений.
 
-Поля со значением `None` не отправляются, то есть остаются без изменений.
+!!! warning "`name` и `order` обязательны"
+
+    Справочник перечисляет `name` и `order` в обязательных параметрах тела запроса, даже
+    если меняется только одно из них, поэтому в `yatracker` это позиционные аргументы.
+    Меняете что-то одно — передайте текущее значение второго.
 
 Источник: https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-category
 

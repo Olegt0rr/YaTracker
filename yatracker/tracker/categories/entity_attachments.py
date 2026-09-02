@@ -6,7 +6,7 @@ from yatracker.tracker.base import BaseTracker
 from yatracker.types.attachment import Attachment
 from yatracker.types.entity import Entity, EntityType
 
-from .entities import _entity_uri
+from .entities import _entity_uri, _fields_params
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -101,11 +101,11 @@ class EntityAttachments(BaseTracker):
         data = await self._client.request(
             method="POST",
             uri=_entity_uri(entity_type, str(entity_id), "attachments", str(file_id)),
-            params=self._prepare_params(
+            params=_fields_params(
+                fields,
+                expand=expand,
                 notify=notify,
                 notify_author=notify_author,
-                fields=_fields_param(fields),
-                expand=expand,
             ),
         )
         return self._decode(Entity, data)
@@ -133,10 +133,3 @@ class EntityAttachments(BaseTracker):
             ),
         )
         return True
-
-
-def _fields_param(fields: str | Sequence[str] | None) -> str | None:
-    """Render the `fields` query param, which the API takes comma-separated."""
-    if fields is None or isinstance(fields, str):
-        return fields
-    return ",".join(fields)

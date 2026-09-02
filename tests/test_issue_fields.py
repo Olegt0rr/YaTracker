@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import pytest
 from pydantic import TypeAdapter
 from yatracker.types.issue_field import IssueField
 from yatracker.types.local_field import LocalField
@@ -502,9 +503,9 @@ class TestFieldCategoryEndpoints:
         tracker, client = make_tracker(UPDATED_CATEGORY)
         category = await tracker.update_field_category(
             "604f9920d23cd5********",
+            LocalizedName(en="en_name", ru="ru_name"),
+            400,
             version=1,
-            name=LocalizedName(en="en_name", ru="ru_name"),
-            order=400,
             description="description",
         )
         assert category.version == 2
@@ -523,11 +524,25 @@ class TestFieldCategoryEndpoints:
         self,
     ) -> None:
         tracker, client = make_tracker(UPDATED_CATEGORY)
-        await tracker.update_field_category("604f9920d23cd5********", order=5)
+        await tracker.update_field_category(
+            "604f9920d23cd5********",
+            {"en": "en_name"},
+            5,
+        )
 
         call = client.calls[0]
         assert call["params"] is None
-        assert sent_json(call) == {"order": 5}
+        assert sent_json(call) == {"name": {"en": "en_name"}, "order": 5}
+
+    async def test_update_field_category_requires_name_and_order(self) -> None:
+        """The reference lists both as required parameters of the body."""
+        tracker, client = make_tracker(UPDATED_CATEGORY)
+        with pytest.raises(TypeError):
+            await tracker.update_field_category(  # type: ignore[call-arg]
+                "604f9920d23cd5********",
+                order=5,
+            )
+        assert client.calls == []
 
 
 class TestLocalFieldDecoding:

@@ -271,8 +271,8 @@ async def update_workflow_action(
     version: str | int,
     *,
     new_id: str | None = None,
-    name: dict[str, str] | None = None,
-    description: dict[str, str] | None = None,
+    name: LocalizedNameInput | None = None,
+    description: LocalizedNameInput | None = None,
     target: str | int | dict[str, Any] | None = None,
     screen: dict[str, Any] | None = None,
     conditions: Sequence[dict[str, Any]] | None = None,
@@ -303,8 +303,9 @@ workflow = await tracker.update_workflow_action(
 3. `action_id` — идентификатор действия внутри шага, например `close`.
 4. `version` — текущая версия рабочего процесса, уходит в query-параметр `version`.
 5. `new_id` — новый идентификатор действия, отправляется как `id`.
-6. `name` — новое название действия, локализованный объект.
-7. `description` — новое описание действия, локализованный объект.
+6. `name` — новое название действия: `LocalizedName(ru=..., en=...)` или обычный словарь
+   `{"ru": ..., "en": ...}`.
+7. `description` — новое описание действия, в том же виде, что и `name`.
 8. `target` — новый целевой статус: ключ (строка), идентификатор (число) или объект
    (`{"key": ...}` / `{"id": ...}` / `{"name": ...}`).
 9. `screen`, `conditions`, `functions` — экран перехода, условия и функции, как в
@@ -316,11 +317,10 @@ workflow = await tracker.update_workflow_action(
 !!! warning "Версия обязательна"
 
     Как и `update_workflow`, метод передаёт версию через query-параметр `version` и требует
-    актуальную версию рабочего процесса — при конфликте API отвечает ошибкой конфликта, и
-    `yatracker` бросает `PreconditionFailedError`. Обратите внимание: справочник этого запроса
-    называет код ошибки конфликта `409`, тогда как для `PATCH /workflows/<id>` он же
-    задокументирован как `412` — само поведение (нужно перечитать объект и повторить запрос
-    с новой версией) одинаковое.
+    актуальную версию рабочего процесса. Но код ошибки другой: справочник этого запроса
+    документирует только `409` (конфликт при редактировании), и `yatracker` бросает
+    `AlreadyExistsError`, а не `PreconditionFailedError`, как в `update_workflow` (`412`).
+    Поведение одинаковое: перечитайте рабочий процесс и повторите запрос с новой версией.
 
 Источник: https://yandex.ru/support/tracker/ru/api/queues/workflows/patch-workflow-action
 

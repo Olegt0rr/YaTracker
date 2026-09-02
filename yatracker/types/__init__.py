@@ -24,6 +24,7 @@ __all__ = [
     "ChangelogField",
     "ChecklistAssignee",
     "ChecklistDeadline",
+    "ChecklistEntityType",
     "ChecklistItem",
     "Comment",
     "Component",
@@ -128,6 +129,7 @@ __all__ = [
     "WidgetCalendarRef",
     "WidgetDatasetInfo",
     "WidgetLines",
+    "Workflow",
     "WorkflowAction",
     "WorkflowStep",
     "Worklog",
@@ -174,6 +176,7 @@ from .dashboard import (
 )
 from .duration import Duration
 from .entity import (
+    ChecklistEntityType,
     Entity,
     EntityChecklistItem,
     EntityDeadline,
@@ -254,5 +257,5 @@ from .trigger import (
     TriggerWebhookLogResponse,
 )
 from .user import FullUser, User, UsersPage
-from .workflow import FullWorkflow, WorkflowAction, WorkflowStep
+from .workflow import FullWorkflow, Workflow, WorkflowAction, WorkflowStep
 from .worklog import Worklog

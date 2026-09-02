@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import sys
 import warnings
-from collections.abc import Sequence
 from datetime import date, datetime
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker, _convert_value, _encode_key
+from yatracker.tracker.base import (
+    BaseTracker,
+    _check_sequence,
+    _convert_value,
+    _encode_key,
+)
 from yatracker.types import BulkChange
 from yatracker.types.entity import (
     Entity,
@@ -23,7 +27,7 @@ from yatracker.utils.datetime import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Iterable, Sequence
 
 
 class Entities(BaseTracker):
@@ -43,7 +47,7 @@ class Entities(BaseTracker):
         summary: str,
         *,
         values: dict[str, Any] | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         fields: str | Sequence[str] | None = None,
         **kwargs: Any,  # noqa: ANN401
     ) -> Entity:
@@ -119,7 +123,7 @@ class Entities(BaseTracker):
         *,
         values: dict[str, Any] | None = None,
         comment: str | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         fields: str | Sequence[str] | None = None,
         expand: str | None = None,
         **kwargs: Any,  # noqa: ANN401
@@ -283,11 +287,11 @@ class Entities(BaseTracker):
     async def bulk_update_entities(
         self,
         entity_type: EntityType,
-        entities: Sequence[str | Entity],
+        entities: Iterable[str | Entity],
         *,
         values: dict[str, Any] | None = None,
         comment: str | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         **kwargs: Any,  # noqa: ANN401
     ) -> BulkChange:
         """Edit multiple entities at once.
@@ -298,7 +302,8 @@ class Entities(BaseTracker):
         work for it as well.
 
         :param entity_type: "project", "portfolio" or "goal".
-        :param entities: Sequence of entity ids (or `Entity` objects).
+        :param entities: Collection of entity ids (or `Entity`
+            objects): a list, a set, a generator, ...
         :param values: Fields to set, encoded like in `create_entity`.
         :param comment: Comment to add to every entity.
         :param links: Links to add: a sequence of `EntityLink` objects
@@ -411,7 +416,7 @@ def _entity_changes(
     kwargs: dict[str, Any],
     *,
     comment: str | None = None,
-    links: Sequence[EntityLink | dict[str, Any]] | None = None,
+    links: Iterable[EntityLink | dict[str, Any]] | None = None,
     required: bool = True,
 ) -> dict[str, Any]:
     """Build the `fields`/`comment`/`links` body shared by the write methods.
@@ -443,20 +448,16 @@ def _entity_changes(
     return changes
 
 
-def _prepare_meta_entities(entities: Sequence[str | Entity]) -> list[str]:
-    """Convert a sequence of entities into a list of entity ids."""
-    # A bare `str` would be iterated character by character and a bare
-    # `Entity` (pydantic models iterate over their fields) or a mapping
-    # would be iterated too, producing confusing errors downstream.
-    if isinstance(entities, str) or not isinstance(entities, Sequence):
-        msg = (
-            "This endpoint accepts only a sequence of entity ids or "
-            f"`Entity` objects, not a bare {type(entities).__name__}."
-        )
-        raise TypeError(msg)
-
+def _prepare_meta_entities(entities: Iterable[str | Entity]) -> list[str]:
+    """Convert a collection of entities into a list of entity ids."""
+    checked = _check_sequence(
+        entities,
+        "entities",
+        "entity ids or `Entity` objects",
+        "entity.id",
+    )
     meta_entities = [
-        entity if isinstance(entity, str) else entity.id for entity in entities
+        entity if isinstance(entity, str) else entity.id for entity in checked
     ]
     if not meta_entities:
         msg = "At least one entity is required."
@@ -497,23 +498,13 @@ def _prepare_fields(
 
 
 def _prepare_links(
-    # The bare types are part of the annotation only so that the runtime
-    # guard below is not dead code for a type checker: a single link is
-    # exactly the kind of value that would otherwise be iterated.
-    links: Sequence[EntityLink | dict[str, Any]]
-    | EntityLink
-    | dict[str, Any]
-    | str
-    | None,
+    links: Iterable[EntityLink | dict[str, Any]] | None,
 ) -> list[dict[str, Any]]:
     """Convert links to the plain dicts the API expects."""
-    if isinstance(links, (str, dict, EntityLink)):
-        msg = (
-            f"`links` must be a sequence of links, got {type(links).__name__}. "
-            "Pass a sequence of links, e.g. `[link]`."
-        )
-        raise TypeError(msg)
-    return [_convert_value(link) for link in links or ()]
+    if links is None:
+        return []
+    checked = _check_sequence(links, "links", "links", "link")
+    return [_convert_value(link) for link in checked]
 
 
 def _has_naive_datetime(obj: Any) -> bool:  # noqa: ANN401

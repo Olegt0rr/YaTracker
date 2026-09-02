@@ -483,6 +483,19 @@ class TestCreateEntity:
 
         assert client.calls == []
 
+    async def test_links_accept_any_collection(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        links = (EntityLink(relationship="works towards", entity="1234"),)
+        await tracker.create_entity(
+            "project",
+            "Project",
+            links=(link for link in links),
+        )
+
+        assert sent_json(client.calls[0])["links"] == [
+            {"relationship": "works towards", "entity": "1234"},
+        ]
+
     async def test_dates_inside_a_tuple_are_rendered(self) -> None:
         tracker, client = make_tracker(CREATED_ENTITY)
         await tracker.create_entity(
@@ -786,11 +799,12 @@ class TestBulkUpdateEntities:
         assert client.calls == []
 
     async def test_bare_entity_or_mapping_entities(self) -> None:
-        # pydantic models and dicts are iterable too, but not sequences
+        # pydantic models and dicts are iterable too, but a single one
+        # of them is a bare value, not a collection of entities
         tracker, client = make_tracker(bulk_change_payload())
         entity = Entity.model_validate(CREATED_ENTITY)
         for bare in (entity, {"id": entity.id}):
-            with pytest.raises(TypeError, match="not a bare"):
+            with pytest.raises(TypeError, match="sequence of entity ids"):
                 await tracker.bulk_update_entities(
                     "project",
                     bare,  # type: ignore[arg-type]

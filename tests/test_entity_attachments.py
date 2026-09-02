@@ -240,6 +240,13 @@ class TestAttachFileToEntity:
 
         assert client.calls[0]["params"] is None
 
+    async def test_empty_fields_sequence_drops_the_param(self) -> None:
+        """`?fields=` would ask the API for an empty projection."""
+        tracker, client = make_tracker(entity_with_attachment_payload())
+        await tracker.attach_file_to_entity("project", "1", "30", fields=[])
+
+        assert client.calls[0]["params"] is None
+
 
 # --- delete_entity_attachment -----------------------------------------------------
 

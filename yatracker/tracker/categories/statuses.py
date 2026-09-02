@@ -46,7 +46,12 @@ class Statuses(BaseTracker):
             `{"ru": "Мой статус", "en": "My status"}`.
         :param type_: type of the status: "new", "inProgress",
             "paused", "done" or "cancelled". Sent as `type`.
+        :raises ValueError: if the API answered with an empty array.
         :return: created status.
+
+        The reference shows the created status wrapped into a
+        one-element array, while other single-object endpoints answer
+        with a bare object; both shapes are accepted.
         """
         payload = self._prepare_payload(locals())
         data = await self._client.request(
@@ -54,7 +59,7 @@ class Statuses(BaseTracker):
             uri="/statuses",
             payload=payload,
         )
-        return self._decode(FullStatus, data)
+        return self._decode_single(FullStatus, data)
 
     async def update_status(  # noqa: PLR0913
         self,
@@ -89,6 +94,11 @@ class Statuses(BaseTracker):
 
         Fields left as ``None`` are not sent, i.e. they stay unchanged.
 
+        The reference shows the updated status wrapped into a
+        one-element array, while other single-object endpoints answer
+        with a bare object; both shapes are accepted.
+
+        :raises ValueError: if the API answered with an empty array.
         :return: updated status.
         """
         payload = self._prepare_payload(
@@ -102,4 +112,4 @@ class Statuses(BaseTracker):
             params=params,
             payload=payload,
         )
-        return self._decode(FullStatus, data)
+        return self._decode_single(FullStatus, data)

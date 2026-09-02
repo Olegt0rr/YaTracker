@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import contextlib
+import logging
 from typing import TYPE_CHECKING, Any, overload
 
-from yatracker.exceptions import YaTrackerError
 from yatracker.tracker.base import (
     BaseTracker,
     IssueT_co,
@@ -26,6 +25,8 @@ from yatracker.types.issue_suggest import IssueSuggest
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping
+
+logger = logging.getLogger(__name__)
 
 SCROLL_ID_HEADER = "X-Scroll-Id"
 SCROLL_TOKEN_HEADER = "X-Scroll-Token"  # noqa: S105 (a header name, not a secret)
@@ -53,7 +54,12 @@ def _scroll_params(
     scroll_ttl_millis: int | None,
     fields: str | None,
 ) -> dict[str, str]:
-    """Build the query params of a scroll search page."""
+    """Build the query params of the FIRST scroll search page.
+
+    `scrollType` and `perScroll` are documented as parameters of the
+    first request of a scroll series only; the following ones are built
+    by :func:`_next_scroll_params`.
+    """
     params: dict[str, str] = {
         "scrollType": scroll_type,
         "perScroll": str(per_scroll),
@@ -67,6 +73,25 @@ def _scroll_params(
     if fields:
         params["fields"] = fields
     return params
+
+
+def _next_scroll_params(params: dict[str, str], scroll_id: str) -> dict[str, str]:
+    """Build the query params of the next page of a scroll search.
+
+    Only `scrollId` identifies the page from the second request on:
+    `scrollType` and `perScroll` belong to the first request of the
+    series and are dropped here. `scrollTTLMillis` is kept because the
+    reference sends it again in its second-request example, and the
+    response projection (`order`, `expand`, `fields`) is kept so that
+    every page decodes into the same model.
+    """
+    kept = {
+        key: value
+        for key, value in params.items()
+        if key not in ("scrollType", "perScroll")
+    }
+    kept["scrollId"] = scroll_id
+    return kept
 
 
 class Issues(BaseTracker):
@@ -546,13 +571,31 @@ class Issues(BaseTracker):
         available when you need to drive the scroll session manually.
 
         Every page holds a snapshot on the server until the scroll TTL
-        expires. When the loop is left early (``break``, an exception,
-        ...) the accumulated `X-Scroll-Id`/`X-Scroll-Token` pairs are
-        released with :meth:`clear_search_scroll` on a best-effort basis
-        — errors of that call are swallowed, and it does not run at all
-        if the generator is never closed (it is driven by
-        ``aclose()``/``shutdown_asyncgens``, which ``async for`` and
-        ``asyncio.run`` do for you).
+        expires. When the iteration is left early the accumulated
+        `X-Scroll-Id`/`X-Scroll-Token` pairs are released with
+        :meth:`clear_search_scroll` on a best-effort basis: errors of
+        that call are swallowed (they are only logged), and it is
+        skipped altogether once the tracker is closed, because a closed
+        client cannot release anything any more.
+
+        The release runs when the generator is *closed*, which a plain
+        ``break`` does not do: it only suspends the generator until
+        something finalizes it (``asyncio.run`` does, via
+        ``shutdown_asyncgens``, but only when the loop shuts down, and
+        an unclosed generator keeps the snapshot until its TTL). Close
+        it explicitly to release the snapshot at a moment you control,
+        and do it before leaving the ``async with`` block of the
+        tracker::
+
+            from contextlib import aclosing
+
+            async with aclosing(tracker.iter_issues(query=...)) as issues:
+                async for issue in issues:
+                    if ...:
+                        break
+
+        or, without a context manager, ``gen = tracker.iter_issues(...)``
+        and ``await gen.aclose()``.
 
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
@@ -600,8 +643,12 @@ class Issues(BaseTracker):
                 )
                 scroll_id = _get_header(headers, SCROLL_ID_HEADER)
                 scroll_token = _get_header(headers, SCROLL_TOKEN_HEADER)
-                if scroll_id and scroll_token:
-                    pairs[scroll_id] = scroll_token
+                if scroll_id:
+                    # `X-Scroll-Token` is documented as unused in the
+                    # current v3 API, so it may well be absent: the pair
+                    # is still recorded, with an empty token, otherwise
+                    # the snapshot would never be released.
+                    pairs[scroll_id] = scroll_token or ""
 
                 issues = self._decode(list[_type], data)  # type: ignore[valid-type]
                 if not issues:
@@ -615,13 +662,23 @@ class Issues(BaseTracker):
                     completed = True
                     return
 
-                params = {**params, "scrollId": scroll_id}
+                params = _next_scroll_params(params, scroll_id)
         finally:
             # Best effort: the caller may have gone away already, and a
-            # failing release must not mask the original error.
-            if pairs and not completed:
-                with contextlib.suppress(YaTrackerError, OSError):
+            # failing release must not mask the original error. Every
+            # exception is swallowed on purpose — the transport is
+            # pluggable, so anything from `aiohttp.ClientError` to a
+            # `TimeoutError` can come out of it. `CancelledError` is a
+            # `BaseException` and still propagates.
+            if pairs and not completed and not self._client.closed:
+                try:
                     await self.clear_search_scroll(pairs)
+                except Exception:
+                    logger.warning(
+                        "Failed to release the scroll contexts of a search; "
+                        "they expire on their own after the scroll TTL.",
+                        exc_info=True,
+                    )
 
     async def clear_search_scroll(self, scroll_ids: Mapping[str, str]) -> bool:
         """Release the resources of a scroll search.

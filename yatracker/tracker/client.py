@@ -133,6 +133,11 @@ def _set_auth_header(
 class BaseClient(ABC):
     """Represents abstract base class for tracker client."""
 
+    #: Set by :meth:`close`. Declared on the class so that a custom
+    #: transport that does not call ``super().__init__()`` still reports
+    #: an open client instead of failing with an `AttributeError`.
+    _closed: bool = False
+
     # ruff: noqa: PLR0913
     def __init__(
         self,
@@ -167,6 +172,18 @@ class BaseClient(ABC):
         _set_auth_header(_headers, token, iam_token)
         self._headers: dict[str, str] = _headers
         self._session: ClientSession | None = None
+        self._closed = False
+
+    @property
+    def closed(self) -> bool:
+        """Whether the client was closed and cannot be used any more.
+
+        Transports that keep no state may never set it: the default is
+        `False`, i.e. "still usable". Callers doing best-effort cleanup
+        (`iter_issues` releasing its scroll contexts) check it to skip a
+        request that could only fail.
+        """
+        return self._closed
 
     async def request(
         self,
@@ -334,7 +351,22 @@ class AIOHTTPClient(BaseClient):
         self._timeout: ClientTimeout = kwargs.get("timeout") or ClientTimeout(total=0)
 
     def get_session(self) -> ClientSession:
-        """Get cached session. One session per instance."""
+        """Get cached session. One session per instance.
+
+        A closed client is not reopened: creating a fresh session here
+        would leak it, because nothing closes it any more (the tracker's
+        `async with` block is already over by then).
+
+        :raises RuntimeError: if the client was closed.
+        """
+        if self._closed:
+            msg = (
+                "Client is closed: a closed YaTracker (or client) cannot "
+                "make requests any more. Build a new one instead of "
+                "reusing this one."
+            )
+            raise RuntimeError(msg)
+
         if isinstance(self._session, ClientSession) and not self._session.closed:
             return self._session
 
@@ -378,7 +410,14 @@ class AIOHTTPClient(BaseClient):
         return status, body, headers
 
     async def close(self) -> None:
-        """Close the session gracefully."""
+        """Close the session gracefully.
+
+        The client is marked closed even when there is nothing to close
+        (no request was ever made), so a later request fails loudly
+        instead of silently opening a session nobody closes.
+        """
+        self._closed = True
+
         if not isinstance(self._session, ClientSession):
             return
 

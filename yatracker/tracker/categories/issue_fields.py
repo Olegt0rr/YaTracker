@@ -197,26 +197,29 @@ class IssueFields(BaseTracker):
     async def update_field_category(
         self,
         category_id: str | int,
+        name: LocalizedNameInput,
+        order: int,
         *,
         version: str | int | None = None,
-        name: LocalizedNameInput | None = None,
-        order: int | None = None,
         description: str | None = None,
     ) -> FieldCategory:
         """Edit a category of issue fields.
+
+        `name` and `order` are required by the API even when only one of
+        them changes, so pass the current value of the other one.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-category
 
         :param category_id: ID of the category to edit.
+        :param name: new localized category name, e.g.
+            `LocalizedName(ru="Моя категория", en="My category")`.
+        :param order: new weight of the category in the interface.
         :param version: current version of the category, sent as the
             `version` query parameter. Only the current version of the
             category is changed.
-        :param name: new localized category name.
-        :param order: new weight of the category in the interface.
-        :param description: new category description.
-
-        Fields left as ``None`` are not sent, i.e. they stay unchanged.
+        :param description: new category description. Left out of the
+            request when `None`, i.e. it stays unchanged.
 
         :return: updated category.
         """

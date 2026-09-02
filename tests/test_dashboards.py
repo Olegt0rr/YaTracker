@@ -321,6 +321,30 @@ async def test_create_cycle_time_widget_rejects_bare_status() -> None:
     assert client.calls == []
 
 
+async def test_create_cycle_time_widget_names_the_offending_param() -> None:
+    tracker, _ = make_tracker(WIDGET_RESPONSE, status=201)
+    with pytest.raises(TypeError, match="`excluded_statuses`"):
+        await tracker.create_cycle_time_widget(
+            10,
+            "My widget",
+            excluded_statuses="open",  # type: ignore[arg-type]
+        )
+
+
+async def test_create_cycle_time_widget_accepts_a_tuple_of_statuses() -> None:
+    tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
+    await tracker.create_cycle_time_widget(
+        10,
+        "My widget",
+        from_statuses=("open", "inProgress"),
+    )
+
+    assert sent_json(client.calls[0])["fromStatuses"] == [
+        {"key": "open"},
+        {"key": "inProgress"},
+    ]
+
+
 async def test_create_cycle_time_widget_renames_bucket_model_type_to_unit() -> None:
     tracker, client = make_tracker(WIDGET_RESPONSE, status=201)
     widget = await tracker.create_cycle_time_widget(10, "My widget")

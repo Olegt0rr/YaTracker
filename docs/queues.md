@@ -112,10 +112,7 @@ async def create_queue(
 а не объекты `User`, `IssueType` или `Priority`, которые возвращаются в ответе.
 
 ```python
-from yatracker.types import IssueTypeConfig
-from yatracker.types.issue_type import IssueType
-from yatracker.types.workflow import Workflow
-from yatracker.types.resolution import Resolution
+from yatracker.types import IssueType, IssueTypeConfig, Resolution, Workflow
 
 issue_types_config = [
     IssueTypeConfig(
@@ -153,11 +150,7 @@ queue = await tracker.create_queue(
 
 !!! note "Несоответствие в текущей реализации"
 
-    `Workflow` и `Resolution` не входят в публичный `yatracker.types.__all__`, поэтому их нужно
-    импортировать напрямую из подмодулей (`yatracker.types.workflow`, `yatracker.types.resolution`),
-    как показано выше.
-
-    Кроме того, тип параметра `issue_types_config: list[IssueTypeConfig]` требует полностью
+    Тип параметра `issue_types_config: list[IssueTypeConfig]` требует полностью
     заполненных объектов `IssueTypeConfig` (со вложенными `IssueType`, `Workflow`, `Resolution`,
     у каждого из которых обязательны `url`/`id`/`display`) — то есть повторяет форму *ответа*
     `GET /queues/{id}?expand=issueTypesConfig`, а не минимальный формат тела запроса на создание

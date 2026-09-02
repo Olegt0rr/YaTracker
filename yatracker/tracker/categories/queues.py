@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, TypeVar, overload
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, QueueT_co
 from yatracker.types import (
     FullQueue,
     IssueTypeConfig,
@@ -14,7 +14,6 @@ from yatracker.utils.datetime import to_tracker_date
 if TYPE_CHECKING:
     from datetime import date
 
-QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
 QueueFieldT_co = TypeVar("QueueFieldT_co", bound=QueueField, covariant=True)
 QueueVersionT_co = TypeVar("QueueVersionT_co", bound=QueueVersion, covariant=True)
 
@@ -346,7 +345,12 @@ class Queues(BaseTracker):
         :param description: description of the version.
         :param start_date: start date, `YYYY-MM-DD` or a `date` object.
         :param due_date: due date, `YYYY-MM-DD` or a `date` object.
+        :raises ValueError: if the API answered with an empty array.
         :return: created version.
+
+        The reference shows the created version wrapped into an array,
+        while every other single-object endpoint answers with a bare
+        object; both shapes are accepted.
         """
         start_date = to_tracker_date(start_date)
         due_date = to_tracker_date(due_date)
@@ -363,11 +367,4 @@ class Queues(BaseTracker):
             uri="/versions",
             payload=payload,
         )
-        # The reference shows the created version wrapped into an array,
-        # while every other single-object endpoint answers with a bare
-        # object; both shapes are accepted.
-        version = self._decode(
-            list[_type] | _type,  # type: ignore[valid-type,arg-type]
-            data,
-        )
-        return version[0] if isinstance(version, list) else version
+        return self._decode_single(_type, data)

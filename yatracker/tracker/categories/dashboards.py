@@ -2,26 +2,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, _check_sequence
 from yatracker.types.dashboard import CycleTimeWidget, Dashboard, WidgetBucket
 from yatracker.types.status import Status
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterable
 
 # ruff: noqa: PLR0913
 
 
 def _encode_statuses(
-    # The bare types are part of the annotation only so that the runtime
-    # guard below is not dead code for a type checker: a single status
-    # is exactly the kind of value that would otherwise be iterated
-    # (a bare `str` character by character).
-    statuses: Sequence[str | Status | dict[str, Any]]
-    | str
-    | Status
-    | dict[str, Any]
-    | None,
+    statuses: Iterable[str | Status | dict[str, Any]] | None,
+    param: str,
 ) -> list[dict[str, Any]] | None:
     """Bring a list of statuses to the request format.
 
@@ -29,19 +22,13 @@ def _encode_statuses(
     :class:`Status` object (so a widget can be re-sent as is) are
     accepted as well. Dicts are passed through verbatim.
     """
-    if isinstance(statuses, (str, dict, Status)):
-        msg = (
-            f"A list of statuses must be a sequence, got "
-            f"{type(statuses).__name__}. Pass a sequence of statuses, "
-            "e.g. `['open']`."
-        )
-        raise TypeError(msg)
-
     if statuses is None:
         return None
 
+    checked = _check_sequence(statuses, param, "statuses", "'open'")
+
     encoded: list[dict[str, Any]] = []
-    for status in statuses:
+    for status in checked:
         if isinstance(status, Status):
             encoded.append({"key": status.key})
         elif isinstance(status, str):
@@ -64,7 +51,9 @@ def _encode_bucket(
     if bucket is None:
         return None
     if not isinstance(bucket, WidgetBucket):
-        return dict(bucket)
+        # The payload pipeline copies the dict anyway, so it is passed
+        # through as is instead of being copied twice.
+        return bucket
 
     encoded = {
         "unit": bucket.type,
@@ -118,10 +107,10 @@ class Dashboards(BaseTracker):
         query: str | None = None,
         filter_: dict[str, Any] | None = None,
         filter_id: str | int | None = None,
-        from_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
-        to_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
-        excluded_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
-        included_statuses: Sequence[str | Status | dict[str, Any]] | None = None,
+        from_statuses: Iterable[str | Status | dict[str, Any]] | None = None,
+        to_statuses: Iterable[str | Status | dict[str, Any]] | None = None,
+        excluded_statuses: Iterable[str | Status | dict[str, Any]] | None = None,
+        included_statuses: Iterable[str | Status | dict[str, Any]] | None = None,
         bucket: WidgetBucket | dict[str, Any] | None = None,
         calendar: str | int | None = None,
         lines: dict[str, Any] | None = None,
@@ -181,10 +170,10 @@ class Dashboards(BaseTracker):
             instead of a sequence.
         :return: created widget.
         """
-        from_statuses = _encode_statuses(from_statuses)
-        to_statuses = _encode_statuses(to_statuses)
-        excluded_statuses = _encode_statuses(excluded_statuses)
-        included_statuses = _encode_statuses(included_statuses)
+        from_statuses = _encode_statuses(from_statuses, "from_statuses")
+        to_statuses = _encode_statuses(to_statuses, "to_statuses")
+        excluded_statuses = _encode_statuses(excluded_statuses, "excluded_statuses")
+        included_statuses = _encode_statuses(included_statuses, "included_statuses")
         bucket = _encode_bucket(bucket)
 
         payload = self._prepare_payload(locals(), exclude=["dashboard_id"])

@@ -24,8 +24,10 @@ https://yandex.ru/support/tracker/ru/api/entities/about-entities
 ## Общие правила
 
 **Тип сущности идёт первым аргументом.** Каждый метод принимает `entity_type` —
-`"project"`, `"portfolio"` или `"goal"`. Неизвестное значение сразу вызывает
-`ValueError`, запрос при этом не отправляется.
+`"project"`, `"portfolio"` или `"goal"`. Список нужен прежде всего проверке типов:
+во время выполнения значение не проверяется и подставляется в адрес запроса как есть,
+поэтому вид сущности, который Трекер добавит позже, тоже будет работать (в том числе
+через методы объекта `Entity`, где `entity_type` приходит с сервера обычной строкой).
 
 **Поля передаются через `values` и `**kwargs`.** Оба словаря складываются в тело
 запроса под ключом `fields`, ключи из `snake_case` переводятся в `camelCase`
@@ -40,17 +42,22 @@ https://yandex.ru/support/tracker/ru/api/entities/about-entities
 которые нужно вернуть в ответе (строка или последовательность имён — она будет
 склеена через запятую), `expand="attachments"` добавляет в ответ вложения. Ответ
 приходит в виде объекта `Entity`, у которого документированные поля лежат в
-`entity.fields`, а недокументированные и пользовательские поля сохраняются как
-дополнительные атрибуты той же модели.
+`entity.fields`, а недокументированные и пользовательские поля сохраняются в той же
+модели как дополнительные. Те из них, чьё имя является корректным идентификатором
+Python, доступны атрибутом (`entity.fields.customField`), а идентификаторы локальных
+полей вида `"<id>--userId"` — только через `model_extra` или `getattr`.
 
 ```python
 entity = await tracker.get_entity("project", "655f3be523db2132", fields=["summary"])
 
 print(entity.short_id, entity.fields.summary)
+print(entity.fields.model_extra["64a51c6d866ea82411abe756--userId"])
 ```
 
-**Связи.** Параметр `links` принимает объекты `EntityLink` или обычные словари
-`{"relationship": ..., "entity": ...}`. Допустимые значения `relationship`:
+**Связи.** Параметр `links` принимает последовательность объектов `EntityLink` или
+обычных словарей `{"relationship": ..., "entity": ...}`. Одиночная связь (словарь,
+`EntityLink` или строка) вызывает `TypeError`: её пришлось бы перебирать по ключам
+или по символам. Допустимые значения `relationship`:
 
 * `"depends on"` — зависит от;
 * `"is dependent by"` — от неё зависит;
@@ -161,9 +168,10 @@ print([attachment.name for attachment in project.attachments or []])
 !!! note "Даты"
 
     Поля `start`, `end` и `last_comment_updated_at` API отдаёт либо датой
-    (`2023-11-23`), либо меткой времени (`2023-11-23T11:47:49.743+0000`), поэтому
-    в модели они объявлены как `date | datetime | None` и декодируются в тот тип,
-    который пришёл.
+    (`2023-11-23`), либо меткой времени (`2023-11-23T11:47:49.743+0000`). Тип
+    выбирается по виду самой строки, а не по её значению: дата становится `date`,
+    метка времени — `datetime` с часовым поясом, даже если время в ней ровно
+    полночь (`2023-11-23T00:00:00.000+0000`).
 
 Источник: https://yandex.ru/support/tracker/ru/api/entities/get-entity
 
@@ -220,10 +228,10 @@ async def delete_entity(
     entity_id: str | int,
     *,
     with_board: bool | None = None,
-) -> None: ...
+) -> bool: ...
 ```
 
-Удаляет сущность.
+Удаляет сущность. Метод возвращает `True` при успешном удалении.
 
 ```python
 await tracker.delete_entity("project", "655f3be523db2132", with_board=True)
@@ -349,8 +357,9 @@ print(bulk_change.status)
 ```
 
 1. `entity_type` — тип сущности.
-2. `entities` — идентификаторы сущностей или объекты `Entity` (уходят в тело как
-   `metaEntities`). Пустой список вызывает `ValueError`.
+2. `entities` — последовательность идентификаторов сущностей или объектов `Entity`
+   (уходят в тело как `metaEntities`). Пустой список вызывает `ValueError`, а одна
+   строка вместо списка — `TypeError`: её пришлось бы перебирать по символам.
 3. `values`, `**kwargs` — поля, как в `create_entity`. Если менять нечего — `ValueError`.
 4. `comment` — комментарий ко всем сущностям.
 5. `links` — связи, которые нужно добавить.
@@ -418,9 +427,14 @@ project = await tracker.get_entity("project", "655f3be523db2132")
 
 project = await project.refresh(fields=["summary", "entityStatus"])
 project = await project.update(entity_status="launched", comment="Запустились")
-events = await project.get_events(per_page=10)
+events = await project.get_events(per_page=10, direction="forward")
 await project.delete()
 ```
+
+У `project.get_events()` те же именованные параметры, что и у `get_entity_events`
+(`per_page`, `from_`, `selected`, `new_events_on_top`, `direction`), а
+`project.delete()` — как и `delete_entity` — возвращает `True` при успешном
+удалении.
 
 ## Типичный сценарий
 

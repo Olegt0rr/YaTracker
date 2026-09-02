@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar, overload
 
 from yatracker.tracker.base import BaseTracker
 from yatracker.types import FullQueue, Project
@@ -12,6 +12,8 @@ if TYPE_CHECKING:
 
 # ruff: noqa: PLR0913
 
+QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+
 
 class Projects(BaseTracker):
     """Legacy projects API (`/projects`).
@@ -22,22 +24,36 @@ class Projects(BaseTracker):
     category for them.
     """
 
-    async def get_projects(self, *, expand: str | None = None) -> list[Project]:
+    async def get_projects(
+        self,
+        *,
+        expand: str | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+    ) -> list[Project]:
         """Get projects.
 
         Use this request to get a list of all projects
-        of the organization.
+        of the organization. Like every list request, the response is
+        paginated by 50 objects; use `per_page` and `page` to fetch
+        the rest.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/projects/get-projects
 
         :param expand: additional fields to include into the response.
             The only documented value is `queues` — queues of the project.
+        :param per_page: number of projects per page (50 by default).
+        :param page: page number (1 by default).
         :return: list of projects.
         """
         params = {}
         if expand is not None:
             params["expand"] = expand
+        if per_page is not None:
+            params["perPage"] = str(per_page)
+        if page is not None:
+            params["page"] = str(page)
 
         data = await self._client.request(
             method="GET",
@@ -183,7 +199,7 @@ class Projects(BaseTracker):
         )
         return self._decode(Project, data)
 
-    async def delete_project(self, project_id: str | int) -> None:
+    async def delete_project(self, project_id: str | int) -> bool:
         """Delete a project.
 
         The queues of the project are not deleted with it.
@@ -192,38 +208,78 @@ class Projects(BaseTracker):
         https://yandex.ru/support/tracker/ru/api/projects/delete-project
 
         :param project_id: ID of the project to delete.
+        :return: `True` if the project was deleted.
         """
         await self._client.request(
             method="DELETE",
             uri=f"/projects/{project_id}",
         )
+        return True
 
+    @overload
     async def get_project_queues(
         self,
         project_id: str | int,
         *,
+        expand: str | None = ...,
+        per_page: int | None = ...,
+        page: int | None = ...,
+    ) -> list[FullQueue]: ...
+
+    @overload
+    async def get_project_queues(
+        self,
+        project_id: str | int,
+        _type: type[QueueT_co] = ...,
+        *,
+        expand: str | None = ...,
+        per_page: int | None = ...,
+        page: int | None = ...,
+    ) -> list[QueueT_co]: ...
+
+    async def get_project_queues(
+        self,
+        project_id: str | int,
+        _type: type[QueueT_co | FullQueue] = FullQueue,
+        *,
         expand: str | None = None,
-    ) -> list[FullQueue]:
+        per_page: int | None = None,
+        page: int | None = None,
+    ) -> list[FullQueue] | list[QueueT_co]:
         """Get queues of a project.
+
+        Like every list request, the response is paginated by 50
+        objects; use `per_page` and `page` to fetch the rest.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/projects/get-project-queues
 
         :param project_id: ID of the project.
+        :param _type: you can use your own extended FullQueue type.
         :param expand: additional fields to include into the response.
             One of `all`, `projects`, `components`, `versions`, `types`,
             `team`, `workflows`, `fields`, `notification_fields`,
             `issue_types_config`, `enabled_feaures`,
-            `signature_settings`.
+            `signature_settings`. These are the values of the official
+            get-project-queues page (the `enabled_feaures` typo
+            included); `get_queue` documents the same field as
+            `issueTypesConfig`, so if the snake_case form has no effect,
+            try the camelCase one.
+        :param per_page: number of queues per page (50 by default).
+        :param page: page number (1 by default).
         :return: list of queues of the project.
         """
         params = {}
         if expand is not None:
             params["expand"] = expand
+        if per_page is not None:
+            params["perPage"] = str(per_page)
+        if page is not None:
+            params["page"] = str(page)
 
         data = await self._client.request(
             method="GET",
             uri=f"/projects/{project_id}/queues",
             params=params or None,
         )
-        return self._decode(list[FullQueue], data)
+        return self._decode(list[_type], data)  # type: ignore[valid-type]

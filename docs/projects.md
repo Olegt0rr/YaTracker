@@ -34,7 +34,13 @@ https://yandex.ru/support/tracker/ru/api/projects/get-projects
 ### get_projects
 
 ```python
-async def get_projects(self, *, expand: str | None = None) -> list[Project]: ...
+async def get_projects(
+    self,
+    *,
+    expand: str | None = None,
+    per_page: int | None = None,
+    page: int | None = None,
+) -> list[Project]: ...
 ```
 
 Возвращает список всех проектов организации.
@@ -48,10 +54,27 @@ for project in projects:
 
 1. `expand` — дополнительные поля в ответе. Единственное документированное значение —
    `"queues"`: очереди проекта окажутся в поле `project.queues`.
+2. `per_page` — количество проектов на странице (по умолчанию 50).
+3. `page` — номер страницы (по умолчанию 1).
 
 ```python
 projects = await tracker.get_projects(expand="queues")
 ```
+
+Как и все списочные запросы, ответ разбит на страницы по 50 объектов — остальные
+страницы забираются через `per_page` и `page`:
+
+```python
+projects = await tracker.get_projects(per_page=100, page=2)
+```
+
+!!! note "Поле `project.queues`"
+
+    Формат очередей в ответе на `expand="queues"` в документации не описан, поэтому
+    `yatracker` декодирует их в «терпимый» объект `ProjectQueueRef`: обязательны только
+    `url` (`self`) и `id`, а `key`, `display` и `name` необязательны. Так разберётся и
+    короткая ссылка на очередь, и полный объект очереди. Если нужны полные объекты
+    `FullQueue`, используйте `get_project_queues`.
 
 Источник: https://yandex.ru/support/tracker/ru/api/projects/get-projects
 
@@ -181,7 +204,7 @@ project = await tracker.update_project(
 ### delete_project
 
 ```python
-async def delete_project(self, project_id: str | int) -> None: ...
+async def delete_project(self, project_id: str | int) -> bool: ...
 ```
 
 Удаляет проект. Очереди, входившие в проект, при этом не удаляются.
@@ -192,7 +215,7 @@ await tracker.delete_project(9)
 
 1. `project_id` — идентификатор проекта.
 
-Метод ничего не возвращает: Трекер отвечает пустым телом.
+Метод возвращает `True` при успешном удалении: Трекер отвечает пустым телом.
 
 Источник: https://yandex.ru/support/tracker/ru/api/projects/delete-project
 
@@ -204,8 +227,11 @@ await tracker.delete_project(9)
 async def get_project_queues(
     self,
     project_id: str | int,
+    _type: type[QueueT_co] = FullQueue,
     *,
     expand: str | None = None,
+    per_page: int | None = None,
+    page: int | None = None,
 ) -> list[FullQueue]: ...
 ```
 
@@ -220,9 +246,40 @@ for queue in queues:
 ```
 
 1. `project_id` — идентификатор проекта.
-2. `expand` — дополнительные поля очередей: `all`, `projects`, `components`, `versions`,
+2. `_type` — собственный наследник `FullQueue`, если вы расширили модель очереди
+   локальными полями (см. [«Работа с пользовательскими полями»](custom_fields.md)).
+3. `expand` — дополнительные поля очередей: `all`, `projects`, `components`, `versions`,
    `types`, `team`, `workflows`, `fields`, `notification_fields`, `issue_types_config`,
    `enabled_feaures`, `signature_settings`.
+4. `per_page` — количество очередей на странице (по умолчанию 50).
+5. `page` — номер страницы (по умолчанию 1).
+
+Как и все списочные запросы, ответ разбит на страницы по 50 объектов:
+
+```python
+queues = await tracker.get_project_queues(9, per_page=100, page=2)
+```
+
+Свою модель очереди — наследника `FullQueue` с локальными полями — можно передать
+вторым позиционным параметром:
+
+```python
+from yatracker.types import FullQueue, field
+
+
+class MyQueue(FullQueue):
+    user_id: int | None = field(default=None, name="64a5--userId")
+
+
+queues = await tracker.get_project_queues(9, MyQueue)
+```
+
+!!! note "Значения `expand` записаны в snake_case"
+
+    Это значения с официальной страницы `get-project-queues` (включая опечатку
+    `enabled_feaures`). При этом `get_queue` документирует то же самое поле как
+    `issueTypesConfig` — если форма в snake_case не даёт эффекта, попробуйте вариант
+    в camelCase.
 
 Источник: https://yandex.ru/support/tracker/ru/api/projects/get-project-queues
 
@@ -237,8 +294,9 @@ queues = await project.get_queues()
 await project.delete()
 ```
 
-1. `get_queues(expand=None)` — то же, что `get_project_queues(project.id)`.
-2. `delete()` — то же, что `delete_project(project.id)`.
+1. `get_queues(_type=FullQueue, *, expand=None, per_page=None, page=None)` — то же, что
+   `get_project_queues(project.id, ...)`, со всеми теми же параметрами.
+2. `delete()` — то же, что `delete_project(project.id)`; возвращает `True`.
 
 ## Типичный сценарий
 

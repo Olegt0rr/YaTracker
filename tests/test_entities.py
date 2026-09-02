@@ -14,6 +14,7 @@ https://yandex.ru/support/tracker/ru/api/entities/get-events-relative
 from __future__ import annotations
 
 import json
+import warnings
 from datetime import date, datetime, timezone
 from typing import Any
 
@@ -28,7 +29,15 @@ from yatracker.types.entity import (
     EntitySearchResult,
 )
 
-from tests.conftest import USER, FakeClient, attachment_body, make_tracker, sent_json
+from tests.conftest import (
+    USER,
+    FakeClient,
+    attachment_body,
+    bulk_change_body,
+    bulk_change_payload,
+    make_tracker,
+    sent_json,
+)
 
 # --- payload builders --------------------------------------------------------
 
@@ -110,23 +119,6 @@ EVENTS: dict[str, Any] = {
 }
 
 
-def bulk_change_payload(**overrides: Any) -> dict[str, Any]:
-    payload: dict[str, Any] = {
-        "self": "https://api.tracker.yandex.net/v3/bulkchange/1ab23cd4e5678901abcdef12",
-        "id": "1ab23cd4e5678901abcdef12",
-        "createdBy": USER,
-        "createdAt": "2020-12-15T11:52:53.665+0000",
-        "status": "CREATED",
-        "statusText": "Operation created.",
-    }
-    payload.update(overrides)
-    return payload
-
-
-def bulk_change_body(**overrides: Any) -> bytes:
-    return json.dumps(bulk_change_payload(**overrides)).encode()
-
-
 # --- decoding ----------------------------------------------------------------
 
 
@@ -183,6 +175,46 @@ class TestEntityDecoding:
 
         assert entity.fields.model_extra == {"customField": 1}
         assert entity.fields.customField == 1
+
+    @pytest.mark.parametrize(
+        "field_name",
+        ["start", "end", "lastCommentUpdatedAt"],
+    )
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("2023-11-23", date(2023, 11, 23)),
+            (
+                "2023-11-23T11:47:49.743+0000",
+                datetime(2023, 11, 23, 11, 47, 49, 743000, tzinfo=timezone.utc),
+            ),
+            # a midnight timestamp keeps its time and offset instead of
+            # collapsing into a bare `date`
+            (
+                "2023-11-23T00:00:00.000+0000",
+                datetime(2023, 11, 23, tzinfo=timezone.utc),
+            ),
+            ("2023-11-23T00:00:00Z", datetime(2023, 11, 23, tzinfo=timezone.utc)),
+        ],
+    )
+    def test_date_or_datetime_in_both_modes(
+        self,
+        field_name: str,
+        raw: str,
+        expected: date,
+    ) -> None:
+        from_json = EntityFields.model_validate_json(json.dumps({field_name: raw}))
+        from_python = EntityFields.model_validate({field_name: raw})
+
+        attr = {
+            "start": "start",
+            "end": "end",
+            "lastCommentUpdatedAt": "last_comment_updated_at",
+        }[field_name]
+        for fields in (from_json, from_python):
+            value = getattr(fields, attr)
+            assert value == expected
+            assert type(value) is type(expected)
 
     async def test_start_and_end_dates(self) -> None:
         payload = entity_payload()
@@ -423,12 +455,40 @@ class TestCreateEntity:
 
         assert client.calls[0]["params"] == {"fields": "summary"}
 
-    async def test_unknown_entity_type(self) -> None:
+    async def test_unknown_entity_type_is_sent_as_is(self) -> None:
+        # `EntityType` documents the kinds Tracker has today, but a kind
+        # added later must not be rejected client-side.
         tracker, client = make_tracker(CREATED_ENTITY)
-        with pytest.raises(ValueError, match="Unknown entity type"):
-            await tracker.create_entity("epic", "Project")  # type: ignore[arg-type]
+        await tracker.create_entity("epic", "Project")  # type: ignore[arg-type]
+
+        assert client.calls[0]["url"].endswith("/v3/entities/epic")
+
+    async def test_links_must_be_a_sequence(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        link = EntityLink(relationship="works towards", entity="1234")
+        for bare in (link, {"relationship": "works towards", "entity": "1234"}, "1234"):
+            with pytest.raises(TypeError, match="sequence of links"):
+                await tracker.create_entity("project", "Project", links=bare)  # type: ignore[arg-type]
 
         assert client.calls == []
+
+    async def test_dates_inside_a_tuple_are_rendered(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        await tracker.create_entity(
+            "project",
+            "Project",
+            values={
+                "dates": (
+                    datetime(2023, 11, 23, 10, 0, tzinfo=timezone.utc),
+                    date(2023, 11, 24),
+                ),
+            },
+        )
+
+        assert sent_json(client.calls[0])["fields"]["dates"] == [
+            "2023-11-23T10:00:00.000+0000",
+            "2023-11-24",
+        ]
 
 
 # --- get_entity --------------------------------------------------------------
@@ -530,7 +590,7 @@ class TestDeleteEntity:
         result = await tracker.delete_entity("project", "1")
 
         call = client.calls[0]
-        assert result is None
+        assert result is True
         assert call["method"] == "DELETE"
         assert call["url"].endswith("/v3/entities/project/1")
         assert call["params"] is None
@@ -703,6 +763,18 @@ class TestBulkUpdateEntities:
             "/v3/bulkchange/1ab23cd4e5678901abcdef12"
         )
 
+    async def test_bare_string_entities(self) -> None:
+        # a bare id string would be iterated character by character
+        tracker, client = make_tracker(bulk_change_payload())
+        with pytest.raises(TypeError, match="sequence of entity ids"):
+            await tracker.bulk_update_entities(
+                "project",
+                "655f3be523db2132",  # type: ignore[arg-type]
+                entity_status="x",
+            )
+
+        assert client.calls == []
+
     async def test_empty_entities(self) -> None:
         tracker, client = make_tracker(bulk_change_payload())
         with pytest.raises(ValueError, match="At least one entity"):
@@ -815,8 +887,9 @@ class TestEntityShortcuts:
         )
         tracker = YaTracker(client=client)
         entity = await tracker.get_entity("project", "655f3be523db2132")
-        await entity.delete(with_board=True)
+        result = await entity.delete(with_board=True)
 
+        assert result is True
         call = client.calls[1]
         assert call["method"] == "DELETE"
         assert call["params"] == {"withBoard": "true"}
@@ -830,11 +903,121 @@ class TestEntityShortcuts:
         )
         tracker = YaTracker(client=client)
         entity = await tracker.get_entity("project", "655f3be523db2132")
-        events = await entity.get_events(per_page=10)
+        events = await entity.get_events(per_page=10, from_="e1")
 
         assert events.has_next is True
         call = client.calls[1]
         assert call["url"].endswith(
             "/v3/entities/project/655f3be523db2132/events/_relative",
         )
-        assert call["params"] == {"perPage": "10"}
+        assert call["params"] == {"perPage": "10", "from": "e1"}
+
+    async def test_get_events_forwards_every_parameter(self) -> None:
+        client = FakeClient(
+            responses=[
+                (200, entity_body(), {}),
+                (200, json.dumps(EVENTS).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+        entity = await tracker.get_entity("project", "655f3be523db2132")
+        await entity.get_events(
+            per_page=5,
+            selected="e2",
+            new_events_on_top=True,
+            direction="backward",
+        )
+
+        assert client.calls[1]["params"] == {
+            "perPage": "5",
+            "selected": "e2",
+            "newEventsOnTop": "true",
+            "direction": "backward",
+        }
+
+    async def test_get_events_from_and_selected_are_exclusive(self) -> None:
+        client = FakeClient(responses=[(200, entity_body(), {})])
+        tracker = YaTracker(client=client)
+        entity = await tracker.get_entity("project", "655f3be523db2132")
+
+        with pytest.raises(ValueError, match="not both"):
+            await entity.get_events(from_="e1", selected="e2")
+
+        assert len(client.calls) == 1
+
+
+# --- naive datetime warning --------------------------------------------------
+
+NAIVE = datetime(2023, 11, 23, 10, 0)  # noqa: DTZ001
+AWARE = datetime(2023, 11, 23, 10, 0, tzinfo=timezone.utc)
+
+
+class TestNaiveDatetimeWarning:
+    """The warning must point at the user's call, not at a library frame."""
+
+    async def test_flat_value_is_attributed_to_the_caller(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.create_entity("project", "P", values={"start": NAIVE})
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+        assert sent_json(client.calls[0])["fields"]["start"] == (
+            "2023-11-23T10:00:00.000"
+        )
+
+    async def test_keyword_value_is_attributed_to_the_caller(self) -> None:
+        tracker, _ = make_tracker(CREATED_ENTITY)
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.create_entity("project", "P", start=NAIVE)
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
+    async def test_nested_value_is_attributed_to_the_caller(self) -> None:
+        tracker, _ = make_tracker(CREATED_ENTITY)
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.create_entity(
+                "project",
+                "P",
+                values={"deadline": {"date": NAIVE}},
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
+    async def test_warns_once_per_request(self) -> None:
+        tracker, _ = make_tracker(entity_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.update_entity(
+                "project",
+                "1",
+                values={"start": NAIVE, "dates": [NAIVE, NAIVE]},
+                end=NAIVE,
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
+    async def test_search_filter_is_attributed_to_the_caller(self) -> None:
+        tracker, _ = make_tracker(search_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.search_entities("project", filter_={"start": NAIVE})
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
+    async def test_aware_datetime_does_not_warn(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            await tracker.create_entity(
+                "project",
+                "P",
+                values={"start": AWARE, "dates": (AWARE,)},
+                end=AWARE,
+            )
+
+        assert sent_json(client.calls[0])["fields"]["start"] == (
+            "2023-11-23T10:00:00.000+0000"
+        )

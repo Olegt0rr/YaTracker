@@ -23,10 +23,9 @@ __all__ = [
 # otherwise shadow the class while the annotations are being evaluated.
 from datetime import date as date_
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import ConfigDict
-from pydantic.alias_generators import to_camel
+from pydantic import BeforeValidator, ConfigDict, TypeAdapter
 
 from .attachment import Attachment
 from .base import Base, field
@@ -38,6 +37,28 @@ if TYPE_CHECKING:
 
 EntityType = Literal["project", "portfolio", "goal"]
 """Kind of entity: a project, a portfolio of projects or a goal."""
+
+_DATE_ADAPTER = TypeAdapter(date_)
+_DATETIME_ADAPTER = TypeAdapter(datetime)
+
+
+def _parse_date_or_datetime(value: Any) -> Any:  # noqa: ANN401
+    """Pick the type by the shape of the string, not by its value.
+
+    A plain union would decide by validation mode and by the value
+    itself: in python mode a midnight timestamp is happily coerced to a
+    bare `date`, losing both the time and the offset. Parsing is left to
+    pydantic, because `datetime.fromisoformat` rejects `+0000` and `Z`
+    on Python 3.10.
+    """
+    if isinstance(value, str):
+        has_time = "T" in value or " " in value.strip()
+        return (_DATETIME_ADAPTER if has_time else _DATE_ADAPTER).validate_python(value)
+    return value
+
+
+DateOrDatetime = Annotated[date_ | datetime, BeforeValidator(_parse_date_or_datetime)]
+"""A field the API returns either as `YYYY-MM-DD` or as a full timestamp."""
 
 
 class EntityRef(Base):
@@ -109,18 +130,19 @@ class EntityFields(Base):
     The API returns only the fields listed in the `fields` query
     parameter, so every field here is optional. Unknown keys (custom
     fields and the ones not covered by the documentation) are kept as
-    model extras and are reachable as attributes.
+    model extras: the ones whose name is a valid Python identifier are
+    reachable as attributes (`fields.customField`), while local-field
+    ids like `"64a51c6d866ea82411abe756--userId"` are not and have to be
+    read through `fields.model_extra["..."]` or `getattr`.
 
     Source:
     https://yandex.ru/support/tracker/ru/api/entities/about-entities
     """
 
-    model_config = ConfigDict(
-        alias_generator=to_camel,
-        populate_by_name=True,
-        extra="allow",
-        coerce_numbers_to_str=True,
-    )
+    # The rest of the config (alias generator, `populate_by_name`,
+    # `coerce_numbers_to_str`) is inherited from `Base`: pydantic merges
+    # the parent config into this one.
+    model_config = ConfigDict(extra="allow")
 
     summary: str | None = None
     description: str | None = None
@@ -129,8 +151,8 @@ class EntityFields(Base):
     team_users: list[User] | None = None
     clients: list[User] | None = None
     followers: list[User] | None = None
-    start: date_ | datetime | None = None
-    end: date_ | datetime | None = None
+    start: DateOrDatetime | None = None
+    end: DateOrDatetime | None = None
     quarter: list[str] | None = None
     tags: list[str] | None = None
     parent_entity: EntityParent | None = None
@@ -141,7 +163,7 @@ class EntityFields(Base):
     metric_items: list[EntityMetricItem] | None = None
     key_result_items: list[EntityKeyResult] | None = None
     progress_percentage: float | None = None
-    last_comment_updated_at: date_ | datetime | None = None
+    last_comment_updated_at: DateOrDatetime | None = None
     linked_goals_count: int | None = None
     linked_projects_count: int | None = None
 
@@ -216,20 +238,45 @@ class Entity(Base):
             **kwargs,
         )
 
-    async def delete(self, *, with_board: bool | None = None) -> None:
-        """Delete the entity."""
+    async def delete(self, *, with_board: bool | None = None) -> bool:
+        """Delete the entity.
+
+        :return: `True` if the entity was deleted.
+        """
         return await self._tracker.delete_entity(
             self.entity_type,
             self.id,
             with_board=with_board,
         )
 
-    async def get_events(self, **kwargs) -> EntityEvents:
-        """Get the change history of the entity."""
+    async def get_events(
+        self,
+        *,
+        per_page: int | None = None,
+        from_: str | None = None,
+        selected: str | None = None,
+        new_events_on_top: bool | None = None,
+        direction: str | None = None,
+    ) -> EntityEvents:
+        """Get the change history of the entity.
+
+        :param per_page: Number of events per page (50 by default).
+        :param from_: Id of the event to count the page from. Mutually
+            exclusive with `selected`.
+        :param selected: Id of the event to place in the middle of the
+            page. Mutually exclusive with `from_`.
+        :param new_events_on_top: Whether to sort the newest events first.
+        :param direction: "forward" or "backward".
+        :raises ValueError: If both `from_` and `selected` are given.
+        """
         return await self._tracker.get_entity_events(
             self.entity_type,
             self.id,
-            **kwargs,
+            per_page=per_page,
+            from_=from_,
+            selected=selected,
+            new_events_on_top=new_events_on_top,
+            direction=direction,
         )
 
 

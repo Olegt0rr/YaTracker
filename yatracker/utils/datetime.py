@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import warnings
 from datetime import date, datetime
 from typing import overload
-from warnings import warn
 
 __all__ = ["NAIVE_DATETIME_WARNING", "to_tracker_date", "to_tracker_datetime"]
 
@@ -15,11 +15,21 @@ NAIVE_DATETIME_WARNING = (
 
 
 @overload
-def to_tracker_datetime(value: None, *, stacklevel: int = ...) -> None: ...
+def to_tracker_datetime(
+    value: None,
+    *,
+    stacklevel: int = ...,
+    warn: bool = ...,
+) -> None: ...
 
 
 @overload
-def to_tracker_datetime(value: datetime | str, *, stacklevel: int = ...) -> str: ...
+def to_tracker_datetime(
+    value: datetime | str,
+    *,
+    stacklevel: int = ...,
+    warn: bool = ...,
+) -> str: ...
 
 
 @overload
@@ -27,6 +37,7 @@ def to_tracker_datetime(
     value: datetime | str | None,
     *,
     stacklevel: int = ...,
+    warn: bool = ...,
 ) -> str | None: ...
 
 
@@ -34,6 +45,7 @@ def to_tracker_datetime(
     value: datetime | str | None,
     *,
     stacklevel: int = 3,
+    warn: bool = True,
 ) -> str | None:
     """Render a timestamp as ``YYYY-MM-DDThh:mm:ss.sss±hhmm``.
 
@@ -44,14 +56,16 @@ def to_tracker_datetime(
     A naive ``datetime`` is rendered without an offset and triggers a
     :class:`UserWarning`. ``stacklevel`` should point at the user's call
     site: ``3`` when this helper is called directly from a public method,
-    plus one for every extra frame in between.
+    plus one for every extra frame in between. Pass ``warn=False`` when
+    the caller warns about naive values on its own (the entities API
+    does that once per request instead of once per value).
     """
     if not isinstance(value, datetime):
         return value
 
     # Python's definition of naive: no tzinfo, or a tzinfo without an offset
-    if value.utcoffset() is None:
-        warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
+    if warn and value.utcoffset() is None:
+        warnings.warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
 
     milliseconds = value.microsecond // 1000
     return f"{value:%Y-%m-%dT%H:%M:%S}.{milliseconds:03d}{value:%z}"

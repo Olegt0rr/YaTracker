@@ -35,6 +35,7 @@ __all__ = [
     "LinkType",
     "Priority",
     "Project",
+    "ProjectQueueRef",
     "Queue",
     "QueueField",
     "QueueVersion",
@@ -79,7 +80,7 @@ from .issue_link import IssueLink, LinkDirection, LinkRelationship, LinkType
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .priority import Priority
-from .project import Project
+from .project import Project, ProjectQueueRef
 from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion

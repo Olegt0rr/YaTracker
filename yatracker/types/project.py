@@ -1,13 +1,31 @@
 from __future__ import annotations
 
-__all__ = ["Project"]
+__all__ = ["Project", "ProjectQueueRef"]
 
 from datetime import date
-from typing import Any
+from typing import Any, TypeVar, overload
 
 from .base import Base, field
 from .full_queue import FullQueue
 from .user import User
+
+QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+
+
+class ProjectQueueRef(Base):
+    """Queue reference embedded into a project for `expand="queues"`.
+
+    The shape is not documented. Only `self` and `id` are required so that
+    both a short reference (`self`, `id`, `key`, `display`) and a full
+    queue object decode; use `get_project_queues` for full `FullQueue`
+    objects.
+    """
+
+    url: str = field(alias="self")
+    id: str
+    key: str | None = None
+    display: str | None = None
+    name: str | None = None
 
 
 class Project(Base):
@@ -38,8 +56,9 @@ class Project(Base):
     team_groups - Project team groups. The shape of the objects is not
     documented, so they are kept as raw dicts.
     queues - Queues of the project, returned for `expand="queues"`.
-    The exact shape is not documented; it is assumed to be the same as
-    of `GET /projects/{id}/queues` by analogy with `get_project_queues`.
+    The exact shape is not documented, so they are decoded as tolerant
+    `ProjectQueueRef` objects: both a short reference and a full queue
+    object fit. Use `get_project_queues` for full `FullQueue` objects.
 
     Source:
     https://yandex.ru/support/tracker/ru/api/projects/get-project
@@ -59,12 +78,47 @@ class Project(Base):
     # undocumented fields, declared by the official `yandex_tracker_client`
     team_users: list[User] | None = None
     team_groups: list[dict[str, Any]] | None = None
-    queues: list[FullQueue] | None = None
+    queues: list[ProjectQueueRef] | None = None
 
-    async def get_queues(self, *, expand: str | None = None) -> list[FullQueue]:
+    @overload
+    async def get_queues(
+        self,
+        *,
+        expand: str | None = ...,
+        per_page: int | None = ...,
+        page: int | None = ...,
+    ) -> list[FullQueue]: ...
+
+    @overload
+    async def get_queues(
+        self,
+        _type: type[QueueT_co] = ...,
+        *,
+        expand: str | None = ...,
+        per_page: int | None = ...,
+        page: int | None = ...,
+    ) -> list[QueueT_co]: ...
+
+    async def get_queues(
+        self,
+        _type: type[QueueT_co | FullQueue] = FullQueue,
+        *,
+        expand: str | None = None,
+        per_page: int | None = None,
+        page: int | None = None,
+    ) -> list[FullQueue] | list[QueueT_co]:
         """Get queues of self."""
-        return await self._tracker.get_project_queues(self.id, expand=expand)
+        return await self._tracker.get_project_queues(
+            self.id,
+            _type,
+            expand=expand,
+            per_page=per_page,
+            page=page,
+        )
 
-    async def delete(self) -> None:
-        """Delete self."""
+    async def delete(self) -> bool:
+        """Delete self.
+
+        :return: `True` if the project was deleted.
+        """
         return await self._tracker.delete_project(self.id)

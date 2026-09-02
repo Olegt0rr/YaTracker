@@ -151,6 +151,38 @@ def sent_json(call: dict[str, Any]) -> Any:
     return json.loads(bytes(call["data"]._value))
 
 
+def bulk_change_payload(**overrides: Any) -> dict[str, Any]:
+    """Build a canned ``BulkChange`` payload, with optional field overrides.
+
+    Shared by the bulk-change and the entities tests: both APIs answer with
+    the very same operation object.
+    """
+    payload: dict[str, Any] = {
+        "self": "https://api.tracker.yandex.net/v3/bulkchange/1ab23cd4e5678901abcdef12",
+        "id": "1ab23cd4e5678901abcdef12",
+        "createdBy": {
+            "self": "https://api.tracker.yandex.net/v3/users/1120000000000001",
+            "id": "1120000000000001",
+            "display": "User Name",
+            "passportUid": 12345,
+        },
+        "createdAt": "2020-12-15T11:52:53.665+0000",
+        "status": "CREATED",
+        "statusText": "Operation created.",
+        "executionChunkPercent": 0,
+        "executionIssuePercent": 0,
+        "totalIssues": 24,
+        "totalCompletedIssues": 0,
+    }
+    payload.update(overrides)
+    return payload
+
+
+def bulk_change_body(**overrides: Any) -> bytes:
+    """Build a canned ``BulkChange`` JSON body, with optional field overrides."""
+    return json.dumps(bulk_change_payload(**overrides)).encode()
+
+
 def comment_body(**overrides: Any) -> bytes:
     """Build a canned ``Comment`` JSON body, with optional field overrides."""
     comment = {

@@ -32,35 +32,15 @@ from yatracker.types import (
 )
 from yatracker.types.bulk_change import TERMINAL_STATUSES
 
-from tests.conftest import FakeClient, full_issue_body, sent_json
+from tests.conftest import (
+    FakeClient,
+    bulk_change_body,
+    bulk_change_payload,
+    full_issue_body,
+    sent_json,
+)
 
 # --- payload builders --------------------------------------------------
-
-
-def bulk_change_payload(**overrides: Any) -> dict[str, Any]:
-    payload: dict[str, Any] = {
-        "self": "https://api.tracker.yandex.net/v3/bulkchange/1ab23cd4e5678901abcdef12",
-        "id": "1ab23cd4e5678901abcdef12",
-        "createdBy": {
-            "self": "https://api.tracker.yandex.net/v3/users/1120000000000001",
-            "id": "1120000000000001",
-            "display": "User Name",
-            "passportUid": 12345,
-        },
-        "createdAt": "2020-12-15T11:52:53.665+0000",
-        "status": "CREATED",
-        "statusText": "Operation created.",
-        "executionChunkPercent": 0,
-        "executionIssuePercent": 0,
-        "totalIssues": 24,
-        "totalCompletedIssues": 0,
-    }
-    payload.update(overrides)
-    return payload
-
-
-def bulk_change_body(**overrides: Any) -> bytes:
-    return json.dumps(bulk_change_payload(**overrides)).encode()
 
 
 def bulk_change_issue_payload(**overrides: Any) -> dict[str, Any]:

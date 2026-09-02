@@ -216,6 +216,17 @@ class TestEntityDecoding:
             assert value == expected
             assert type(value) is type(expected)
 
+    def test_date_or_datetime_objects_pass_through(self) -> None:
+        # python-mode input that is already a `date`/`datetime` is kept as is
+        start = date(2023, 11, 23)
+        end = datetime(2023, 11, 23, tzinfo=timezone.utc)
+        fields = EntityFields.model_validate({"start": start, "end": end})
+
+        assert fields.start == start
+        assert type(fields.start) is date
+        assert fields.end == end
+        assert type(fields.end) is datetime
+
     async def test_start_and_end_dates(self) -> None:
         payload = entity_payload()
         payload["fields"]["start"] = "2023-11-23"

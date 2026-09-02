@@ -8,7 +8,7 @@
 | yatracker/exceptions.py                            |       13 |        0 |     100% |           |
 | yatracker/tracker/\_\_init\_\_.py                  |        2 |        0 |     100% |           |
 | yatracker/tracker/api.py                           |        6 |        0 |     100% |           |
-| yatracker/tracker/base.py                          |       70 |        0 |     100% |           |
+| yatracker/tracker/base.py                          |       72 |        0 |     100% |           |
 | yatracker/tracker/categories/\_\_init\_\_.py       |        7 |        0 |     100% |           |
 | yatracker/tracker/categories/attached\_files.py    |       26 |        0 |     100% |           |
 | yatracker/tracker/categories/bulk\_operations.py   |        0 |        0 |     100% |           |
@@ -56,7 +56,7 @@
 | yatracker/types/worklog.py                         |       19 |        0 |     100% |           |
 | yatracker/utils/\_\_init\_\_.py                    |        0 |        0 |     100% |           |
 | yatracker/utils/camel\_case.py                     |       10 |        0 |     100% |           |
-| **TOTAL**                                          |  **913** |    **0** | **100%** |           |
+| **TOTAL**                                          |  **915** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge

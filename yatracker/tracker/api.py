@@ -7,6 +7,7 @@ from .categories import (
     Attachments,
     BulkChanges,
     Comments,
+    Imports,
     Issues,
     Priorities,
     Queues,
@@ -24,6 +25,7 @@ class YaTracker(
     Attachments,
     Worklogs,
     BulkChanges,
+    Imports,
     BaseTracker,
 ):
     """Represents Yandex Tracker API client.

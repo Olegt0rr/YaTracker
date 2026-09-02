@@ -8,6 +8,7 @@ from pydantic import TypeAdapter
 from typing_extensions import Self
 
 from yatracker.types.base import Base
+from yatracker.types.full_issue import FullIssue
 from yatracker.utils.camel_case import camel_case
 
 from .client import AIOHTTPClient
@@ -20,6 +21,7 @@ if TYPE_CHECKING:
 
 T = TypeVar("T")
 B = TypeVar("B", bound=Base)
+IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
 
 logger = logging.getLogger(__name__)
 
@@ -91,7 +93,7 @@ class BaseTracker:
             return _rename_and_clear(type_, payload, exclude)
 
         return {
-            camel_case(k): _convert_value(v)
+            _encode_key(k): _convert_value(v)
             for k, v in payload.items()
             if k not in {"self", "cls", *exclude}
             and not k.startswith("_")
@@ -131,6 +133,18 @@ def _field_names(type_: type[Base]) -> dict[str, str]:
     }
 
 
+def _encode_key(key: str) -> str:
+    """Convert a kwarg name to its wire (camelCase) name.
+
+    Only Python identifiers are converted (``attachment_ids`` ->
+    ``attachmentIds``). Keys that are not identifiers, such as Tracker
+    local-field ids (``64a51c6d866ea82411abe756--userId``), are sent
+    verbatim: running them through ``camel_case`` would mangle them and
+    the API would silently ignore the field.
+    """
+    return camel_case(key) if key.isidentifier() else key
+
+
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401
     """Convert values to basic types."""
     match obj:
@@ -153,7 +167,8 @@ def _rename_and_clear(
 
     Keys that are not fields of `type_` (e.g. `query`, `filter_`,
     custom fields passed via **kwargs) are kept and converted to
-    camelCase instead of being dropped.
+    camelCase instead of being dropped. Keys that are not Python
+    identifiers (local-field ids like ``<id>--userId``) are kept as is.
     """
     renamed: dict[str, Any] = {}
     exclude = {"self", "cls", *exclude}
@@ -167,6 +182,6 @@ def _rename_and_clear(
         if value is None:
             continue
 
-        renamed[encode_names.get(name) or camel_case(name)] = value
+        renamed[encode_names.get(name) or _encode_key(name)] = value
 
     return renamed

@@ -21,6 +21,7 @@ https://cloud.yandex.ru/docs/tracker/local-fields
 ```python
 from yatracker.types import FullIssue
 
+
 class HelpIssue(FullIssue):
     user_username: str | None = None
     user_id: int | None = None
@@ -46,14 +47,20 @@ class HelpIssue(FullIssue):
 Авторы стандартной библиотеки предлагают делать это так:
 
 ```python
-issue.update(**{'64a51c6d866ea82411abe756--userId': 42})
+issue.update(**{"64a51c6d866ea82411abe756--userId": 42})
 ```
+
+Такой ключ уходит в Tracker как есть: в `camelCase` преобразуются только имена,
+которые являются корректными идентификаторами Python (например, `attachment_ids`
+превратится в `attachmentIds`), а идентификаторы локальных полей вроде `<id>--userId`
+передаются без изменений.
 
 Мы же предлагаем использовать удобные вам названия, а наша библиотека позаботится о правильном
 преобразовании:
 
 ```python
 from yatracker.types import FullIssue, field
+
 
 class HelpIssue(FullIssue):
     user_id: int | None = field(

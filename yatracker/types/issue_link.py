@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["IssueLink", "LinkDirection", "LinkType"]
+__all__ = ["IssueLink", "LinkDirection", "LinkRelationship", "LinkType"]
 
 from datetime import datetime
 from enum import Enum
@@ -16,6 +16,26 @@ class LinkDirection(str, Enum):
 
     INWARD = "inward"
     OUTWARD = "outward"
+
+
+class LinkRelationship(str, Enum):
+    """Represents a link type as accepted by the import API.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/concepts/import/import-links
+    """
+
+    RELATES = "relates"
+    IS_DEPENDENT_BY = "is dependent by"
+    DEPENDS_ON = "depends on"
+    IS_SUBTASK_FOR = "is subtask for"
+    IS_PARENT_TASK_FOR = "is parent task for"
+    DUPLICATES = "duplicates"
+    IS_DUPLICATED_BY = "is duplicated by"
+    IS_EPIC_OF = "is epic of"
+    HAS_EPIC = "has epic"
+    CLONE = "clone"
+    ORIGINAL = "original"
 
 
 class LinkType(Base):

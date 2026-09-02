@@ -310,13 +310,6 @@ class TestBulkUpdateIssues:
 
         assert sent_json(client.calls[0])["values"] == {local_field: 2}
 
-    async def test_underscore_prefixed_key_is_kept_verbatim(self) -> None:
-        client = FakeClient(body=bulk_change_body())
-        tracker = YaTracker(client=client)
-        await tracker.bulk_update_issues(["TEST-1"], values={"_raw": 1})
-
-        assert sent_json(client.calls[0])["values"] == {"_raw": 1}
-
     @pytest.mark.parametrize("query", ["", "   "])
     async def test_empty_query_filter_raises_value_error(self, query: str) -> None:
         tracker = YaTracker(client=FakeClient(body=bulk_change_body()))

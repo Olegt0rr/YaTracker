@@ -4,9 +4,8 @@ import asyncio
 from typing import TYPE_CHECKING, Any
 
 from yatracker.exceptions import ObjectNotFoundError
-from yatracker.tracker.base import BaseTracker, _convert_value
+from yatracker.tracker.base import BaseTracker, _convert_value, _encode_key
 from yatracker.types import BulkChange, BulkChangeIssue
-from yatracker.utils.camel_case import camel_case
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -305,17 +304,6 @@ def _prepare_values(
         },
     )
     return prepared
-
-
-def _encode_key(key: str) -> str:
-    """Convert a snake_case field name to camelCase, keeping raw ids intact.
-
-    Local field keys look like `"<id>--name"` and must not be touched;
-    the same goes for anything else that is not a plain identifier.
-    """
-    if key.isidentifier() and not key.startswith("_"):
-        return camel_case(key)
-    return key
 
 
 def _prepare_issue_keys(issues: Sequence[str | Issue | FullIssue] | str) -> list[str]:

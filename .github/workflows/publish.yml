@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*.*.*'
 
+# Least-privilege default for every job; jobs that need more
+# declare their own permissions block.
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build

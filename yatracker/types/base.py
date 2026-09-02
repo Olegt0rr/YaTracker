@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ["Base", "field"]
+__all__ = ["Base", "field", "url_field"]
 
 from typing import TYPE_CHECKING, Any
 
@@ -22,6 +22,18 @@ def field(*args: Any, name: str | None = None, **kwargs: Any) -> Any:  # noqa: A
     if name is not None:
         kwargs.setdefault("alias", name)
     return Field(*args, **kwargs)
+
+
+def url_field() -> Any:  # noqa: ANN401
+    """Declare the ``url`` field that mirrors the API's ``self`` link.
+
+    ``self`` is read from responses and written back when a model is
+    embedded in a request body, but the field's ``alias`` stays ``url``:
+    a ``url=`` keyword argument therefore reaches the API as ``url``
+    (see ``_field_names`` in ``yatracker.tracker.base``) and is never
+    mistaken for the server-managed ``self`` key.
+    """
+    return Field(validation_alias="self", serialization_alias="self")
 
 
 class Base(Printable, BaseModel):

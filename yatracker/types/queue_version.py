@@ -5,12 +5,12 @@ __all__ = ["QueueVersion"]
 
 from datetime import date
 
-from .base import Base, field
+from .base import Base, url_field
 from .queue import Queue
 
 
 class QueueVersion(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: int
     version: int
     queue: Queue

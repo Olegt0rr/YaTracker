@@ -28,7 +28,7 @@ from typing import TYPE_CHECKING, Annotated, Any, Literal
 from pydantic import BeforeValidator, ConfigDict, TypeAdapter
 
 from .attachment import Attachment
-from .base import Base, field
+from .base import Base, field, url_field
 from .queue import Queue
 from .user import User
 
@@ -64,7 +64,7 @@ DateOrDatetime = Annotated[date_ | datetime, BeforeValidator(_parse_date_or_date
 class EntityRef(Base):
     """Short reference to an entity, embedded into `parentEntity`."""
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     display: str | None = None
 
@@ -101,7 +101,9 @@ class EntityMetricItem(Base):
 
     id: str
     text: str | None = None
-    url: str | None = None
+    # the API key is `url`; the field is named `link` because in this
+    # library `url` is reserved for the `self` link of an object
+    link: str | None = field(default=None, alias="url")
 
 
 class EntityKeyResultProgress(Base):
@@ -191,7 +193,7 @@ class Entity(Base):
     https://yandex.ru/support/tracker/ru/api/entities/about-entities
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     version: int
     short_id: int

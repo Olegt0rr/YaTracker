@@ -305,7 +305,7 @@ class TestEntityDecoding:
         assert item.deadline.is_exceeded is False
 
         assert fields.metric_items is not None
-        assert fields.metric_items[0].url == "https://ya.ru"
+        assert fields.metric_items[0].link == "https://ya.ru"
 
         assert fields.key_result_items is not None
         key_result = fields.key_result_items[0]
@@ -772,6 +772,20 @@ class TestBulkUpdateEntities:
                 "655f3be523db2132",  # type: ignore[arg-type]
                 entity_status="x",
             )
+        assert client.calls == []
+
+    async def test_bare_entity_or_mapping_entities(self) -> None:
+        # pydantic models and dicts are iterable too, but not sequences
+        tracker, client = make_tracker(bulk_change_payload())
+        entity = Entity.model_validate(CREATED_ENTITY)
+        for bare in (entity, {"id": entity.id}):
+            with pytest.raises(TypeError, match="not a bare"):
+                await tracker.bulk_update_entities(
+                    "project",
+                    bare,  # type: ignore[arg-type]
+                    entity_status="x",
+                )
+        assert client.calls == []
 
         assert client.calls == []
 

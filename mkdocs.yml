@@ -10,11 +10,14 @@ nav:
     - Компоненты: components.md
     - Проекты (устаревший API): projects.md
     - Проекты, портфели и цели: entities.md
+    - Доски и спринты: boards.md
     - Комментарии: comments.md
+    - Чек-листы: checklists.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md
     - Массовые операции: bulk_changes.md
     - Импорт: import.md
+    - Внешние приложения: applications.md
   - Обработка ошибок: errors.md
   - Дополнительные возможности:
     - Работа с пользовательскими полями: custom_fields.md

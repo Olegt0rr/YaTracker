@@ -3,9 +3,14 @@ from __future__ import annotations
 __all__ = ["FullIssue"]
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, TypeVar, overload
 
-from .base import Base, field
+from typing_extensions import Self
+
+from yatracker.utils.datetime import to_tracker_datetime
+
+from .base import Base, url_field
+from .checklist import ChecklistItem
 from .comment import Comment
 from .component import ComponentRef
 from .issue import Issue
@@ -18,11 +23,26 @@ from .transitions import Transitions
 from .user import User
 
 if TYPE_CHECKING:
+    import builtins
+
     from .issue_link import IssueLink
+
+IssueT = TypeVar("IssueT", bound="FullIssue")
+
+
+def _render_deadline(kwargs: dict[str, Any]) -> dict[str, Any]:
+    """Render a `datetime` deadline before delegating to the tracker.
+
+    Done here so the naive-datetime warning points at the caller of the
+    `FullIssue` helper, not at the frames below it.
+    """
+    if isinstance(kwargs.get("deadline"), datetime):
+        kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"], stacklevel=4)
+    return kwargs
 
 
 class FullIssue(Base):
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     key: str
     version: int
@@ -32,6 +52,9 @@ class FullIssue(Base):
     description: str | None = None
     sprint: list[Sprint] | None = None
     components: list[ComponentRef] | None = None
+    checklist_items: list[ChecklistItem] | None = None
+    checklist_total: int | None = None
+    checklist_done: int | None = None
     type: IssueType
     priority: Priority
     followers: list[User] | None = None
@@ -77,6 +100,140 @@ class FullIssue(Base):
     async def post_comment(self, text: str, **kwargs) -> Comment:
         """Post comment for self."""
         return await self._tracker.post_comment(self.id, text=text, **kwargs)
+
+    async def get_checklist(self) -> list[ChecklistItem]:
+        """Get the checklist of self."""
+        return await self._tracker.get_checklist(self.id)
+
+    @overload
+    async def add_checklist_item(
+        self,
+        text: str,
+        *,
+        _type: builtins.type[IssueT],
+        **kwargs,
+    ) -> IssueT: ...
+
+    @overload
+    async def add_checklist_item(self, text: str, **kwargs) -> Self: ...
+
+    async def add_checklist_item(
+        self,
+        text: str,
+        *,
+        _type: builtins.type[FullIssue] | None = None,
+        **kwargs,
+    ) -> FullIssue:
+        """Add an item to the checklist of self.
+
+        The result is decoded as `type(self)` unless `_type` is given
+        (e.g. `_type=FullIssue` when the subclass requires fields the
+        checklist response does not carry).
+
+        :return: the updated issue.
+        """
+        return await self._tracker.add_checklist_item(
+            self.id,
+            text,
+            _type=_type or type(self),
+            **_render_deadline(kwargs),
+        )
+
+    @overload
+    async def edit_checklist_item(
+        self,
+        item_id: str,
+        text: str,
+        *,
+        _type: builtins.type[IssueT],
+        **kwargs,
+    ) -> IssueT: ...
+
+    @overload
+    async def edit_checklist_item(
+        self,
+        item_id: str,
+        text: str,
+        **kwargs,
+    ) -> Self: ...
+
+    async def edit_checklist_item(
+        self,
+        item_id: str,
+        text: str,
+        *,
+        _type: builtins.type[FullIssue] | None = None,
+        **kwargs,
+    ) -> FullIssue:
+        """Edit an item of the checklist of self.
+
+        The API requires `text` even when only `checked` has to be
+        toggled, so pass the current text of the item to keep it.
+
+        The result is decoded as `type(self)` unless `_type` is given
+        (e.g. `_type=FullIssue` when the subclass requires fields the
+        checklist response does not carry).
+
+        :return: the updated issue.
+        """
+        return await self._tracker.edit_checklist_item(
+            self.id,
+            item_id,
+            text,
+            _type=_type or type(self),
+            **_render_deadline(kwargs),
+        )
+
+    @overload
+    async def delete_checklist_item(
+        self,
+        item_id: str,
+        *,
+        _type: builtins.type[IssueT],
+    ) -> IssueT: ...
+
+    @overload
+    async def delete_checklist_item(self, item_id: str) -> Self: ...
+
+    async def delete_checklist_item(
+        self,
+        item_id: str,
+        *,
+        _type: builtins.type[FullIssue] | None = None,
+    ) -> FullIssue:
+        """Delete an item from the checklist of self.
+
+        The result is decoded as `type(self)` unless `_type` is given.
+
+        :return: the updated issue.
+        """
+        return await self._tracker.delete_checklist_item(
+            self.id,
+            item_id,
+            _type=_type or type(self),
+        )
+
+    @overload
+    async def delete_checklist(self, *, _type: builtins.type[IssueT]) -> IssueT: ...
+
+    @overload
+    async def delete_checklist(self) -> Self: ...
+
+    async def delete_checklist(
+        self,
+        *,
+        _type: builtins.type[FullIssue] | None = None,
+    ) -> FullIssue:
+        """Delete the whole checklist of self.
+
+        The result is decoded as `type(self)` unless `_type` is given.
+
+        :return: the updated issue.
+        """
+        return await self._tracker.delete_checklist(
+            self.id,
+            _type=_type or type(self),
+        )
 
     async def get_links(self) -> list[IssueLink]:
         """Get issue links."""

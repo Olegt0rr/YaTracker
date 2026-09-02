@@ -5,7 +5,7 @@ __all__ = ["Project", "ProjectQueueRef"]
 from datetime import date
 from typing import Any, TypeVar, overload
 
-from .base import Base, field
+from .base import Base, url_field
 from .full_queue import FullQueue
 from .user import User
 
@@ -21,7 +21,7 @@ class ProjectQueueRef(Base):
     objects.
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     key: str | None = None
     display: str | None = None
@@ -65,7 +65,7 @@ class Project(Base):
 
     """
 
-    url: str = field(alias="self")
+    url: str = url_field()
     id: str
     version: int
     key: str

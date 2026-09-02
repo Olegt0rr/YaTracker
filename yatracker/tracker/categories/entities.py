@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import warnings
+from collections.abc import Sequence
 from datetime import date, datetime
 from typing import TYPE_CHECKING, Any
 
@@ -20,7 +21,7 @@ from yatracker.utils.datetime import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
 
 class Entities(BaseTracker):
@@ -434,10 +435,13 @@ def _entity_changes(
 
 def _prepare_meta_entities(entities: Sequence[str | Entity]) -> list[str]:
     """Convert a sequence of entities into a list of entity ids."""
-    if isinstance(entities, str):
+    # A bare `str` would be iterated character by character and a bare
+    # `Entity` (pydantic models iterate over their fields) or a mapping
+    # would be iterated too, producing confusing errors downstream.
+    if isinstance(entities, str) or not isinstance(entities, Sequence):
         msg = (
-            "This endpoint accepts only a sequence of entity ids. "
-            "A bare string would be iterated character by character."
+            "This endpoint accepts only a sequence of entity ids or "
+            f"`Entity` objects, not a bare {type(entities).__name__}."
         )
         raise TypeError(msg)
 

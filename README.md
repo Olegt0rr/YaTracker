@@ -25,9 +25,10 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
 * Supports both Yandex 360 (`X-Org-ID` + OAuth) and Yandex Cloud
   (`X-Cloud-Org-ID` + IAM) organizations.
 * Covers issues, queues, components, projects (both the legacy `/projects`
-  API and the entities API behind projects, portfolios and goals), comments,
-  worklogs, attachments, priorities, bulk changes, and import of issues,
-  comments, links and attachments.
+  API and the entities API behind projects, portfolios and goals), boards
+  (including columns and sprints), comments, checklists, worklogs,
+  attachments, priorities, bulk changes, external applications and remote
+  links, and import of issues, comments, links and attachments.
 * Local (custom) queue fields are supported via your own model subclasses.
 * Pluggable transport: swap `aiohttp` for any client by subclassing
   `BaseClient`.
@@ -35,7 +36,8 @@ API docs: https://yandex.cloud/en/docs/tracker/about-api
 
 ## Attention!
 * All `self` properties are renamed to `url`, because `self` is a reserved
-  name in Python.
+  name in Python. A `url=` keyword argument is sent to the API as `url`;
+  models embedded in a request body keep the API's `self` key.
 * All `camelCase` properties are renamed to `pythonic_case`.
 * All datetime values are converted to Python `datetime.datetime` objects.
 * Methods are named by the author, because the Yandex API has no clear

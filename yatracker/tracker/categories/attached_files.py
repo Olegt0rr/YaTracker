@@ -13,7 +13,7 @@ class Attachments(BaseTracker):
         """Get a list of files attached to an issue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/get-attachments-list
+        https://yandex.cloud/en/docs/tracker/concepts/issues/get-attachments-list
         """
         data = await self._client.request(
             method="GET",
@@ -30,7 +30,7 @@ class Attachments(BaseTracker):
         """Download file attached to an issue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/get-attachment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/get-attachment
         """
         return await self._client.request(
             method="GET",
@@ -45,7 +45,7 @@ class Attachments(BaseTracker):
         """Get thumbnails of image files attached to issues.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/get-attachment-preview
+        https://yandex.cloud/en/docs/tracker/concepts/issues/get-attachment-preview
         """
         return await self._client.request(
             method="GET",
@@ -61,7 +61,7 @@ class Attachments(BaseTracker):
         """Attach a file to an issue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/post-attachment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/post-attachment
         """
         # Tracker takes the name from the multipart part by default;
         # the `filename` query param, when present, overrides it.
@@ -86,7 +86,7 @@ class Attachments(BaseTracker):
         attach it when creating an issue or adding a comment.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/temp-attachment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/temp-attachment
         """
         # Tracker takes the name from the multipart part by default;
         # the `filename` query param, when present, overrides it.
@@ -104,7 +104,7 @@ class Attachments(BaseTracker):
         """Delete attached file.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/delete-attachment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/delete-attachment
         """
         await self._client.request(
             method="DELETE",

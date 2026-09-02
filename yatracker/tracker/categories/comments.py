@@ -89,7 +89,7 @@ class Comments(BaseTracker):
         :param markup_type: Comment markup type, e.g. "md" for Markdown.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/edit-comment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/edit-comment
         """
         payload = self._prepare_payload(locals(), exclude=["issue_id", "comment_id"])
         data = await self._client.request(
@@ -103,7 +103,7 @@ class Comments(BaseTracker):
         """Delete issue comment.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/delete-comment
+        https://yandex.cloud/en/docs/tracker/concepts/issues/delete-comment
         """
         await self._client.request(
             method="DELETE",

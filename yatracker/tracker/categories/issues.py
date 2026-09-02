@@ -121,7 +121,7 @@ class Issues(BaseTracker):
         The issue is selected by its ID or key.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/patch-issue
+        https://yandex.cloud/en/docs/tracker/concepts/issues/patch-issue
         """
         data = await self._client.request(
             method="PATCH",
@@ -267,7 +267,7 @@ class Issues(BaseTracker):
         same format as when editing issues.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/issues/move-issue
+        https://yandex.cloud/en/docs/tracker/concepts/issues/move-issue
         """
         params: dict[str, Any] = {"queue": queue_key}
 

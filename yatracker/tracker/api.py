@@ -26,7 +26,7 @@ class YaTracker(
 ):
     """Represents Yandex Tracker API client.
 
-    API docs: https://cloud.yandex.com/en/docs/tracker/about-api
+    API docs: https://yandex.cloud/en/docs/tracker/about-api
 
     Attention!
         All 'self' properties renamed to 'url' because it's incompatible with Python.

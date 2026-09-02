@@ -45,7 +45,7 @@ class Queues(BaseTracker):
         Use this request to get information about a queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/get-queue
+        https://yandex.cloud/en/docs/tracker/concepts/queues/get-queue
 
         :param queue_id: ID or key of the current queue.
         :param _type: you can use your own extended FullQueue type
@@ -104,7 +104,7 @@ class Queues(BaseTracker):
         """Create a queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/create-queue
+        https://yandex.cloud/en/docs/tracker/concepts/queues/create-queue
         """
         payload = self._prepare_payload(locals(), type_=_type)
         data = await self._client.request(
@@ -141,7 +141,7 @@ class Queues(BaseTracker):
         If there are more than 50 queues in the response, use pagination.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/get-queues
+        https://yandex.cloud/en/docs/tracker/concepts/queues/get-queues
         """
         params = {}
         if expand is not None:
@@ -163,7 +163,7 @@ class Queues(BaseTracker):
         """Delete queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/delete-queue
+        https://yandex.cloud/en/docs/tracker/concepts/queues/delete-queue
         """
         await self._client.request(
             method="DELETE",
@@ -192,7 +192,7 @@ class Queues(BaseTracker):
         """Restore queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/restore-queue
+        https://yandex.cloud/en/docs/tracker/concepts/queues/restore-queue
         """
         data = await self._client.request(
             method="POST",
@@ -208,7 +208,7 @@ class Queues(BaseTracker):
         """Remove a tag from a queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/delete-tag
+        https://yandex.cloud/en/docs/tracker/concepts/queues/delete-tag
         """
         await self._client.request(
             method="POST",
@@ -238,7 +238,7 @@ class Queues(BaseTracker):
         """Get required fields for the queue.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/get-fields
+        https://yandex.cloud/en/docs/tracker/concepts/queues/get-fields
         """
         data = await self._client.request(
             method="GET",
@@ -267,7 +267,7 @@ class Queues(BaseTracker):
         """Get queue versions.
 
         Source:
-        https://cloud.yandex.com/en/docs/tracker/concepts/queues/get-versions
+        https://yandex.cloud/en/docs/tracker/concepts/queues/get-versions
         """
         data = await self._client.request(
             method="GET",

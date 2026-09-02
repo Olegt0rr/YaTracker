@@ -9,9 +9,9 @@
 | yatracker/tracker/\_\_init\_\_.py                  |        2 |        0 |     100% |           |
 | yatracker/tracker/api.py                           |        6 |        0 |     100% |           |
 | yatracker/tracker/base.py                          |       74 |        0 |     100% |           |
-| yatracker/tracker/categories/\_\_init\_\_.py       |        8 |        0 |     100% |           |
+| yatracker/tracker/categories/\_\_init\_\_.py       |        9 |        0 |     100% |           |
 | yatracker/tracker/categories/attached\_files.py    |       26 |        0 |     100% |           |
-| yatracker/tracker/categories/bulk\_operations.py   |        0 |        0 |     100% |           |
+| yatracker/tracker/categories/bulk\_operations.py   |       98 |        0 |     100% |           |
 | yatracker/tracker/categories/checklists.py         |        0 |        0 |     100% |           |
 | yatracker/tracker/categories/comments.py           |       28 |        0 |     100% |           |
 | yatracker/tracker/categories/components.py         |        0 |        0 |     100% |           |
@@ -27,9 +27,10 @@
 | yatracker/tracker/categories/users.py              |        0 |        0 |     100% |           |
 | yatracker/tracker/categories/worklogs.py           |       44 |        0 |     100% |           |
 | yatracker/tracker/client.py                        |      119 |        0 |     100% |           |
-| yatracker/types/\_\_init\_\_.py                    |       21 |        0 |     100% |           |
+| yatracker/types/\_\_init\_\_.py                    |       22 |        0 |     100% |           |
 | yatracker/types/attachment.py                      |       19 |        0 |     100% |           |
 | yatracker/types/base.py                            |       18 |        0 |     100% |           |
+| yatracker/types/bulk\_change.py                    |       44 |        0 |     100% |           |
 | yatracker/types/comment.py                         |       14 |        0 |     100% |           |
 | yatracker/types/duration.py                        |       45 |        0 |     100% |           |
 | yatracker/types/full\_issue.py                     |       48 |        0 |     100% |           |
@@ -57,7 +58,7 @@
 | yatracker/utils/\_\_init\_\_.py                    |        0 |        0 |     100% |           |
 | yatracker/utils/camel\_case.py                     |       10 |        0 |     100% |           |
 | yatracker/utils/datetime.py                        |       19 |        0 |     100% |           |
-| **TOTAL**                                          |  **987** |    **0** | **100%** |           |
+| **TOTAL**                                          | **1131** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge

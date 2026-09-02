@@ -8,6 +8,7 @@ back to the tracker that produced them (``FullIssue.get_comments()``,
 from __future__ import annotations
 
 import json
+from dataclasses import fields
 from typing import Any
 
 import pytest
@@ -22,6 +23,7 @@ from yatracker.types import (
     Transitions,
     User,
 )
+from yatracker.types.duration import PATTERN
 from yatracker.utils.camel_case import camel_case
 
 from tests.conftest import FakeClient, full_issue_body
@@ -102,6 +104,7 @@ class TestDuration:
         [
             ({"years": 1}, "P1Y"),
             ({"months": 2}, "P2M"),
+            ({"weeks": 2}, "P2W"),
             ({"days": 3}, "P3D"),
             ({"hours": 4}, "PT4H"),
             ({"minutes": 5}, "PT5M"),
@@ -151,9 +154,17 @@ class TestDuration:
         assert Duration.from_iso("PT2H30M") == duration
         assert Duration.from_iso(duration.to_iso()) == duration
 
-    def test_from_iso_ignores_weeks(self) -> None:
-        """`weeks` is matched by the pattern but is not a Duration field."""
-        assert Duration.from_iso("P1W2DT3H") == Duration(days=2, hours=3)
+    def test_from_iso_reads_weeks(self) -> None:
+        assert Duration.from_iso("P1W2DT3H") == Duration(weeks=1, days=2, hours=3)
+        duration = Duration(weeks=2)
+        assert Duration.from_iso(duration.to_iso()) == duration
+
+    def test_every_pattern_group_maps_to_a_field(self) -> None:
+        """A named group without a matching field is silently dropped by from_iso."""
+        structural_groups = {"time"}
+        assert set(PATTERN.groupindex) - structural_groups == {
+            f.name for f in fields(Duration)
+        }
 
     @pytest.mark.parametrize("value", ["", "1H", "P", "12345", "PXY"])
     def test_from_iso_rejects_garbage(self, value) -> None:

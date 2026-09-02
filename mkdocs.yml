@@ -9,6 +9,7 @@ nav:
     - Очереди: queues.md
     - Компоненты: components.md
     - Комментарии: comments.md
+    - Чек-листы: checklists.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md
     - Массовые операции: bulk_changes.md

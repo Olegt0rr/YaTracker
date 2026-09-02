@@ -6,6 +6,7 @@ from .base import BaseTracker
 from .categories import (
     Attachments,
     BulkChanges,
+    Checklists,
     Comments,
     Components,
     Imports,
@@ -22,6 +23,7 @@ class YaTracker(
     Queues,
     Issues,
     Comments,
+    Checklists,
     Priorities,
     Components,
     Attachments,

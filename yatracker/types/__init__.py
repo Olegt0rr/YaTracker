@@ -4,6 +4,9 @@ __all__ = [
     "BulkChange",
     "BulkChangeError",
     "BulkChangeIssue",
+    "ChecklistAssignee",
+    "ChecklistDeadline",
+    "ChecklistItem",
     "Comment",
     "Component",
     "ComponentRef",
@@ -34,6 +37,7 @@ __all__ = [
 from .attachment import Attachment
 from .base import Base, field
 from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
+from .checklist import ChecklistAssignee, ChecklistDeadline, ChecklistItem
 from .comment import Comment
 from .component import Component, ComponentRef
 from .duration import Duration

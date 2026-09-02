@@ -28,6 +28,7 @@ print(issue.key, issue.status)
 | Очереди | `get_queue`, `get_queues`, `create_queue`, `delete_queue`, `restore_queue`, `delete_tag_from_queue`, `get_queue_fields`, `get_queue_versions` | [Очереди](queues.md) |
 | Компоненты | `get_components`, `get_queue_components`, `create_component`, `update_component` | [Компоненты](components.md) |
 | Комментарии | `get_comments`, `post_comment`, `edit_comment`, `delete_comment` | [Комментарии](comments.md) |
+| Чек-листы | `get_checklist`, `add_checklist_item`, `edit_checklist_item`, `delete_checklist_item`, `delete_checklist` | [Чек-листы](checklists.md) |
 | Учёт времени | `post_worklog`, `edit_worklog`, `delete_worklog`, `get_issue_worklog`, `get_worklog` | [Учёт времени](worklogs.md) |
 | Вложения | `get_attachments`, `attach_file`, `upload_temp_file`, `download_attachment`, `download_thumbnail`, `delete_attachment` | [Вложения](attachments.md) |
 | Массовые операции | `bulk_update_issues`, `bulk_transition_issues`, `bulk_move_issues`, `get_bulk_change`, `get_bulk_change_issues`, `wait_bulk_change` | [Массовые операции](bulk_changes.md) |
@@ -37,7 +38,7 @@ print(issue.key, issue.status)
 !!! note "Покрытие API"
 
     Библиотека покрывает не весь API Трекера. Разделы, которых нет в таблице выше
-    (чек-листы, макросы, доски, проекты и т.д.),
+    (макросы, доски, проекты и т.д.),
     пока не реализованы. Если вам нужен отсутствующий метод — вы всегда можете
     выполнить запрос напрямую через `tracker._client.request(...)`
     или прислать pull request.

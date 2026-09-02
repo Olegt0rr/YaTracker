@@ -104,6 +104,11 @@ async def get_issue_or_none(tracker, key: str):
 Практически всегда это `create_issue(..., unique=...)`: Трекер использует
 `unique` как ключ идемпотентности и не даёт создать дубль.
 
+Тот же код `409` Трекер возвращает при конфликте версий — когда в `edit_issue`
+или `update_component` передана устаревшая `version`. Библиотека и в этом случае
+выбрасывает `AlreadyExistsError`, несмотря на текст сообщения про «существующий
+объект»: перечитайте объект и повторите запрос с актуальной версией.
+
 ```python
 from yatracker.exceptions import AlreadyExistsError
 

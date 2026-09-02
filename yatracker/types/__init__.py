@@ -1,6 +1,8 @@
 __all__ = [
+    "Application",
     "Attachment",
     "Base",
+    "BaseLink",
     "BulkChange",
     "BulkChangeError",
     "BulkChangeIssue",
@@ -26,6 +28,8 @@ __all__ = [
     "QueueVersion",
     "QueueVersionRef",
     "Ref",
+    "RemoteLink",
+    "RemoteLinkObject",
     "Sprint",
     "Status",
     "Transition",
@@ -35,6 +39,7 @@ __all__ = [
     "field",
 ]
 
+from .application import Application
 from .attachment import Attachment
 from .base import Base, field
 from .bulk_change import BulkChange, BulkChangeError, BulkChangeIssue
@@ -44,7 +49,13 @@ from .duration import Duration
 from .full_issue import FullIssue
 from .full_queue import FullQueue, QueueVersionRef
 from .issue import Issue
-from .issue_link import IssueLink, LinkDirection, LinkRelationship, LinkType
+from .issue_link import (
+    BaseLink,
+    IssueLink,
+    LinkDirection,
+    LinkRelationship,
+    LinkType,
+)
 from .issue_type import IssueType
 from .issue_type_config import IssueTypeConfig
 from .macro import FieldRef, Macro, MacroFieldChange
@@ -53,6 +64,7 @@ from .queue import Queue
 from .queue_field import QueueField
 from .queue_version import QueueVersion
 from .ref import Ref
+from .remote_link import RemoteLink, RemoteLinkObject
 from .sprint import Sprint
 from .status import Status
 from .transition import Transition

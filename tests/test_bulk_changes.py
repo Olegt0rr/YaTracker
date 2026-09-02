@@ -250,12 +250,12 @@ class TestBulkUpdateIssues:
 
     async def test_empty_values_raises_value_error(self) -> None:
         tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
-        with pytest.raises(ValueError, match="values"):
+        with pytest.raises(ValueError, match="at least one field"):
             await tracker.bulk_update_issues(["TEST-1"], values={})
 
     async def test_no_values_and_no_kwargs_raises_value_error(self) -> None:
         tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
-        with pytest.raises(ValueError, match="values"):
+        with pytest.raises(ValueError, match="at least one field"):
             await tracker.bulk_update_issues(["TEST-1"])
 
     async def test_snake_case_values_keys_are_camel_cased(self) -> None:

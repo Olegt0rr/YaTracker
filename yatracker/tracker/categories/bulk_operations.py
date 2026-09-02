@@ -59,7 +59,10 @@ class BulkChanges(BaseTracker):
 
         prepared_values = _prepare_values(values, kwargs)
         if not prepared_values:
-            msg = "Bulk update requires at least one field in `values`."
+            msg = (
+                "Bulk update requires at least one field, "
+                "passed via `values` or as a keyword argument."
+            )
             raise ValueError(msg)
 
         payload: dict[str, Any] = {

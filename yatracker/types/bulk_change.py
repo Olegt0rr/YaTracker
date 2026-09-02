@@ -3,6 +3,7 @@ from __future__ import annotations
 __all__ = ["BulkChange", "BulkChangeError", "BulkChangeIssue"]
 
 from datetime import datetime
+from typing import Any
 
 from .base import Base, field
 from .issue import Issue
@@ -18,7 +19,7 @@ TERMINAL_STATUSES: frozenset[str] = frozenset(
 class BulkChangeError(Base):
     """Represents errors occurred while changing a single issue."""
 
-    errors: dict[str, str] = field(default_factory=dict)
+    errors: dict[str, Any] = field(default_factory=dict)
     error_messages: list[str] = field(default_factory=list)
 
 
@@ -72,8 +73,12 @@ class BulkChange(Base):
     ) -> BulkChange:
         """Wait until the operation is finished.
 
+        With the default `timeout=None` the wait is unbounded, so pass an
+        explicit `timeout` in unattended code.
+
         :param interval: Delay between status checks (seconds).
         :param timeout: Maximum time to wait (seconds), `None` for no limit.
+        :raises TimeoutError: If the operation is not finished in time.
         """
         return await self._tracker.wait_bulk_change(
             self,
@@ -82,5 +87,8 @@ class BulkChange(Base):
         )
 
     async def get_issues(self) -> list[BulkChangeIssue]:
-        """Get per-issue results of the operation."""
+        """Get the issues the operation failed to process.
+
+        Only the issues that finished with an error are returned.
+        """
         return await self._tracker.get_bulk_change_issues(self.id)

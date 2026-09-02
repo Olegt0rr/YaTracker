@@ -80,3 +80,8 @@ def multipart_dispparams(call: dict[str, Any]) -> Any:
     don't repeat the reach-through.
     """
     return call["data"]._fields[0][0]
+
+
+def sent_json(call: dict[str, Any]) -> Any:
+    """Decode the JSON body attached to a captured request."""
+    return json.loads(call["data"]._value)

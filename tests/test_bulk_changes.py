@@ -8,7 +8,6 @@ BulkChangeError types, and the model shortcuts they expose.
 
 from __future__ import annotations
 
-import asyncio
 import json
 from datetime import datetime, timezone
 from typing import Any
@@ -23,6 +22,7 @@ from yatracker.types import (
     BulkChangeError,
     BulkChangeIssue,
     FullIssue,
+    FullQueue,
     Issue,
     Queue,
     Status,
@@ -31,7 +31,7 @@ from yatracker.types import (
 )
 from yatracker.types.bulk_change import TERMINAL_STATUSES
 
-from tests.conftest import FakeClient, full_issue_body
+from tests.conftest import FakeClient, full_issue_body, sent_json
 
 # --- payload builders --------------------------------------------------
 
@@ -84,10 +84,6 @@ def bulk_change_issue_payload(**overrides: Any) -> dict[str, Any]:
     }
     payload.update(overrides)
     return payload
-
-
-def sent_json(call: dict[str, Any]) -> Any:
-    return json.loads(bytes(call["data"]._value))
 
 
 def patch_sleep(monkeypatch: pytest.MonkeyPatch) -> list[float]:
@@ -258,6 +254,44 @@ class TestBulkUpdateIssues:
         with pytest.raises(ValueError, match="values"):
             await tracker.bulk_update_issues(["TEST-1"])
 
+    async def test_snake_case_values_keys_are_camel_cased(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_update_issues(
+            ["TEST-1"],
+            values={"attachment_ids": ["1"], "storyPoints": 3},
+        )
+
+        assert sent_json(client.calls[0])["values"] == {
+            "attachmentIds": ["1"],
+            "storyPoints": 3,
+        }
+
+    async def test_local_field_keys_are_kept_verbatim(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        local_field = "64a51c6d866ea82411abe756--userId"
+        await tracker.bulk_update_issues(["TEST-1"], values={local_field: 42})
+
+        assert sent_json(client.calls[0])["values"] == {local_field: 42}
+
+    async def test_kwargs_override_same_field_given_in_snake_case(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_update_issues(
+            ["TEST-1"],
+            values={"story_points": 1},
+            story_points=2,
+        )
+
+        assert sent_json(client.calls[0])["values"] == {"storyPoints": 2}
+
+    @pytest.mark.parametrize("query", ["", "   "])
+    async def test_empty_query_filter_raises_value_error(self, query: str) -> None:
+        tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
+        with pytest.raises(ValueError, match="filter"):
+            await tracker.bulk_update_issues(query, values={"priority": "minor"})
+
     async def test_returns_parsed_bulk_change(self) -> None:
         client = FakeClient(body=bulk_change_body())
         tracker = YaTracker(client=client)
@@ -402,6 +436,38 @@ class TestBulkMoveIssues:
 
         assert sent_json(client.calls[0])["queue"] == "NEWQ"
 
+    async def test_full_queue_instance_uses_key(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        queue = FullQueue.model_validate(
+            {
+                "self": "https://api.tracker.yandex.net/v3/queues/ARCH",
+                "id": "3",
+                "key": "ARCH",
+                "version": 1,
+                "name": "Archive",
+                "lead": {"self": "u", "id": "1", "display": "User"},
+                "assignAuto": False,
+                "defaultType": {"self": "t", "id": "1", "key": "task", "display": "T"},
+                "defaultPriority": {
+                    "self": "p",
+                    "id": "2",
+                    "key": "normal",
+                    "display": "N",
+                },
+            },
+        )
+        await tracker.bulk_move_issues(["TEST-1"], queue)
+
+        assert sent_json(client.calls[0])["queue"] == "ARCH"
+
+    async def test_notify_false_sends_query_param(self) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        await tracker.bulk_move_issues(["TEST-1"], "NEWQ", notify=False)
+
+        assert client.calls[0]["params"] == {"notify": "false"}
+
     async def test_move_all_fields_and_initial_status_omitted_when_none(
         self,
     ) -> None:
@@ -464,6 +530,15 @@ class TestBulkMoveIssues:
 
 
 class TestGetBulkChange:
+    async def test_accepts_bulk_change_instance(self) -> None:
+        client = FakeClient(body=bulk_change_body(id="xyz987", status="COMPLETE"))
+        tracker = YaTracker(client=client)
+        bulk_change = BulkChange.model_validate(bulk_change_payload(id="xyz987"))
+        result = await tracker.get_bulk_change(bulk_change)
+
+        assert result.status == "COMPLETE"
+        assert client.calls[0]["url"].endswith("/v3/bulkchange/xyz987")
+
     async def test_sends_get_to_bulkchange_id(self) -> None:
         client = FakeClient(
             body=bulk_change_body(
@@ -489,6 +564,27 @@ class TestGetBulkChange:
 
 
 class TestGetBulkChangeIssues:
+    async def test_accepts_bulk_change_instance(self) -> None:
+        client = FakeClient(body=b"[]")
+        tracker = YaTracker(client=client)
+        bulk_change = BulkChange.model_validate(bulk_change_payload(id="xyz987"))
+        result = await tracker.get_bulk_change_issues(bulk_change)
+
+        assert result == []
+        assert client.calls[0]["url"].endswith("/v3/bulkchange/xyz987/issues")
+
+    async def test_non_string_error_values_are_decoded(self) -> None:
+        item = bulk_change_issue_payload(
+            error={"errors": {"tags": ["bad", "worse"]}, "errorMessages": ["x"]},
+        )
+        client = FakeClient(body=json.dumps([item]).encode())
+        tracker = YaTracker(client=client)
+        result = await tracker.get_bulk_change_issues("1ab23cd4e5678901abcdef12")
+
+        assert result[0].error is not None
+        assert result[0].error.errors == {"tags": ["bad", "worse"]}
+        assert result[0].error.error_messages == ["x"]
+
     async def test_sends_get_to_issues_sub_resource(self) -> None:
         second_item = {
             "issue": {
@@ -497,7 +593,7 @@ class TestGetBulkChangeIssues:
                 "key": "TEST-2",
                 "display": "Test 2",
             },
-            "status": "SUCCESS",
+            "status": "FAILED",
         }
         client = FakeClient(
             body=json.dumps(
@@ -542,7 +638,7 @@ class TestGetBulkChangeIssues:
                 "key": "TEST-2",
                 "display": "Test 2",
             },
-            "status": "SUCCESS",
+            "status": "FAILED",
         }
         client = FakeClient(body=json.dumps([item_without_error]).encode())
         tracker = YaTracker(client=client)
@@ -681,6 +777,52 @@ class TestWaitBulkChange:
 
         assert len(client.calls) == NOT_FOUND_RETRIES + 1
 
+    async def test_finished_instance_is_returned_without_requests(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        sleeps = patch_sleep(monkeypatch)
+        client = FakeClient(body=bulk_change_body(status="RUNNING"))
+        tracker = YaTracker(client=client)
+        bulk_change = BulkChange.model_validate(bulk_change_payload(status="COMPLETE"))
+
+        result = await tracker.wait_bulk_change(bulk_change, interval=1)
+
+        assert result is bulk_change
+        assert client.calls == []
+        assert sleeps == []
+
+    async def test_404_after_operation_was_seen_is_not_retried(
+        self,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        patch_sleep(monkeypatch)
+        client = FakeClient(
+            responses=[
+                (200, bulk_change_body(status="RUNNING"), {}),
+                (404, b"{}", {}),
+                (200, bulk_change_body(status="COMPLETE"), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+
+        with pytest.raises(ObjectNotFoundError):
+            await tracker.wait_bulk_change("1ab23cd4e5678901abcdef12", interval=1)
+
+        assert len(client.calls) == 2
+
+    @pytest.mark.parametrize("timeout", [0, -1])
+    async def test_timeout_must_be_positive(self, timeout: float) -> None:
+        client = FakeClient(body=bulk_change_body())
+        tracker = YaTracker(client=client)
+        with pytest.raises(ValueError, match="timeout"):
+            await tracker.wait_bulk_change(
+                "1ab23cd4e5678901abcdef12",
+                timeout=timeout,
+            )
+
+        assert client.calls == []
+
     async def test_interval_must_be_positive(self) -> None:
         tracker = YaTracker(client=FakeClient(body=bulk_change_body()))
         with pytest.raises(ValueError, match="interval"):
@@ -696,7 +838,7 @@ class TestWaitBulkChange:
         client = FakeClient(body=bulk_change_body(status="RUNNING"))
         tracker = YaTracker(client=client)
 
-        with pytest.raises((TimeoutError, asyncio.TimeoutError)):
+        with pytest.raises(TimeoutError):
             await tracker.wait_bulk_change(
                 "1ab23cd4e5678901abcdef12",
                 interval=0.01,

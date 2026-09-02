@@ -16,7 +16,7 @@ from pydantic import TypeAdapter
 from yatracker import YaTracker
 from yatracker.types import FullQueue, QueueField
 
-from tests.conftest import FakeClient
+from tests.conftest import FakeClient, sent_json
 
 USER = {
     "self": "https://api.tracker.yandex.net/v3/users/1111",
@@ -122,11 +122,6 @@ def make_tracker(
     body = b"{}" if payload is None else json.dumps(payload).encode()
     client = FakeClient(status=status, body=body)
     return YaTracker(client=client), client
-
-
-def sent_json(call: dict[str, Any]) -> Any:
-    """Decode the JSON body attached to a captured request."""
-    return json.loads(call["data"]._value)
 
 
 class TestFullQueueDecoding:

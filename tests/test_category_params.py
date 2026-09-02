@@ -9,7 +9,6 @@ from __future__ import annotations
 import io
 import json
 from datetime import datetime, timezone
-from typing import Any
 
 import pytest
 from yatracker import YaTracker
@@ -17,7 +16,12 @@ from yatracker.types import Duration, IssueType, IssueTypeConfig, Worklog
 from yatracker.types.resolution import Resolution
 from yatracker.types.workflow import Workflow
 
-from tests.conftest import FakeClient, full_issue_body, multipart_dispparams
+from tests.conftest import (
+    FakeClient,
+    full_issue_body,
+    multipart_dispparams,
+    sent_json,
+)
 
 
 def priority_body() -> bytes:
@@ -381,10 +385,6 @@ def full_queue_body() -> bytes:
             },
         },
     ).encode()
-
-
-def sent_json(call: dict[str, Any]) -> Any:
-    return json.loads(bytes(call["data"]._value))
 
 
 # --- worklogs ---------------------------------------------------------------

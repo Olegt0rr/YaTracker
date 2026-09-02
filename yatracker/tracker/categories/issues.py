@@ -8,6 +8,7 @@ from yatracker.tracker.base import (
     IssueT_co,
     SuggestT_co,
     _iter_relative,
+    _join_fields,
     _relative_page_size,
 )
 from yatracker.types import (
@@ -24,7 +25,7 @@ from yatracker.types.issue_link import CreatedIssueLink, IssueLink
 from yatracker.types.issue_suggest import IssueSuggest
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Mapping
+    from collections.abc import AsyncIterator, Mapping, Sequence
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +53,7 @@ def _scroll_params(
     order: str | None,
     expand: str | None,
     scroll_ttl_millis: int | None,
-    fields: str | None,
+    fields: str | Sequence[str] | None,
 ) -> dict[str, str]:
     """Build the query params of the FIRST scroll search page.
 
@@ -70,8 +71,9 @@ def _scroll_params(
         params["expand"] = expand
     if scroll_ttl_millis is not None:
         params["scrollTTLMillis"] = str(scroll_ttl_millis)
-    if fields:
-        params["fields"] = fields
+    joined_fields = _join_fields(fields)
+    if joined_fields:
+        params["fields"] = joined_fields
     return params
 
 
@@ -101,7 +103,7 @@ class Issues(BaseTracker):
         issue_id: str,
         expand: str | None = None,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -111,7 +113,7 @@ class Issues(BaseTracker):
         expand: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> IssueT_co: ...
 
     async def get_issue(
@@ -120,7 +122,7 @@ class Issues(BaseTracker):
         expand: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> IssueT_co | FullIssue:
         """Get issue parameters.
 
@@ -130,19 +132,21 @@ class Issues(BaseTracker):
         :param expand: Additional fields to include in the response:
                         transitions — Workflow transitions between statuses.
                         attachments — Attachments
-        :param fields: Comma-separated list of response fields to
-                        return. Non-listed fields are omitted from the
-                        response, so pass a ``_type`` whose required
-                        fields match the projection — the default
-                        FullIssue needs the full field set.
+        :param fields: Response fields to return: a comma-separated
+                        string or a sequence of names. Non-listed fields
+                        are omitted from the response, so pass a
+                        ``_type`` whose required fields match the
+                        projection — the default FullIssue needs the
+                        full field set.
         :param _type: you can use your own extended FullIssue type
         :return:
         """
         params: dict[str, str] = {}
         if expand:
             params["expand"] = expand
-        if fields:
-            params["fields"] = fields
+        joined_fields = _join_fields(fields)
+        if joined_fields:
+            params["fields"] = joined_fields
 
         data = await self._client.request(
             method="GET",
@@ -404,7 +408,7 @@ class Issues(BaseTracker):
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[FullIssue]: ...
 
     # ruff: noqa: PLR0913
@@ -425,7 +429,7 @@ class Issues(BaseTracker):
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[IssueT_co]: ...
 
     # ruff: noqa: PLR0913
@@ -445,7 +449,7 @@ class Issues(BaseTracker):
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[IssueT_co] | list[FullIssue]:
         """Find issues.
 
@@ -461,7 +465,8 @@ class Issues(BaseTracker):
 
         ``fields`` projects the response: non-listed fields are omitted,
         so pass a ``_type`` whose required fields match the projection —
-        the default FullIssue needs the full field set.
+        the default FullIssue needs the full field set. It takes a
+        comma-separated string or a sequence of field names.
         :return:
         """
         payload = self._prepare_payload(
@@ -497,8 +502,9 @@ class Issues(BaseTracker):
             params["scrollTTLMillis"] = str(scroll_ttl_millis)
         if scroll_id:
             params["scrollId"] = scroll_id
-        if fields:
-            params["fields"] = fields
+        joined_fields = _join_fields(fields)
+        if joined_fields:
+            params["fields"] = joined_fields
 
         data = await self._client.request(
             method="POST",
@@ -521,7 +527,7 @@ class Issues(BaseTracker):
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[FullIssue]: ...
 
     @overload
@@ -537,7 +543,7 @@ class Issues(BaseTracker):
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[IssueT_co]: ...
 
     async def iter_issues(
@@ -552,7 +558,7 @@ class Issues(BaseTracker):
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[IssueT_co | FullIssue]:
         """Iterate over all issues matching the criteria via the scroll API.
 
@@ -600,10 +606,11 @@ class Issues(BaseTracker):
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
         :param scroll_ttl_millis: lifetime of the scroll context, in ms.
-        :param fields: comma-separated projection of response fields.
-            Non-listed fields are omitted from the response, so pass a
-            ``_type`` whose required fields match the projection — the
-            default :class:`FullIssue` needs the full field set.
+        :param fields: projection of response fields: a comma-separated
+            string or a sequence of names. Non-listed fields are omitted
+            from the response, so pass a ``_type`` whose required fields
+            match the projection — the default :class:`FullIssue` needs
+            the full field set.
         """
         if queue is not None:
             filter_ = {**(filter_ or {}), "queue": queue}
@@ -718,7 +725,7 @@ class Issues(BaseTracker):
         *,
         queue: str | None = None,
         full: bool | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
         expand: str | None = None,
         embed: str | None = None,
     ) -> list[IssueSuggest]: ...
@@ -731,7 +738,7 @@ class Issues(BaseTracker):
         *,
         queue: str | None = None,
         full: bool | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
         expand: str | None = None,
         embed: str | None = None,
     ) -> list[SuggestT_co]: ...
@@ -743,7 +750,7 @@ class Issues(BaseTracker):
         *,
         queue: str | None = None,
         full: bool | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
         expand: str | None = None,
         embed: str | None = None,
     ) -> list[SuggestT_co] | list[IssueSuggest]:
@@ -769,8 +776,8 @@ class Issues(BaseTracker):
         :param full: whether to return the detailed information about
             every issue. Required to enable `fields`, `expand` and
             `embed`.
-        :param fields: comma-separated list of the issue fields to
-            return.
+        :param fields: issue fields to return: a comma-separated string
+            or a sequence of names.
         :param expand: additional information to include in the
             response: "all", "html", "attachments", "comments", "links",
             "localLinkRefs", "aliases", "transitions", "permissions",
@@ -786,7 +793,7 @@ class Issues(BaseTracker):
                 input_=input_,
                 queue=queue,
                 full=full,
-                fields=fields,
+                fields=_join_fields(fields),
                 expand=expand,
                 embed=embed,
             ),

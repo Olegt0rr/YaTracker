@@ -230,6 +230,37 @@ def _check_sequence(values: object, param: str, item: str, example: str) -> list
     return list(values)
 
 
+def _join_fields(fields: str | Sequence[str] | None) -> str | None:
+    """Render a `fields` projection as the comma-separated string the API wants.
+
+    Every endpoint taking `fields` documents it as one comma-separated
+    string, which is also the most convenient shape when the projection
+    is copied out of the reference. A sequence of names is joined here,
+    so the same call works with `"key,summary"` and with
+    `["key", "summary"]`. An empty value (`None`, `""`, `[]`) means
+    "no projection" and is dropped by the callers.
+    """
+    if not fields:
+        return None
+    return fields if isinstance(fields, str) else ",".join(fields)
+
+
+def _split_fields(fields: str | Sequence[str] | None) -> list[str] | None:
+    """Render a `fields` projection as the JSON array some bodies want.
+
+    The mirror image of :func:`_join_fields`: a couple of endpoints
+    (the report export, for one) take the projection as an array inside
+    the request body rather than as a query parameter. A comma-separated
+    string is split on the commas and the names are stripped, so both
+    shapes are accepted there as well.
+    """
+    if fields is None:
+        return None
+    if isinstance(fields, str):
+        return [name.strip() for name in fields.split(",") if name.strip()]
+    return list(fields)
+
+
 def _if_match(version: str | int) -> dict[str, str]:
     """Build the `If-Match` header carrying an object version.
 

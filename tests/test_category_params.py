@@ -139,6 +139,27 @@ async def test_find_issues_sends_paging_and_scroll_params() -> None:
     assert payload == {"filter": {"queue": "TEST"}}
 
 
+async def test_get_issue_accepts_a_sequence_of_fields() -> None:
+    client = FakeClient(body=full_issue_body())
+    tracker = YaTracker(client=client)
+    await tracker.get_issue("TEST-1", fields=["summary", "status"])
+    assert client.calls[0]["params"] == {"fields": "summary,status"}
+
+
+async def test_get_issue_ignores_an_empty_fields_sequence() -> None:
+    client = FakeClient(body=full_issue_body())
+    tracker = YaTracker(client=client)
+    await tracker.get_issue("TEST-1", fields=[])
+    assert client.calls[0]["params"] is None
+
+
+async def test_find_issues_accepts_a_sequence_of_fields() -> None:
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(query="Key: TEST-1", fields=("key", "summary"))
+    assert client.calls[0]["params"] == {"fields": "key,summary"}
+
+
 async def test_find_issues_scroll_params_not_in_body() -> None:
     client = FakeClient(body=b"[]")
     tracker = YaTracker(client=client)

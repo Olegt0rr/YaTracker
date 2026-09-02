@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, _split_fields
 from yatracker.types.report import Report, ReportSearchResult, ReportSort
 
 if TYPE_CHECKING:
@@ -30,7 +30,7 @@ class Reports(BaseTracker):
         self,
         summary: str,
         *,
-        fields: Sequence[str] | None = None,
+        fields: str | Sequence[str] | None = None,
         format_: str = "xlsx",
         query: str | None = None,
         filter_: dict[str, Any] | None = None,
@@ -50,7 +50,9 @@ class Reports(BaseTracker):
         :param summary: name of the report.
         :param fields: issue fields to include into the report, e.g.
             `["priority", "type", "key", "summary", "assignee",
-            "status", "updated"]`.
+            "status", "updated"]`. A comma-separated string
+            (`"priority,type,key"`) is accepted too and split into the
+            JSON array the API wants.
         :param format_: export format: "xlsx", "xml" or "csv".
         :param query: filter written in the query language. Mutually
             exclusive with `filter_` and `filter_id`.
@@ -105,8 +107,9 @@ class Reports(BaseTracker):
             "format": format_,
             "filter": report_filter,
         }
-        if fields is not None:
-            parameters["fields"] = list(fields)
+        split_fields = _split_fields(fields)
+        if split_fields is not None:
+            parameters["fields"] = split_fields
 
         data = await self._client.request(
             method="POST",

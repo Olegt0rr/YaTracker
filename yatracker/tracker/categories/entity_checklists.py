@@ -287,7 +287,7 @@ class EntityChecklists(BaseTracker):
         )
         return self._decode(Entity, data)
 
-    async def delete_entity_checklist_item(
+    async def delete_entity_checklist_item(  # noqa: PLR0913
         self,
         entity_type: ChecklistEntityType,
         entity_id: str | int,
@@ -295,12 +295,16 @@ class EntityChecklists(BaseTracker):
         *,
         notify: bool | None = None,
         notify_author: bool | None = None,
-    ) -> bool:
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
         """Delete an item from the checklist of an entity.
 
-        The action cannot be undone. The API answers with the entity and
-        its remaining checklist items; read them back with
-        `get_entity(..., fields="checklistItems")` when they are needed.
+        The action cannot be undone. Unlike the issue-side
+        `delete_checklist_item`, which is a plain `DELETE`, this
+        endpoint answers 200 with the whole entity and its remaining
+        checklist items, so ask for them with `fields="checklistItems"`
+        instead of re-reading the entity.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist-item
@@ -313,9 +317,14 @@ class EntityChecklists(BaseTracker):
             entity (`True` by default).
         :param notify_author: Whether to notify the author of the
             change (`False` by default).
-        :return: `True` if the item was deleted.
+        :param fields: Fields to return in the response (a
+            comma-separated string or a sequence of names).
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :return: The whole entity, with the checklist items that are
+            left when `fields="checklistItems"` is asked for.
         """
-        await self._client.request(
+        data = await self._client.request(
             method="DELETE",
             uri=_entity_uri(
                 entity_type,
@@ -323,21 +332,31 @@ class EntityChecklists(BaseTracker):
                 "checklistItems",
                 str(item_id),
             ),
-            params=_fields_params(None, notify=notify, notify_author=notify_author),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
         )
-        return True
+        return self._decode(Entity, data)
 
-    async def delete_entity_checklist(
+    async def delete_entity_checklist(  # noqa: PLR0913
         self,
         entity_type: ChecklistEntityType,
         entity_id: str | int,
         *,
         notify: bool | None = None,
         notify_author: bool | None = None,
-    ) -> bool:
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+    ) -> Entity:
         """Delete every item of the checklist of an entity.
 
-        The action cannot be undone.
+        The action cannot be undone. Unlike the issue-side
+        `delete_checklist`, which is a plain `DELETE`, this endpoint
+        answers 200 with the whole entity the checklist was removed
+        from.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist
@@ -349,14 +368,23 @@ class EntityChecklists(BaseTracker):
             entity (`True` by default).
         :param notify_author: Whether to notify the author of the
             change (`False` by default).
-        :return: `True` if the checklist was deleted.
+        :param fields: Fields to return in the response (a
+            comma-separated string or a sequence of names).
+        :param expand: Additional information to include,
+            e.g. "attachments".
+        :return: The whole entity the checklist was deleted from.
         """
-        await self._client.request(
+        data = await self._client.request(
             method="DELETE",
             uri=_entity_uri(entity_type, str(entity_id), "checklistItems"),
-            params=_fields_params(None, notify=notify, notify_author=notify_author),
+            params=_fields_params(
+                fields,
+                expand=expand,
+                notify=notify,
+                notify_author=notify_author,
+            ),
         )
-        return True
+        return self._decode(Entity, data)
 
 
 def _build_deadline(

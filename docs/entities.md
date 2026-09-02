@@ -73,9 +73,11 @@ print(entity.fields.model_extra["64a51c6d866ea82411abe756--userId"])
 
 !!! warning "Ошибки 412, 423 и 428"
 
-    Конфликт версий (`412`), заблокированная сущность (`423`) и невыполненные
-    предусловия (`428`) приходят обычным `YaTrackerError` — отличить их можно только
-    по тексту ответа. Подробнее в разделе [«Обработка ошибок»](errors.md).
+    Конфликт версий (`412`) приходит как `PreconditionFailedError`, невыполненные
+    предусловия (`428`) — как `PreconditionRequiredError`. А вот заблокированная
+    сущность (`423`) отдельного класса не имеет и приходит обычным `YaTrackerError` —
+    распознать её можно только по тексту ответа. Подробнее в разделе
+    [«Обработка ошибок»](errors.md).
 
 ## Создание сущности
 
@@ -99,7 +101,7 @@ async def create_entity(
 ```python
 from datetime import date
 
-from yatracker.types.entity import EntityLink
+from yatracker.types import EntityLink
 
 project = await tracker.create_entity(
     "project",

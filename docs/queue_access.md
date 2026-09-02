@@ -123,7 +123,7 @@ permissions = await tracker.update_queue_access(
 моделей `QueueAccessUpdate`/`QueueAccessChange`:
 
 ```python
-from yatracker.types.queue_permissions import QueueAccessChange, QueueAccessUpdate
+from yatracker.types import QueueAccessChange, QueueAccessUpdate
 
 # через модели
 permissions = await tracker.update_queue_access(
@@ -358,7 +358,7 @@ for permission, grantees in access.permissions.items():
 запись действительно применилась:
 
 ```python
-from yatracker.types.queue_permissions import QueueAccessChange, QueueAccessUpdate
+from yatracker.types import QueueAccessChange, QueueAccessUpdate
 
 permissions = await tracker.update_queue_access(
     "WRITERS",
@@ -367,11 +367,23 @@ permissions = await tracker.update_queue_access(
 )
 print(permissions.version)
 
+# `QueueAccessGrantees.users` — это ссылки `User`, у которых `id` — числовой uid,
+# а не логин, поэтому логин нужно сначала превратить в uid.
+me = await tracker.get_user("login")
+
 access = await tracker.get_queue_user_access("WRITERS", "login")
 granted = {
     permission
     for permission, grantees in access.permissions.items()
-    if any(u.id == "login" for u in grantees.users or [])
+    if any(u.id == me.uid for u in grantees.users or [])
 }
-print(granted)  # {"CREATE", "WRITE"}
+print(granted)  # {'CREATE', 'WRITE'}
 ```
+
+!!! warning "Пустой блок прав"
+
+    Обычный список в `users` / `groups` / `roles` **перезаписывает** текущих
+    обладателей права, поэтому блок без единого получателя (`QueueAccessUpdate()`
+    без полей или пустой `{}`) двусмыслен: `update_queue_access` не отправляет
+    такой запрос, а сразу выбрасывает `ValueError`. Чтобы право осталось без
+    изменений, просто не передавайте его.

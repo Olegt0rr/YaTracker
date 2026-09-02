@@ -121,7 +121,7 @@ async def create_trigger(
 Создаёт новый триггер в указанной очереди.
 
 ```python
-from yatracker.types.trigger import TriggerAction, TriggerCondition
+from yatracker.types import TriggerAction, TriggerCondition
 
 trigger = await tracker.create_trigger(
     "DESIGN",

@@ -180,9 +180,13 @@ class EntityChecklistItem(Base):
         if self.assignee is not None:
             payload["assignee"] = self.assignee.id
         if self.deadline is not None:
-            payload["deadline"] = self.deadline._render(  # noqa: SLF001
-                as_timestamp=True,
-            )
+            deadline = self.deadline._render(as_timestamp=True)  # noqa: SLF001
+            # a deadline object without a date (e.g. only the read-only
+            # `isExceeded`) has nothing to send; the checklist endpoints
+            # always show `deadlineType` next to the date
+            if "date" in deadline:
+                deadline.setdefault("deadlineType", "date")
+                payload["deadline"] = deadline
         return payload
 
 

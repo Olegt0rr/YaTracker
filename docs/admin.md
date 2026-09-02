@@ -25,7 +25,7 @@ async def get_issue_types(self) -> list[FullIssueType]: ...
 Возвращает список всех типов задач организации.
 
 ```python
-from yatracker.types.issue_type import FullIssueType
+from yatracker.types import FullIssueType
 
 issue_types: list[FullIssueType] = await tracker.get_issue_types()
 
@@ -48,7 +48,7 @@ async def create_issue_type(
 Создаёт новый тип задачи. Требует прав администратора.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 issue_type = await tracker.create_issue_type(
     key="client",
@@ -134,7 +134,7 @@ async def create_status(
 Создаёт новый статус задачи. Требует прав администратора.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 status = await tracker.create_status(
     key="myStatus",
@@ -230,7 +230,7 @@ async def create_resolution(
 Создаёт новую резолюцию. Требует прав администратора.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 resolution = await tracker.create_resolution(
     key="wontFix",
@@ -327,7 +327,7 @@ async def create_priority(
 параметры этого запроса как обязательные.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 priority = await tracker.create_priority(
     key="one",

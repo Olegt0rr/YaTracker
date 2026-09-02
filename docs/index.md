@@ -27,7 +27,7 @@ print(issue.key, issue.status)
 | Задачи | `get_issue`, `create_issue`, `edit_issue`, `move_issue`, `find_issues`, `iter_issues`, `count_issues`, `suggest_issues`, `clear_search_scroll`, `get_issue_links`, `link_issues`, `unlink_issues`, `get_issue_changelog`, `iter_issue_changelog`, `get_transitions`, `execute_transition` | [Задачи](issues.md) |
 | Очереди | `get_queue`, `get_queues`, `create_queue`, `delete_queue`, `restore_queue`, `get_queue_tags`, `delete_tag_from_queue`, `get_queue_fields`, `get_queue_versions`, `create_queue_version` | [Очереди](queues.md) |
 | Права доступа очередей | `get_queue_user_access`, `get_queue_group_access`, `update_queue_access`, `get_component_user_access`, `get_component_group_access` | [Права доступа очередей](queue_access.md) |
-| Поля задач | `get_global_fields`, `get_field`, `create_field`, `update_field`, `create_field_category`, `update_field_category`, `get_local_fields`, `get_local_field`, `create_local_field`, `update_local_field` | [Поля задач](issue_fields.md) |
+| Поля задач | `get_global_fields`, `get_field`, `create_field`, `update_field`, `get_field_categories`, `create_field_category`, `update_field_category`, `get_local_fields`, `get_local_field`, `create_local_field`, `update_local_field` | [Поля задач](issue_fields.md) |
 | Компоненты | `get_components`, `get_queue_components`, `create_component`, `update_component` | [Компоненты](components.md) |
 | Рабочие процессы | `get_workflows`, `get_workflow`, `create_workflow`, `update_workflow`, `update_workflow_action`, `delete_workflow` | [Рабочие процессы](workflows.md) |
 | Триггеры | `get_triggers`, `iter_triggers`, `get_trigger`, `create_trigger`, `update_trigger`, `get_trigger_logs` | [Триггеры](triggers.md) |

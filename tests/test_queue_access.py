@@ -625,6 +625,39 @@ class TestUpdateQueueAccess:
 
         assert client.calls == []
 
+    async def test_empty_model_permission_raises(self) -> None:
+        # an all-`None` `QueueAccessUpdate` renders to `{}`; a plain list
+        # overwrites the grantees, so sending `{"create": {}}` is dangerous.
+        tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)
+
+        with pytest.raises(ValueError, match="'create'"):
+            await tracker.update_queue_access(
+                "TESTQUEUE",
+                create=QueueAccessUpdate(),
+            )
+
+        assert client.calls == []
+
+    async def test_empty_dict_permission_raises(self) -> None:
+        tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)
+
+        with pytest.raises(ValueError, match="'write'"):
+            await tracker.update_queue_access("TESTQUEUE", write={})
+
+        assert client.calls == []
+
+    async def test_empty_permission_next_to_a_real_one_still_raises(self) -> None:
+        tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)
+
+        with pytest.raises(ValueError, match="'deny'"):
+            await tracker.update_queue_access(
+                "TESTQUEUE",
+                create=QueueAccessUpdate(users=["user1"]),
+                deny={},
+            )
+
+        assert client.calls == []
+
     async def test_response_decodes_into_queue_permissions(self) -> None:
         tracker, client = make_tracker(MANAGE_ACCESS_RESPONSE_BODY)
         permissions = await tracker.update_queue_access(

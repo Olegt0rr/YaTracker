@@ -679,6 +679,20 @@ class TestSuggestIssues:
             "embed": "comments",
         }
 
+    async def test_accepts_a_sequence_of_fields(self) -> None:
+        tracker, client = make_tracker(SUGGEST_RESPONSE)
+        await tracker.suggest_issues(
+            "исправить ошибки",
+            full=True,
+            fields=["summary", "status"],
+        )
+
+        assert client.calls[0]["params"] == {
+            "input": "исправить ошибки",
+            "full": "true",
+            "fields": "summary,status",
+        }
+
     async def test_accepts_a_custom_type(self) -> None:
         class MySuggest(IssueSuggest):
             pass

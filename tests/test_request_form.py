@@ -167,7 +167,7 @@ class TestDeadlineRendering:
         assert record[0].filename == __file__
         assert sent_json(client.calls[0])["fields"]["checklistItems"][0][
             "deadline"
-        ] == {"date": "2024-03-01T12:00:00.000"}
+        ] == {"date": "2024-03-01T12:00:00.000", "deadlineType": "date"}
 
     async def test_aware_deadline_uses_the_documented_offset_form(self) -> None:
         # pydantic would render the same moment as `...T12:00:00Z`,
@@ -191,7 +191,10 @@ class TestDeadlineRendering:
             )
 
         rendered = sent_json(client.calls[0])["fields"]["checklistItems"][0]
-        assert rendered["deadline"] == {"date": "2024-03-01T12:00:00.000+0000"}
+        assert rendered["deadline"] == {
+            "date": "2024-03-01T12:00:00.000+0000",
+            "deadlineType": "date",
+        }
 
     async def test_bare_date_is_midnight_utc_on_the_checklist_path(self) -> None:
         tracker, client = make_tracker(entity_payload())
@@ -211,6 +214,7 @@ class TestDeadlineRendering:
 
         assert sent_json(client.calls[0])[0]["deadline"] == {
             "date": "2025-06-03T00:00:00.000+0000",
+            "deadlineType": "date",
         }
 
     async def test_bare_date_stays_a_plain_date_on_its_own(self) -> None:

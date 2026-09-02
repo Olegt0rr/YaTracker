@@ -92,13 +92,24 @@ class QueueAccess(BaseTracker):
             settings.
         :param deny: grantees denied access to the queue. Roles cannot
             be denied, only users and groups.
-        :raises ValueError: If there is nothing to change.
+        :raises ValueError: If there is nothing to change, or if one of
+            the permissions renders to an empty object.
         :return: access rights of the queue after the update.
         """
         payload = self._prepare_payload(locals(), exclude=["queue_id"])
         if not payload:
             msg = (
                 "This operation requires `create`, `read`, `write`, `grant` or `deny`."
+            )
+            raise ValueError(msg)
+
+        empty = sorted(key for key, value in payload.items() if not value)
+        if empty:
+            msg = (
+                f"The permissions {', '.join(repr(key) for key in empty)} carry "
+                f"no users, groups or roles. A plain list overwrites the current "
+                f"grantees, so an empty object is ambiguous: name the grantees, "
+                f"or drop the permission to leave it unchanged."
             )
             raise ValueError(msg)
 

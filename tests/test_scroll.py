@@ -404,3 +404,13 @@ async def test_find_issues_accepts_positional_type() -> None:
         MyIssue,
     )
     assert isinstance(issues[0], MyIssue)
+
+
+async def test_iter_issues_accepts_a_sequence_of_fields() -> None:
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+
+    issues = [issue async for issue in tracker.iter_issues(fields=["key", "summary"])]
+
+    assert issues == []
+    assert client.calls[0]["params"]["fields"] == "key,summary"

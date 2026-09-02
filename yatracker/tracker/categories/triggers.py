@@ -147,9 +147,13 @@ class Triggers(BaseTracker):
 
         Unlike sprints or board columns, a trigger carries its version
         in the `version` query parameter instead of the `If-Match`
-        header; the API answers 409 when the version is stale. Fields
-        left as `None` are not sent and stay unchanged, but `actions`
-        and `conditions` replace the existing ones as a whole.
+        header. A stale version is documented with the very same
+        wording under both 409 and 412, so the conflict surfaces either
+        as `AlreadyExistsError` (409) or as `PreconditionFailedError`
+        (412) — re-read the trigger and retry with the current version
+        in both cases. Fields left as `None` are not sent and stay
+        unchanged, but `actions` and `conditions` replace the existing
+        ones as a whole.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/queues/change-trigger

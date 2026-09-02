@@ -187,6 +187,25 @@ class TestCreateReport:
             },
         }
 
+    async def test_fields_accepts_a_comma_separated_string(self) -> None:
+        tracker, client = make_tracker(REPORT_RESPONSE)
+        await tracker.create_report(
+            "String fields",
+            query="Queue: SUPPORT",
+            fields="key, summary,status",
+        )
+
+        parameters = sent_json(client.calls[0])["fields"]["parameters"]
+        assert parameters["fields"] == ["key", "summary", "status"]
+
+    async def test_empty_fields_sequence_sends_an_empty_array(self) -> None:
+        # an explicit empty projection is not the same as omitting it
+        tracker, client = make_tracker(REPORT_RESPONSE)
+        await tracker.create_report("Empty", query="Queue: SUPPORT", fields=[])
+
+        parameters = sent_json(client.calls[0])["fields"]["parameters"]
+        assert parameters["fields"] == []
+
     async def test_without_fields_omits_the_fields_key(self) -> None:
         tracker, client = make_tracker(REPORT_RESPONSE)
         await tracker.create_report("No fields", query="Queue: SUPPORT")

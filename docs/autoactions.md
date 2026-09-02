@@ -64,7 +64,7 @@ async def create_autoaction(
 Создаёт новое автодействие в указанной очереди.
 
 ```python
-from yatracker.types.trigger import TriggerAction
+from yatracker.types import TriggerAction
 
 autoaction = await tracker.create_autoaction(
     "DESIGN",
@@ -241,7 +241,7 @@ for result in results:
 «Требуется информация», затем проверить результат последнего запуска:
 
 ```python
-from yatracker.types.trigger import TriggerAction
+from yatracker.types import TriggerAction
 
 autoaction = await tracker.create_autoaction(
     "DESIGN",

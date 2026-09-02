@@ -10,6 +10,7 @@ from yatracker.tracker.base import (
     _check_sequence,
     _convert_value,
     _encode_key,
+    _join_fields,
 )
 from yatracker.types import BulkChange
 from yatracker.types.entity import (
@@ -142,8 +143,10 @@ class Entities(BaseTracker):
         :param kwargs: Extra fields merged on top of `values`.
         :raises ValueError: If there is nothing to change.
 
-        A version conflict (412), a locked entity (423) and unmet
-        preconditions (428) come back as a generic `YaTrackerError`.
+        A version conflict (412) is raised as `PreconditionFailedError`
+        and unmet preconditions (428) as `PreconditionRequiredError`;
+        only a locked entity (423) comes back as a generic
+        `YaTrackerError`.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/update-entity
@@ -400,8 +403,9 @@ def _fields_params(
     ...), whose endpoints take the same parameters.
     """
     params: dict[str, str] = {}
-    if fields:
-        params["fields"] = fields if isinstance(fields, str) else ",".join(fields)
+    joined_fields = _join_fields(fields)
+    if joined_fields:
+        params["fields"] = joined_fields
     if expand:
         params["expand"] = expand
     if notify is not None:

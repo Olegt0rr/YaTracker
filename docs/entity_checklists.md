@@ -288,29 +288,34 @@ async def delete_entity_checklist_item(
     *,
     notify: bool | None = None,
     notify_author: bool | None = None,
-) -> bool: ...
+    fields: str | Sequence[str] | None = None,
+    expand: str | None = None,
+) -> Entity: ...
 ```
 
-Удаляет один пункт чек-листа. Действие нельзя отменить. Возвращает `True` при успехе.
+Удаляет один пункт чек-листа. Действие нельзя отменить. В отличие от задачного
+`delete_checklist_item`, запрос отвечает `200 OK` и телом сущности, поэтому метод
+возвращает `Entity`, а не признак успеха.
 
 ```python
-await tracker.delete_entity_checklist_item(
+entity = await tracker.delete_entity_checklist_item(
     "project",
     "655f3be523db2132",
     "658953a65c0f1b210000000a",
+    fields="checklistItems",
 )
+
+for item in entity.fields.checklist_items or []:
+    print(item.id, item.text)
 ```
 
 1. `entity_type` — `"project"` или `"portfolio"`.
 2. `entity_id` — идентификатор или `short_id` сущности.
 3. `item_id` — идентификатор удаляемого пункта.
-4. `notify`, `notify_author` — уведомления, как в `add_entity_checklist_item`.
+4. `notify`, `notify_author`, `fields`, `expand` — как в `add_entity_checklist_item`.
 
-!!! tip "Как посмотреть, что осталось"
-
-    В отличие от официального запроса, метод не принимает `fields`/`expand` и всегда
-    возвращает только признак успеха. Чтобы увидеть оставшиеся пункты чек-листа, перечитайте
-    сущность: `await tracker.get_entity(entity_type, entity_id, fields="checklistItems")`.
+Возвращает сущность целиком; чтобы увидеть оставшиеся пункты чек-листа, запросите их
+через `fields="checklistItems"` — перечитывать сущность отдельным `get_entity` не нужно.
 
 Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist-item
 
@@ -326,25 +331,26 @@ async def delete_entity_checklist(
     *,
     notify: bool | None = None,
     notify_author: bool | None = None,
-) -> bool: ...
+    fields: str | Sequence[str] | None = None,
+    expand: str | None = None,
+) -> Entity: ...
 ```
 
-Удаляет чек-лист сущности целиком — сразу все пункты. Действие нельзя отменить. Возвращает
-`True` при успехе.
+Удаляет чек-лист сущности целиком — сразу все пункты. Действие нельзя отменить. Как и
+`delete_entity_checklist_item`, запрос отвечает `200 OK` и телом сущности, поэтому метод
+возвращает `Entity`.
 
 ```python
-await tracker.delete_entity_checklist("project", "655f3be523db2132")
+entity = await tracker.delete_entity_checklist("project", "655f3be523db2132")
+print(entity.version)
 ```
 
 1. `entity_type` — `"project"` или `"portfolio"`.
 2. `entity_id` — идентификатор или `short_id` сущности.
-3. `notify`, `notify_author` — уведомления, как в `add_entity_checklist_item`.
+3. `notify`, `notify_author`, `fields`, `expand` — как в `add_entity_checklist_item`.
 
-!!! tip "Как посмотреть, что осталось"
-
-    Как и `delete_entity_checklist_item`, метод не возвращает список пунктов — после удаления
-    он пуст, но для проверки перечитайте сущность:
-    `await tracker.get_entity(entity_type, entity_id, fields="checklistItems")`.
+Возвращает сущность, из которой удалён чек-лист. Отдельно перечитывать её не нужно: с
+`fields="checklistItems"` в ответе будет уже пустой чек-лист.
 
 Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist
 

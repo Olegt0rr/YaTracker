@@ -9,10 +9,11 @@ from typing_extensions import Self
 
 from yatracker.utils.datetime import to_tracker_datetime
 
-from .base import Base, url_field
+from .base import Base, field, url_field
 from .checklist import ChecklistItem
 from .comment import Comment
 from .component import ComponentRef
+from .entity import EntityParent
 from .issue import Issue
 from .issue_type import IssueType
 from .priority import Priority
@@ -65,8 +66,16 @@ class FullIssue(Base):
     previous_queue: Queue | None = None
     favorite: bool
     assignee: User | None = None
+    # projects and portfolios the issue belongs to; the API sends them
+    # in the same `{primary, secondary}` shape as `parentEntity`
+    project: EntityParent | None = None
 
-    last_comment_update_at: datetime | None = None
+    # the API sends this one as `lastCommentUpdatedAt`, not as the
+    # camelized `lastCommentUpdateAt`
+    last_comment_update_at: datetime | None = field(
+        default=None,
+        alias="lastCommentUpdatedAt",
+    )
     aliases: list[str] | None = None
     updated_by: User | None = None
     created_at: datetime

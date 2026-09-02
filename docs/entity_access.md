@@ -88,7 +88,7 @@ access = await tracker.update_entity_access(
 Отключить наследование и сразу выдать права на изменение группе:
 
 ```python
-from yatracker.types.entity_access import EntityAccessChange, EntityAccessRule
+from yatracker.types import EntityAccessChange, EntityAccessRule
 
 access = await tracker.update_entity_access(
     "project",

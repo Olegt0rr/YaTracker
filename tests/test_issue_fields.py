@@ -22,12 +22,16 @@ from typing import Any
 
 import pytest
 from pydantic import TypeAdapter
+from yatracker import YaTracker
 from yatracker.types.issue_field import IssueField
 from yatracker.types.local_field import LocalField
 from yatracker.types.localized_name import LocalizedName
 from yatracker.types.queue_field import QueueField
+from yatracker.types.queue_field_options_provider import (
+    QueueFieldOptionsProvider,
+)
 
-from tests.conftest import make_tracker, sent_json
+from tests.conftest import FakeClient, make_tracker, sent_json
 from tests.test_queues import QUEUE_FIELD
 
 # `GET /fields` response shape (one element of the array).
@@ -113,6 +117,31 @@ CREATED_CATEGORY: dict[str, Any] = {
     "self": "https://api.tracker.yandex.net/v3/fields/categories/604f9920d23cd5********",
     "version": 1,
 }
+
+# `GET /fields/categories` has no page of its own in the reference; the
+# listing is assumed to answer with the objects of the create/patch pages,
+# so the first entry is `CREATED_CATEGORY` verbatim and the second one adds
+# the `order`/`description` of the request bodies.
+FIELD_CATEGORIES: list[dict[str, Any]] = [
+    {
+        "id": "604f9920d23cd5********",
+        "name": "category_name",
+        "self": (
+            "https://api.tracker.yandex.net/v3/fields/categories/604f9920d23cd5********"
+        ),
+        "version": 1,
+    },
+    {
+        "id": "58bc3b921d9c********",
+        "name": "Системные",
+        "self": (
+            "https://api.tracker.yandex.net/v3/fields/categories/58bc3b921d9c********"
+        ),
+        "version": 2,
+        "order": 400,
+        "description": "Текстовое описание",
+    },
+]
 
 # `PATCH /fields/categories/{id}` response shape.
 UPDATED_CATEGORY: dict[str, Any] = {
@@ -461,6 +490,58 @@ class TestGlobalFieldEndpoints:
             },
         }
 
+    async def test_options_provider_read_back_drops_read_only_keys(self) -> None:
+        """A provider read from the API can be edited and sent back as is.
+
+        `CREATED_FIELD` carries the read-only `needValidation` the API
+        sends; `optionsProvider` documents only `type` and `values` as
+        request keys, so the round trip must not leak it back.
+        """
+        client = FakeClient(
+            responses=[
+                (200, json.dumps(CREATED_FIELD).encode(), {}),
+                (200, json.dumps(CREATED_FIELD).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+
+        field = await tracker.get_field("global_field_key")
+        provider = field.options_provider
+        assert provider is not None
+        assert provider.need_validation is True
+        assert provider.values == ["First item", "Second item", "Third item"]
+
+        provider.values = ["First item", "Fourth item"]
+        await tracker.update_field(
+            "global_field_key",
+            1,
+            options_provider=provider,
+        )
+
+        body = sent_json(client.calls[1])
+        assert body == {
+            "optionsProvider": {
+                "type": "FixedListOptionsProvider",
+                "values": ["First item", "Fourth item"],
+            },
+        }
+        assert "needValidation" not in body["optionsProvider"]
+
+    async def test_options_provider_without_values_sends_only_type(self) -> None:
+        tracker, client = make_tracker(CREATED_FIELD)
+        await tracker.update_field(
+            "global_field_key",
+            1,
+            options_provider=QueueFieldOptionsProvider(
+                type="FixedUserListOptionsProvider",
+                need_validation=True,
+            ),
+        )
+
+        assert sent_json(client.calls[0]) == {
+            "optionsProvider": {"type": "FixedUserListOptionsProvider"},
+        }
+
     async def test_update_field_omits_unset_fields(self) -> None:
         tracker, client = make_tracker(ISSUE_FIELD)
         await tracker.update_field("ruName", 3, order=5)
@@ -473,6 +554,36 @@ class TestGlobalFieldEndpoints:
 
 
 class TestFieldCategoryEndpoints:
+    async def test_get_field_categories(self) -> None:
+        tracker, client = make_tracker(FIELD_CATEGORIES)
+        categories = await tracker.get_field_categories()
+
+        call = client.calls[0]
+        assert call["method"] == "GET"
+        assert call["url"].endswith("/fields/categories")
+        assert call.get("params") is None
+
+        assert [c.id for c in categories] == [
+            "604f9920d23cd5********",
+            "58bc3b921d9c********",
+        ]
+        # the create/patch samples carry neither `order` nor `description`
+        assert categories[0].order is None
+        assert categories[0].description is None
+        # the listing does, and the model keeps them
+        assert categories[1].order == 400
+        assert categories[1].description == "Текстовое описание"
+
+    async def test_get_field_categories_ignores_undocumented_keys(self) -> None:
+        # the response shape is undocumented, so anything else the endpoint
+        # sends must not break the decoding.
+        payload = [{**FIELD_CATEGORIES[0], "somethingNew": {"a": 1}}]
+        tracker, _ = make_tracker(payload)
+        categories = await tracker.get_field_categories()
+
+        assert len(categories) == 1
+        assert categories[0].name == "category_name"
+
     async def test_create_field_category_sends_exact_body(self) -> None:
         tracker, client = make_tracker(CREATED_CATEGORY, status=201)
         category = await tracker.create_field_category(

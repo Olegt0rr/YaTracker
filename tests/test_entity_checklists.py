@@ -321,10 +321,10 @@ class TestChecklistItemRequestForm:
             },
         ]
 
-    async def test_empty_deadline_of_the_item_renders_empty(self) -> None:
-        # unlike the `deadline=` parameter of the single-item methods,
-        # a deadline carried by the item is rendered by the model and
-        # can only be as empty as the model is
+    async def test_dateless_deadline_of_the_item_is_omitted(self) -> None:
+        # a deadline object without a date (e.g. only the read-only
+        # `isExceeded`) has nothing to send, so the key is omitted, the
+        # same way `_build_deadline` treats it for the single-item methods
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
         await tracker.edit_entity_checklist(
             "project",
@@ -332,7 +332,7 @@ class TestChecklistItemRequestForm:
             [EntityChecklistItem(id="1", deadline=EntityDeadline())],
         )
 
-        assert sent_json(client.calls[0]) == [{"id": "1", "deadline": {}}]
+        assert sent_json(client.calls[0]) == [{"id": "1"}]
 
     async def test_read_only_fields_are_dropped(self) -> None:
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
@@ -680,15 +680,22 @@ class TestMoveEntityChecklistItem:
 
 
 class TestDeleteEntityChecklistItem:
-    async def test_sends_delete_and_returns_true(self) -> None:
+    async def test_sends_delete_and_decodes_the_entity(self) -> None:
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
-        result = await tracker.delete_entity_checklist_item(
+        entity = await tracker.delete_entity_checklist_item(
             "project",
             "1",
             "6586d6fee2b9ef72",
         )
 
-        assert result is True
+        assert isinstance(entity, Entity)
+        assert entity.id == "6586d6fee2b9ef74"
+        assert entity.fields is not None
+        items = entity.fields.checklist_items or []
+        assert [item.text for item in items] == [
+            "First list item",
+            "Second list item",
+        ]
         call = client.calls[0]
         assert call["method"] == "DELETE"
         assert call["url"].endswith(
@@ -711,6 +718,21 @@ class TestDeleteEntityChecklistItem:
             "notifyAuthor": "true",
         }
 
+    async def test_fields_and_expand_are_sent(self) -> None:
+        tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
+        await tracker.delete_entity_checklist_item(
+            "project",
+            "1",
+            "item-1",
+            fields=["checklistItems", "summary"],
+            expand="attachments",
+        )
+
+        assert client.calls[0]["params"] == {
+            "fields": "checklistItems,summary",
+            "expand": "attachments",
+        }
+
     async def test_no_query_params_by_default(self) -> None:
         tracker, client = make_tracker(entity_with_checklist_payload(TWO_ITEMS))
         await tracker.delete_entity_checklist_item("project", "1", "item-1")
@@ -722,15 +744,31 @@ class TestDeleteEntityChecklistItem:
 
 
 class TestDeleteEntityChecklist:
-    async def test_sends_delete_to_checklist_uri_and_returns_true(self) -> None:
+    async def test_sends_delete_to_checklist_uri_and_decodes_the_entity(self) -> None:
         tracker, client = make_tracker(entity_without_fields_payload())
-        result = await tracker.delete_entity_checklist("project", "1")
+        entity = await tracker.delete_entity_checklist("project", "1")
 
-        assert result is True
+        assert isinstance(entity, Entity)
+        assert entity.id == "6586d6fee2b9ef74"
+        assert entity.version == 133
         call = client.calls[0]
         assert call["method"] == "DELETE"
         assert call["url"].endswith("/v3/entities/project/1/checklistItems")
         assert call["data"] is None
+
+    async def test_fields_and_expand_are_sent(self) -> None:
+        tracker, client = make_tracker(entity_without_fields_payload())
+        await tracker.delete_entity_checklist(
+            "project",
+            "1",
+            fields="checklistItems",
+            expand="attachments",
+        )
+
+        assert client.calls[0]["params"] == {
+            "fields": "checklistItems",
+            "expand": "attachments",
+        }
 
     async def test_query_params(self) -> None:
         tracker, client = make_tracker(entity_without_fields_payload())
@@ -746,14 +784,14 @@ class TestDeleteEntityChecklist:
             "notifyAuthor": "false",
         }
 
-    async def test_returns_true_even_though_response_has_no_checklist(self) -> None:
-        # the API answers with the entity without a `fields` block: the
-        # method does not decode the body at all, so this is not
-        # observable through the return value, only via `client.calls`.
+    async def test_decodes_a_response_without_a_fields_block(self) -> None:
+        # the `delete-checklist` sample answers with the entity and no
+        # `fields` block at all: the whole checklist is gone.
         tracker, client = make_tracker(entity_without_fields_payload())
-        result = await tracker.delete_entity_checklist("portfolio", 7)
+        entity = await tracker.delete_entity_checklist("portfolio", 7)
 
-        assert result is True
+        assert entity.fields is not None
+        assert entity.fields.checklist_items is None
         assert client.calls[0]["url"].endswith(
             "/v3/entities/portfolio/7/checklistItems",
         )

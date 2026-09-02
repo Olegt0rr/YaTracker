@@ -43,14 +43,15 @@ async def get_issue(
     expand: str | None = None,
     _type: type[IssueT_co | FullIssue] = FullIssue,
     *,
-    fields: str | None = None,
+    fields: str | Sequence[str] | None = None,
 ) -> IssueT_co | FullIssue: ...
 ```
 
 - `issue_id` — ID или ключ задачи (например, `"WRITERS-42"`).
 - `expand` — какие дополнительные данные подтянуть вместе с задачей:
   `"transitions"` — доступные переходы по workflow, `"attachments"` — вложения.
-- `fields` — список полей ответа через запятую. Поля, не перечисленные здесь, в ответе не
+- `fields` — проекция полей ответа: строка со списком полей через запятую либо
+  последовательность имён (`["key", "summary"]`). Поля, не перечисленные здесь, в ответе не
   придут, поэтому если вы используете `fields`, передавайте и `_type` с моделью, у которой
   обязательные поля соответствуют этой проекции (иначе валидация упадёт, т.к. `FullIssue`
   по умолчанию ожидает полный набор полей).
@@ -247,7 +248,7 @@ async def find_issues(
     per_scroll: int | None = None,
     scroll_ttl_millis: int | None = None,
     scroll_id: str | None = None,
-    fields: str | None = None,
+    fields: str | Sequence[str] | None = None,
 ) -> list[IssueT_co] | list[FullIssue]: ...
 ```
 
@@ -258,7 +259,8 @@ async def find_issues(
 - `expand` — дополнительные данные в ответе (`"transitions"`, `"attachments"`).
 - `keys` — прямой поиск по ключам задач (через запятую), альтернатива `filter_`/`query`.
 - `queue` — ограничить поиск одной очередью (альтернативная форма запроса).
-- `fields` — проекция полей ответа, как и в `get_issue`: непойменованные поля не придут, так
+- `fields` — проекция полей ответа, как и в `get_issue` (строка через запятую или
+  последовательность имён): непойменованные поля не придут, так
   что `_type` должен соответствовать выбранной проекции.
 - `_type` — своя модель задачи.
 
@@ -314,7 +316,7 @@ async def suggest_issues(
     *,
     queue: str | None = None,
     full: bool | None = None,
-    fields: str | None = None,
+    fields: str | Sequence[str] | None = None,
     expand: str | None = None,
     embed: str | None = None,
 ) -> list[SuggestT_co] | list[IssueSuggest]: ...
@@ -325,7 +327,7 @@ async def suggest_issues(
 2. `queue` — ограничить поиск одной очередью.
 3. `full` — вернуть подробную информацию о каждой задаче вместо краткой проекции; по
    умолчанию `False`. Обязателен, чтобы включить `fields`, `expand` и `embed`.
-4. `fields` — список полей задачи через запятую.
+4. `fields` — поля задачи: строка со списком через запятую либо последовательность имён.
 5. `expand` — дополнительные данные: `"all"`, `"html"`, `"attachments"`, `"comments"`,
    `"links"`, `"localLinkRefs"`, `"aliases"`, `"transitions"`, `"permissions"`, `"sla"` или
    `"update_limits"`.
@@ -395,7 +397,7 @@ async def iter_issues(
     scroll_type: str = "sorted",
     per_scroll: int = 100,
     scroll_ttl_millis: int | None = None,
-    fields: str | None = None,
+    fields: str | Sequence[str] | None = None,
 ) -> AsyncIterator[IssueT_co | FullIssue]: ...
 ```
 
@@ -408,7 +410,8 @@ async def iter_issues(
 - Итерация останавливается, когда очередная страница пуста или API перестаёт присылать
   заголовок `X-Scroll-Id`.
 - `scrollType` и `perScroll` — параметры **только первого** запроса серии; со второго
-  `iter_issues` отправляет лишь `scrollId` (и `scrollTTLMillis`, если вы его задали), как
+  `iter_issues` их не отправляет и передаёт `scrollId` вместе с остальными параметрами
+  запроса (`order`, `expand`, `fields` и `scrollTTLMillis`, если вы их задали), как
   и показывает пример в документации API.
 - Если выйти из цикла досрочно, `iter_issues` сам вызовет `clear_search_scroll` для
   накопленных пар `X-Scroll-Id` / `X-Scroll-Token` — но только при **закрытии**
@@ -554,7 +557,7 @@ async def link_issues(
 Создаёт связь между текущей задачей (`issue_id`) и другой (`issue`).
 
 ```python
-from yatracker.types.issue_link import LinkRelationship
+from yatracker.types import LinkRelationship
 
 link = await tracker.link_issues("WRITERS-1", LinkRelationship.RELATES, "WRITERS-2")
 ```

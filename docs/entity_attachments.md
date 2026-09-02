@@ -102,7 +102,7 @@ async def attach_file_to_entity(
     обновлённый объект `Entity` — сущность, к которой файл был прикреплён.
 
 ```python
-from yatracker.types.entity import Entity
+from yatracker.types import Entity
 
 attachment = await tracker.upload_temp_file(file, "newimage.jpg")
 

@@ -167,6 +167,29 @@ class IssueFields(BaseTracker):
         )
         return self._decode(IssueField, data)
 
+    async def get_field_categories(self) -> list[FieldCategory]:
+        """Get all categories of issue fields.
+
+        `GET /fields/categories` has no page of its own in the
+        reference: six pages of the fields section point at it as the
+        way to look a category id up, but none of them documents its
+        response. The shape is therefore assumed to be a list of the
+        objects the create/patch category pages answer with, and
+        :class:`FieldCategory` keeps only the keys those samples show
+        (plus the optional `order` and `description` of the request
+        bodies). Anything else the endpoint sends is ignored.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/create-issue-field-category
+
+        :return: list of field categories.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri="/fields/categories",
+        )
+        return self._decode(list[FieldCategory], data)
+
     async def create_field_category(
         self,
         name: LocalizedNameInput,

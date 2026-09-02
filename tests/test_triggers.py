@@ -19,6 +19,10 @@ from typing import Any, ClassVar
 import pytest
 from pydantic import TypeAdapter
 from yatracker import YaTracker
+from yatracker.exceptions import (
+    AlreadyExistsError,
+    PreconditionFailedError,
+)
 from yatracker.types.trigger import (
     Trigger,
     TriggerAction,
@@ -318,6 +322,24 @@ class TestTriggerEndpoints:
 
         call = client.calls[0]
         assert sent_json(call) == {"name": "Renamed"}
+
+    @pytest.mark.parametrize(
+        ("status", "error"),
+        [(409, AlreadyExistsError), (412, PreconditionFailedError)],
+    )
+    async def test_update_trigger_stale_version_raises(
+        self,
+        status: int,
+        error: type[Exception],
+    ) -> None:
+        """A stale `version` is documented under both 409 and 412.
+
+        The two codes carry the very same wording on the change-trigger
+        page, so either of them can answer a stale version.
+        """
+        tracker, _ = make_tracker(TRIGGER, status=status)
+        with pytest.raises(error):
+            await tracker.update_trigger("DESIGN", 16, 1, name="Renamed")
 
 
 class TestIterTriggers:

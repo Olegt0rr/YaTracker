@@ -297,7 +297,7 @@ async def test_create_gap_delegates_to_create_gaps() -> None:
         "vacation",
         datetime(2026, 7, 1, tzinfo=timezone.utc),
         datetime(2026, 7, 15, tzinfo=timezone.utc),
-        gap_id="68340a1f2b4c1a3d5e7f9011",
+        id_="68340a1f2b4c1a3d5e7f9011",
         full_day=True,
         work_in_absence=False,
     )

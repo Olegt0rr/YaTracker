@@ -29,7 +29,7 @@ async def create_report(
     self,
     summary: str,
     *,
-    fields: Sequence[str] | None = None,
+    fields: str | Sequence[str] | None = None,
     format_: str = "xlsx",
     query: str | None = None,
     filter_: dict[str, Any] | None = None,
@@ -50,8 +50,10 @@ report = await tracker.create_report(
 ```
 
 1. `summary` — название отчёта (обязательное поле).
-2. `fields` — список идентификаторов полей задачи, которые попадут в отчёт, например
-   `["priority", "type", "key", "summary", "assignee", "status", "updated"]`.
+2. `fields` — идентификаторы полей задачи, которые попадут в отчёт: последовательность имён
+   (`["priority", "type", "key", "summary", "assignee", "status", "updated"]`) либо строка
+   с теми же именами через запятую (`"priority,type,key"`) — её метод сам разобьёт в
+   JSON-массив, которого ждёт API.
 3. `format_` — формат выгрузки: `"xlsx"`, `"xml"` или `"csv"` (по умолчанию `"xlsx"`).
 4. `query`, `filter_`, `filter_id` — три взаимоисключающих способа задать критерии поиска
    задач для отчёта; ровно один из них обязателен (см. предупреждение ниже):
@@ -73,7 +75,7 @@ report = await tracker.create_report(
     требует указать, какие задачи выгружать).
 
 ```python
-from yatracker.types.report import ReportSort
+from yatracker.types import ReportSort
 
 report = await tracker.create_report(
     summary="Задачи без исполнителя",

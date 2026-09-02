@@ -100,6 +100,9 @@ __all__ = [
     "QueueAccessGrantees",
     "QueueAccessUpdate",
     "QueueField",
+    "QueueFieldOptionsProvider",
+    "QueueFieldQueryProvider",
+    "QueueFieldSchema",
     "QueueGroupAccess",
     "QueuePermissions",
     "QueueUserAccess",
@@ -229,6 +232,9 @@ from .priority import Priority
 from .project import Project, ProjectQueueRef
 from .queue import Queue
 from .queue_field import QueueField
+from .queue_field_options_provider import QueueFieldOptionsProvider
+from .queue_field_query_provider import QueueFieldQueryProvider
+from .queue_field_schema import QueueFieldSchema
 from .queue_permissions import (
     ComponentGroupAccess,
     ComponentUserAccess,

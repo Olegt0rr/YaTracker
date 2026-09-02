@@ -35,7 +35,7 @@ async def get_entity_comments(
 Возвращает список всех комментариев сущности, без пагинации.
 
 ```python
-from yatracker.types.entity_comment import EntityComment
+from yatracker.types import EntityComment
 
 comments: list[EntityComment] = await tracker.get_entity_comments(
     "project",

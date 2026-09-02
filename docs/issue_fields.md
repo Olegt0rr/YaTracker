@@ -84,7 +84,7 @@ async def create_field(
 Создаёт новое глобальное поле задачи.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 field = await tracker.create_field(
     name=LocalizedName(en="My field", ru="Моё поле"),
@@ -178,11 +178,35 @@ field = await tracker.update_field(
 ## Категории полей
 
 Категория — это группа, к которой относится поле; в интерфейсе Трекера категории образуют
-разделы на странице настройки полей. Список существующих категорий возвращает поле
-`category` каждого поля (короткая ссылка `Ref`); отдельного метода для получения списка всех
-категорий в `yatracker` нет, так как официальный `GET /fields/categories` не задокументирован
-как самостоятельный публичный эндпоинт — сравните `category` в ответах `get_global_fields`
-или `get_field`.
+разделы на странице настройки полей. Категорию поля возвращает поле `category` каждого поля
+(короткая ссылка `Ref`), а весь список категорий — метод `get_field_categories`.
+
+### get_field_categories
+
+```python
+async def get_field_categories(self) -> list[FieldCategory]: ...
+```
+
+Возвращает список всех категорий полей организации.
+
+```python
+categories = await tracker.get_field_categories()
+
+for category in categories:
+    print(category.id, category.name, category.order)
+```
+
+!!! warning "Ответ не задокументирован"
+
+    У запроса `GET /fields/categories` нет собственной страницы в справочнике: на него
+    ссылаются шесть других страниц раздела «Поля задач» (как на способ узнать
+    идентификатор категории), но формат ответа нигде не описан. `yatracker` считает
+    ответ списком тех же объектов, что возвращают создание и изменение категории, и
+    модель `FieldCategory` хранит только те ключи, которые есть в их примерах
+    (плюс необязательные `order` и `description` из тел запросов). Всё остальное, что
+    пришлёт эндпоинт, игнорируется.
+
+Источник: https://yandex.ru/support/tracker/ru/api/issues/create-issue-field-category
 
 ### create_field_category
 
@@ -199,7 +223,7 @@ async def create_field_category(
 Создаёт новую категорию полей.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 category = await tracker.create_field_category(
     name=LocalizedName(en="My category", ru="Моя категория"),
@@ -251,7 +275,9 @@ category = await tracker.update_field_category(
 
     Справочник перечисляет `name` и `order` в обязательных параметрах тела запроса, даже
     если меняется только одно из них, поэтому в `yatracker` это позиционные аргументы.
-    Меняете что-то одно — передайте текущее значение второго.
+    Меняете что-то одно — передайте текущее значение второго. Текущий `order` категории
+    можно прочитать из `get_field_categories` (в ответах на создание и изменение
+    категории его нет).
 
 Источник: https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-category
 
@@ -318,7 +344,7 @@ async def create_local_field(
 Создаёт локальное поле, привязанное к очереди.
 
 ```python
-from yatracker.types.localized_name import LocalizedName
+from yatracker.types import LocalizedName
 
 field = await tracker.create_local_field(
     "HELP",
@@ -451,6 +477,8 @@ field = await tracker.update_local_field(
 | `id` | `str` | Идентификатор категории. |
 | `name` | `str` | Название категории (обычная строка, а не объект локализации, как в теле запроса). |
 | `version` | `int` | Версия категории, увеличивается при каждом изменении. |
+| `order` | `int \| None` | Вес категории при отображении в интерфейсе. В примерах ответа на создание и изменение категории отсутствует. |
+| `description` | `str \| None` | Описание категории. В примерах ответа на создание и изменение категории отсутствует. |
 
 ### `FieldSuggestProvider`
 

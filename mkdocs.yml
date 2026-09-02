@@ -8,6 +8,8 @@ nav:
     - Задачи: issues.md
     - Очереди: queues.md
     - Компоненты: components.md
+    - Проекты (устаревший API): projects.md
+    - Проекты, портфели и цели: entities.md
     - Комментарии: comments.md
     - Учёт времени: worklogs.md
     - Прикреплённые файлы: attachments.md

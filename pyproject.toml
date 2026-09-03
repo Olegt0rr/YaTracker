@@ -114,6 +114,9 @@ branch = false
 parallel = true
 # required by py-cov-action/python-coverage-comment-action
 relative_files = true
+# tests/test_utils_datetime.py compiles synthetic library frames under this
+# name; the file does not exist, so `coverage json` must not look for it
+omit = ["*/_frames_for_tests.py"]
 
 [tool.coverage.report]
 exclude_lines = [

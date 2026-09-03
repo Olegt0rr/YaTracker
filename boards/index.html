@@ -1,0 +1,2385 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../macros/">
+      
+      
+        <link rel="next" href="../comments/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Доски и спринты - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Доски и спринты
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Доски
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Доски">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_boards_paginated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_boards_paginated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Колонки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Колонки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_board_columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board_columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Спринты
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Спринты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_sprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sprints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#archive_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        archive_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Доски
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Доски">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_boards_paginated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_boards_paginated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_boards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Колонки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Колонки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_board_columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board_columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_board_column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_board_column
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Спринты
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Спринты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_sprints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sprints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#start_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#archive_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        archive_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Доски и спринты</h1>
+<p>Доска (board) — это настраиваемое представление задач в виде канбан- или скрам-доски: у неё
+есть название, набор колонок (columns), необязательный бэклог и набор спринтов. Колонка
+определяет, какие статусы задач в неё попадают. Спринт (sprint) — это отрезок времени работы
+по доске: у него есть даты начала и окончания и статус (<code>draft</code>, <code>in_progress</code>, <code>released</code>,
+<code>archived</code>). <code>yatracker</code> предоставляет методы для получения, создания и изменения досок, их
+колонок и спринтов.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с досками и спринтами являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.cloud/ru/docs/tracker/about-api</p>
+<div class="admonition note">
+<p class="admonition-title">Версии и <code>If-Match</code></p>
+<p>Колонки досок и спринты используют оптимистичную блокировку (optimistic locking): чтобы
+изменить или удалить объект, нужно передать его текущую версию — библиотека кладёт её
+в заголовок <code>If-Match</code> в кавычках, как того требует API (<code>If-Match: "2"</code>). Если версия
+устарела, то есть кто-то успел изменить объект раньше вас, Трекер отвечает
+<code>412 Precondition Failed</code>, и библиотека бросает <code>PreconditionFailedError</code> — подробнее
+в разделе <a href="../errors/">«Обработка ошибок»</a>. В этом случае объект нужно перечитать и
+повторить запрос уже с актуальной версией. Если версия обязательна, а её не передали,
+Трекер отвечает <code>428 Precondition Required</code> — <code>PreconditionRequiredError</code>.</p>
+<p>Важно: методы работы с <strong>колонками</strong> (<code>create_board_column</code>, <code>update_board_column</code>,
+<code>delete_board_column</code>) принимают версию <strong>доски</strong> (<code>Board.version</code>), а не колонки — у
+самой колонки отдельной версии нет. Методы работы со <strong>спринтами</strong> принимают версию
+спринта (<code>FullSprint.version</code>).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title"><code>POST /boards/</code> не используется</p>
+<p>Официальный запрос на создание доски <code>POST /boards/</code> считается устаревшим и игнорирует
+тело запроса. Поэтому <code>create_board</code> отправляет <code>POST /liveBoards/</code> — то же самое
+действие, но с рабочим телом запроса.</p>
+</div>
+<h2 id="_2">Доски</h2>
+<h3 id="get_boards">get_boards</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_boards</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Board</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех досок, доступных пользователю, без пагинации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">boards</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_boards</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">for</span> <span class="n">board</span> <span class="ow">in</span> <span class="n">boards</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">board</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-boards</p>
+<h3 id="get_boards_paginated">get_boards_paginated</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_boards_paginated</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Board</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одну страницу досок. Пагинация здесь не такая, как у большинства других списков:
+она относительная, а не по номеру страницы. Доски отсортированы по возрастанию <code>id</code>, и
+чтобы получить следующую страницу, нужно передать <code>id</code> последней доски предыдущей страницы.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_boards_paginated</span><span class="p">(</span><span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">if</span> <span class="n">page</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">next_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_boards_paginated</span><span class="p">(</span><span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">id_</span><span class="o">=</span><span class="n">page</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Пустая страница означает, что доски закончились. Документация описывает <code>id</code> как доску,
+<em>с которой начинается</em> следующая страница, поэтому доска-курсор может вернуться ещё раз в
+начале следующей страницы — <code>iter_boards</code> ниже учитывает это сам.</p>
+<ol>
+<li><code>per_page</code> — количество досок на странице, не больше <code>500</code>.</li>
+<li><code>id_</code> — <code>id</code> последней доски предыдущей страницы; для первой страницы не передаётся.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-boards-paginate</p>
+<h3 id="iter_boards">iter_boards</h3>
+<p>Чтобы не управлять пагинацией вручную, используйте <code>iter_boards</code> — асинхронный генератор
+поверх <code>get_boards_paginated</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">iter_boards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Board</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">for</span> <span class="n">board</span> <span class="ow">in</span> <span class="n">tracker</span><span class="o">.</span><span class="n">iter_boards</span><span class="p">(</span><span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">board</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>per_page</code> — количество досок, запрашиваемых за один вызов <code>get_boards_paginated</code>.</li>
+</ol>
+<p>Итерация останавливается, когда очередная страница оказывается пустой или не продвигается
+дальше курсора; если Трекер вернёт доску-курсор повторно, второй раз она не отдаётся.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>per_page=1</code> отправляется как <code>perPage=2</code></p>
+<p>Курсор <code>id</code> включающий: элемент-курсор возвращается ещё раз в начале следующей
+страницы. Поэтому страница из одного элемента могла бы содержать только сам курсор,
+и итерация остановилась бы после первого элемента. Чтобы этого не происходило,
+<code>per_page=1</code> отправляется в API как <code>perPage=2</code>.</p>
+</div>
+<h3 id="get_board">get_board</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Board</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одну доску по идентификатору.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">board</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_board</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-board</p>
+<h3 id="create_board">create_board</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_board</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">owner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">board_permissions_template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">backlog_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">sprints_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">backlog_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">non_parametrized_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="n">auto_filters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Board</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новую доску.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoardColumnParams</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">board</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_board</span><span class="p">(</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"My board"</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">owner</span><span class="o">=</span><span class="s2">"login"</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">board_permissions_template</span><span class="o">=</span><span class="s2">"private"</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="n">BoardColumnParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"To Do"</span><span class="p">,</span> <span class="n">statuses</span><span class="o">=</span><span class="p">[</span><span class="s2">"new"</span><span class="p">,</span> <span class="s2">"open"</span><span class="p">],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="p">],</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="n">backlog_columns</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>        <span class="n">BoardColumnParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Later"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="p">],</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>name</code> — название доски.</li>
+<li><code>owner</code> — логин или идентификатор владельца доски (строка или число).</li>
+<li><code>board_permissions_template</code> — <code>"private"</code> или <code>"public"</code> (по умолчанию у Трекера —
+   <code>"public"</code>).</li>
+<li><code>backlog_available</code> — показывать ли на доске бэклог.</li>
+<li><code>sprints_available</code> — включены ли спринты для доски.</li>
+<li><code>columns</code>, <code>backlog_columns</code>, <code>non_parametrized_columns</code> — списки <code>BoardColumnParams</code>:
+   облегчённого, по сравнению с <code>BoardColumn</code> из ответа, описания колонки для запроса —
+   <code>name</code>, необязательный список ключей статусов <code>statuses</code> (для колонок бэклога и
+   непараметризованных колонок статусы не указываются) и необязательный <code>limit</code> — лимит
+   задач в колонке.</li>
+<li>
+<p><code>auto_filters</code> — настройки автофильтра доски, отправляются как есть (недокументированная
+   внутренняя структура), например:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">auto_filters</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s2">"addFilter"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="s2">"liveFilter"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>            <span class="s2">"fieldValues"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>                <span class="s2">"queue"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"fixed"</span><span class="p">:</span> <span class="s2">"DEV"</span><span class="p">}],</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>                <span class="s2">"assignee"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"fixed"</span><span class="p">:</span> <span class="s2">"login"</span><span class="p">}],</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>            <span class="p">},</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        <span class="p">},</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        <span class="s2">"enabled"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="p">},</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="s2">"removeFilter"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="s2">"statuses"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"closed"</span><span class="p">],</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>        <span class="s2">"checkResolutionPresence"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>        <span class="s2">"maxTimeInToRemoveState"</span><span class="p">:</span> <span class="s2">"P6W"</span><span class="p">,</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>        <span class="s2">"enabled"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>    <span class="p">},</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/post-board</p>
+<h3 id="update_board">update_board</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_board</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">backlog_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">sprints_available</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="n">backlog_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">non_parametrized_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumnParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Board</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующую доску. Владелец доски (<code>owner</code>) через этот метод не меняется — такого
+поля в запросе на изменение доски у API нет.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">board</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_board</span><span class="p">(</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">board_id</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Renamed board"</span><span class="p">,</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+<li><code>version</code> — текущая версия доски (<code>board.version</code>). Если передать её, библиотека положит
+   значение в заголовок <code>If-Match</code>. В справочнике этого запроса заголовок <code>If-Match</code> не
+   перечислен, но сам запрос документирует ответы <code>412 Precondition Failed</code>
+   (<code>PreconditionFailedError</code>, версия устарела) и <code>428 Precondition Required</code>
+   (<code>PreconditionRequiredError</code>, версия обязательна), поэтому заголовок передаётся как есть.
+   Если не передавать <code>version</code>, запрос уйдёт без <code>If-Match</code> — без защиты от параллельного
+   изменения, а Трекер может ответить <code>428</code>.</li>
+<li><code>name</code>, <code>backlog_available</code>, <code>sprints_available</code>, <code>columns</code>, <code>backlog_columns</code>,
+   <code>non_parametrized_columns</code> — необязательные поля для изменения, как в <code>create_board</code>.
+   Значение <code>None</code> означает «не менять».</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/patch-board</p>
+<h3 id="delete_board">delete_board</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет доску. Возвращает <code>True</code> при успехе.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_board</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/delete-board</p>
+<h2 id="_3">Колонки</h2>
+<h3 id="get_board_columns">get_board_columns</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_board_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoardColumn</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список колонок доски.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">columns</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_board_columns</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+</ol>
+<p>Тот же список доступен и на самой модели — см. <code>Board.get_columns()</code> ниже.</p>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-columns</p>
+<h3 id="get_board_column">get_board_column</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_board_column</span><span class="p">(</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">column_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoardColumn</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одну колонку доски.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">column</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_board_column</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+<li><code>column_id</code> — идентификатор колонки.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-column</p>
+<h3 id="create_board_column">create_board_column</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_board_column</span><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoardColumn</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новую колонку на доске.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">column</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_board_column</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">board_id</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Approve"</span><span class="p">,</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">statuses</span><span class="o">=</span><span class="p">[</span><span class="s2">"needInfo"</span><span class="p">,</span> <span class="s2">"adjustment"</span><span class="p">],</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+<li><code>version</code> — текущая версия <strong>доски</strong> (см. заметку про версии выше), уходит в заголовок
+   <code>If-Match</code>.</li>
+<li><code>name</code> — название колонки.</li>
+<li><code>statuses</code> — ключи статусов, которые попадают в колонку.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/post-column</p>
+<h3 id="update_board_column">update_board_column</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_board_column</span><span class="p">(</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">column_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>    <span class="n">statuses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BoardColumn</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет колонку доски. Передаются только те поля, которые нужно обновить.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">column</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_board_column</span><span class="p">(</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">board_id</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">column_id</span><span class="o">=</span><span class="n">column</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">version</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"In progress"</span><span class="p">,</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+<li><code>column_id</code> — идентификатор колонки.</li>
+<li><code>version</code> — текущая версия доски.</li>
+<li><code>name</code>, <code>statuses</code> — необязательные поля для изменения. <code>None</code> означает «не менять».</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/patch-column</p>
+<h3 id="delete_board_column">delete_board_column</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_board_column</span><span class="p">(</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">column_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет колонку доски. Возвращает <code>True</code> при успехе.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_board_column</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">column</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">board</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+<li><code>column_id</code> — идентификатор колонки.</li>
+<li><code>version</code> — текущая версия доски.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/delete-column</p>
+<h2 id="_4">Спринты</h2>
+<p>В задачах (<code>FullIssue.sprint</code>) спринт представлен короткой ссылкой <code>Sprint</code> (<code>url</code>, <code>id</code>,
+<code>display</code>) — её достаточно, чтобы показать, к какому спринту относится задача. Методы этого
+раздела работают с полным объектом <code>FullSprint</code>, где есть версия, доска, даты и статус.</p>
+<h3 id="get_sprints">get_sprints</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_sprints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullSprint</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список спринтов доски.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">sprints</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_sprints</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="k">for</span> <span class="n">sprint</span> <span class="ow">in</span> <span class="n">sprints</span><span class="p">:</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">sprint</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sprint</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>board_id</code> — идентификатор доски.</li>
+</ol>
+<p>Тот же список доступен и на самой модели — см. <code>Board.get_sprints()</code> ниже.</p>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-sprints</p>
+<h3 id="get_sprint">get_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_sprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sprint_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullSprint</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает один спринт по идентификатору.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_sprint</span><span class="p">(</span><span class="mi">4411</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>sprint_id</code> — идентификатор спринта.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/get-sprint</p>
+<h3 id="create_sprint">create_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_sprint</span><span class="p">(</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>    <span class="n">board_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="n">start_date</span><span class="p">:</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    <span class="n">end_date</span><span class="p">:</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullSprint</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новый спринт на доске.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_sprint</span><span class="p">(</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Sprint 1"</span><span class="p">,</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>    <span class="n">board_id</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>    <span class="n">start_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>    <span class="n">end_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>name</code> — название спринта.</li>
+<li><code>board_id</code> — идентификатор доски, на которой создаётся спринт.</li>
+<li><code>start_date</code>, <code>end_date</code> — даты начала и окончания спринта: объект <code>datetime.date</code>
+   (или <code>datetime</code>) или готовая строка <code>YYYY-MM-DD</code>.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/post-sprint</p>
+<h3 id="update_sprint">update_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_sprint</span><span class="p">(</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    <span class="n">sprint_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>    <span class="n">start_date</span><span class="p">:</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>    <span class="n">end_date</span><span class="p">:</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullSprint</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет спринт. Передаются только те поля, которые нужно обновить.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_sprint</span><span class="p">(</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    <span class="n">sprint_id</span><span class="o">=</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">sprint</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    <span class="n">end_date</span><span class="o">=</span><span class="s2">"2026-01-21"</span><span class="p">,</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>sprint_id</code> — идентификатор спринта.</li>
+<li><code>version</code> — текущая версия спринта (<code>sprint.version</code>), уходит в заголовок <code>If-Match</code>.</li>
+<li><code>name</code>, <code>start_date</code>, <code>end_date</code>, <code>status</code> — необязательные поля для изменения.
+   <code>status</code> — один из <code>draft</code>, <code>in_progress</code>, <code>released</code>, <code>archived</code>. <code>None</code> означает
+   «не менять».</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/patch-sprint</p>
+<h3 id="start_sprint">start_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">start_sprint</span><span class="p">(</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">sprint_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullSprint</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Переводит спринт в статус <code>in_progress</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">start_sprint</span><span class="p">(</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">sprint</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>sprint_id</code> — идентификатор спринта.</li>
+<li><code>version</code> — текущая версия спринта, уходит в заголовок <code>If-Match</code>.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/start-sprint</p>
+<h3 id="archive_sprint">archive_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">archive_sprint</span><span class="p">(</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">sprint_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullSprint</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Переводит спринт в статус <code>archived</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">archive_sprint</span><span class="p">(</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">sprint</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>sprint_id</code> — идентификатор спринта.</li>
+<li><code>version</code> — текущая версия спринта, уходит в заголовок <code>If-Match</code>.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/archive-sprint</p>
+<h3 id="delete_sprint">delete_sprint</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_sprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sprint_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет спринт. Возвращает <code>True</code> при успехе.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_sprint</span><span class="p">(</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>sprint_id</code> — идентификатор спринта.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/boards/delete-sprint</p>
+<h2 id="_5">Типичный сценарий</h2>
+<p>Создать доску с колонками, прочитать её колонки через удобный метод модели, затем создать
+и сразу запустить спринт:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">BoardColumnParams</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="n">board</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_board</span><span class="p">(</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Sprint board"</span><span class="p">,</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>    <span class="n">sprints_available</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>    <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>        <span class="n">BoardColumnParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"To Do"</span><span class="p">,</span> <span class="n">statuses</span><span class="o">=</span><span class="p">[</span><span class="s2">"open"</span><span class="p">]),</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>        <span class="n">BoardColumnParams</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Done"</span><span class="p">,</span> <span class="n">statuses</span><span class="o">=</span><span class="p">[</span><span class="s2">"closed"</span><span class="p">]),</span>
+</span><span id="__span-39-9"><a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>    <span class="p">],</span>
+</span><span id="__span-39-10"><a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="p">)</span>
+</span><span id="__span-39-11"><a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a>
+</span><span id="__span-39-12"><a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="n">columns</span> <span class="o">=</span> <span class="k">await</span> <span class="n">board</span><span class="o">.</span><span class="n">get_columns</span><span class="p">()</span>
+</span><span id="__span-39-13"><a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a>
+</span><span id="__span-39-14"><a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_sprint</span><span class="p">(</span>
+</span><span id="__span-39-15"><a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Sprint 1"</span><span class="p">,</span>
+</span><span id="__span-39-16"><a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a>    <span class="n">board_id</span><span class="o">=</span><span class="n">board</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-39-17"><a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a>    <span class="n">start_date</span><span class="o">=</span><span class="s2">"2026-01-01"</span><span class="p">,</span>
+</span><span id="__span-39-18"><a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a>    <span class="n">end_date</span><span class="o">=</span><span class="s2">"2026-01-14"</span><span class="p">,</span>
+</span><span id="__span-39-19"><a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="p">)</span>
+</span><span id="__span-39-20"><a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a><span class="n">sprint</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">start_sprint</span><span class="p">(</span><span class="n">sprint</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">sprint</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

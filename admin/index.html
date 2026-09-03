@@ -1,0 +1,2484 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../users/">
+      
+      
+        <link rel="next" href="../issue_fields/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Администрирование - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Администрирование
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы задач
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Типы задач">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_issue_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_issue_types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_issue_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_issue_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_issue_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_issue_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Статусы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Статусы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_statuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_statuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_status
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Резолюции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Резолюции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_resolutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_resolutions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Приоритеты
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приоритеты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_priorities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fullissuetype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullIssueType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullresolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullResolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localizedname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalizedName
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типы задач
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Типы задач">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_issue_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_issue_types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_issue_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_issue_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_issue_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_issue_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Статусы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Статусы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_statuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_statuses
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_status
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Резолюции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Резолюции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_resolutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_resolutions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Приоритеты
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Приоритеты">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_priorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_priorities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fullissuetype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullIssueType
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullresolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FullResolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localizedname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalizedName
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Административные справочники</h1>
+<p>Типы задач, статусы, резолюции и приоритеты — общие справочники уровня организации: один
+список для всех очередей, а не отдельная настройка каждой из них. Получить содержимое
+справочника может любой пользователь с доступом к API, а вот создание новой записи и
+изменение существующей требуют <strong>прав администратора</strong> Трекера. <code>yatracker</code> предоставляет
+методы для получения, создания и изменения всех четырёх справочников.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы со справочниками являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.cloud/ru/docs/tracker/about-api</p>
+<h2 id="_2">Типы задач</h2>
+<h3 id="get_issue_types">get_issue_types</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_issue_types</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullIssueType</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех типов задач организации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullIssueType</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">issue_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullIssueType</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue_types</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">for</span> <span class="n">issue_type</span> <span class="ow">in</span> <span class="n">issue_types</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">issue_type</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">issue_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/get-issue-types</p>
+<h3 id="create_issue_type">create_issue_type</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_issue_type</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullIssueType</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новый тип задачи. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">issue_type</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_issue_type</span><span class="p">(</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">key</span><span class="o">=</span><span class="s2">"client"</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">ru</span><span class="o">=</span><span class="s2">"Клиент"</span><span class="p">,</span> <span class="n">en</span><span class="o">=</span><span class="s2">"Customer"</span><span class="p">),</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>key</code> — ключ типа задачи.</li>
+<li><code>name</code> — название типа задачи на каждом языке: <code>LocalizedName(ru="Клиент", en="Customer")</code>
+   или обычный словарь <code>{"ru": "Клиент", "en": "Customer"}</code>.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/create-issue-type</p>
+<h3 id="update_issue_type">update_issue_type</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_issue_type</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">issue_type_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullIssueType</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет название существующего типа задачи. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">issue_type</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_issue_type</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">issue_type</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">issue_type</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s2">"ru"</span><span class="p">:</span> <span class="s2">"Покупатель"</span><span class="p">,</span> <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"Customer"</span><span class="p">},</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_type_id</code> — идентификатор или ключ типа задачи.</li>
+<li><code>version</code> — текущая версия типа задачи (<code>issue_type.version</code>).</li>
+<li><code>name</code> — новое название типа задачи на каждом языке. Поля, оставленные <code>None</code>, не
+   отправляются и не меняются.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Версия — это query-параметр, а не заголовок</p>
+<p>В отличие от досок и спринтов (см. <a href="../boards/">«Доски и спринты»</a>), где версия
+передаётся в заголовке <code>If-Match</code>, здесь она уходит в строку запроса как
+<code>?version=&lt;версия&gt;</code>. Если версия устарела — кто-то успел изменить тип задачи
+раньше вас, — Трекер отвечает <code>409 Conflict</code>, и библиотека бросает
+<code>AlreadyExistsError</code> (см. <a href="../errors/">«Обработка ошибок»</a>): перечитайте объект и
+повторите запрос с его актуальной версией. Отдельно от версии, <code>423 Locked</code>
+означает, что превышено максимальное значение самого счётчика версии (<code>10100</code>).</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/patch-issue-type</p>
+<h2 id="_3">Статусы</h2>
+<h3 id="get_statuses">get_statuses</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_statuses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullStatus</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех статусов задач организации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">statuses</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_statuses</span><span class="p">()</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">statuses</span><span class="p">:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/get-statuses</p>
+<h3 id="create_status">create_status</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_status</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullStatus</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новый статус задачи. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">status</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_status</span><span class="p">(</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">key</span><span class="o">=</span><span class="s2">"myStatus"</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">ru</span><span class="o">=</span><span class="s2">"Мой статус"</span><span class="p">,</span> <span class="n">en</span><span class="o">=</span><span class="s2">"My status"</span><span class="p">),</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">type_</span><span class="o">=</span><span class="s2">"paused"</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>key</code> — ключ статуса. Только латинские буквы, должен начинаться с маленькой буквы.</li>
+<li><code>name</code> — название статуса на каждом языке.</li>
+<li><code>type_</code> — тип статуса: <code>"new"</code>, <code>"inProgress"</code>, <code>"paused"</code>, <code>"done"</code> или <code>"cancelled"</code>.
+   Отправляется как <code>type</code>.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/create-status</p>
+<h3 id="update_status">update_status</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_status</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">status_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullStatus</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующий статус задачи. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">status</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">status</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Задача поставлена на паузу"</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">order</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>status_id</code> — идентификатор или ключ статуса.</li>
+<li><code>version</code> — текущая версия статуса (<code>status.version</code>).</li>
+<li><code>name</code> — новое название статуса на каждом языке.</li>
+<li><code>description</code> — новое описание статуса.</li>
+<li><code>order</code> — новый вес статуса; влияет на порядок отображения в интерфейсе.</li>
+<li>
+<p><code>type_</code> — новый тип статуса: <code>"new"</code>, <code>"inProgress"</code>, <code>"paused"</code>, <code>"done"</code> или
+   <code>"cancelled"</code>. Отправляется как <code>type</code>.</p>
+<p>Поля, оставленные <code>None</code>, не отправляются и не меняются.</p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Версия — это query-параметр, код конфликта другой</p>
+<p>Как и у <code>update_issue_type</code>, версия уходит в строку запроса как <code>?version=&lt;версия&gt;</code>,
+а не в заголовок <code>If-Match</code>. Но для статусов устаревшая версия даёт <strong>другой</strong> код
+ошибки, чем у остальных трёх справочников: <code>412 Precondition Failed</code>, и библиотека
+бросает <code>PreconditionFailedError</code> (см. <a href="../errors/">«Обработка ошибок»</a>), а не
+<code>AlreadyExistsError</code>. Перечитайте объект и повторите запрос с его актуальной версией.
+<code>423 Locked</code> здесь означает то же самое, что и у других справочников: превышено
+максимальное значение счётчика версии (<code>10100</code>).</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/patch-status</p>
+<h2 id="_4">Резолюции</h2>
+<h3 id="get_resolutions">get_resolutions</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_resolutions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullResolution</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех резолюций организации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">resolutions</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_resolutions</span><span class="p">()</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">for</span> <span class="n">resolution</span> <span class="ow">in</span> <span class="n">resolutions</span><span class="p">:</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">resolution</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">resolution</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/get-resolutions</p>
+<h3 id="create_resolution">create_resolution</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_resolution</span><span class="p">(</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullResolution</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новую резолюцию. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">resolution</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_resolution</span><span class="p">(</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">key</span><span class="o">=</span><span class="s2">"wontFix"</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">ru</span><span class="o">=</span><span class="s2">"Не будет исправлено"</span><span class="p">,</span> <span class="n">en</span><span class="o">=</span><span class="s2">"Won't be fixed"</span><span class="p">),</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>key</code> — ключ резолюции. Только латинские буквы, должен начинаться с маленькой буквы.</li>
+<li><code>name</code> — название резолюции на каждом языке.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/create-resolution</p>
+<h3 id="update_resolution">update_resolution</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_resolution</span><span class="p">(</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">resolution_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FullResolution</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующую резолюцию. Требует прав администратора.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">resolution</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_resolution</span><span class="p">(</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">resolution</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">resolution</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>resolution_id</code> — идентификатор или ключ резолюции.</li>
+<li><code>version</code> — текущая версия резолюции (<code>resolution.version</code>).</li>
+<li><code>name</code> — новое название резолюции на каждом языке.</li>
+<li><code>description</code> — новое описание резолюции.</li>
+<li>
+<p><code>order</code> — новый вес резолюции; влияет на порядок отображения в интерфейсе.</p>
+<p>Поля, оставленные <code>None</code>, не отправляются и не меняются.</p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Версия — это query-параметр, а не заголовок</p>
+<p>Версия уходит в строку запроса как <code>?version=&lt;версия&gt;</code>, а не в заголовок <code>If-Match</code>.
+Если версия устарела, Трекер отвечает <code>409 Conflict</code>, и библиотека бросает
+<code>AlreadyExistsError</code> (см. <a href="../errors/">«Обработка ошибок»</a>) — так же, как для типов
+задач и приоритетов. Перечитайте объект и повторите запрос с его актуальной версией.
+<code>423 Locked</code> означает, что превышено максимальное значение счётчика версии (<code>10100</code>).</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/patch-resolution</p>
+<h2 id="_5">Приоритеты</h2>
+<h3 id="get_priorities">get_priorities</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_priorities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Priority</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список приоритетов для задачи.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">priorities</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_priorities</span><span class="p">()</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="k">for</span> <span class="n">priority</span> <span class="ow">in</span> <span class="n">priorities</span><span class="p">:</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">priority</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">priority</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># названия сразу на всех языках</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">priorities_all_langs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_priorities</span><span class="p">(</span><span class="n">localized</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>localized</code> — <code>True</code> (по умолчанию) — в ответе <code>name</code> содержит название только на
+   языке пользователя (обычная строка). <code>False</code> — <code>name</code> содержит названия на всех
+   языках сразу (объект, где ключ — код языка).</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/get-priorities</p>
+<h3 id="create_priority">create_priority</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_priority</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Priority</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новый приоритет. Требует прав администратора. Справочник документирует все
+параметры этого запроса как обязательные.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">priority</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_priority</span><span class="p">(</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">key</span><span class="o">=</span><span class="s2">"one"</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">ru</span><span class="o">=</span><span class="s2">"Название на русском"</span><span class="p">,</span> <span class="n">en</span><span class="o">=</span><span class="s2">"English name"</span><span class="p">),</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">order</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Описание"</span><span class="p">,</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>key</code> — ключ приоритета.</li>
+<li><code>name</code> — название приоритета на каждом языке.</li>
+<li><code>order</code> — вес приоритета; влияет на порядок отображения в интерфейсе.</li>
+<li><code>description</code> — описание приоритета.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/create-priority</p>
+<h3 id="update_priority">update_priority</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_priority</span><span class="p">(</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">priority_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Priority</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующий приоритет. Требует прав администратора. Запрос не может изменить
+значок приоритета, отображаемый в интерфейсе Трекера.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">priority</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_priority</span><span class="p">(</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">priority</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">priority</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Обновлённое описание"</span><span class="p">,</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>priority_id</code> — идентификатор или ключ приоритета.</li>
+<li><code>version</code> — текущая версия приоритета (<code>priority.version</code>).</li>
+<li><code>name</code> — новое название приоритета на каждом языке.</li>
+<li>
+<p><code>description</code> — новое описание приоритета.</p>
+<p>Поля, оставленные <code>None</code>, не отправляются и не меняются.</p>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Версия — это query-параметр, а не заголовок</p>
+<p>Версия уходит в строку запроса как <code>?version=&lt;версия&gt;</code>, а не в заголовок <code>If-Match</code>.
+Если версия устарела, Трекер отвечает <code>409 Conflict</code>, и библиотека бросает
+<code>AlreadyExistsError</code> (см. <a href="../errors/">«Обработка ошибок»</a>) — так же, как для типов
+задач и резолюций. Перечитайте объект и повторите запрос с его актуальной версией.
+<code>423 Locked</code> означает, что превышено максимальное значение счётчика версии (<code>10100</code>).</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/admin/patch-priority</p>
+<h2 id="_6">Модели</h2>
+<h3 id="fullissuetype">FullIssueType</h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на объект.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор типа задачи.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия типа задачи.</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str</code></td>
+<td>Ключ типа задачи.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название типа задачи, отображаемое в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание типа задачи.</td>
+</tr>
+<tr>
+<td><code>deleted</code></td>
+<td><code>bool \| None</code></td>
+<td><code>True</code>, если тип задачи удалён; при отсутствии поле не передаётся API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fullstatus">FullStatus</h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на объект.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор статуса.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия статуса.</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str</code></td>
+<td>Ключ статуса.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название статуса, отображаемое в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание статуса.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>int \| None</code></td>
+<td>Вес статуса; влияет на порядок отображения в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>str \| None</code></td>
+<td>Тип статуса: <code>"new"</code>, <code>"inProgress"</code>, <code>"paused"</code>, <code>"done"</code> или <code>"cancelled"</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fullresolution">FullResolution</h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на объект.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор резолюции.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия резолюции.</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str</code></td>
+<td>Ключ резолюции.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название резолюции, отображаемое в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание резолюции.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>int \| None</code></td>
+<td>Вес резолюции; влияет на порядок отображения в интерфейсе.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="priority">Priority</h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на объект.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор приоритета.</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str</code></td>
+<td>Ключ приоритета.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>str \| None</code></td>
+<td>Название, отображаемое в интерфейсе. Заполнено только у короткой ссылки, встроенной в задачу.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int \| None</code></td>
+<td>Версия приоритета.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str \| dict \| None</code></td>
+<td>Название приоритета. При <code>localized=False</code> — объект с названиями на всех языках, а не строка.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание приоритета.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>int \| None</code></td>
+<td>Вес приоритета; влияет на порядок отображения в интерфейсе.</td>
+</tr>
+</tbody>
+</table>
+<p><code>Priority</code> обслуживает сразу два случая ответа API: полный объект из методов этого раздела
+и короткую ссылку, встроенную в задачу (<code>FullIssue.priority</code>) — поэтому все поля, кроме
+<code>url</code>, <code>id</code> и <code>key</code>, необязательны.</p>
+<h3 id="localizedname">LocalizedName</h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>en</code></td>
+<td><code>str \| None</code></td>
+<td>Название на английском.</td>
+</tr>
+<tr>
+<td><code>ru</code></td>
+<td><code>str \| None</code></td>
+<td>Название на русском.</td>
+</tr>
+</tbody>
+</table>
+<p><code>LocalizedName</code> — это формат <strong>запроса</strong> для <code>name</code> (<code>create_issue_type</code>, <code>create_status</code>,
+<code>create_resolution</code>, <code>create_priority</code> и их <code>update_*</code>-аналоги). Вместо него можно передать
+обычный словарь <code>{"ru": ..., "en": ...}</code>: обе формы объединены псевдонимом
+<code>LocalizedNameInput = LocalizedName | dict[str, str]</code> (<code>yatracker.types.localized_name</code>),
+который и стоит в аннотациях <code>name</code> — в сигнатурах ниже союз для наглядности выписан
+целиком. В <strong>ответе</strong> же, наоборот, <code>name</code> — просто строка на языке пользователя (кроме
+<code>get_priorities(localized=False)</code>, см. выше).</p>
+<div class="admonition note">
+<p class="admonition-title">Короткие ссылки в задачах не меняются</p>
+<p>Всё, что описано на этой странице, — это полные объекты справочников. Короткие
+ссылки, встроенные в задачу (<code>FullIssue.type</code>, <code>FullIssue.status</code>,
+<code>FullIssue.resolution</code>), остаются моделями <code>IssueType</code>, <code>Status</code> и <code>Resolution</code> —
+у каждой всего четыре поля: <code>url</code>, <code>id</code>, <code>key</code>, <code>display</code>. Эта страница их не меняет.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

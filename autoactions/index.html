@@ -1,0 +1,2163 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../triggers/">
+      
+      
+        <link rel="next" href="../entity_comments/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Автодействия - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Автодействия
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Создание автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логи автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Логи автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction_logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction_log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactioncalendar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionCalendar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionissueref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionIssueRef
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunchresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunchResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunchstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunchStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Создание автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логи автодействия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Логи автодействия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction_logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_autoaction_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_autoaction_log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactioncalendar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionCalendar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionissueref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionIssueRef
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunchresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunchResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoactionlaunchstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AutoactionLaunchStatus
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Автодействия</h1>
+<p>Автодействие (autoaction) — это правило очереди, которое периодически (по умолчанию раз в
+час) находит задачи по фильтру или запросу и применяет к каждой из них набор действий:
+меняет статус, обновляет поля, добавляет комментарий, отправляет HTTP-запрос или вычисляет
+значение. В отличие от триггера (см. <a href="../triggers/">«Триггеры»</a>), автодействие не реагирует на
+события в реальном времени — оно само находит подходящие задачи по расписанию, поэтому у него
+нет условий срабатывания, а вместо них — фильтр (<code>filter_</code>) или запрос (<code>query</code>) задач.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с автодействиями являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.cloud/ru/docs/tracker/about-api</p>
+<h2 id="_2">Получение автодействия</h2>
+<h3 id="get_autoaction">get_autoaction</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_autoaction</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">autoaction_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Autoaction</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одно автодействие очереди по его идентификатору.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">autoaction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_autoaction</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">autoaction</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">autoaction</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="n">autoaction</span><span class="o">.</span><span class="n">filter_</span><span class="p">,</span> <span class="n">autoaction</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>autoaction_id</code> — идентификатор автодействия.</li>
+</ol>
+<p>Отдельного метода для получения списка всех автодействий очереди в <code>yatracker</code> нет — он не
+задокументирован как публичный эндпоинт.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-autoaction</p>
+<h2 id="_3">Создание автодействия</h2>
+<h3 id="create_autoaction">create_autoaction</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_autoaction</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">actions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerAction</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">enable_notifications</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">interval_millis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">calendar</span><span class="p">:</span> <span class="n">AutoactionCalendar</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Autoaction</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новое автодействие в указанной очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">TriggerAction</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">autoaction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_autoaction</span><span class="p">(</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="s2">"DESIGN"</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"AutoactionName"</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Transition"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="s2">"needInfo"</span><span class="p">}),</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="p">],</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">filter_</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="s2">"priority"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"critical"</span><span class="p">],</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="s2">"status"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"inProgress"</span><span class="p">],</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="p">},</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">calendar</span><span class="o">=</span><span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>name</code> — название автодействия (обязательное поле).</li>
+<li><code>actions</code> — действия, применяемые к каждой найденной задаче: список <code>TriggerAction</code> (или
+   обычных словарей с теми же ключами). Автодействия поддерживают только часть типов
+   действий триггера — <code>Transition</code>, <code>Update</code>, <code>CreateComment</code>, <code>Webhook</code> и
+   <code>CalculateFormula</code>, — остальные (<code>Move</code>, <code>CreateChecklist</code>, <code>CreateIssue</code>) в ответе
+   <code>create-autoaction</code> не упоминаются. Примеры для каждого типа — в разделе «Действия»
+   страницы <a href="../triggers/">«Триггеры»</a>.</li>
+<li><code>filter_</code> — фильтр задач, словарь «идентификатор поля → список принимаемых значений»,
+   например <code>{"priority": ["critical"], "status": ["inProgress"]}</code>. Отправляется как
+   <code>filter</code>.</li>
+<li><code>query</code> — строка на языке запросов, отбирающая задачи вместо (или вместе с) <code>filter_</code>,
+   например <code>'"Status": "In progress"'</code>.</li>
+<li><code>active</code> — активность автодействия.</li>
+<li><code>enable_notifications</code> — отправлять ли уведомления о срабатывании.</li>
+<li><code>interval_millis</code> — периодичность запуска в миллисекундах (по умолчанию <code>3600000</code>, то есть
+   раз в час).</li>
+<li><code>calendar</code> — график работы, в рамках которого автодействие активно: <code>AutoactionCalendar</code>
+   (или словарь) с идентификатором графика <code>id</code>.</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются.</p>
+<div class="admonition warning">
+<p class="admonition-title">Нужен хотя бы один из <code>filter_</code> и <code>query</code></p>
+<p>Если не передать ни <code>filter_</code>, ни <code>query</code>, метод поднимает <code>ValueError</code> ещё до запроса —
+без них API не будет знать, к каким задачам применять действия.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_autoaction</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Broken"</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># ValueError: Pass at least one of `filter_` and `query`.</span>
+</span></code></pre></div>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/create-autoaction</p>
+<h2 id="_4">Логи автодействия</h2>
+<h3 id="get_autoaction_logs">get_autoaction_logs</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_autoaction_logs</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">autoaction_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">AutoactionLaunch</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список запусков автодействия. Ручка доступна только для автодействий, которые
+настраивают автоматическое обновление задач. Пагинация и фильтрация не документированы.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">launches</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_autoaction_logs</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">for</span> <span class="n">launch</span> <span class="ow">in</span> <span class="n">launches</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">launch</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">launch</span><span class="o">.</span><span class="n">launch_time</span><span class="p">,</span> <span class="n">launch</span><span class="o">.</span><span class="n">successes</span><span class="p">,</span> <span class="n">launch</span><span class="o">.</span><span class="n">failures</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>autoaction_id</code> — идентификатор автодействия.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/view-autoaction-logs</p>
+<h3 id="get_autoaction_log">get_autoaction_log</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_autoaction_log</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">autoaction_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">launch_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">AutoactionLaunchResult</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает результат одного запуска автодействия — что оно сделало с каждой найденной
+задачей.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_autoaction_log</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">launches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">issue_reference</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>autoaction_id</code> — идентификатор автодействия.</li>
+<li><code>launch_id</code> — идентификатор запуска (значение <code>id</code> из <code>get_autoaction_logs</code>).</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/view-autoaction-logs</p>
+<h2 id="_5">Модели</h2>
+<h3 id="autoaction"><code>Autoaction</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на автодействие (ключ <code>self</code>).</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор автодействия.</td>
+</tr>
+<tr>
+<td><code>queue</code></td>
+<td><code>Queue</code></td>
+<td>Очередь, в которой создано автодействие.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название автодействия.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия автодействия, увеличивается при каждом изменении.</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td><code>bool</code></td>
+<td>Активно ли автодействие.</td>
+</tr>
+<tr>
+<td><code>created</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время создания.</td>
+</tr>
+<tr>
+<td><code>updated</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время последнего изменения.</td>
+</tr>
+<tr>
+<td><code>filter_</code></td>
+<td><code>dict[str, Any] \| None</code></td>
+<td>Фильтр задач (API-ключ <code>filter</code>).</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td><code>str \| None</code></td>
+<td>Запрос, отбирающий задачи.</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td><code>list[TriggerAction]</code></td>
+<td>Действия, применяемые к найденным задачам — модель общая с триггерами, см. <a href="../triggers/">«Триггеры»</a>.</td>
+</tr>
+<tr>
+<td><code>enable_notifications</code></td>
+<td><code>bool \| None</code></td>
+<td>Отправляются ли уведомления.</td>
+</tr>
+<tr>
+<td><code>last_launch</code></td>
+<td><code>datetime \| None</code></td>
+<td>Дата и время последнего запуска.</td>
+</tr>
+<tr>
+<td><code>total_issues_processed</code></td>
+<td><code>int \| None</code></td>
+<td>Число задач, проверенных при последнем запуске.</td>
+</tr>
+<tr>
+<td><code>interval_millis</code></td>
+<td><code>int \| None</code></td>
+<td>Периодичность запуска в миллисекундах.</td>
+</tr>
+<tr>
+<td><code>calendar</code></td>
+<td><code>AutoactionCalendar \| None</code></td>
+<td>График работы, в рамках которого автодействие активно.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoactioncalendar"><code>AutoactionCalendar</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор графика работы.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoactionlaunch"><code>AutoactionLaunch</code></h3>
+<p>Один запуск автодействия, возвращается <code>get_autoaction_logs</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор запуска. Передаётся в <code>get_autoaction_log</code>.</td>
+</tr>
+<tr>
+<td><code>launch_time</code></td>
+<td><code>datetime \| None</code></td>
+<td>Время начала запуска.</td>
+</tr>
+<tr>
+<td><code>search_hits</code></td>
+<td><code>int \| None</code></td>
+<td>Число задач, обработанных автодействием.</td>
+</tr>
+<tr>
+<td><code>successes</code></td>
+<td><code>int \| None</code></td>
+<td>Число задач, на которых автодействие сработало успешно.</td>
+</tr>
+<tr>
+<td><code>failures</code></td>
+<td><code>int \| None</code></td>
+<td>Число задач, на которых автодействие завершилось ошибкой.</td>
+</tr>
+<tr>
+<td><code>search_failed</code></td>
+<td><code>bool \| None</code></td>
+<td><code>True</code>, если ни одна задача не была обработана.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoactionissueref"><code>AutoactionIssueRef</code></h3>
+<p>Короткая ссылка на задачу внутри результата запуска (<code>AutoactionLaunchResult.issue_reference</code>),
+наследует <code>Ref</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на задачу.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор задачи.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>str \| None</code></td>
+<td>Название задачи, отображаемое в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str \| None</code></td>
+<td>Ключ задачи.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int \| None</code></td>
+<td>Версия задачи, увеличивается при каждом изменении.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoactionlaunchresult"><code>AutoactionLaunchResult</code></h3>
+<p>Что автодействие сделало с одной задачей за один запуск, возвращается <code>get_autoaction_log</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>int</code></td>
+<td>Порядковый номер срабатывания автодействия (с нуля).</td>
+</tr>
+<tr>
+<td><code>issue_reference</code></td>
+<td><code>AutoactionIssueRef \| None</code></td>
+<td>Задача, к которой было применено автодействие.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>AutoactionLaunchStatus \| None</code></td>
+<td>Результат применения автодействия к этой задаче.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="autoactionlaunchstatus"><code>AutoactionLaunchStatus</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>value</code></td>
+<td><code>str</code></td>
+<td>Значение статуса, например <code>success</code>.</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>str \| None</code></td>
+<td>Название статуса, отображаемое в интерфейсе.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_6">Типичный сценарий</h2>
+<p>Создать автодействие, которое раз в час переводит просроченные критичные задачи в статус
+«Требуется информация», затем проверить результат последнего запуска:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">TriggerAction</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">autoaction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_autoaction</span><span class="p">(</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="s2">"DESIGN"</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"Escalate critical"</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span><span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Transition"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="s2">"needInfo"</span><span class="p">})],</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">filter_</span><span class="o">=</span><span class="p">{</span><span class="s2">"priority"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"critical"</span><span class="p">],</span> <span class="s2">"status"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"inProgress"</span><span class="p">]},</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">)</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="n">launches</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_autoaction_logs</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">autoaction</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">if</span> <span class="n">launches</span><span class="p">:</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_autoaction_log</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">autoaction</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">launches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">issue_reference</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

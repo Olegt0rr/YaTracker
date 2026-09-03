@@ -1,0 +1,3146 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../workflows/">
+      
+      
+        <link rel="next" href="../autoactions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Триггеры - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Триггеры
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение триггеров
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение триггеров">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_triggers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_triggers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Создание триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логи триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Логи триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_trigger_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_trigger_logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Действия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Действия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transition — изменить статус задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update — изменить значения в полях
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move — переместить задачу
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcomment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateComment — добавить комментарий
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createchecklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateChecklist — создать чеклист
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webhook-http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook — отправить HTTP-запрос
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculateformula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CalculateFormula — вычислить значение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createissue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateIssue — создать задачу
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Условия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Условия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логическая группа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        События
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чеклист
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текст комментария
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автор и тип комментария
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Действие со связью
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Значение и состояние поля
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дата
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Группы пользователей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество элементов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Числовые значения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строковые значения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggeraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerAction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggercondition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerCondition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklogrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLogRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklogresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLogResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение триггеров
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение триггеров">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_triggers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iter_triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_triggers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Создание триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update_trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логи триггера
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Логи триггера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_trigger_logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_trigger_logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Действия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Действия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transition — изменить статус задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update — изменить значения в полях
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move — переместить задачу
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcomment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateComment — добавить комментарий
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createchecklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateChecklist — создать чеклист
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webhook-http-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook — отправить HTTP-запрос
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calculateformula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CalculateFormula — вычислить значение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createissue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateIssue — создать задачу
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Условия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Условия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Логическая группа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        События
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чеклист
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Текст комментария
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автор и тип комментария
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Действие со связью
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Значение и состояние поля
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дата
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Группы пользователей
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Количество элементов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Числовые значения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строковые значения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trigger
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggeraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerAction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggercondition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerCondition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklogrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLogRequest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#triggerwebhooklogresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TriggerWebhookLogResponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Типичный сценарий
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Триггеры</h1>
+<p>Триггер (trigger) — это правило очереди, которое реагирует на события в задаче (создание
+комментария, изменение поля, выполнение всех пунктов чеклиста и так далее) и выполняет над
+задачей одно или несколько действий: меняет статус, обновляет поля, создаёт комментарий или
+чеклист, отправляет HTTP-запрос, создаёт новую задачу. В отличие от автодействий (см.
+<a href="../autoactions/">«Автодействия»</a>), триггер срабатывает сразу в момент события, а не по
+расписанию, и не привязан к фильтру задач — вместо него у триггера есть условия срабатывания
+(<code>conditions</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с триггерами являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.cloud/ru/docs/tracker/about-api</p>
+<h2 id="_2">Получение триггеров</h2>
+<h3 id="get_triggers">get_triggers</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_triggers</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trigger</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одну страницу триггеров очереди. Пагинация здесь относительная, а не по номеру
+страницы: триггеры отсортированы по возрастанию <code>id</code>, и чтобы получить следующую страницу,
+нужно передать <code>id</code> последнего триггера предыдущей страницы.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_triggers</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span> <span class="n">page</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">next_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_triggers</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">id_</span><span class="o">=</span><span class="n">page</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>per_page</code> — количество триггеров на странице.</li>
+<li><code>id_</code> — идентификатор последнего триггера предыдущей страницы (query-параметр <code>id</code>); для
+   первой страницы не передаётся.</li>
+</ol>
+<p>Пустая страница означает, что триггеры закончились. Документация описывает <code>id</code> как триггер,
+<em>с которого начинается</em> следующая страница, поэтому триггер-курсор может вернуться ещё раз в
+начале следующей страницы — <code>iter_triggers</code> ниже учитывает это сам.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-triggers</p>
+<h3 id="iter_triggers">iter_triggers</h3>
+<p>Чтобы не управлять пагинацией вручную, используйте <code>iter_triggers</code> — асинхронный генератор
+поверх <code>get_triggers</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">iter_triggers</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Trigger</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">async</span> <span class="k">for</span> <span class="n">trigger</span> <span class="ow">in</span> <span class="n">tracker</span><span class="o">.</span><span class="n">iter_triggers</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">trigger</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">trigger</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>per_page</code> — количество триггеров, запрашиваемых за один вызов <code>get_triggers</code>.</li>
+</ol>
+<p>Итерация останавливается, когда очередная страница оказывается пустой или не продвигается
+дальше курсора; если Трекер вернёт триггер-курсор повторно, второй раз он не отдаётся.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>per_page=1</code> отправляется как <code>perPage=2</code></p>
+<p>Курсор <code>id</code> включающий: элемент-курсор возвращается ещё раз в начале следующей
+страницы. Поэтому страница из одного элемента могла бы содержать только сам курсор,
+и итерация остановилась бы после первого элемента. Чтобы этого не происходило,
+<code>per_page=1</code> отправляется в API как <code>perPage=2</code>.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-triggers</p>
+<h3 id="get_trigger">get_trigger</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_trigger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">trigger_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trigger</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает один триггер очереди по его идентификатору.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">trigger</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_trigger</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">trigger</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">trigger</span><span class="o">.</span><span class="n">active</span><span class="p">,</span> <span class="n">trigger</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>trigger_id</code> — идентификатор триггера.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-trigger</p>
+<h2 id="_3">Создание триггера</h2>
+<h3 id="create_trigger">create_trigger</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_trigger</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">actions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerAction</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">conditions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerCondition</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trigger</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новый триггер в указанной очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">TriggerAction</span><span class="p">,</span> <span class="n">TriggerCondition</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">trigger</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_trigger</span><span class="p">(</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="s2">"DESIGN"</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">"TriggerName"</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">actions</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Transition"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="p">{</span><span class="s2">"key"</span><span class="p">:</span> <span class="s2">"open"</span><span class="p">}),</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="p">],</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">conditions</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CommentFullyMatchCondition"</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="s2">"Open"</span><span class="p">),</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="p">],</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>name</code> — название триггера (обязательное поле).</li>
+<li><code>actions</code> — действия триггера: список <code>TriggerAction</code> (или обычных словарей с теми же
+   ключами) — см. раздел «Действия» ниже.</li>
+<li><code>conditions</code> — условия срабатывания триггера: список <code>TriggerCondition</code> — см. раздел
+   «Условия» ниже. Плоский список означает, что должны выполняться все условия
+   (логическое И); чтобы сработать при выполнении хотя бы одного из них, оберните их в
+   единственный элемент <code>TriggerCondition(type="Or", conditions=[...])</code>.</li>
+<li><code>active</code> — активность триггера (по умолчанию Трекер создаёт активный триггер).</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/create-trigger</p>
+<h2 id="_4">Изменение триггера</h2>
+<h3 id="update_trigger">update_trigger</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_trigger</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">trigger_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">actions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerAction</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">conditions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerCondition</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">before</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trigger</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующий триггер.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">trigger</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_trigger</span><span class="p">(</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="s2">"DESIGN"</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">trigger_id</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">version</span><span class="o">=</span><span class="n">trigger</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">active</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>trigger_id</code> — идентификатор изменяемого триггера.</li>
+<li><code>version</code> — текущая версия триггера (<code>trigger.version</code>).</li>
+<li><code>name</code> — новое название триггера.</li>
+<li><code>actions</code> — новые действия триггера. Задаются целиком: <code>actions</code> заменяет существующий
+   список, а не дополняет его.</li>
+<li><code>conditions</code> — новые условия срабатывания триггера, тоже целиком.</li>
+<li><code>active</code> — активность триггера.</li>
+<li><code>before</code> — идентификатор триггера, перед которым нужно поместить изменяемый (меняет
+   порядок отображения триггеров в интерфейсе).</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются и остаются без изменений.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>version</code> — это query-параметр, а не заголовок</p>
+<p>В отличие от досок и спринтов (см. <a href="../boards/">«Доски и спринты»</a>), где версия объекта
+уходит в заголовок <code>If-Match</code>, здесь версия передаётся частью URL:
+<code>PATCH /queues/{id}/triggers/{id}?version=&lt;версия&gt;</code>. Библиотека собирает эту строку сама
+— достаточно передать <code>version</code> обычным именованным параметром. Если версия устарела,
+официальная документация этого метода описывает конфликт как ошибками <code>409</code> и <code>412</code>
+одновременно; <code>yatracker</code> поднимает <code>AlreadyExistsError</code> на <code>409</code> и
+<code>PreconditionFailedError</code> на <code>412</code> — в любом случае объект нужно перечитать и повторить
+запрос с актуальной версией.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/change-trigger</p>
+<h2 id="_5">Логи триггера</h2>
+<h3 id="get_trigger_logs">get_trigger_logs</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_trigger_logs</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">trigger_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">from_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">to</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TriggerWebhookLog</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает логи запусков действия <code>Webhook</code> триггера — других действий эта ручка не
+касается. Пагинации нет: по умолчанию Трекер отдаёт 10 самых новых записей, передайте
+<code>limit</code> (не больше 100), чтобы получить больше.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">logs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_trigger_logs</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">issue_id</span><span class="o">=</span><span class="s2">"DESIGN-123"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">logs</span><span class="p">:</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">log</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — ключ или идентификатор очереди.</li>
+<li><code>trigger_id</code> — идентификатор триггера.</li>
+<li><code>issue_id</code> — ключ или идентификатор задачи, по которой нужно отфильтровать логи.</li>
+<li><code>limit</code> — количество записей в ответе (по умолчанию 10, не больше 100).</li>
+<li><code>from_</code> — начало временного диапазона: <code>datetime</code> или готовая строка формата
+   <code>YYYY-MM-DDThh:mm:ss.sss±hhmm</code> (query-параметр <code>from</code>). <code>datetime</code> приводится к этому
+   формату; наивный <code>datetime</code> (без таймзоны) отправляется без смещения и вызывает
+   <code>UserWarning</code> — передавайте timezone-aware значения.</li>
+<li><code>to</code> — конец временного диапазона, в том же формате.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/view-trigger-logs</p>
+<h2 id="_6">Действия</h2>
+<p>Действие триггера (<code>TriggerAction</code>) — это плоский объект, вид которого определяет поле
+<code>type</code>; заполняются только ключи, относящиеся к выбранному типу. Автодействия
+(<code>create_autoaction</code>) используют ту же модель и поддерживают часть этих типов — см.
+<a href="../autoactions/">«Автодействия»</a>. Ниже — по одному примеру на каждый документированный тип.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/change-trigger-actions</p>
+<h3 id="transition">Transition — изменить статус задачи</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Transition"</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s2">"open"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>status</code> — ключ, идентификатор или название статуса (в ответе — полный объект <code>Status</code>).</p>
+<h3 id="update">Update — изменить значения в полях</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">TriggerAction</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"Update"</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">update</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Новая задача"</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="s2">"tags"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"add"</span><span class="p">:</span> <span class="s2">"Новый тег"</span><span class="p">},</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>        <span class="s2">"resolution"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="p">},</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>update</code> — словарь «ключ поля → новое значение»; <code>None</code> очищает поле, операторы <code>set</code> /
+<code>add</code> / <code>remove</code> принимаются так же, как в <code>update_issue</code>.</p>
+<h3 id="move">Move — переместить задачу</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Move"</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s2">"TESTQUEUE"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>queue</code> — ключ очереди, в которую нужно переместить задачу.</p>
+<h3 id="createcomment">CreateComment — добавить комментарий</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">TriggerAction</span><span class="p">(</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"CreateComment"</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">"Обращение создано {{currentDateTime.date}}"</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">from_robot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>text</code> — текст комментария (поддерживает те же шаблонные плейсхолдеры, что и текст макроса).
+<code>from_robot</code> — <code>True</code>, чтобы отправить от имени робота, <code>False</code> — от имени пользователя,
+запустившего триггер. В таблицах официальной документации это действие также встречается под
+именем <code>Event.comment-create</code> (см. пример ответа <code>get_triggers</code>) — оба значения <code>type</code>
+описывают одно и то же действие, клиент их не различает.</p>
+<h3 id="createchecklist">CreateChecklist — создать чеклист</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">TriggerAction</span><span class="p">(</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"CreateChecklist"</span><span class="p">,</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">checklist_items</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>        <span class="p">{</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Сделать то"</span><span class="p">,</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>            <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"username"</span><span class="p">,</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>            <span class="s2">"deadline"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"date"</span><span class="p">:</span> <span class="s2">"2025-05-23"</span><span class="p">},</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>        <span class="p">},</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>        <span class="p">{</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Сделать это"</span><span class="p">,</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>            <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"username"</span><span class="p">,</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>            <span class="s2">"deadline"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"date"</span><span class="p">:</span> <span class="s2">"2025-05-23"</span><span class="p">},</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>        <span class="p">},</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>        <span class="p">{</span><span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Отчитаться за все"</span><span class="p">},</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>    <span class="p">],</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>checklist_items</code> — список пунктов чеклиста, каждый — словарь с <code>text</code> (обязательно),
+<code>assignee</code> и <code>deadline</code> (<code>{"date": "YYYY-MM-DD"}</code>).</p>
+<h3 id="webhook-http-">Webhook — отправить HTTP-запрос</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">TriggerAction</span><span class="p">(</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"Webhook"</span><span class="p">,</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">endpoint</span><span class="o">=</span><span class="s2">"https://api.example.com/messenger/sendMessage"</span><span class="p">,</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">method</span><span class="o">=</span><span class="s2">"GET"</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">content_type</span><span class="o">=</span><span class="s2">"application/json; charset=UTF-8"</span><span class="p">,</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Content-Language"</span><span class="p">:</span> <span class="s2">"ru-RU"</span><span class="p">},</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">auth_context</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"basic"</span><span class="p">,</span> <span class="s2">"login"</span><span class="p">:</span> <span class="s2">"user1"</span><span class="p">,</span> <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"secret"</span><span class="p">},</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Успех"</span><span class="p">},</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>endpoint</code>, <code>method</code> (<code>GET</code> / <code>POST</code> / <code>PUT</code> / <code>DELETE</code>), <code>content_type</code>, <code>headers</code>, <code>body</code> —
+параметры HTTP-запроса. <code>auth_context</code> — один из <code>{"type": "noauth"}</code>,
+<code>{"type": "basic", "login": ..., "password": ...}</code> или
+<code>{"type": "oauth", "headerName": ..., "accessToken": ..., "tokenType": ...}</code>. Запросы этого
+действия можно посмотреть через <code>get_trigger_logs</code>.</p>
+<h3 id="calculateformula">CalculateFormula — вычислить значение</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">TriggerAction</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CalculateFormula"</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s2">"now()+3M"</span><span class="p">,</span> <span class="n">result_field</span><span class="o">=</span><span class="s2">"start"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>formula</code> — математическое выражение, <code>result_field</code> — ключ или название поля, в которое
+записывается результат.</p>
+<h3 id="createissue">CreateIssue — создать задачу</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">TriggerAction</span><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"CreateIssue"</span><span class="p">,</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">queue</span><span class="o">=</span><span class="s2">"TESTQUEUE"</span><span class="p">,</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Новая задача"</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">field_templates</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        <span class="s2">"followers"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"user1"</span><span class="p">,</span> <span class="s2">"user2"</span><span class="p">],</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"user3"</span><span class="p">,</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        <span class="s2">"dueDate"</span><span class="p">:</span> <span class="s2">"2024-10-31"</span><span class="p">,</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Создана триггером {{currentDateTime.date}}"</span><span class="p">,</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"critical"</span><span class="p">,</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"milestone"</span><span class="p">,</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        <span class="s2">"tags"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"new task"</span><span class="p">,</span> <span class="s2">"by trigger"</span><span class="p">],</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>    <span class="p">},</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>    <span class="n">link_with_initial_issue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>    <span class="n">from_robot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>queue</code> — ключ очереди новой задачи, <code>summary</code> — её название, <code>field_templates</code> — остальные
+поля (<code>followers</code>, <code>dueDate</code>, <code>description</code>, <code>assignee</code>, <code>priority</code>, <code>type</code>, <code>tags</code>),
+<code>link_with_initial_issue</code> — связать ли новую задачу с той, что запустила триггер,
+<code>from_robot</code> — создавать ли от имени робота. В таблицах официальной документации это действие
+также встречается под именем <code>Event.create</code> — обе формы описывают одно и то же действие.</p>
+<h2 id="_7">Условия</h2>
+<p>Условие срабатывания триггера (<code>TriggerCondition</code>) — тоже плоский объект, дискриминированный
+полем <code>type</code>. Условие либо логическая группа (<code>And</code> / <code>Or</code> с вложенными условиями в
+<code>conditions</code>), либо элементарное условие; в последнем случае набор значимых полей зависит от
+<code>type</code>. Ниже — по одному-двум примерам на каждую группу условий, полный список типов и полей,
+для которых они применимы, — в docstring <code>TriggerCondition</code> и по ссылке источника.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/change-trigger-conditions</p>
+<h3 id="_8">Логическая группа</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"Or"</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">conditions</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>        <span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CommentFullyMatchCondition"</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="s2">"Need info"</span><span class="p">),</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>        <span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CommentFullyMatchCondition"</span><span class="p">,</span> <span class="n">word</span><span class="o">=</span><span class="s2">"Нужна информация"</span><span class="p">),</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="p">],</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Плоский список условий, переданный в <code>create_trigger(conditions=[...])</code>, эквивалентен
+логическому И — оборачивать его в <code>And</code> не нужно. <code>Or</code> нужен явно, если сработать должно хотя
+бы одно из условий, а группы можно вкладывать друг в друга.</p>
+<h3 id="_9">События</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Event.update"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>type</code> — <code>Event.update</code> (задача изменилась), <code>Event.create</code> (создана задача),
+<code>Event.comment-create</code> (создан комментарий) или <code>CalculationFormulaWatch</code> (поля формулы
+изменились). Без дополнительных параметров.</p>
+<h3 id="_10">Чеклист</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"ChecklistDone"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Срабатывает, если выполнены все пункты чеклиста задачи.</p>
+<h3 id="_11">Текст комментария</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"CommentNoneMatchCondition"</span><span class="p">,</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">words</span><span class="o">=</span><span class="p">[</span><span class="s2">"Version 0.1"</span><span class="p">,</span> <span class="s2">"Version 0.2"</span><span class="p">],</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">remove_markup</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>    <span class="n">no_match_before</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>type</code> — один из <code>CommentFullyMatchCondition</code> / <code>CommentStringMatchCondition</code> /
+<code>CommentStringNotMatchCondition</code> (принимают одну строку в <code>word</code>) или
+<code>CommentAnyMatchCondition</code> / <code>CommentNoneMatchCondition</code> (принимают список строк; в примерах
+официальной документации ключ называется <code>words</code>, в таблице параметров — <code>word</code>, поэтому
+модель принимает оба и отправляет только заполненный). <code>ignore_case</code>, <code>remove_markup</code>,
+<code>no_match_before</code> — необязательные флаги сравнения.</p>
+<h3 id="_12">Автор и тип комментария</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CommentAuthorNot"</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s2">"user1"</span><span class="p">)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"CommentMessageExternal"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>CommentAuthor</code> / <code>CommentAuthorNot</code> сравнивают <code>user</code> (логин или идентификатор) с автором
+комментария; <code>CommentMessageInternal</code> / <code>CommentMessageExternal</code> проверяют, комментарий это в
+Трекере или письмо на почту, — без дополнительных параметров.</p>
+<h3 id="_13">Действие со связью</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"RemovedLinkCondition"</span><span class="p">,</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">relationship</span><span class="o">=</span><span class="p">[</span><span class="s2">"is parent task for"</span><span class="p">,</span> <span class="s2">"is epic of"</span><span class="p">],</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>type</code> — <code>CreatedLinkCondition</code> / <code>UpdatedLinkCondition</code> / <code>RemovedLinkCondition</code>,
+<code>relationship</code> — типы связей, например <code>relates</code>, <code>is dependent by</code>, <code>depends on</code>,
+<code>is subtask for</code>, <code>is parent task for</code>, <code>duplicates</code>, <code>is epic of</code>, <code>has epic</code>.</p>
+<h3 id="_14">Значение и состояние поля</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"FieldEquals"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"priority"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">"blocker"</span><span class="p">)</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"FieldIsEmpty"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"assignee"</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>FieldChangedCondition</code> (поле изменилось), <code>FieldEquals</code> / <code>FieldBecameEqual</code> (равно / стало
+равно <code>value</code>) и <code>FieldEqualsString</code> (равно строке, для полей <code>description</code>, <code>emailFrom</code>,
+<code>emailCreatedBy</code>) сравнивают значение поля; <code>FieldIsEmpty</code> / <code>FieldIsNotEmpty</code> /
+<code>FieldBecameEmpty</code> / <code>FieldBecameNotEmpty</code> проверяют, заполнено ли поле. <code>field</code> — идентификатор
+поля задачи (<code>status</code>, <code>priority</code>, <code>assignee</code>, <code>tags</code>, <code>deadline</code> и другие — полный список в
+источнике).</p>
+<h3 id="_15">Дата</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"DateGreaterCondition"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"createdAt"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">"2023-10-28T09:25:00"</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>type</code> — один из <code>DateEqualCondition</code>, <code>DateGreaterCondition</code>, <code>DateGreaterOrEqualCondition</code>,
+<code>DateLessCondition</code>, <code>DateLessOrEqualCondition</code>; применимо к полям вроде <code>createdAt</code>,
+<code>updatedAt</code>, <code>deadline</code>, <code>start</code>, <code>end</code>.</p>
+<h3 id="_16">Группы пользователей</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"UserNotInGroups"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"createdBy"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"4"</span><span class="p">])</span>
+</span></code></pre></div>
+<p><code>UserInGroups</code> / <code>UserNotInGroups</code> сравнивают <code>field</code> (<code>createdBy</code>, <code>assignee</code>, <code>updatedBy</code>,
+<code>resolvedBy</code>, <code>qaEngineer</code>) с одной или несколькими группами в <code>value</code>.</p>
+<h3 id="_17">Количество элементов</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"Container.SizeGreaterOrEquals"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"votedBy"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"ContainerContainsAll"</span><span class="p">,</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>    <span class="n">field</span><span class="o">=</span><span class="s2">"followers"</span><span class="p">,</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">"user11"</span><span class="p">,</span> <span class="s2">"user22"</span><span class="p">],</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    <span class="n">no_match_before</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>Container.Size*</code> (<code>Equals</code>, <code>NotEquals</code>, <code>Greater</code>, <code>GreaterOrEquals</code>, <code>Less</code>,
+<code>LessOrEquals</code>) сравнивают число элементов контейнерного поля (<code>tags</code>, <code>components</code>,
+<code>followers</code>, <code>boards</code>, <code>sprint</code> и другие) с <code>value</code>; <code>ContainerContainsAll</code> /
+<code>ContainerContainsAny</code> / <code>ContainerContainsNone</code> проверяют, входят ли элементы <code>value</code> в
+поле, <code>no_match_before</code> — было ли это уже так до изменения.</p>
+<h3 id="_18">Числовые значения</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">TriggerCondition</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"LessOrEqualCondition"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"storyPoints"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>GreaterCondition</code>, <code>GreaterOrEqualCondition</code>, <code>LessCondition</code>, <code>LessOrEqualCondition</code> и их
+формы «стало …» (<code>BecameGreaterCondition</code> и так далее) сравнивают числовые поля (<code>votes</code>,
+<code>estimation</code>, <code>spent</code>, <code>storyPoints</code> и другие) с <code>value</code>.</p>
+<h3 id="_19">Строковые значения</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">TriggerCondition</span><span class="p">(</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="nb">type</span><span class="o">=</span><span class="s2">"ContainsNoneOfStrings"</span><span class="p">,</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    <span class="n">field</span><span class="o">=</span><span class="s2">"description"</span><span class="p">,</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>    <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">"Test task"</span><span class="p">,</span> <span class="s2">"12345"</span><span class="p">],</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>    <span class="n">ignore_case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><code>FieldEqualsString</code>, <code>ContainsAnyOfStrings</code>, <code>ContainsNoneOfStrings</code> сравнивают текстовые
+поля (<code>key</code>, <code>summary</code>, <code>description</code>, <code>emailFrom</code>, <code>emailCreatedBy</code>) со строкой или списком
+строк в <code>value</code>, <code>ignore_case</code> — без учёта регистра.</p>
+<h2 id="_20">Модели</h2>
+<h3 id="trigger"><code>Trigger</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на триггер (ключ <code>self</code>).</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор триггера.</td>
+</tr>
+<tr>
+<td><code>queue</code></td>
+<td><code>Queue</code></td>
+<td>Очередь, в которой создан триггер.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название триггера.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>str</code></td>
+<td>Вес триггера; влияет на порядок отображения в интерфейсе.</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td><code>list[TriggerAction]</code></td>
+<td>Действия триггера.</td>
+</tr>
+<tr>
+<td><code>conditions</code></td>
+<td><code>list[TriggerCondition]</code></td>
+<td>Условия срабатывания триггера.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия триггера, увеличивается при каждом изменении.</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td><code>bool</code></td>
+<td>Активен ли триггер.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="triggeraction"><code>TriggerAction</code></h3>
+<p>Плоский объект, набор значимых полей зависит от <code>type</code> — см. раздел «Действия» выше.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Тип действия.</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str \| None</code></td>
+<td>Идентификатор действия (только в ответе).</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>Status \| str \| dict \| None</code></td>
+<td><code>Transition</code>: статус задачи.</td>
+</tr>
+<tr>
+<td><code>formula</code></td>
+<td><code>str \| None</code></td>
+<td><code>CalculateFormula</code>: математическое выражение.</td>
+</tr>
+<tr>
+<td><code>result_field</code></td>
+<td><code>str \| None</code></td>
+<td><code>CalculateFormula</code>: поле для результата.</td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td><code>dict \| None</code></td>
+<td><code>Update</code>: изменяемые поля задачи.</td>
+</tr>
+<tr>
+<td><code>queue</code></td>
+<td><code>Queue \| str \| dict \| None</code></td>
+<td><code>Move</code> / <code>CreateIssue</code>: ключ целевой очереди.</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>str \| None</code></td>
+<td><code>CreateComment</code>: текст комментария.</td>
+</tr>
+<tr>
+<td><code>from_robot</code></td>
+<td><code>bool \| None</code></td>
+<td><code>CreateComment</code> / <code>CreateIssue</code>: действовать от имени робота.</td>
+</tr>
+<tr>
+<td><code>checklist_items</code></td>
+<td><code>list[dict] \| None</code></td>
+<td><code>CreateChecklist</code>: пункты чеклиста.</td>
+</tr>
+<tr>
+<td><code>endpoint</code></td>
+<td><code>str \| None</code></td>
+<td><code>Webhook</code>: адрес запроса.</td>
+</tr>
+<tr>
+<td><code>auth_context</code></td>
+<td><code>dict \| None</code></td>
+<td><code>Webhook</code>: данные авторизации.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td><code>str \| None</code></td>
+<td><code>Webhook</code>: HTTP-метод.</td>
+</tr>
+<tr>
+<td><code>content_type</code></td>
+<td><code>str \| None</code></td>
+<td><code>Webhook</code>: тип содержимого запроса.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td><code>dict[str, str] \| None</code></td>
+<td><code>Webhook</code>: заголовки запроса.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><code>dict \| str \| None</code></td>
+<td><code>Webhook</code>: тело запроса.</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td><code>str \| None</code></td>
+<td><code>CreateIssue</code>: название создаваемой задачи.</td>
+</tr>
+<tr>
+<td><code>field_templates</code></td>
+<td><code>dict \| None</code></td>
+<td><code>CreateIssue</code>: остальные поля создаваемой задачи.</td>
+</tr>
+<tr>
+<td><code>link_with_initial_issue</code></td>
+<td><code>bool \| None</code></td>
+<td><code>CreateIssue</code>: связать с задачей, запустившей триггер.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="triggercondition"><code>TriggerCondition</code></h3>
+<p>Плоский объект, набор значимых полей зависит от <code>type</code> — см. раздел «Условия» выше.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Тип условия (или <code>And</code> / <code>Or</code> для логической группы).</td>
+</tr>
+<tr>
+<td><code>conditions</code></td>
+<td><code>list[TriggerCondition] \| None</code></td>
+<td>Вложенные условия группы <code>And</code> / <code>Or</code>.</td>
+</tr>
+<tr>
+<td><code>field</code></td>
+<td><code>str \| None</code></td>
+<td>Идентификатор поля задачи.</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td><code>Any</code></td>
+<td>Сравниваемое значение: строка, число или список.</td>
+</tr>
+<tr>
+<td><code>word</code></td>
+<td><code>str \| list[str] \| None</code></td>
+<td>Фрагмент(ы) комментария для <code>Comment*Condition</code>.</td>
+</tr>
+<tr>
+<td><code>words</code></td>
+<td><code>str \| list[str] \| None</code></td>
+<td>То же самое, что <code>word</code> (см. раздел «Текст комментария»).</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td><code>str \| None</code></td>
+<td>Автор комментария (<code>CommentAuthor[Not]</code>).</td>
+</tr>
+<tr>
+<td><code>relationship</code></td>
+<td><code>str \| list[str] \| None</code></td>
+<td>Типы связей (<code>*LinkCondition</code>).</td>
+</tr>
+<tr>
+<td><code>ignore_case</code></td>
+<td><code>bool \| None</code></td>
+<td>Не учитывать регистр при сравнении текста.</td>
+</tr>
+<tr>
+<td><code>remove_markup</code></td>
+<td><code>bool \| None</code></td>
+<td>Не учитывать разметку при сравнении текста.</td>
+</tr>
+<tr>
+<td><code>no_match_before</code></td>
+<td><code>bool \| None</code></td>
+<td>Значение не совпадало до изменения.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="triggerwebhooklog"><code>TriggerWebhookLog</code></h3>
+<p>Одна запись лога действия <code>Webhook</code>, возвращается <code>get_trigger_logs</code>. Обязательно только
+<code>id</code> — остальные поля документация приводит лишь на одном успешном примере, поэтому все они
+необязательны.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор запуска триггера.</td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td><code>datetime \| None</code></td>
+<td>Время начала запуска.</td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td><code>datetime \| None</code></td>
+<td>Время завершения запуска.</td>
+</tr>
+<tr>
+<td><code>duration</code></td>
+<td><code>int \| None</code></td>
+<td>Длительность запуска в миллисекундах.</td>
+</tr>
+<tr>
+<td><code>trigger_id</code></td>
+<td><code>str \| None</code></td>
+<td>Идентификатор триггера.</td>
+</tr>
+<tr>
+<td><code>action_id</code></td>
+<td><code>str \| None</code></td>
+<td>Идентификатор действия внутри триггера.</td>
+</tr>
+<tr>
+<td><code>issue_id</code></td>
+<td><code>str \| None</code></td>
+<td>Идентификатор задачи, в которой сработал триггер.</td>
+</tr>
+<tr>
+<td><code>request</code></td>
+<td><code>TriggerWebhookLogRequest \| None</code></td>
+<td>Отправленный HTTP-запрос.</td>
+</tr>
+<tr>
+<td><code>response</code></td>
+<td><code>TriggerWebhookLogResponse \| None</code></td>
+<td>Полученный HTTP-ответ.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="triggerwebhooklogrequest"><code>TriggerWebhookLogRequest</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td><code>str \| None</code></td>
+<td>HTTP-метод запроса.</td>
+</tr>
+<tr>
+<td><code>endpoint</code></td>
+<td><code>str \| None</code></td>
+<td>Адрес, на который отправлен запрос.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td><code>dict[str, str] \| None</code></td>
+<td>Заголовки запроса (значения маскируются API).</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><code>str \| None</code></td>
+<td>Тело запроса.</td>
+</tr>
+<tr>
+<td><code>webhook_auth_context</code></td>
+<td><code>dict \| None</code></td>
+<td>Данные авторизации; документирован только <code>type</code>, сами учётные данные маскируются.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="triggerwebhooklogresponse"><code>TriggerWebhookLogResponse</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>headers</code></td>
+<td><code>dict[str, str] \| None</code></td>
+<td>Заголовки ответа (значения маскируются API).</td>
+</tr>
+<tr>
+<td><code>status_code</code></td>
+<td><code>int \| None</code></td>
+<td>HTTP-код ответа.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_21">Типичный сценарий</h2>
+<p>Найти триггер по названию, посмотреть его условия и действия, затем отключить его:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">trigger</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="k">async</span> <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">tracker</span><span class="o">.</span><span class="n">iter_triggers</span><span class="p">(</span><span class="s2">"DESIGN"</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>    <span class="k">if</span> <span class="n">candidate</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"TriggerName"</span><span class="p">:</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>        <span class="n">trigger</span> <span class="o">=</span> <span class="n">candidate</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>        <span class="k">break</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+</span><span id="__span-32-7"><a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="k">if</span> <span class="n">trigger</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-32-8"><a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">trigger</span><span class="o">.</span><span class="n">actions</span><span class="p">:</span>
+</span><span id="__span-32-9"><a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">action</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+</span><span id="__span-32-10"><a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>
+</span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>    <span class="n">trigger</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_trigger</span><span class="p">(</span>
+</span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>        <span class="s2">"DESIGN"</span><span class="p">,</span>
+</span><span id="__span-32-13"><a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>        <span class="n">trigger_id</span><span class="o">=</span><span class="n">trigger</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-32-14"><a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>        <span class="n">version</span><span class="o">=</span><span class="n">trigger</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-32-15"><a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>        <span class="n">active</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-32-16"><a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>    <span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

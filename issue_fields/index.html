@@ -1,0 +1,2558 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../admin/">
+      
+      
+        <link rel="next" href="../queue_access/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Поля задач - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Поля задач
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Глобальные поля
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Глобальные поля">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_global_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_global_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Категории полей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Категории полей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_field_categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_field_categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_field_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_field_category
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_field_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_field_category
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Локальные поля очереди
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Локальные поля очереди">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_local_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_local_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issuefield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IssueField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fieldcategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FieldCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fieldsuggestprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FieldSuggestProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localizedname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalizedName
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queuefield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QueueField и связанные модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Глобальные поля
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Глобальные поля">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_global_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_global_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Категории полей
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Категории полей">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_field_categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_field_categories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_field_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_field_category
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_field_category" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_field_category
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Локальные поля очереди
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Локальные поля очереди">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_local_fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_local_fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update_local_field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        update_local_field
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issuefield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IssueField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalField
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fieldcategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FieldCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fieldsuggestprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FieldSuggestProvider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localizedname" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LocalizedName
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queuefield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QueueField и связанные модели
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Поля задач</h1>
+<p>Yandex Tracker различает два вида полей задач: глобальные поля (<code>/fields</code>) — они доступны в
+задачах всех очередей организации — и локальные поля очереди (<code>/queues/{id}/localFields</code>) —
+такое поле видно и доступно для заполнения только в задачах той очереди, к которой оно
+привязано. Каждое поле принадлежит категории (<code>## Категории полей</code>), которая определяет, в
+каком разделе интерфейса настройки полей оно отображается.</p>
+<p>Идентификатор локального поля состоит из шестнадцатеричного префикса и ключа поля,
+например <code>603fb94c38bbe658********--myfield</code>, и его нужно использовать целиком при чтении
+или записи значения поля в задаче — так же, как это описано в разделе
+<a href="../custom_fields/">«Работа с пользовательскими полями»</a>. А вот методы работы с самим полем
+(<code>get_local_field</code>, <code>update_local_field</code>) адресуют поле по его короткому <code>key</code>
+(<code>myfield</code>), без префикса очереди — префикс возвращает только <code>LocalField.id</code>.</p>
+<p>Создание и изменение полей и категорий полей — административные операции: они требуют прав
+администратора организации в Трекере, точно так же, как аналогичные действия в интерфейсе
+Трекера (Настройки → Поля).</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с полями задач являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.ru/support/tracker/ru/api/issues/fields</p>
+<h2 id="_2">Глобальные поля</h2>
+<h3 id="get_global_fields">get_global_fields</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_global_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IssueField</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех глобальных полей организации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">fields</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_global_fields</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">field_schema</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/get-global-fields</p>
+<h3 id="get_field">get_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает параметры одного поля задачи — глобального или локального, идентификатор
+локального поля указывается с префиксом очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s2">"ruName"</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>field_id</code> — идентификатор поля.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/get-issue-fields</p>
+<h3 id="create_field">create_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_field</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">options_provider</span><span class="p">:</span> <span class="n">QueueFieldOptionsProvider</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">visible</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">container</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новое глобальное поле задачи.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">en</span><span class="o">=</span><span class="s2">"My field"</span><span class="p">,</span> <span class="n">ru</span><span class="o">=</span><span class="s2">"Моё поле"</span><span class="p">),</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">id_</span><span class="o">=</span><span class="s2">"myglobalfield"</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">"0000000000000003********"</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">type_</span><span class="o">=</span><span class="s2">"ru.yandex.startrek.core.fields.StringFieldType"</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">options_provider</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FixedListOptionsProvider"</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"первый элемент"</span><span class="p">,</span> <span class="s2">"второй элемент"</span><span class="p">,</span> <span class="s2">"третий элемент"</span><span class="p">],</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="p">},</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>name</code> — локализованное название поля, <code>LocalizedName(en=..., ru=...)</code> или обычный
+   словарь <code>{"en": ..., "ru": ...}</code>.</li>
+<li><code>id_</code> — идентификатор нового поля, отправляется как <code>id</code>. Завершающее подчёркивание
+   нужно, чтобы имя параметра не конфликтовало со встроенным <code>id</code> (как и у <code>type_</code>).</li>
+<li><code>category</code> — идентификатор категории поля; список категорий отдаёт <code>GET /fields/categories</code>
+   (см. <code>## Категории полей</code>).</li>
+<li><code>type_</code> — тип поля, отправляется как <code>type</code>, см. <code>!!! tip</code> ниже.</li>
+<li><code>options_provider</code> — выпадающий список значений поля, см. <code>!!! tip</code> ниже.</li>
+<li><code>order</code> — порядковый номер поля в списке полей организации.</li>
+<li><code>description</code> — описание поля.</li>
+<li><code>readonly</code> — <code>True</code>, если значение поля нельзя изменить.</li>
+<li><code>visible</code> — <code>True</code>, чтобы всегда показывать поле в интерфейсе.</li>
+<li><code>hidden</code> — <code>True</code>, чтобы скрывать поле даже тогда, когда оно заполнено.</li>
+<li><code>container</code> — <code>True</code>, если в поле можно указать сразу несколько значений (доступно для
+    строковых полей, полей с именем пользователя и выпадающих списков).</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/create-field</p>
+<h3 id="update_field">update_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_field</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">field_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">visible</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">options_provider</span><span class="p">:</span> <span class="n">QueueFieldOptionsProvider</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет глобальное поле задачи. В официальной документации это два отдельных запроса —
+«Изменить название поля задачи» и «Изменить возможные значения поля задачи», — но у обоих
+один и тот же HTTP-эндпоинт (<code>PATCH /fields/{id}</code>), поэтому <code>update_field</code> объединяет их в
+одном методе: передавайте только те параметры, которые нужно изменить.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_field</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">field_id</span><span class="o">=</span><span class="s2">"myglobalfield"</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">version</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s2">"en"</span><span class="p">:</span> <span class="s2">"Renamed field"</span><span class="p">,</span> <span class="s2">"ru"</span><span class="p">:</span> <span class="s2">"Переименованное поле"</span><span class="p">},</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">options_provider</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FixedListOptionsProvider"</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"значение 1"</span><span class="p">,</span> <span class="s2">"значение 2"</span><span class="p">],</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="p">},</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>field_id</code> — идентификатор изменяемого поля.</li>
+<li><code>version</code> — текущая версия поля (<code>field.version</code>), отправляется как query-параметр
+   <code>?version=</code>. Если поле успели изменить параллельно, Трекер отвечает <code>412 Precondition
+   Failed</code>.</li>
+<li><code>name</code>, <code>category</code>, <code>order</code>, <code>description</code>, <code>readonly</code>, <code>visible</code>, <code>hidden</code>,
+   <code>options_provider</code> — новые значения соответствующих параметров, как в <code>create_field</code>.</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются, то есть остаются без изменений.</p>
+<p>Источник:</p>
+<ul>
+<li>https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-name</li>
+<li>https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-value</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title"><code>version</code> — это query-параметр, а не заголовок</p>
+<p>В отличие от досок и спринтов (см. <a href="../boards/">«Доски и спринты»</a>), где версия объекта
+уходит в заголовок <code>If-Match</code>, здесь версия передаётся как часть URL:
+<code>PATCH /fields/{id}?version=&lt;версия&gt;</code>. Библиотека собирает эту строку сама —
+достаточно передать <code>version</code> обычным именованным параметром.</p>
+</div>
+<h2 id="_3">Категории полей</h2>
+<p>Категория — это группа, к которой относится поле; в интерфейсе Трекера категории образуют
+разделы на странице настройки полей. Категорию поля возвращает поле <code>category</code> каждого поля
+(короткая ссылка <code>Ref</code>), а весь список категорий — метод <code>get_field_categories</code>.</p>
+<h3 id="get_field_categories">get_field_categories</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_field_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">FieldCategory</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список всех категорий полей организации.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">categories</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_field_categories</span><span class="p">()</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">category</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ответ не задокументирован</p>
+<p>У запроса <code>GET /fields/categories</code> нет собственной страницы в справочнике: на него
+ссылаются шесть других страниц раздела «Поля задач» (как на способ узнать
+идентификатор категории), но формат ответа нигде не описан. <code>yatracker</code> считает
+ответ списком тех же объектов, что возвращают создание и изменение категории, и
+модель <code>FieldCategory</code> хранит только те ключи, которые есть в их примерах
+(плюс необязательные <code>order</code> и <code>description</code> из тел запросов). Всё остальное, что
+пришлёт эндпоинт, игнорируется.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/create-issue-field-category</p>
+<h3 id="create_field_category">create_field_category</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_field_category</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FieldCategory</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт новую категорию полей.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">category</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_field_category</span><span class="p">(</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">en</span><span class="o">=</span><span class="s2">"My category"</span><span class="p">,</span> <span class="n">ru</span><span class="o">=</span><span class="s2">"Моя категория"</span><span class="p">),</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">order</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>name</code> — локализованное название категории.</li>
+<li><code>order</code> — вес категории в интерфейсе; категории с меньшим весом отображаются выше.</li>
+<li><code>description</code> — описание категории.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/create-issue-field-category</p>
+<h3 id="update_field_category">update_field_category</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_field_category</span><span class="p">(</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">category_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FieldCategory</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет существующую категорию полей.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">category</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_field_category</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="p">{</span><span class="s2">"ru"</span><span class="p">:</span> <span class="s2">"Моя категория"</span><span class="p">,</span> <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"My category"</span><span class="p">},</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">version</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>category_id</code> — идентификатор изменяемой категории.</li>
+<li><code>name</code> — новое название категории: <code>LocalizedName(ru=..., en=...)</code> или словарь
+   <code>{"ru": ..., "en": ...}</code>.</li>
+<li><code>order</code> — новый вес категории при отображении в интерфейсе.</li>
+<li><code>version</code> — текущая версия категории (<code>category.version</code>), отправляется как
+   query-параметр <code>?version=</code>. Изменения вносятся только в текущую версию категории.</li>
+<li><code>description</code> — новое описание категории. Если оставить <code>None</code>, поле не отправляется и
+   остаётся без изменений.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title"><code>name</code> и <code>order</code> обязательны</p>
+<p>Справочник перечисляет <code>name</code> и <code>order</code> в обязательных параметрах тела запроса, даже
+если меняется только одно из них, поэтому в <code>yatracker</code> это позиционные аргументы.
+Меняете что-то одно — передайте текущее значение второго. Текущий <code>order</code> категории
+можно прочитать из <code>get_field_categories</code> (в ответах на создание и изменение
+категории его нет).</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/patch-issue-field-category</p>
+<h2 id="_4">Локальные поля очереди</h2>
+<h3 id="get_local_fields">get_local_fields</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_local_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LocalField</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список локальных полей очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">fields</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_local_fields</span><span class="p">(</span><span class="s2">"HELP"</span><span class="p">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — идентификатор или ключ очереди (ключ чувствителен к регистру символов).</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-local-fields</p>
+<h3 id="get_local_field">get_local_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_local_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span> <span class="n">field_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LocalField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает одно локальное поле очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_local_field</span><span class="p">(</span><span class="s2">"HELP"</span><span class="p">,</span> <span class="s2">"userId"</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — идентификатор или ключ очереди.</li>
+<li><code>field_key</code> — ключ локального поля (значение <code>key</code> из объектов, возвращаемых
+   <code>get_local_fields</code>, а не префиксованный идентификатор <code>&lt;hex&gt;--key</code>).</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/get-info-local-field</p>
+<h3 id="create_local_field">create_local_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_local_field</span><span class="p">(</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="n">options_provider</span><span class="p">:</span> <span class="n">QueueFieldOptionsProvider</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>    <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="n">visible</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>    <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="n">container</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LocalField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт локальное поле, привязанное к очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalizedName</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_local_field</span><span class="p">(</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="s2">"HELP"</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">name</span><span class="o">=</span><span class="n">LocalizedName</span><span class="p">(</span><span class="n">en</span><span class="o">=</span><span class="s2">"User ID"</span><span class="p">,</span> <span class="n">ru</span><span class="o">=</span><span class="s2">"Идентификатор пользователя"</span><span class="p">),</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">id_</span><span class="o">=</span><span class="s2">"userId"</span><span class="p">,</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="n">category</span><span class="o">=</span><span class="s2">"0000000000000003********"</span><span class="p">,</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="n">type_</span><span class="o">=</span><span class="s2">"ru.yandex.startrek.core.fields.IntegerFieldType"</span><span class="p">,</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — идентификатор или ключ очереди.</li>
+<li><code>name</code> — локализованное название поля.</li>
+<li><code>id_</code> — ключ нового локального поля, отправляется как <code>id</code> (завершающее подчёркивание
+   нужно, чтобы имя параметра не конфликтовало со встроенным <code>id</code>, как и у <code>type_</code>).
+   Созданное поле получит префиксованный идентификатор <code>&lt;hex&gt;--&lt;id_&gt;</code> (значение
+   <code>LocalField.id</code>), а <code>id_</code> останется его коротким <code>key</code>.</li>
+<li><code>category</code> — идентификатор категории поля.</li>
+<li><code>type_</code> — тип поля, см. <code>!!! tip</code> ниже.</li>
+<li><code>options_provider</code> — выпадающий список значений поля, см. <code>!!! tip</code> ниже.</li>
+<li><code>order</code> — порядковый номер поля в списке полей организации.</li>
+<li><code>description</code> — описание поля.</li>
+<li><code>readonly</code> — <code>True</code>, если значение поля нельзя изменить.</li>
+<li><code>visible</code> — <code>True</code>, чтобы всегда показывать поле в интерфейсе.</li>
+<li><code>hidden</code> — <code>True</code>, чтобы скрывать поле даже тогда, когда оно заполнено.</li>
+<li><code>container</code> — <code>True</code>, если в поле можно указать сразу несколько значений.</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/create-local-field</p>
+<h3 id="update_local_field">update_local_field</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_local_field</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">queue_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">field_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">name</span><span class="p">:</span> <span class="n">LocalizedName</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="n">options_provider</span><span class="p">:</span> <span class="n">QueueFieldOptionsProvider</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>    <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>    <span class="n">visible</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>    <span class="n">hidden</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LocalField</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет локальное поле очереди.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">field</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_local_field</span><span class="p">(</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>    <span class="s2">"HELP"</span><span class="p">,</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">field_key</span><span class="o">=</span><span class="s2">"userId"</span><span class="p">,</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Новое описание"</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>queue_id</code> — идентификатор или ключ очереди.</li>
+<li><code>field_key</code> — ключ локального поля (как в <code>get_local_field</code>, без префикса очереди).</li>
+<li><code>name</code>, <code>category</code>, <code>order</code>, <code>description</code>, <code>options_provider</code>, <code>readonly</code>, <code>visible</code>,
+   <code>hidden</code> — новые значения соответствующих параметров, как в <code>create_local_field</code>.</li>
+</ol>
+<p>Поля со значением <code>None</code> не отправляются, то есть остаются без изменений.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/queues/edit-local-field</p>
+<div class="admonition warning">
+<p class="admonition-title">У локальных полей нет <code>version</code></p>
+<p>В отличие от <code>update_field</code>, этот метод не принимает <code>version</code> и не отправляет
+<code>?version=</code> — официальный запрос на редактирование локального поля версию не
+документирует, а значит и не проверяет конфликт параллельного изменения.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Тип поля, выпадающие списки и поисковые подсказки</p>
+<p>Параметр <code>type_</code> у <code>create_field</code> и <code>create_local_field</code> — один из классов Трекера:
+<code>ru.yandex.startrek.core.fields.DateFieldType</code> (дата),
+<code>...DateTimeFieldType</code> (дата/время),
+<code>...StringFieldType</code> (текстовое однострочное поле),
+<code>...TextFieldType</code> (текстовое многострочное поле),
+<code>...FloatFieldType</code> (дробное число),
+<code>...IntegerFieldType</code> (целое число),
+<code>...UserFieldType</code> (имя пользователя),
+<code>...UriFieldType</code> (ссылка),
+<code>...MoneyFieldType</code> (деньги),
+<code>...MoneyWithRateFieldType</code> (деньги и ставка),
+<code>...TimeTrackingDurationFieldType</code> (продолжительность). Клиент не проверяет это
+значение — enum принадлежит серверу, ошибку при недопустимом значении вернёт сам
+Трекер.</p>
+<p><code>options_provider</code> описывает выпадающий список поля: <code>type</code> — <code>FixedListOptionsProvider</code>
+для строковых или целочисленных полей и <code>FixedUserListOptionsProvider</code> для полей с
+именем пользователя, <code>values</code> — до 3000 значений списка (в выпадающем меню
+показывается не более 10 элементов сразу). Ответы дополнительно несут <code>needValidation</code>
+(<code>QueueFieldOptionsProvider.need_validation</code>) — признак, требует ли Трекер валидации
+значений при их вводе; это поле только читается, задать его через API нельзя.</p>
+<p><code>suggest_provider</code> и <code>query_provider</code> (класс поисковой подсказки и класс языка запроса
+соответственно) есть только в ответах и не могут быть изменены через API.</p>
+</div>
+<h2 id="_5">Модели</h2>
+<h3 id="issuefield"><code>IssueField</code></h3>
+<p>Наследует все поля <code>QueueField</code> (таблица ниже) и добавляет:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td><code>str \| None</code></td>
+<td>Ключ поля.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание поля.</td>
+</tr>
+<tr>
+<td><code>suggest_provider</code></td>
+<td><code>FieldSuggestProvider \| None</code></td>
+<td>Класс поисковой подсказки.</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>Ref \| None</code></td>
+<td>Ссылка на категорию поля.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>str \| None</code></td>
+<td>Тип поля, например <code>standard</code> или <code>local</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="localfield"><code>LocalField</code></h3>
+<p>Наследует все поля <code>IssueField</code> и добавляет:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>queue</code></td>
+<td><code>Queue \| None</code></td>
+<td>Ссылка на очередь, к которой привязано поле. В ответе на создание поля отсутствует.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fieldcategory"><code>FieldCategory</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на категорию (ключ <code>self</code>).</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор категории.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название категории (обычная строка, а не объект локализации, как в теле запроса).</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия категории, увеличивается при каждом изменении.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>int \| None</code></td>
+<td>Вес категории при отображении в интерфейсе. В примерах ответа на создание и изменение категории отсутствует.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str \| None</code></td>
+<td>Описание категории. В примерах ответа на создание и изменение категории отсутствует.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fieldsuggestprovider"><code>FieldSuggestProvider</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Класс поисковой подсказки, например <code>UserSuggestProvider</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="localizedname"><code>LocalizedName</code></h3>
+<p>Используется только в запросах (<code>name=</code>) — ответы возвращают название поля или категории
+как обычную строку. Для аргументов <code>name=</code> в сигнатурах ниже определён псевдоним
+<code>LocalizedNameInput = LocalizedName | dict[str, str]</code>
+(<code>yatracker.types.localized_name</code>) — в коде удобнее писать его, а не союз целиком.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>en</code></td>
+<td><code>str \| None</code></td>
+<td>Название на английском языке.</td>
+</tr>
+<tr>
+<td><code>ru</code></td>
+<td><code>str \| None</code></td>
+<td>Название на русском языке.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="queuefield"><code>QueueField</code> и связанные модели</h3>
+<p>Базовый класс <code>IssueField</code>, который также описывает поля, возвращаемые
+<code>GET /queues/{id}/fields</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на поле (ключ <code>self</code>).</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор поля.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>Название поля.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия поля, увеличивается при каждом изменении.</td>
+</tr>
+<tr>
+<td><code>field_schema</code></td>
+<td><code>QueueFieldSchema</code></td>
+<td>Тип данных значения поля (API-ключ <code>schema</code>).</td>
+</tr>
+<tr>
+<td><code>readonly</code></td>
+<td><code>bool</code></td>
+<td><code>True</code>, если значение поля нельзя изменить.</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>bool</code></td>
+<td><code>False</code>, если список значений ограничен настройками организации.</td>
+</tr>
+<tr>
+<td><code>suggest</code></td>
+<td><code>bool</code></td>
+<td><code>True</code>, если при вводе значения показывается поисковая подсказка.</td>
+</tr>
+<tr>
+<td><code>options_provider</code></td>
+<td><code>QueueFieldOptionsProvider \| None</code></td>
+<td>Допустимые значения поля.</td>
+</tr>
+<tr>
+<td><code>query_provider</code></td>
+<td><code>QueueFieldQueryProvider \| None</code></td>
+<td>Класс языка запроса.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td><code>int</code></td>
+<td>Порядковый номер поля в списке полей организации.</td>
+</tr>
+</tbody>
+</table>
+<p><code>QueueFieldSchema</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Тип данных значения поля, например <code>string</code> или <code>array</code>.</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td><code>bool \| None</code></td>
+<td><code>True</code>, если поле обязательно для заполнения.</td>
+</tr>
+<tr>
+<td><code>items</code></td>
+<td><code>str \| None</code></td>
+<td>Тип элементов, если <code>type</code> — <code>array</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>QueueFieldOptionsProvider</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Тип поставщика значений, например <code>FixedListOptionsProvider</code>.</td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td><code>dict[str, list] \| list \| None</code></td>
+<td>Значения поля: либо плоский список, либо объект вида <code>{"DIRECT": [...]}</code>.</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td><code>list \| None</code></td>
+<td>Значения по умолчанию.</td>
+</tr>
+<tr>
+<td><code>need_validation</code></td>
+<td><code>bool \| None</code></td>
+<td>Требуется ли валидация вводимых значений (API-ключ <code>needValidation</code>).</td>
+</tr>
+</tbody>
+</table>
+<p><code>QueueFieldQueryProvider</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Класс языка запроса, например <code>StringOptionalQueryProvider</code>.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

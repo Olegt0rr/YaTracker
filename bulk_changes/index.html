@@ -1,0 +1,1968 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../attachments/">
+      
+      
+        <link rel="next" href="../import/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Массовые операции - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bulk-changes" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Массовые операции
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как это устроено
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список задач: ключи, объекты или фильтр
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulk_update_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовое редактирование полей — bulk_update_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-bulk_transition_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовый переход по workflow — bulk_transition_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulk_move_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовый перенос в очередь — bulk_move_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_bulk_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Статус операции — get_bulk_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_bulk_change_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ошибки по каждой задаче — get_bulk_change_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wait_bulk_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ожидание завершения — wait_bulk_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulkchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель BulkChange
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример целиком
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как это устроено
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Список задач: ключи, объекты или фильтр
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulk_update_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовое редактирование полей — bulk_update_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-bulk_transition_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовый переход по workflow — bulk_transition_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulk_move_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Массовый перенос в очередь — bulk_move_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_bulk_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Статус операции — get_bulk_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_bulk_change_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ошибки по каждой задаче — get_bulk_change_issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wait_bulk_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ожидание завершения — wait_bulk_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bulkchange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель BulkChange
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пример целиком
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="bulk-changes">Массовые операции (bulk changes)</h1>
+<p>Трекер умеет выполнять массовые (bulk) операции сразу над большим количеством задач —
+до 10 000 штук за один вызов: редактировать поля, переводить по workflow или переносить в
+другую очередь. В отличие от обычных методов, такие операции выполняются на сервере
+асинхронно: вызов метода лишь ставит операцию в очередь и сразу возвращает объект
+<code>BulkChange</code> с текущим статусом, а сам ход выполнения нужно затем отслеживать (опрашивать)
+отдельно.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с массовыми операциями являются
+асинхронными. В примерах ниже вызовы показаны так, как будто мы уже находимся внутри
+корутины.</p>
+</div>
+<p>Официальная документация:</p>
+<ul>
+<li><a href="https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-update-issues">https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-update-issues</a></li>
+<li><a href="https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-transition">https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-transition</a></li>
+<li><a href="https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-move-issues">https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-move-issues</a></li>
+<li><a href="https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-move-info">https://yandex.ru/support/tracker/ru/concepts/bulkchange/bulk-move-info</a></li>
+</ul>
+<h2 id="_1">Как это устроено</h2>
+<p>Любой из методов, запускающих операцию (<code>bulk_update_issues</code>, <code>bulk_transition_issues</code>,
+<code>bulk_move_issues</code>), возвращает объект <code>BulkChange</code> практически сразу, не дожидаясь
+завершения обработки всех задач. Дальше нужно:</p>
+<ol>
+<li>дождаться завершения операции — вручную через <code>get_bulk_change</code>, либо с помощью
+   <code>wait_bulk_change</code> (или шортката <code>bulk_change.wait()</code>), который сам опрашивает статус
+   с заданным интервалом;</li>
+<li>проверить итоговый статус (<code>is_complete</code> / <code>is_failed</code>);</li>
+<li>если статус <code>FAILED</code>, разобраться, какие именно задачи не удалось обработать, —
+   через <code>get_bulk_change_issues</code> (или <code>bulk_change.get_issues()</code>).</li>
+</ol>
+<h2 id="_2">Список задач: ключи, объекты или фильтр</h2>
+<p>Во все методы, запускающие операцию, параметр <code>issues</code> можно передать несколькими
+способами:</p>
+<ul>
+<li>список ключей задач: <code>["WRITERS-1", "WRITERS-2"]</code>;</li>
+<li>список уже загруженных объектов <code>Issue</code>/<code>FullIssue</code> — библиотека сама возьмёт <code>.key</code>
+  у каждого элемента;</li>
+<li>смешанный список ключей и объектов;</li>
+<li><strong>только для <code>bulk_update_issues</code></strong> — строка с фильтром на языке запросов Tracker,
+  например <code>"Queue: WRITERS Assignee: empty()"</code>. Для <code>bulk_transition_issues</code> и
+  <code>bulk_move_issues</code> фильтр не поддерживается API — передавайте список ключей.</li>
+</ul>
+<p>Пустой список задач приведёт к <code>ValueError</code>; пустая строка-фильтр в <code>bulk_update_issues</code> —
+тоже <code>ValueError</code>, а строка вместо списка в двух других методах — <code>TypeError</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Строка — это фильтр, а не ключ</p>
+<p><code>bulk_update_issues("WRITERS-1", ...)</code> не обновит задачу <code>WRITERS-1</code>: строка без
+указания поля трактуется Трекером как полнотекстовый поиск. Чтобы обновить одну
+задачу, передайте список <code>["WRITERS-1"]</code> или фильтр <code>"Key: WRITERS-1"</code>.</p>
+</div>
+<h2 id="bulk_update_issues">Массовое редактирование полей — <code>bulk_update_issues</code></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_update_issues</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"critical"</span><span class="p">},</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bulk_update_issues</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">issues</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Issue</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkChange</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issues</code> — список ключей/объектов задач либо строка-фильтр (см. выше).</li>
+<li><code>values</code> — словарь полей, которые нужно изменить, в том же формате, что и при обычном
+  <code>edit_issue</code>. Ключи в <code>snake_case</code> автоматически превращаются в <code>camelCase</code>
+  (<code>attachment_ids</code> → <code>attachmentIds</code>); ключи локальных полей вида
+  <code>"&lt;id&gt;--userId"</code> отправляются как есть.</li>
+<li><code>notify</code> — уведомлять ли участников задач об изменении.</li>
+<li><code>**kwargs</code> — то же самое, что и <code>values</code>, но именованными параметрами; значения из
+  <code>kwargs</code> имеют приоритет при пересечении ключей (ключи обеих форм кодируются одинаково,
+  так что <code>values={"story_points": 1}, story_points=2</code> отправит одно поле <code>storyPoints</code>
+  со значением <code>2</code>). Значения <code>None</code> в <code>kwargs</code>
+  отбрасываются (как и в <code>edit_issue</code>) — чтобы очистить поле, передайте <code>None</code> через
+  <code>values</code>. Итоговый набор полей (<code>values</code> + <code>kwargs</code>) не может быть пустым — иначе
+  <code>ValueError</code>.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_update_issues</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="s2">"Queue: WRITERS Assignee: empty()"</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">assignee</span><span class="o">=</span><span class="s2">"new_login"</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">notify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Для полей типа «множество значений» (теги, наблюдатели и т. п.) поддерживаются операторы
+<code>add</code>/<code>remove</code>/<code>set</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_update_issues</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">values</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="s2">"tags"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"add"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"urgent"</span><span class="p">],</span> <span class="s2">"remove"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"stale"</span><span class="p">]},</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="s2">"followers"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"set"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"login1"</span><span class="p">,</span> <span class="s2">"login2"</span><span class="p">]},</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="p">},</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="workflow-bulk_transition_issues">Массовый переход по workflow — <code>bulk_transition_issues</code></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_transition_issues</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">transition</span><span class="o">=</span><span class="s2">"close"</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s2">"resolution"</span><span class="p">:</span> <span class="s2">"fixed"</span><span class="p">},</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bulk_transition_issues</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">issues</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Issue</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">],</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">transition</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Transition</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkChange</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issues</code> — список ключей/объектов задач (строка-фильтр здесь не поддерживается, будет
+  выброшен <code>TypeError</code>).</li>
+<li><code>transition</code> — переход: строковый id (<code>"close"</code>) либо объект <code>Transition</code>, полученный,
+  например, из <code>get_transitions</code> — тогда библиотека сама возьмёт <code>.id</code>.</li>
+<li><code>values</code> — дополнительные поля перехода, например <code>{"resolution": "fixed"}</code>.</li>
+<li><code>notify</code> — уведомлять ли участников задач.</li>
+<li><code>**kwargs</code> — альтернатива <code>values</code> в виде именованных параметров; объединяются так же,
+  как в <code>bulk_update_issues</code>. Пустой набор <code>values</code>/<code>kwargs</code> допустим — в этом случае поле
+  <code>values</code> просто не отправляется в теле запроса.</li>
+</ul>
+<h2 id="bulk_move_issues">Массовый перенос в очередь — <code>bulk_move_issues</code></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_move_issues</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">queue</span><span class="o">=</span><span class="s2">"ARCHIVE"</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bulk_move_issues</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">issues</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Issue</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">],</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Queue</span> <span class="o">|</span> <span class="n">FullQueue</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">move_all_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">initial_status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkChange</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issues</code> — список ключей/объектов задач (строка-фильтр не поддерживается).</li>
+<li><code>queue</code> — очередь назначения: ключ строкой либо объект <code>Queue</code>/<code>FullQueue</code> (тогда
+  берётся <code>.key</code>).</li>
+<li><code>values</code> — дополнительные поля, которые нужно изменить одновременно с переносом.</li>
+<li><code>move_all_fields</code> — сохранить значения компонентов/версий/проектов, если они существуют
+  и в целевой очереди (по умолчанию при переносе такие поля очищаются).</li>
+<li><code>initial_status</code> — сбросить статус перенесённых задач в начальный статус целевой
+  очереди.</li>
+<li><code>notify</code> — уведомлять ли участников задач.</li>
+<li><code>**kwargs</code> — альтернатива <code>values</code> в виде именованных параметров.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_move_issues</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">queue</span><span class="o">=</span><span class="s2">"ARCHIVE"</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">move_all_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">initial_status</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="get_bulk_change">Статус операции — <code>get_bulk_change</code></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_bulk_change</span><span class="p">(</span><span class="n">bulk_change</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_bulk_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bulk_change</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BulkChange</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkChange</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает актуальное состояние операции. Принимает как <code>id</code> строкой, так и уже
+полученный объект <code>BulkChange</code>.</p>
+<h2 id="get_bulk_change_issues">Ошибки по каждой задаче — <code>get_bulk_change_issues</code></h2>
+<p>API возвращает <strong>только задачи, которые не удалось обработать</strong>, вместе с описанием
+ошибок; успешно обработанные задачи в ответ не попадают. Если операция завершилась
+статусом <code>FAILED</code> (частично или полностью), разобраться в причинах можно так:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_bulk_change_issues</span><span class="p">(</span><span class="n">bulk_change</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">"FAILED"</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_bulk_change_issues</span><span class="p">(</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">bulk_change</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BulkChange</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BulkChangeIssue</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<h2 id="wait_bulk_change">Ожидание завершения — <code>wait_bulk_change</code></h2>
+<p>Вместо ручного опроса <code>get_bulk_change</code> в цикле удобнее воспользоваться <code>wait_bulk_change</code> —
+он сам опрашивает статус операции, пока она не станет финальной (<code>COMPLETE</code> или <code>FAILED</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">wait_bulk_change</span><span class="p">(</span><span class="n">bulk_change</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">60.0</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">wait_bulk_change</span><span class="p">(</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">bulk_change</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">BulkChange</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BulkChange</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>bulk_change</code> — <code>id</code> операции строкой либо уже полученный объект <code>BulkChange</code>. Если
+  переданный объект уже в финальном статусе, он возвращается сразу, без запросов к API.</li>
+<li><code>interval</code> — пауза между опросами статуса, в секундах (должен быть больше <code>0</code>, иначе
+  <code>ValueError</code>).</li>
+<li><code>timeout</code> — необязательный общий тайм-аут ожидания, в секундах (если задан, должен
+  быть больше <code>0</code>). Если операция не завершится за это время, будет выброшено
+  встроенное исключение <code>TimeoutError</code> (на всех поддерживаемых версиях Python, включая
+  3.10). Дедлайн проверяется между запросами статуса, поэтому уже отправленный запрос
+  не прерывается; сетевые ошибки и тайм-ауты самого HTTP-клиента пробрасываются как
+  есть, а не маскируются под <code>TimeoutError</code> ожидания. По умолчанию тайм-аута нет —
+  в автоматических сценариях лучше задавать его явно.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Задержка появления операции</p>
+<p>Сразу после создания операция может ещё не быть доступна по своему <code>id</code> — API Трекера
+в первые мгновения может ответить <code>404</code>. <code>wait_bulk_change</code> учитывает это: за всё
+время ожидания молча переживается до 10 ответов <code>404</code> (бюджет не восстанавливается
+успешными ответами), после чего выбрасывается <code>ObjectNotFoundError</code>.</p>
+</div>
+<h2 id="bulkchange">Модель <code>BulkChange</code></h2>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на операцию (в API — поле <code>self</code>)</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор операции</td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td><code>User</code></td>
+<td>Пользователь, запустивший операцию</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время создания операции</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>str</code></td>
+<td>Текущий статус: <code>CREATED</code>, <code>RUNNING</code>, <code>COMPLETE</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>status_text</code></td>
+<td><code>str \| None</code></td>
+<td>Текстовое описание статуса</td>
+</tr>
+<tr>
+<td><code>execution_chunk_percent</code></td>
+<td><code>float \| None</code></td>
+<td>Процент выполнения по чанкам</td>
+</tr>
+<tr>
+<td><code>execution_issue_percent</code></td>
+<td><code>float \| None</code></td>
+<td>Процент выполнения по задачам</td>
+</tr>
+<tr>
+<td><code>total_issues</code></td>
+<td><code>int \| None</code></td>
+<td>Всего задач в операции (доступно не всегда)</td>
+</tr>
+<tr>
+<td><code>total_completed_issues</code></td>
+<td><code>int \| None</code></td>
+<td>Сколько задач уже обработано (доступно не всегда)</td>
+</tr>
+</tbody>
+</table>
+<p>У модели есть вспомогательные свойства:</p>
+<ul>
+<li><code>is_complete</code> — <code>True</code>, если <code>status == "COMPLETE"</code>.</li>
+<li><code>is_failed</code> — <code>True</code>, если <code>status == "FAILED"</code>.</li>
+<li><code>is_finished</code> — <code>True</code>, если операция достигла финального статуса (<code>COMPLETE</code> или
+  <code>FAILED</code>).</li>
+</ul>
+<p>А также методы-шорткаты, эквивалентные вызову одноимённых методов <code>tracker.*</code> с <code>id</code>
+операции:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># -&gt; tracker.get_bulk_change(bulk_change.id)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># -&gt; tracker.wait_bulk_change(bulk_change)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># -&gt; tracker.get_bulk_change_issues(bulk_change.id)</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">get_issues</span><span class="p">()</span>
+</span></code></pre></div>
+<p><code>BulkChangeIssue</code> (элемент результата <code>get_bulk_change_issues</code>) содержит:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>issue</code></td>
+<td><code>Issue</code></td>
+<td>Задача, к которой относится результат</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>str</code></td>
+<td>Статус обработки задачи, например <code>FAILED</code></td>
+</tr>
+<tr>
+<td><code>status_text</code></td>
+<td><code>str \| None</code></td>
+<td>Текстовое описание статуса</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>BulkChangeError \| None</code></td>
+<td>Подробности ошибки, если задачу не удалось обработать</td>
+</tr>
+</tbody>
+</table>
+<p><code>BulkChangeError</code> содержит <code>errors</code> (словарь <code>поле: описание ошибки</code>; обычно это строка,
+но тип намеренно не ограничен) и <code>error_messages</code> (список общих сообщений об ошибке,
+не привязанных к конкретному полю).</p>
+<h2 id="_3">Пример целиком</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">bulk_update_issues</span><span class="p">(</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">],</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s2">"tags"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"add"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"reviewed"</span><span class="p">]}},</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="p">)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="n">bulk_change</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">wait_bulk_change</span><span class="p">(</span><span class="n">bulk_change</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">60.0</span><span class="p">)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">if</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">is_failed</span><span class="p">:</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">get_issues</span><span class="p">():</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">issue</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">else</span><span class="p">:</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Готово:"</span><span class="p">,</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">total_completed_issues</span><span class="p">,</span> <span class="s2">"из"</span><span class="p">,</span> <span class="n">bulk_change</span><span class="o">.</span><span class="n">total_issues</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

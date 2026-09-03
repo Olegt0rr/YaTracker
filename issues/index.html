@@ -1,0 +1,2833 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../howto/">
+      
+      
+        <link rel="next" href="../queues/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Задачи - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Задачи
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Именование полей
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение задачи
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение задачи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fullissue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель FullIssue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Редактирование задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перемещение задачи в другую очередь
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Подсчёт задач
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поиск и фильтрация задач
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск и фильтрация задач">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#suggest_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        suggest_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итерация по всем задачам
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Итерация по всем задачам">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear_search_scroll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clear_search_scroll
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Приоритеты
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Связи между задачами
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Связи между задачами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#link_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        link_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unlink_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unlink_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Методы на объекте задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        История изменений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="История изменений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iter_issue_changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_issue_changelog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель Changelog
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Переходы по workflow (transitions)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кастомные модели задач
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Именование полей
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение задачи
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение задачи">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fullissue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель FullIssue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Создание задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Редактирование задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перемещение задачи в другую очередь
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Подсчёт задач
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поиск и фильтрация задач
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Поиск и фильтрация задач">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#suggest_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        suggest_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итерация по всем задачам
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Итерация по всем задачам">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear_search_scroll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        clear_search_scroll
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Приоритеты
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Связи между задачами
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Связи между задачами">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#link_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        link_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unlink_issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unlink_issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Методы на объекте задачи
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        История изменений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="История изменений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iter_issue_changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iter_issue_changelog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модель Changelog
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Переходы по workflow (transitions)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кастомные модели задач
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">Работа с задачами</h1>
+<p>На этой странице собраны все методы <code>YaTracker</code>, которые относятся к задачам: получение,
+создание, редактирование, перемещение между очередями, подсчёт, поиск и постраничная
+итерация, работа со связями между задачами и переходами по workflow.</p>
+<p>Официальная документация Yandex Tracker API: https://yandex.cloud/ru/docs/tracker/about-api</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Все методы, вызывающие API, — асинхронные, вызывать их нужно внутри корутин. Как и в
+остальной документации, в примерах ниже <code>await</code> используется так, будто мы уже находимся
+внутри асинхронной функции.</p>
+</div>
+<h2 id="_2">Именование полей</h2>
+<p>Модели библиотеки (<code>Issue</code>, <code>FullIssue</code>, <code>IssueLink</code>, <code>Transition</code> и другие) используют
+python-имена в стиле <code>snake_case</code>, а при обмене данными с Tracker они автоматически
+конвертируются в <code>camelCase</code>, как принято в самом API. Поле <code>self</code>, зарезервированное в
+Python, везде переименовано в <code>url</code>.</p>
+<p>Это касается и именованных параметров (<code>**kwargs</code>) методов ниже: <code>type_</code> уходит в API как
+<code>type</code>, <code>filter_</code> — как <code>filter</code>, <code>attachment_ids</code> — как <code>attachmentIds</code> и т. д. Обратного
+переименования <code>url</code> → <code>self</code> при этом нет: ключ <code>self</code> выставляет сам трекер, поэтому
+аргумент <code>url=</code> отправляется как <code>url</code> (подробнее — в разделе о пользовательских полях).</p>
+<p>Если вам нужны собственные поля задачи (например, локальные поля очереди), обратитесь к
+разделу <a href="../custom_fields/">Работа с пользовательскими полями</a> — параметр <code>_type</code>,
+упоминаемый ниже, работает одинаково для всех методов.</p>
+<h2 id="_3">Получение задачи</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-42"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_issue</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue_id</code> — ID или ключ задачи (например, <code>"WRITERS-42"</code>).</li>
+<li><code>expand</code> — какие дополнительные данные подтянуть вместе с задачей:
+  <code>"transitions"</code> — доступные переходы по workflow, <code>"attachments"</code> — вложения.</li>
+<li><code>fields</code> — проекция полей ответа: строка со списком полей через запятую либо
+  последовательность имён (<code>["key", "summary"]</code>). Поля, не перечисленные здесь, в ответе не
+  придут, поэтому если вы используете <code>fields</code>, передавайте и <code>_type</code> с моделью, у которой
+  обязательные поля соответствуют этой проекции (иначе валидация упадёт, т.к. <code>FullIssue</code>
+  по умолчанию ожидает полный набор полей).</li>
+<li><code>_type</code> — своя модель задачи вместо <code>FullIssue</code>, см. <a href="../custom_fields/">пользовательские поля</a>.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-42"</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="s2">"transitions"</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="fullissue">Модель <code>FullIssue</code></h3>
+<p><code>FullIssue</code> повторяет ответ API: поля называются так же, только в <code>snake_case</code>
+(см. раздел «Именование полей» выше), а ключ <code>self</code> доступен как <code>url</code>.
+Полный список полей задачи смотрите в официальном справочнике:
+<a href="https://yandex.ru/support/tracker/ru/api/issues/get-issue">https://yandex.ru/support/tracker/ru/api/issues/get-issue</a>. Ниже — поля, названия которых
+не выводятся из ключа API напрямую или отсутствуют в примерах ответа:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>last_comment_update_at</code></td>
+<td><code>datetime \| None</code></td>
+<td>Дата и время последнего комментария. API-ключ — <code>lastCommentUpdatedAt</code> (а не <code>lastCommentUpdateAt</code>), поэтому у поля задан явный алиас</td>
+</tr>
+<tr>
+<td><code>project</code></td>
+<td><code>EntityParent \| None</code></td>
+<td>Проекты и портфели задачи: <code>primary</code> — основной, <code>secondary</code> — список дополнительных (тот же вид <code>{primary, secondary}</code>, что и у <code>parentEntity</code>). С <code>api_version="v2"</code> API присылает в <code>project</code> только основной проект (объект <code>{self, id, display}</code>) — библиотека сама кладёт его в <code>primary</code>, а <code>secondary</code> остаётся пустым, поэтому код читается одинаково для обеих версий</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td><code>list[str] \| None</code></td>
+<td>Теги задачи. Параметр документирован для ответа <code>POST /issues/_search</code>, но не встречается в примерах ответа, поэтому необязательный</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-42"</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">if</span> <span class="n">issue</span><span class="o">.</span><span class="n">project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">issue</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">primary</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">issue</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">primary</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">issue</span><span class="o">.</span><span class="n">last_comment_update_at</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_4">Создание задачи</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_issue</span><span class="p">(</span><span class="s2">"Написать шедевр"</span><span class="p">,</span> <span class="s2">"WRITERS"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_issue</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">parent</span><span class="p">:</span> <span class="n">Issue</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">sprint</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">type_</span><span class="p">:</span> <span class="n">IssueType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Priority</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">followers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">assignee</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">unique</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">attachment_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>summary</code> — заголовок задачи (обязателен).</li>
+<li><code>queue</code> — ключ очереди (<code>"WRITERS"</code>), её числовой ID, либо словарь вида <code>{"key": "WRITERS"}</code>.</li>
+<li><code>parent</code> — родительская задача: объект <code>Issue</code>, либо строка с ID/ключом.</li>
+<li><code>description</code> — описание задачи.</li>
+<li><code>sprint</code> — привязка к спринту, например <code>{"id": "123"}</code>.</li>
+<li><code>type_</code> — тип задачи. Ожидается объект <code>IssueType</code> (его удобно взять из уже загруженной
+  задачи: <code>existing_issue.type</code>).</li>
+<li><code>priority</code> — приоритет: числовой ID, строковый ключ (<code>"critical"</code>, <code>"normal"</code>, <code>"minor"</code>
+  и т. п.) или объект <code>Priority</code>.</li>
+<li><code>followers</code> — список логинов наблюдателей.</li>
+<li><code>assignee</code> — список логинов исполнителя (принимающая сторона API — строка/логин).</li>
+<li><code>unique</code> — ключ идемпотентности: повторный вызов с тем же значением не создаст дубликат.</li>
+<li><code>attachment_ids</code> — ID заранее загруженных вложений, которые нужно прикрепить к задаче.</li>
+<li><code>**kwargs</code> — любые другие поля задачи, включая пользовательские (локальные) поля очереди.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_issue</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">summary</span><span class="o">=</span><span class="s2">"Починить прод"</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">queue</span><span class="o">=</span><span class="s2">"OPS"</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"Сервис отдаёт 500 на /health"</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">priority</span><span class="o">=</span><span class="s2">"critical"</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">assignee</span><span class="o">=</span><span class="p">[</span><span class="s2">"user_login"</span><span class="p">],</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">followers</span><span class="o">=</span><span class="p">[</span><span class="s2">"another_login"</span><span class="p">],</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">unique</span><span class="o">=</span><span class="s2">"incident-2026-09-01-1"</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_5">Редактирование задачи</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_issue</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">issue_id</span><span class="o">=</span><span class="s2">"WRITERS-1"</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">"... или нечто ценное"</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">edit_issue</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue_id</code> — ID или ключ редактируемой задачи.</li>
+<li><code>version</code> — версия задачи для оптимистичной блокировки. Если её передать и она устареет
+  (задачу параллельно изменили), Tracker вернёт ошибку конфликта версий.</li>
+<li><code>**kwargs</code> — любые поля задачи, которые нужно изменить (<code>summary</code>, <code>description</code>,
+  <code>priority</code>, <code>assignee</code>, пользовательские поля и т. д.) — правила именования те же, что и
+  при создании.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s2">"minor"</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_6">Перемещение задачи в другую очередь</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">move_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"ARCHIVE"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">move_issue</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">queue_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">move_all_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">initial_status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue_id</code> — ID или ключ перемещаемой задачи.</li>
+<li><code>queue_key</code> — ключ очереди назначения.</li>
+<li><code>notify</code> — уведомлять ли участников задачи о перемещении (по умолчанию <code>True</code>).</li>
+<li><code>notify_author</code> — уведомлять ли отдельно автора задачи (по умолчанию <code>False</code>).</li>
+<li><code>move_all_fields</code> — по умолчанию при переносе компоненты, версии и проекты задачи
+  очищаются; если в целевой очереди есть такие же значения, установите <code>True</code>, чтобы их
+  сохранить.</li>
+<li><code>initial_status</code> — сбросить статус задачи на начальный, если в целевой очереди нет
+  статуса/типа исходной задачи (иначе перенос не выполнится).</li>
+<li><code>expand</code> — как и в <code>get_issue</code>, что дополнительно подтянуть в ответ.</li>
+<li><code>**kwargs</code> — тело запроса в том же формате, что и при редактировании — можно одновременно
+  изменить поля задачи при переносе.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">move_issue</span><span class="p">(</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="s2">"WRITERS-1"</span><span class="p">,</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="s2">"ARCHIVE"</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">notify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">move_all_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Пользователь, выполняющий перенос, должен иметь право на редактирование переносимой
+задачи и право на создание задач в целевой очереди.</p>
+</div>
+<h2 id="_7">Подсчёт задач</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">total</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">count_issues</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="p">{</span><span class="s2">"queue"</span><span class="p">:</span> <span class="s2">"WRITERS"</span><span class="p">})</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">count_issues</span><span class="p">(</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>filter_</code> — фильтр по значениям полей, например <code>{"queue": "WRITERS", "status": "open"}</code>.</li>
+<li><code>query</code> — запрос на языке запросов Tracker (см. раздел ниже). <code>filter_</code> и <code>query</code>
+  взаимоисключающие способы задать критерии поиска, как и в самом API.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">count</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">count_issues</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"Queue: WRITERS AND Status: Open"</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_8">Поиск и фильтрация задач</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">issues</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">find_issues</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="p">{</span><span class="s2">"queue"</span><span class="p">:</span> <span class="s2">"WRITERS"</span><span class="p">})</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_issues</span><span class="p">(</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">keys</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="n">filter_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">query2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">scroll_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="n">per_scroll</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="n">scroll_ttl_millis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    <span class="n">scroll_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IssueT_co</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">FullIssue</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>filter_</code> — фильтр по полям (словарь <code>поле: значение</code>).</li>
+<li><code>query</code> — запрос на <a href="https://yandex.cloud/ru/docs/tracker/about-api">языке запросов Tracker</a>,
+  например <code>"Queue: WRITERS AND Status: Open ORDER BY Priority DESC"</code>.</li>
+<li><code>order</code> — сортировка результата, например <code>"+key"</code> или <code>"-priority"</code>.</li>
+<li><code>expand</code> — дополнительные данные в ответе (<code>"transitions"</code>, <code>"attachments"</code>).</li>
+<li><code>keys</code> — прямой поиск по ключам задач (через запятую), альтернатива <code>filter_</code>/<code>query</code>.</li>
+<li><code>queue</code> — ограничить поиск одной очередью (альтернативная форма запроса).</li>
+<li><code>filter_id</code> — идентификатор сохранённого фильтра (body-параметр <code>filterId</code>).</li>
+<li><code>query2</code> — фильтр на <a href="https://yandex.ru/support/tracker/ru/api/issues/search-issues">языке запросов 2.0</a>,
+  объект, который уходит в теле запроса как <code>query2</code>.</li>
+<li><code>id_</code> — курсор страницы при относительной пагинации (query-параметр <code>id</code>), берётся из
+  заголовка <code>Link</code> предыдущего ответа. Имеет смысл только для формы поиска <code>queue</code>.</li>
+<li><code>fields</code> — проекция полей ответа, как и в <code>get_issue</code> (строка через запятую или
+  последовательность имён): непойменованные поля не придут, так
+  что <code>_type</code> должен соответствовать выбранной проекции.</li>
+<li><code>_type</code> — своя модель задачи.</li>
+</ul>
+<p>Постраничный вывод (обычная пагинация):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">issues</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">find_issues</span><span class="p">(</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">query</span><span class="o">=</span><span class="s2">"Queue: WRITERS"</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">page</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Для поиска по <code>queue</code> параметр <code>page</code> не работает</p>
+<p>Для формы поиска <code>queue</code> API использует относительную пагинацию: <code>page</code> игнорируется,
+а ссылка на следующую страницу приходит в заголовке ответа
+<code>Link: &lt;...?id=...&amp;perPage=...&gt;; rel="next"</code>. Значение <code>id</code> из этого заголовка нужно
+передать в следующий вызов как <code>id_</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">first_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">find_issues</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s2">"WRITERS"</span><span class="p">,</span> <span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># id из заголовка Link предыдущего ответа</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">next_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">find_issues</span><span class="p">(</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">queue</span><span class="o">=</span><span class="s2">"WRITERS"</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">per_page</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">id_</span><span class="o">=</span><span class="s2">"5f2ad1314033c53616b50cd9"</span><span class="p">,</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Сам заголовок <code>Link</code> <code>find_issues</code> не отдаёт, поэтому для полного обхода очереди проще
+использовать <code>iter_issues</code> — он подмешивает <code>queue</code> в <code>filter_</code> и листает результат
+через scroll API.</p>
+</div>
+<p>Если в ответе больше 10 000 задач, обычная пагинация не подойдёт — используйте scroll API:
+передайте <code>scroll_type</code> (<code>"sorted"</code> или <code>"unsorted"</code>) и <code>per_scroll</code>/<code>scroll_ttl_millis</code>,
+чтобы начать сессию скроллинга, а затем передавайте <code>scroll_id</code>, полученный от API, чтобы
+продолжить её на следующих вызовах.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">first_page</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">find_issues</span><span class="p">(</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">filter_</span><span class="o">=</span><span class="p">{</span><span class="s2">"queue"</span><span class="p">:</span> <span class="s2">"WRITERS"</span><span class="p">},</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">scroll_type</span><span class="o">=</span><span class="s2">"sorted"</span><span class="p">,</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">per_scroll</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Scroll API не поддерживается вместе с формами поиска <code>keys</code> и <code>queue</code> — API в этом случае
+ответит ошибкой HTTP 400. Кроме того, <code>find_issues</code> не может отдать вам <code>scrollId</code> для
+продолжения сессии — он приходит в заголовке ответа <code>X-Scroll-Id</code>, а не в теле. Чтобы не
+работать со скроллингом вручную, используйте <code>iter_issues</code> ниже.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Формы поиска — альтернативы, а не фильтры</p>
+<p><code>queue</code>, <code>keys</code>, <code>filter_</code>, <code>filter_id</code>, <code>query</code> и <code>query2</code> не комбинируются. Если
+передать два параметра, API ответит по тому, у кого приоритет выше (<code>queue</code>, затем
+<code>keys</code>, затем <code>filter</code>, затем <code>query</code>); три или четыре параметра API отвергает с
+HTTP 400 («Вы можете использовать только ключи, очередь или поисковый запрос»).
+Библиотека отправляет всё, что вы передали, как есть — выбор формы поиска остаётся за
+вами. То же самое относится к <code>iter_issues</code>, где <code>queue</code> сначала подмешивается
+в <code>filter_</code>.</p>
+</div>
+<h3 id="suggest_issues">suggest_issues</h3>
+<p>Отдельный метод для подсказок по фрагменту названия задачи (то, что показывает интерфейс
+Трекера при наборе текста в поиске):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">issues</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">suggest_issues</span><span class="p">(</span><span class="s2">"исправить ошибки"</span><span class="p">)</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">issues</span><span class="p">:</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">issue</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">issue</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">suggest_issues</span><span class="p">(</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">input_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">SuggestT_co</span> <span class="o">|</span> <span class="n">IssueSuggest</span><span class="p">]</span> <span class="o">=</span> <span class="n">IssueSuggest</span><span class="p">,</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    <span class="n">full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>    <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SuggestT_co</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">IssueSuggest</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ol>
+<li><code>input_</code> — фрагмент текста в названии задачи (query-параметр <code>input</code>). Пробел между
+   словами также совпадает с любым текстом на его месте.</li>
+<li><code>queue</code> — ограничить поиск одной очередью.</li>
+<li><code>full</code> — вернуть подробную информацию о каждой задаче вместо краткой проекции; по
+   умолчанию <code>False</code>. Обязателен, чтобы включить <code>fields</code>, <code>expand</code> и <code>embed</code>.</li>
+<li><code>fields</code> — поля задачи: строка со списком через запятую либо последовательность имён.</li>
+<li><code>expand</code> — дополнительные данные: <code>"all"</code>, <code>"html"</code>, <code>"attachments"</code>, <code>"comments"</code>,
+   <code>"links"</code>, <code>"localLinkRefs"</code>, <code>"aliases"</code>, <code>"transitions"</code>, <code>"permissions"</code>, <code>"sla"</code> или
+   <code>"update_limits"</code>.</li>
+<li><code>embed</code> — детали по тому, что запрошено в <code>expand</code>: <code>"attachments"</code>, <code>"comments"</code>,
+   <code>"transitions"</code> или <code>"sla"</code>.</li>
+<li><code>_type</code> — модель, которой декодируется ответ. По умолчанию <code>IssueSuggest</code> — узкая
+   модель ровно под краткую проекцию ответа.</li>
+</ol>
+<p>Модель <code>IssueSuggest</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на задачу (<code>self</code>)</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор задачи</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>str</code></td>
+<td>Ключ задачи</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td><code>int</code></td>
+<td>Версия задачи</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td><code>str \| None</code></td>
+<td>Название задачи</td>
+</tr>
+<tr>
+<td><code>followers</code></td>
+<td><code>list[User] \| None</code></td>
+<td>Наблюдатели задачи</td>
+</tr>
+<tr>
+<td><code>assignee</code></td>
+<td><code>User \| None</code></td>
+<td>Исполнитель задачи</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>Status \| None</code></td>
+<td>Статус задачи</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">По умолчанию возвращается краткая проекция, а не <code>FullIssue</code></p>
+<p>API отдаёт краткую проекцию задачи (<code>self</code>, <code>id</code>, <code>key</code>, <code>version</code>, <code>summary</code>,
+<code>followers</code>, <code>assignee</code>, <code>status</code>), а не весь набор полей <code>FullIssue</code>. Поэтому по
+умолчанию ответ декодируется в <code>IssueSuggest</code>. <code>full=True</code> с типом по умолчанию тоже
+работает — лишние поля просто игнорируются.</p>
+<p>Если нужны полноценные задачи, передайте <code>_type=FullIssue</code> <strong>вместе с <code>full=True</code> и
+без <code>fields</code></strong>: <code>fields</code> урезает ответ, и <code>FullIssue</code> не пройдёт валидацию из-за
+отсутствующих обязательных полей (см. <a href="../errors/">«Обработка ошибок»</a>).</p>
+</div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullIssue</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># краткая проекция (по умолчанию)</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">issues</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">suggest_issues</span><span class="p">(</span><span class="s2">"исправить ошибки"</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s2">"WRITERS"</span><span class="p">)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="c1"># полноценные задачи</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="n">issues</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">suggest_issues</span><span class="p">(</span><span class="s2">"исправить ошибки"</span><span class="p">,</span> <span class="n">FullIssue</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/get-suggest</p>
+<h2 id="_9">Итерация по всем задачам</h2>
+<p>Чтобы прочитать больше 10 000 задач без ручного управления scroll-сессией, используйте
+<code>iter_issues</code> — это асинхронный генератор поверх scroll API:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">async</span> <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">tracker</span><span class="o">.</span><span class="n">iter_issues</span><span class="p">(</span><span class="n">filter_</span><span class="o">=</span><span class="p">{</span><span class="s2">"queue"</span><span class="p">:</span> <span class="s2">"WRITERS"</span><span class="p">}):</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">issue</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">iter_issues</span><span class="p">(</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>    <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="n">queue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="n">filter_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>    <span class="n">query2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>    <span class="n">scroll_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sorted"</span><span class="p">,</span>
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>    <span class="n">per_scroll</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>    <span class="n">scroll_ttl_millis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-25-16"><a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>scroll_type</code> — <code>"sorted"</code> или <code>"unsorted"</code>, по умолчанию <code>"sorted"</code>.</li>
+<li><code>per_scroll</code> — сколько задач запрашивать за одну страницу скролла, по умолчанию <code>100</code>.</li>
+<li><code>scroll_ttl_millis</code> — время жизни scroll-сессии в миллисекундах.</li>
+<li><code>queue</code> — здесь нет отдельного параметра <code>keys</code>: форма поиска по <code>keys</code> не совместима со
+  scroll API, а <code>queue</code>, если передан, автоматически подмешивается в <code>filter_</code> перед
+  отправкой запроса.</li>
+<li><code>filter_id</code> — идентификатор сохранённого фильтра (body-параметр <code>filterId</code>), как в
+  <code>find_issues</code>.</li>
+<li><code>query2</code> — фильтр на языке запросов 2.0, как в <code>find_issues</code>. Комбинировать формы поиска
+  не следует (см. предупреждение выше).</li>
+<li>Итерация останавливается, когда очередная страница пуста или API перестаёт присылать
+  заголовок <code>X-Scroll-Id</code>.</li>
+<li><code>scrollType</code> и <code>perScroll</code> — параметры <strong>только первого</strong> запроса серии; со второго
+  <code>iter_issues</code> их не отправляет и передаёт <code>scrollId</code> вместе с остальными параметрами
+  запроса (<code>order</code>, <code>expand</code>, <code>fields</code> и <code>scrollTTLMillis</code>, если вы их задали), как
+  и показывает пример в документации API.</li>
+<li>Если выйти из цикла досрочно, <code>iter_issues</code> сам вызовет <code>clear_search_scroll</code> для
+  накопленных пар <code>X-Scroll-Id</code> / <code>X-Scroll-Token</code> — но только при <strong>закрытии</strong>
+  генератора, подробнее в предупреждении ниже.</li>
+</ul>
+<p>Если нужно управлять scroll-сессией вручную (например, встроить в свою пагинацию), можно
+по-прежнему пользоваться <code>find_issues</code>, передавая <code>scroll_id</code> явно.</p>
+<h3 id="clear_search_scroll">clear_search_scroll</h3>
+<p>Каждая страница scroll-поиска держит на сервере снимок результатов до истечения
+<code>scroll_ttl_millis</code>. Чтобы освободить ресурсы раньше, используйте <code>clear_search_scroll</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">clear_search_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scroll_ids</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">released</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">clear_search_scroll</span><span class="p">(</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="p">{</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>        <span class="s2">"&lt;X-Scroll-Id страницы 1&gt;"</span><span class="p">:</span> <span class="s2">"&lt;X-Scroll-Token страницы 1&gt;"</span><span class="p">,</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>        <span class="s2">"&lt;X-Scroll-Id страницы 2&gt;"</span><span class="p">:</span> <span class="s2">"&lt;X-Scroll-Token страницы 2&gt;"</span><span class="p">,</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="p">}</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li><code>scroll_ids</code> — отображение <code>{идентификатор страницы: токен страницы}</code>. Идентификатор —
+  это заголовок ответа <code>X-Scroll-Id</code>, токен — <code>X-Scroll-Token</code>, которые Трекер присылает на
+  каждую страницу поиска с активным scroll (<code>POST /issues/_search</code> с <code>scrollType</code>). Нужно
+  передать пары для <strong>всех</strong> страниц одного поиска разом — по одной паре на каждую
+  полученную страницу. Документация прямо отмечает, что <code>X-Scroll-Token</code> «не используется
+  в текущей версии API v3», поэтому заголовка может не быть вовсе: тогда передавайте
+  пустую строку в качестве токена — так делает и <code>iter_issues</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Опечатка в официальной документации</p>
+<p>Страница API показывает тело запроса как <code>{"srollId": "scrollToken"}</code> — это
+placeholder с опечаткой (<code>sroll</code> вместо <code>scroll</code>), а не буквальное имя ключа: в
+описании параметров ключ назван <code>scrollId</code>, а полный пример запроса использует в
+качестве ключей реальные scroll id. Поэтому тело запроса — обычное отображение
+<code>{scroll_id: scroll_token}</code>, как и реализует <code>clear_search_scroll</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Как освобождаются ресурсы scroll-поиска</p>
+<p><code>iter_issues</code> дочитывает scroll-сессию до конца (пока страница не окажется пустой или
+API не перестанет присылать <code>X-Scroll-Id</code>) — в этом случае освобождать ресурсы не
+нужно. Если же выйти из цикла досрочно (<code>break</code>, исключение), <code>iter_issues</code> вызовет
+<code>clear_search_scroll</code> сам: он запоминает пары <code>X-Scroll-Id</code> / <code>X-Scroll-Token</code> со всех
+прочитанных страниц и отправляет их разом при закрытии генератора. Освобождение
+делается «как получится»: любые ошибки этого вызова гасятся (пишутся только в лог),
+чтобы не подменять исходное исключение, а если трекер уже закрыт, вызов вообще
+пропускается — закрытый клиент всё равно ничего не освободит.</p>
+<p>Важно: <code>break</code> <strong>не</strong> закрывает генератор, а только приостанавливает его. Освобождение
+привязано именно к закрытию (<code>aclose()</code>; <code>asyncio.run</code> делает это через
+<code>shutdown_asyncgens</code>, но лишь при завершении цикла событий), поэтому незакрытый
+генератор держит снимок результатов на сервере до истечения <code>scroll_ttl_millis</code>.
+Закрывайте его явно — и обязательно <strong>до</strong> выхода из блока <code>async with</code> трекера:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">aclosing</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="k">async</span> <span class="k">with</span> <span class="n">YaTracker</span><span class="p">(</span><span class="n">org_id</span><span class="o">=...</span><span class="p">,</span> <span class="n">token</span><span class="o">=...</span><span class="p">)</span> <span class="k">as</span> <span class="n">tracker</span><span class="p">:</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">aclosing</span><span class="p">(</span><span class="n">tracker</span><span class="o">.</span><span class="n">iter_issues</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">"Queue: WRITERS"</span><span class="p">))</span> <span class="k">as</span> <span class="n">issues</span><span class="p">:</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>        <span class="k">async</span> <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">issues</span><span class="p">:</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>            <span class="k">if</span> <span class="n">issue</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="s2">"WRITERS-42"</span><span class="p">:</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>                <span class="k">break</span>
+</span></code></pre></div>
+<p>Без контекстного менеджера — сохраните генератор в переменную и вызовите
+<code>await issues.aclose()</code>.</p>
+<p>Ведёте scroll-сессию вручную через <code>find_issues</code> — вызывайте <code>clear_search_scroll</code>
+сами. Учтите, что <code>find_issues</code> не отдаёт заголовки ответа, поэтому получить
+<code>X-Scroll-Id</code> и <code>X-Scroll-Token</code> через него нельзя: пары приходится собирать своим
+HTTP-клиентом либо пользоваться <code>iter_issues</code>.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/search-release</p>
+<h2 id="_10">Приоритеты</h2>
+<p>Приоритет задачи (<code>priority</code>) в <code>create_issue</code>/<code>edit_issue</code> можно передать как:</p>
+<ul>
+<li>числовой ID приоритета;</li>
+<li>строковый ключ приоритета (<code>"critical"</code>, <code>"normal"</code>, <code>"minor"</code> и т. д.);</li>
+<li>объект <code>Priority</code>, например взятый из уже загруженной задачи (<code>issue.priority</code>).</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="s2">"critical"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Список приоритетов, доступных в вашей организации, можно получить отдельным методом
+<code>get_priorities</code> (см. соответствующий раздел документации).</p>
+<h2 id="_11">Связи между задачами</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">links</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue_links</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_issue_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IssueLink</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p><code>IssueLink</code> описывает связь одной задачи с другой (ответ <code>GET /issues/{id}/links</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на связь (<code>self</code>)</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>int</code></td>
+<td>Идентификатор связи</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>LinkType</code></td>
+<td>Тип связи, содержит подписи <code>inward</code>/<code>outward</code></td>
+</tr>
+<tr>
+<td><code>direction</code></td>
+<td><code>LinkDirection</code></td>
+<td>Направление связи: <code>INWARD</code> или <code>OUTWARD</code></td>
+</tr>
+<tr>
+<td><code>object</code></td>
+<td><code>Issue</code></td>
+<td>Связанная задача</td>
+</tr>
+<tr>
+<td><code>assignee</code></td>
+<td><code>User \| None</code></td>
+<td>Исполнитель связанной задачи</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>Status</code></td>
+<td>Текущий статус связанной задачи</td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td><code>User</code></td>
+<td>Автор связи</td>
+</tr>
+<tr>
+<td><code>updated_by</code></td>
+<td><code>User \| None</code></td>
+<td>Кто изменил связь</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время создания связи</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td><code>datetime \| None</code></td>
+<td>Дата и время изменения связи</td>
+</tr>
+</tbody>
+</table>
+<p><code>name</code> — свойство-хелпер: возвращает подпись связи (<code>type.inward</code> или <code>type.outward</code> в
+зависимости от <code>direction</code>) — удобно для вывода вроде «зависит от», «блокирует» и т. п.</p>
+<p>Кроме связей между задачами, Трекер поддерживает связи с объектами внешних приложений
+(например, коммитами или pull request'ами Bitbucket) — такие связи называются внешними
+ссылками. Про них подробно рассказано в разделе <a href="../applications/">«Внешние приложения»</a>.</p>
+<h3 id="link_issues">link_issues</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">link_issues</span><span class="p">(</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    <span class="n">relationship</span><span class="p">:</span> <span class="n">LinkRelationship</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>    <span class="n">issue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Issue</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreatedIssueLink</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Создаёт связь между текущей задачей (<code>issue_id</code>) и другой (<code>issue</code>).</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinkRelationship</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="n">link</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">link_issues</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">LinkRelationship</span><span class="o">.</span><span class="n">RELATES</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ текущей задачи.</li>
+<li><code>relationship</code> — тип связи: значение <code>LinkRelationship</code> либо обычная строка.
+   Документированы значения <code>"relates"</code>, <code>"is dependent by"</code>, <code>"depends on"</code>,
+   <code>"is subtask for"</code>, <code>"is parent task for"</code>, <code>"duplicates"</code>, <code>"is duplicated by"</code>,
+   <code>"is epic of"</code> и <code>"has epic"</code> (два последних — только для задач типа «Эпик»).
+   <code>LinkRelationship</code> содержит ещё <code>CLONE</code> и <code>ORIGINAL</code>, но они относятся только к импорту
+   задач, см. <a href="../import/">«Импорт задач»</a>.</li>
+<li><code>issue</code> — ID/ключ связываемой задачи строкой, либо уже загруженный объект <code>Issue</code>
+   или <code>FullIssue</code> (тогда используется <code>issue.key</code>).</li>
+</ol>
+<p>Возвращается <code>CreatedIssueLink</code> — та же связь, что и в <code>get_issue_links</code>, но с
+необязательными <code>assignee</code> и <code>status</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assignee</code></td>
+<td><code>User \| None</code></td>
+<td>Исполнитель связанной задачи, в ответе отсутствует</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>Status \| None</code></td>
+<td>Статус связанной задачи, в ответе отсутствует</td>
+</tr>
+</tbody>
+</table>
+<p>Остальные поля совпадают с <code>IssueLink</code> (см. таблицу выше).</p>
+<div class="admonition note">
+<p class="admonition-title">Почему отдельная модель</p>
+<p>В таблице параметров ответа документация перечисляет <code>assignee</code> и <code>status</code>, но пример
+ответа <code>POST /issues/{id}/links</code> их не содержит. Поэтому у <code>CreatedIssueLink</code> оба поля
+необязательны, а у <code>IssueLink</code> (ответ <code>GET /issues/{id}/links</code>, где они приходят
+всегда) <code>status</code> остаётся обязательным — <code>link.status.key</code> у прочитанных связей
+по-прежнему проходит проверку типов.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/link-issue</p>
+<h3 id="unlink_issues">unlink_issues</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">unlink_issues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет связь. Возвращает <code>True</code> при успешном удалении.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">unlink_issues</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ текущей задачи.</li>
+<li><code>link_id</code> — ID связи (поле <code>IssueLink.id</code>, полученное из <code>get_issue_links</code> или
+   <code>link_issues</code>).</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/delete-link-issue</p>
+<h3 id="_12">Методы на объекте задачи</h3>
+<p>Как и другие методы, работающие с одной задачей, <code>get_issue_links</code>, <code>link_issues</code> и
+<code>unlink_issues</code> продублированы на <code>FullIssue</code>, чтобы не передавать <code>issue_id</code> вручную —
+они действуют на ту задачу, у которой были вызваны:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="n">links</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_links</span><span class="p">()</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="n">link</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="s2">"relates"</span><span class="p">,</span> <span class="s2">"WRITERS-2"</span><span class="p">)</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue.get_links()</code> — эквивалент <code>tracker.get_issue_links(issue.id)</code>.</li>
+<li><code>issue.link(relationship, issue)</code> — эквивалент <code>tracker.link_issues(issue.id, relationship, issue)</code>
+  (возвращает <code>CreatedIssueLink</code>; вторым аргументом принимает строку, <code>Issue</code> или <code>FullIssue</code>).</li>
+<li><code>issue.unlink(link_id)</code> — эквивалент <code>tracker.unlink_issues(issue.id, link_id)</code>.</li>
+</ul>
+<h2 id="_13">История изменений</h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">changes</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue_changelog</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">change</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">change</span><span class="o">.</span><span class="n">updated_at</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_issue_changelog</span><span class="p">(</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>    <span class="n">id_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>    <span class="n">field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-9"><a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Changelog</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+<li><code>id_</code> — курсор пагинации: вернуть изменения, идущие после изменения с данным ID
+  (query-параметр <code>id</code>). Без него возвращается первая страница.</li>
+<li><code>per_page</code> — количество записей на странице (по умолчанию 50).</li>
+<li><code>field</code> — ID изменившегося поля задачи, например <code>"checklistItems"</code> или <code>"status"</code>, —
+  отфильтровать историю только по нему.</li>
+<li><code>type_</code> — ключ типа изменения (query-параметр <code>type</code>), например <code>"IssueWorkflow"</code>.</li>
+</ul>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/issues/get-changelog</p>
+<p>Если изменений больше, чем <code>per_page</code> (по умолчанию — 50), нужно постранично дочитывать
+историю, передавая <code>id_</code> последней полученной записи.</p>
+<h3 id="iter_issue_changelog">iter_issue_changelog</h3>
+<p>Чтобы не управлять пагинацией вручную, используйте <code>iter_issue_changelog</code> — асинхронный
+генератор поверх <code>get_issue_changelog</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">iter_issue_changelog</span><span class="p">(</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>    <span class="n">per_page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>    <span class="n">field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Changelog</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">async</span> <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">tracker</span><span class="o">.</span><span class="n">iter_issue_changelog</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">"status"</span><span class="p">):</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">change</span><span class="o">.</span><span class="n">updated_by</span><span class="o">.</span><span class="n">display</span><span class="p">,</span> <span class="n">change</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Каждая следующая страница запрашивается с ID последнего изменения предыдущей; итерация
+останавливается, как только очередная страница пуста или не продвигается дальше текущего
+курсора (защита от зацикливания на случай, если сервер проигнорирует <code>id</code>).</p>
+<div class="admonition note">
+<p class="admonition-title"><code>per_page</code> передаётся в API как есть</p>
+<p>Курсор <code>id</code> у истории изменений <strong>исключающий</strong>: в документации это «идентификатор
+изменения, за которым следуют запрашиваемые изменения», то есть сам курсор в следующей
+страницу не попадает. Поэтому даже <code>per_page=1</code> продвигает итерацию и уходит в API
+как <code>perPage=1</code> (в отличие от досок, пользователей и триггеров, где курсор включающий
+и размер страницы 1 приходится увеличивать).</p>
+</div>
+<p>Задача, полученная через <code>get_issue</code>, тоже умеет отдавать свою историю без явного
+<code>issue_id</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="n">changes</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_changelog</span><span class="p">()</span>
+</span></code></pre></div>
+<p><code>issue.get_changelog(...)</code> — эквивалент <code>tracker.get_issue_changelog(issue.id, ...)</code>.
+Итератора на <code>FullIssue</code> нет — для постраничного чтения истории задачи вызывайте
+<code>tracker.iter_issue_changelog(issue.id, ...)</code> напрямую.</p>
+<h3 id="changelog">Модель <code>Changelog</code></h3>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>str</code></td>
+<td>Ссылка на запись изменения (<code>self</code>)</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>ID изменения</td>
+</tr>
+<tr>
+<td><code>issue</code></td>
+<td><code>Issue</code></td>
+<td>Задача, к которой относится изменение</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время изменения</td>
+</tr>
+<tr>
+<td><code>updated_by</code></td>
+<td><code>User</code></td>
+<td>Пользователь, внёсший изменение</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>str</code></td>
+<td>Тип изменения, например <code>"IssueWorkflow"</code> или <code>"IssueCommentAdded"</code> (полный список — в предупреждении ниже)</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td><code>str \| None</code></td>
+<td>Служебный параметр</td>
+</tr>
+<tr>
+<td><code>fields</code></td>
+<td><code>list[ChangelogField] \| None</code></td>
+<td>Изменённые поля задачи</td>
+</tr>
+<tr>
+<td><code>comments</code></td>
+<td><code>ChangelogComments \| None</code></td>
+<td>Комментарии, добавленные изменением</td>
+</tr>
+<tr>
+<td><code>executed_triggers</code></td>
+<td><code>list[ChangelogExecutedTrigger] \| None</code></td>
+<td>Сработавшие триггеры</td>
+</tr>
+</tbody>
+</table>
+<p><code>ChangelogField</code> (элемент <code>fields</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>field</code></td>
+<td><code>FieldRef</code></td>
+<td>Ссылка на изменённое поле задачи</td>
+</tr>
+<tr>
+<td><code>from_</code></td>
+<td><code>Any</code></td>
+<td>Значение поля до изменения (API-ключ <code>from</code>) — не типизировано специально: одиночное поле шлёт строку, многозначное — список объектов, объектное — <code>{self, id, key, display}</code>. <code>None</code>, если поле было пустым</td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td><code>Any</code></td>
+<td>Значение поля после изменения, в том же формате, что <code>from_</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>ChangelogComments</code> (поле <code>comments</code>) хранит только документированный блок <code>added</code> — список
+<code>Ref</code> на добавленные комментарии, где <code>display</code> — текст комментария.</p>
+<p><code>ChangelogExecutedTrigger</code> (элемент <code>executed_triggers</code>) хранит <code>trigger</code> (<code>Ref</code>), <code>success</code>
+(<code>bool | None</code>) и <code>message</code> (<code>str | None</code>) — что выполнил сработавший триггер.</p>
+<div class="admonition note">
+<p class="admonition-title">Список значений <code>type</code></p>
+<p><code>type</code> — обычная строка, а не enum: набор значений принадлежит серверу и может
+расшириться. На момент написания документированы <code>IssueCreated</code>, <code>IssueUpdated</code>,
+<code>IssueMoved</code>, <code>IssueCloned</code>, <code>IssueCommentAdded</code>, <code>IssueCommentUpdated</code>,
+<code>IssueCommentRemoved</code>, <code>IssueWorklogAdded</code>, <code>IssueWorklogUpdated</code>,
+<code>IssueWorklogRemoved</code>, <code>IssueCommentReactionAdded</code>, <code>IssueCommentReactionRemoved</code>,
+<code>IssueVoteAdded</code>, <code>IssueVoteRemoved</code>, <code>IssueLinked</code>, <code>IssueLinkChanged</code>,
+<code>IssueUnlinked</code>, <code>RelatedIssueResolutionChanged</code>, <code>IssueAttachmentAdded</code>,
+<code>IssueAttachmentRemoved</code> и <code>IssueWorkflow</code>.</p>
+</div>
+<h2 id="workflow-transitions">Переходы по workflow (transitions)</h2>
+<p>Получить список переходов, доступных для задачи в её текущем статусе:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">transitions</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_transitions</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transitions</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p><code>Transitions</code> — это словарь <code>{id перехода: Transition}</code>, который также можно перебирать как
+список:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="n">transitions</span><span class="p">:</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">transition</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">transition</span><span class="o">.</span><span class="n">display</span><span class="p">)</span>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="n">close</span> <span class="o">=</span> <span class="n">transitions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"close"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Выполнить переход:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">execute_transition</span><span class="p">(</span><span class="n">transitions</span><span class="p">[</span><span class="s2">"close"</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="s2">"fixed"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Сигнатура:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute_transition</span><span class="p">(</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">transition</span><span class="p">:</span> <span class="n">Transition</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<ul>
+<li><code>transition</code> — объект <code>Transition</code>, полученный из <code>get_transitions</code> (метод отправляет
+  запрос на <code>transition.url + "/_execute"</code>, поэтому нельзя просто передать строку с ID).</li>
+<li><code>**kwargs</code> — дополнительные поля перехода, например <code>resolution</code> при переводе задачи в
+  статус «Закрыт».</li>
+<li>Возвращает список переходов, доступных после выполнения текущего.</li>
+</ul>
+<p>Объект <code>Transition</code> умеет выполнять себя сам — это удобный шорткат, эквивалентный вызову
+<code>tracker.execute_transition(transition, ...)</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">await</span> <span class="n">transitions</span><span class="p">[</span><span class="s2">"close"</span><span class="p">]</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p><code>Transition.execute()</code> не принимает дополнительные аргументы (например, <code>resolution</code>) —
+если переход требует такие поля, вызывайте <code>tracker.execute_transition(transition, **kwargs)</code>
+напрямую.</p>
+</div>
+<h2 id="_14">Кастомные модели задач</h2>
+<p>Все методы этой страницы принимают параметр <code>_type</code>, позволяющий вместо <code>FullIssue</code>
+использовать вашу собственную модель — например, чтобы получить типизированный доступ к
+пользовательским (локальным) полям очереди. Подробнее об этом — в разделе
+<a href="../custom_fields/">Работа с пользовательскими полями</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

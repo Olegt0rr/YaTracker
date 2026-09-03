@@ -1,0 +1,2612 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../entity_attachments/">
+      
+      
+        <link rel="next" href="../entity_links/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Чек-листы сущностей - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#-" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Чек-листы сущностей
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение чек-листа
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Добавление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Добавление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение чек-листа целиком
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение чек-листа целиком">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_entity_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_entity_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение одного пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение одного пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перемещение пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перемещение пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#move_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        move_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление чек-листа целиком
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление чек-листа целиком">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_entity_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_entity_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entitychecklistitem-entitydeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели EntityChecklistItem, EntityDeadline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели EntityChecklistItem, EntityDeadline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entitychecklistitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityChecklistItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitydeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityDeadline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые результаты и метрики
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевые результаты и метрики">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key_result_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые результаты (key_result_items)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metric_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Метрики (metric_items)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitykeyresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityKeyResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitykeyresultprogress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityKeyResultProgress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitymetricitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityMetricItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение чек-листа
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Добавление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Добавление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение чек-листа целиком
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение чек-листа целиком">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_entity_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_entity_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Изменение одного пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Изменение одного пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перемещение пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перемещение пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#move_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        move_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_entity_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_entity_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление чек-листа целиком
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление чек-листа целиком">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_entity_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_entity_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entitychecklistitem-entitydeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели EntityChecklistItem, EntityDeadline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели EntityChecklistItem, EntityDeadline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entitychecklistitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityChecklistItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitydeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityDeadline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые результаты и метрики
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевые результаты и метрики">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key_result_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевые результаты (key_result_items)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metric_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Метрики (metric_items)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitykeyresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityKeyResult
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitykeyresultprogress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityKeyResultProgress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entitymetricitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EntityMetricItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="-">Чек-листы сущностей</h1>
+<p>Чек-лист сущности — это список пунктов внутри проекта или портфеля (<code>fields.checklistItems</code>),
+устроенный так же, как чек-лист задачи: пункт можно отмечать выполненным, назначать на
+исполнителя и снабжать сроком (<code>deadline</code>). API документирует чек-листы только для проектов
+и портфелей — у целей (<code>"goal"</code>) вместо чек-листа есть ключевые результаты, о них ниже.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с чек-листами сущностей являются
+асинхронными. В примерах ниже вызовы показаны так, как будто мы уже находимся внутри
+корутины.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Тип сущности — только проект или портфель</p>
+<p>Все методы этой страницы принимают <code>entity_type</code> типа
+<code>ChecklistEntityType = Literal["project", "portfolio"]</code> (экспортируется из
+<code>yatracker.types</code>), а не более широкий <code>EntityType</code>, в который входит ещё и <code>"goal"</code>:
+чек-листы задокументированы только для проектов и портфелей. Проверка статическая —
+во время выполнения значение уходит в URL как есть.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Чек-лист — это тоже поле сущности</p>
+<p>Весь чек-лист целиком доступен и через саму сущность: <code>get_entity(..., fields="checklistItems")</code>
+(см. <a href="../entities/">«Проекты, портфели и цели»</a>) читает список пунктов, а
+<code>update_entity(..., checklist_items=[...])</code> перезаписывает его целиком. Методы этой
+страницы — это отдельные ручки API для типичных операций (добавить пункт, поменять один
+пункт, переместить, удалить), но ни одна из них не возвращает сам пункт или список
+пунктов — только всю сущность (<code>Entity</code>), как и <code>update_entity</code>. Актуальный список пунктов
+берите из <code>entity.fields.checklist_items</code>.</p>
+</div>
+<p>Официальная документация:
+https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist</p>
+<h2 id="-_1">Получение чек-листа</h2>
+<p>Отдельного метода для чек-листа сущности нет — используйте <code>get_entity</code> с
+<code>fields="checklistItems"</code> (см. <a href="../entities/">«Проекты, портфели и цели»</a>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">fields</span><span class="o">=</span><span class="s2">"checklistItems"</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">checklist_items</span> <span class="ow">or</span> <span class="p">[]:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">checked</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_1">Добавление пункта</h2>
+<h3 id="add_entity_checklist_item">add_entity_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">assignee</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">deadline</span><span class="p">:</span> <span class="n">EntityDeadline</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Добавляет один пункт в чек-лист сущности; пункт попадает в конец списка, а если у сущности
+чек-листа ещё не было — он создаётся.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">add_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="s2">"Написать тесты"</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">assignee</span><span class="o">=</span><span class="s2">"login"</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">deadline</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"checklistItems"</span><span class="p">],</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">checklist_items</span> <span class="ow">or</span> <span class="p">[]:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">checked</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>text</code> — текст пункта (обязателен).</li>
+<li><code>checked</code> — отметить пункт выполненным сразу при создании.</li>
+<li><code>assignee</code> — логин или числовой идентификатор исполнителя пункта.</li>
+<li><code>deadline</code> — срок выполнения: <code>EntityDeadline</code> (например, взятый из другого пункта — тогда
+   отправится его собственный <code>deadline_type</code>), timezone-aware <code>datetime</code> или <code>date</code> (оба
+   отправляются со значением типа <code>date</code>), либо готовая строка API.</li>
+<li><code>notify</code> — уведомлять ли пользователей, указанных в полях сущности (по умолчанию <code>True</code>).</li>
+<li><code>notify_author</code> — уведомлять ли автора изменения (по умолчанию <code>False</code>).</li>
+<li><code>fields</code>, <code>expand</code> — какие поля и доп. информацию вернуть в ответе, как в <code>get_entity</code>.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Формат даты в <code>deadline</code></p>
+<p>Все страницы документации по чек-листам показывают дату дедлайна только как полную
+отметку времени <code>YYYY-MM-DDThh:mm:ss.sss±hhmm</code>. Поэтому <code>date(2026, 9, 10)</code> отправляется
+как полночь UTC — <code>"2026-09-10T00:00:00.000+0000"</code>. Если смещение важно (например, срок
+должен наступать в полночь по Москве), передавайте timezone-aware <code>datetime</code> или готовую
+строку API — они уходят как есть.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Наивный <code>datetime</code></p>
+<p>Если передать в <code>deadline</code> "наивный" <code>datetime</code> (без часового пояса), библиотека всё
+равно отправит его, но выдаст <code>UserWarning</code> — причём предупреждение указывает на вашу
+строку кода, а не на файл библиотеки. Используйте timezone-aware объекты, <code>date</code>
+либо готовую строку.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Один пункт за вызов</p>
+<p>Официальный запрос принимает и один объект, и JSON-массив, то есть умеет добавлять сразу
+несколько пунктов чек-листа за один вызов API. <code>add_entity_checklist_item</code> всегда
+отправляет один объект — чтобы добавить несколько пунктов, вызовите метод несколько раз.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/add-checklist</p>
+<h2 id="-_2">Изменение чек-листа целиком</h2>
+<h3 id="edit_entity_checklist">edit_entity_checklist</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">edit_entity_checklist</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">EntityChecklistItem</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет сразу несколько пунктов чек-листа одним запросом.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_entity_checklist</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="p">[</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"658953a65c0f1b210000000a"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Первый пункт"</span><span class="p">},</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"658953a65c0f1b210000000b"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Второй пункт"</span><span class="p">,</span> <span class="s2">"checked"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="p">],</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"checklistItems"</span><span class="p">],</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>items</code> — пункты для изменения: объекты <code>EntityChecklistItem</code> или словари вида
+   <code>{"id": "...", "text": "...", "checked": True}</code>. Каждый пункт обязан иметь <code>id</code> и <code>text</code>.
+   Одиночный пункт вместо последовательности вызывает <code>TypeError</code>, пустая последовательность —
+   <code>ValueError</code>.</li>
+<li><code>notify</code>, <code>notify_author</code> — уведомления, как в <code>add_entity_checklist_item</code>.</li>
+<li><code>fields</code>, <code>expand</code> — какие поля вернуть в ответе.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Пункты, прочитанные из API, можно отправлять обратно</p>
+<p><code>EntityChecklistItem</code>, полученный из ответа API, содержит поля, которых запрос не
+принимает, поэтому библиотека пересобирает его: <code>assignee</code> уходит идентификатором
+пользователя (API ждёт id или логин, а не объект), <code>deadline</code> перерисовывается в
+документированный формат, а <code>text_html</code>, <code>checklist_item_type</code> и <code>deadline.is_exceeded</code>
+отбрасываются. Это делает сама модель, а не метод, поэтому тело будет одинаковым и здесь,
+и в <code>update_entity(values={"checklistItems": [...]})</code>. Словари отправляются как есть —
+тогда телом запроса управляете вы.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Незаполненные поля сбрасываются, количество пунктов не меняется</p>
+<p>Это не патч, а полная замена каждого перечисленного пункта: если необязательное поле
+(<code>checked</code>, <code>assignee</code>, <code>deadline</code>) не повторить, оно сбросится к значению по умолчанию
+(пустая строка, <code>0</code>, <code>null</code> или <code>false</code>) — так документирует сам API. Передавайте обратно
+все значения, которые должны остаться прежними. Количество пунктов чек-листа этим методом
+изменить нельзя — для этого используйте <code>add_entity_checklist_item</code> и
+<code>delete_entity_checklist_item</code>.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist</p>
+<h2 id="_2">Изменение одного пункта</h2>
+<h3 id="edit_entity_checklist_item">edit_entity_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">edit_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">assignee</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">deadline</span><span class="p">:</span> <span class="n">EntityDeadline</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Изменяет один пункт чек-листа. В отличие от <code>edit_entity_checklist</code>, здесь все поля
+необязательны — можно поменять, например, только <code>checked</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="s2">"658953a65c0f1b210000000a"</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>item_id</code> — идентификатор пункта чек-листа.</li>
+<li><code>text</code>, <code>checked</code>, <code>assignee</code>, <code>deadline</code> — необязательные поля, как в
+   <code>add_entity_checklist_item</code>. Поля, оставленные <code>None</code>, в запрос не попадают.</li>
+<li><code>notify</code>, <code>notify_author</code>, <code>fields</code>, <code>expand</code> — как в <code>add_entity_checklist_item</code>.</li>
+<li>Метод бросает <code>ValueError</code>, если не передано ни одного поля для изменения.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Что происходит с полями, которые не передали</p>
+<p>В отличие от <code>edit_entity_checklist</code>, официальная документация этого запроса не говорит,
+сбрасываются ли непереданные поля или сохраняют прежнее значение — поэтому на сохранение
+прежних значений не полагайтесь и передавайте явно всё, что должно остаться как есть.</p>
+</div>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/patch-checklist-item</p>
+<h2 id="_3">Перемещение пункта</h2>
+<h3 id="move_entity_checklist_item">move_entity_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">move_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">before</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Перемещает пункт чек-листа перед другим пунктом.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">move_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="s2">"658953a65c0f1b210000000c"</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">before</span><span class="o">=</span><span class="s2">"658953a65c0f1b210000000b"</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"checklistItems"</span><span class="p">],</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>item_id</code> — идентификатор перемещаемого пункта.</li>
+<li><code>before</code> — идентификатор пункта, перед которым нужно вставить перемещаемый.</li>
+<li><code>notify</code>, <code>notify_author</code>, <code>fields</code>, <code>expand</code> — как в <code>add_entity_checklist_item</code>.</li>
+</ol>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/move-checklist-item</p>
+<h2 id="_4">Удаление пункта</h2>
+<h3 id="delete_entity_checklist_item">delete_entity_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет один пункт чек-листа. Действие нельзя отменить. В отличие от задачного
+<code>delete_checklist_item</code>, запрос отвечает <code>200 OK</code> и телом сущности, поэтому метод
+возвращает <code>Entity</code>, а не признак успеха.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_entity_checklist_item</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="s2">"655f3be523db2132"</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="s2">"658953a65c0f1b210000000a"</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">fields</span><span class="o">=</span><span class="s2">"checklistItems"</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">checklist_items</span> <span class="ow">or</span> <span class="p">[]:</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>item_id</code> — идентификатор удаляемого пункта.</li>
+<li><code>notify</code>, <code>notify_author</code>, <code>fields</code>, <code>expand</code> — как в <code>add_entity_checklist_item</code>.</li>
+</ol>
+<p>Возвращает сущность целиком; чтобы увидеть оставшиеся пункты чек-листа, запросите их
+через <code>fields="checklistItems"</code> — перечитывать сущность отдельным <code>get_entity</code> не нужно.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist-item</p>
+<h2 id="-_3">Удаление чек-листа целиком</h2>
+<h3 id="delete_entity_checklist">delete_entity_checklist</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_entity_checklist</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">entity_type</span><span class="p">:</span> <span class="n">ChecklistEntityType</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">entity_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">notify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">notify_author</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">fields</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">expand</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Entity</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет чек-лист сущности целиком — сразу все пункты. Действие нельзя отменить. Как и
+<code>delete_entity_checklist_item</code>, запрос отвечает <code>200 OK</code> и телом сущности, поэтому метод
+возвращает <code>Entity</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">entity</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_entity_checklist</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="s2">"655f3be523db2132"</span><span class="p">)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>entity_type</code> — <code>"project"</code> или <code>"portfolio"</code>.</li>
+<li><code>entity_id</code> — идентификатор или <code>short_id</code> сущности.</li>
+<li><code>notify</code>, <code>notify_author</code>, <code>fields</code>, <code>expand</code> — как в <code>add_entity_checklist_item</code>.</li>
+</ol>
+<p>Возвращает сущность, из которой удалён чек-лист. Отдельно перечитывать её не нужно: с
+<code>fields="checklistItems"</code> в ответе будет уже пустой чек-лист.</p>
+<p>Источник: https://yandex.ru/support/tracker/ru/api/entities/checklists/delete-checklist</p>
+<h2 id="entitychecklistitem-entitydeadline">Модели <code>EntityChecklistItem</code>, <code>EntityDeadline</code></h2>
+<h3 id="entitychecklistitem">EntityChecklistItem</h3>
+<p>Пункт чек-листа сущности — то, что лежит в <code>entity.fields.checklist_items</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор пункта</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>str \| None</code></td>
+<td>Текст пункта</td>
+</tr>
+<tr>
+<td><code>text_html</code></td>
+<td><code>str \| None</code></td>
+<td>HTML-версия текста</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td><code>bool \| None</code></td>
+<td>Отмечен ли пункт выполненным</td>
+</tr>
+<tr>
+<td><code>assignee</code></td>
+<td><code>ChecklistAssignee \| None</code></td>
+<td>Исполнитель пункта, если назначен</td>
+</tr>
+<tr>
+<td><code>deadline</code></td>
+<td><code>EntityDeadline \| None</code></td>
+<td>Срок выполнения, если задан</td>
+</tr>
+<tr>
+<td><code>checklist_item_type</code></td>
+<td><code>str \| None</code></td>
+<td>Тип пункта чек-листа (например, <code>"standard"</code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Исполнитель пункта — не <code>User</code></p>
+<p>В ответах API исполнитель пункта чек-листа приходит урезанным объектом без ключа
+<code>self</code>, поэтому это <a href="../checklists/"><code>ChecklistAssignee</code></a>, а не <code>User</code>: у <code>User</code> ссылка
+<code>self</code> обязательна, и реальный ответ им бы не разобрался. У ключевых результатов
+(<code>EntityKeyResult.assignee</code>) <code>self</code> есть — там остаётся <code>User</code>.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Модель, переданную в запрос, библиотека перерисовывает сама</p>
+<p><code>EntityChecklistItem</code> и <code>EntityDeadline</code> знают, как выглядит их запросная форма, и
+приводятся к ней везде, где попадают в тело запроса — и в <code>edit_entity_checklist</code>, и в
+<code>update_entity(values={"checklistItems": [...]})</code>, и в <code>create_entity</code>. <code>assignee</code>
+уходит идентификатором пользователя, <code>deadline</code> — полной меткой времени
+<code>YYYY-MM-DDThh:mm:ss.sss±hhmm</code>, а read-only поля <code>text_html</code>, <code>checklist_item_type</code> и
+<code>deadline.is_exceeded</code> отбрасываются. Тело получается одинаковым независимо от того,
+каким методом вы отправили пункт. Словари, как и раньше, идут как есть.</p>
+</div>
+<h3 id="entitydeadline">EntityDeadline</h3>
+<p>Дедлайн пункта чек-листа или ключевого результата цели.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td><code>date \| datetime \| None</code></td>
+<td>Дата дедлайна. У пунктов чек-листа API отдаёт полную метку времени, у ключевых результатов — дату; тип выбирается по виду строки в ответе, а не по значению</td>
+</tr>
+<tr>
+<td><code>deadline_type</code></td>
+<td><code>str \| None</code></td>
+<td>Тип дедлайна: <code>"date"</code> (для ключевых результатов — всегда) или <code>"quarter"</code></td>
+</tr>
+<tr>
+<td><code>is_exceeded</code></td>
+<td><code>bool \| None</code></td>
+<td>Просрочен ли срок (заполняется в ответах, полученных из API)</td>
+</tr>
+</tbody>
+</table>
+<p><code>EntityDeadline</code>, попавший в тело запроса сам по себе (например, в <code>values={"deadline": ...}</code>),
+рисуется как <code>{"date", "deadlineType"}</code>; голая <code>date</code> остаётся в виде <code>YYYY-MM-DD</code> — так
+документированы дедлайны ключевых результатов. Внутри пункта чек-листа та же <code>date</code>
+превращается в полночь UTC, потому что чек-листы документированы через полную метку времени.
+Передайте <code>datetime</code> с таймзоной, если смещение важно.</p>
+<h2 id="_5">Ключевые результаты и метрики</h2>
+<p>У ключевых результатов (<code>keyResultItems</code>, только у целей) и у метрик (<code>metricItems</code>, у
+проектов, портфелей и целей) нет отдельных методов чтения, добавления и удаления — Трекер
+документирует их как обычные поля сущности, и всё изменение идёт через <code>update_entity</code> (см.
+<a href="../entities/">«Проекты, портфели и цели»</a>).</p>
+<h3 id="key_result_items">Ключевые результаты (<code>key_result_items</code>)</h3>
+<p>Только у целей (<code>entity_type="goal"</code>). Значение — либо список (заменяет весь список целиком),
+либо словарь с оператором <code>add</code>/<code>remove</code>, либо <code>None</code> (удаляет все ключевые результаты).</p>
+<p>Заменить весь список:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">goal</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="s2">"goal"</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="s2">"655f328523db2132"</span><span class="p">,</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">key_result_items</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="p">{</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"value"</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Key result 1"</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>            <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"username1"</span><span class="p">,</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>            <span class="s2">"deadline"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"date"</span><span class="p">:</span> <span class="s2">"2025-06-03"</span><span class="p">,</span> <span class="s2">"deadlineType"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">},</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>            <span class="s2">"progress"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"start"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"current"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>        <span class="p">},</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        <span class="p">{</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"binary"</span><span class="p">,</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Key result 2"</span><span class="p">,</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>            <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"username2"</span><span class="p">,</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>            <span class="s2">"achieved"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>        <span class="p">},</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>    <span class="p">],</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"keyResultItems"</span><span class="p">],</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Добавить один ключевой результат к существующим:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">goal</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="s2">"goal"</span><span class="p">,</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="s2">"655f328523db2132"</span><span class="p">,</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">key_result_items</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        <span class="s2">"add"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"binary"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Key result 3"</span><span class="p">,</span> <span class="s2">"assignee"</span><span class="p">:</span> <span class="s2">"username1"</span><span class="p">},</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="p">},</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Прочитать список:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">goal</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">"goal"</span><span class="p">,</span> <span class="s2">"655f328523db2132"</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">"keyResultItems"</span><span class="p">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">for</span> <span class="n">kr</span> <span class="ow">in</span> <span class="n">goal</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">key_result_items</span> <span class="ow">or</span> <span class="p">[]:</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">kr</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">kr</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">kr</span><span class="o">.</span><span class="n">achieved</span><span class="p">,</span> <span class="n">kr</span><span class="o">.</span><span class="n">progress</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Удалить все ключевые результаты — <code>key_result_items=None</code>, переданный как обычный именованный
+параметр, из запроса просто выпадет, поэтому <code>None</code> нужно передать через <code>values</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">goal</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="s2">"goal"</span><span class="p">,</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="s2">"655f328523db2132"</span><span class="p">,</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s2">"key_result_items"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Удалить один ключевой результат — оператором <code>remove</code>, которому нужно передать объект пункта
+в том же виде, в каком он вернулся от <code>get_entity</code> (проще всего — <code>model_dump</code>):</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>remove</code> требует объект ровно таким, каким его вернул API</p>
+<p>В отличие от пунктов чек-листа, <code>EntityKeyResult</code> и <code>EntityMetricItem</code> не имеют
+собственной запросной формы: оператор <code>remove</code> сравнивает объект с тем, что хранится в
+Трекере, поэтому обрезать или переименовывать поля нельзя. Передавайте модель как есть
+(библиотека выгрузит её дословно, вместе со ссылками <code>self</code>) или её <code>model_dump</code>.</p>
+</div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">kr</span> <span class="o">=</span> <span class="n">goal</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">key_result_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">goal</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="s2">"goal"</span><span class="p">,</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="s2">"655f328523db2132"</span><span class="p">,</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">key_result_items</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="s2">"remove"</span><span class="p">:</span> <span class="n">kr</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"json"</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="p">},</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li><code>type</code> — <code>"value"</code> (прогресс по числовому значению, тогда обязателен <code>progress</code>) или
+  <code>"binary"</code> (прогресс по факту выполнения, тогда используется <code>achieved</code>).</li>
+<li><code>deadline</code> — объект с обязательными <code>date</code> (<code>YYYY-MM-DD</code>) и <code>deadline_type="date"</code>.</li>
+</ul>
+<h3 id="metric_items">Метрики (<code>metric_items</code>)</h3>
+<p>У проектов, портфелей и целей. Устроены так же, как ключевые результаты: список — замена
+целиком, <code>{"add": ...}</code> — добавление одной метрики, <code>{"remove": ...}</code> — удаление одной,
+<code>None</code> (через <code>values</code>) — удаление всех.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="s2">"655f8cc523db2132"</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">metric_items</span><span class="o">=</span><span class="p">[</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>        <span class="p">{</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"First metric"</span><span class="p">,</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://tracker.yandex.ru/dashboard/12/widget/34?_embedded=1&amp;_no_controls=1"</span><span class="p">,</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>        <span class="p">},</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>        <span class="p">{</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Second metric"</span><span class="p">,</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://tracker.yandex.ru/dashboard/23/widget/45?_embedded=1&amp;_no_controls=1"</span><span class="p">,</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>        <span class="p">},</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="p">],</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"metricItems"</span><span class="p">],</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="p">)</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>    <span class="s2">"655f8cc523db2132"</span><span class="p">,</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>    <span class="n">metric_items</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>        <span class="s2">"add"</span><span class="p">:</span> <span class="p">{</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"My metric"</span><span class="p">,</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://tracker.yandex.ru/dashboard/12/widget/34?_embedded=1&amp;_no_controls=1"</span><span class="p">,</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>        <span class="p">},</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>    <span class="p">},</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="p">)</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="s2">"655f8cc523db2132"</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">"metricItems"</span><span class="p">)</span>
+</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">metric_items</span> <span class="ow">or</span> <span class="p">[]:</span>
+</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">metric</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a>
+</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="c1"># удалить все метрики</span>
+</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a>    <span class="s2">"project"</span><span class="p">,</span> <span class="s2">"655f8cc523db2132"</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s2">"metric_items"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a><span class="p">)</span>
+</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a>
+</span><span id="__span-18-37"><a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a><span class="c1"># удалить одну метрику: объект нужен ровно таким, каким его вернул API</span>
+</span><span id="__span-18-38"><a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a><span class="n">metric</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">metric_items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-18-39"><a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a><span class="n">project</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update_entity</span><span class="p">(</span>
+</span><span id="__span-18-40"><a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a>    <span class="s2">"project"</span><span class="p">,</span>
+</span><span id="__span-18-41"><a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a>    <span class="s2">"655f8cc523db2132"</span><span class="p">,</span>
+</span><span id="__span-18-42"><a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a>    <span class="n">metric_items</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-18-43"><a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a>        <span class="s2">"remove"</span><span class="p">:</span> <span class="n">metric</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"json"</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-18-44"><a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a>    <span class="p">},</span>
+</span><span id="__span-18-45"><a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Источники:
+https://yandex.ru/support/tracker/ru/api/entities/keyresults,
+https://yandex.ru/support/tracker/ru/api/entities/metric</p>
+<h3 id="entitykeyresult">EntityKeyResult</h3>
+<p>Единственный ключевой результат цели, лежит в <code>entity.fields.key_result_items</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор ключевого результата</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>str \| None</code></td>
+<td>Текст ключевого результата</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>str \| None</code></td>
+<td>Способ измерения прогресса: <code>"value"</code> или <code>"binary"</code></td>
+</tr>
+<tr>
+<td><code>deadline</code></td>
+<td><code>EntityDeadline \| None</code></td>
+<td>Дедлайн ключевого результата</td>
+</tr>
+<tr>
+<td><code>progress</code></td>
+<td><code>EntityKeyResultProgress \| None</code></td>
+<td>Числовые показатели прогресса (для <code>type="value"</code>)</td>
+</tr>
+<tr>
+<td><code>achieved</code></td>
+<td><code>bool \| None</code></td>
+<td>Признак достижения (для <code>type="binary"</code>)</td>
+</tr>
+<tr>
+<td><code>assignee</code></td>
+<td><code>User \| None</code></td>
+<td>Исполнитель ключевого результата</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entitykeyresultprogress">EntityKeyResultProgress</h3>
+<p>Числовые показатели прогресса ключевого результата (<code>progress</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td><code>float \| None</code></td>
+<td>Начальное значение показателя</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td><code>float \| None</code></td>
+<td>Конечное значение показателя</td>
+</tr>
+<tr>
+<td><code>current</code></td>
+<td><code>float \| None</code></td>
+<td>Текущее значение показателя</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entitymetricitem">EntityMetricItem</h3>
+<p>Одна метрика сущности, лежит в <code>entity.fields.metric_items</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор метрики</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>str \| None</code></td>
+<td>Название метрики</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td><code>str \| None</code></td>
+<td>Ссылка виджета для iframe. API называет это поле <code>url</code>, но в библиотеке <code>url</code> зарезервировано под <code>self</code>-ссылку объекта</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1885 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="howto/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              О библиотеке
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Предостережение
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что умеет библиотека
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Технические особенности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Технические особенности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asyncio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        asyncio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aiohttp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aiohttp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pydantic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Полная типизация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Именование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Версия API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        С чего начать
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Предостережение
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что умеет библиотека
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Технические особенности
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Технические особенности">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asyncio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        asyncio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aiohttp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aiohttp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pydantic
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Полная типизация
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Именование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Версия API
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        С чего начать
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">О библиотеке</h1>
+<p><code>YaTracker</code> представляет собой асинхронный клиент на <code>python</code>
+для удобной работы с API Яндекс Трекера.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker</span><span class="w"> </span><span class="kn">import</span> <span class="n">YaTracker</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">tracker</span> <span class="o">=</span> <span class="n">YaTracker</span><span class="p">(</span><span class="n">org_id</span><span class="o">=...</span><span class="p">,</span> <span class="n">token</span><span class="o">=...</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">create_issue</span><span class="p">(</span><span class="s2">"Написать шедевр"</span><span class="p">,</span> <span class="s2">"WRITERS"</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">issue</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">issue</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_2">Предостережение</h2>
+<p>Данная библиотека работает <strong>только</strong> с асинхронными приложениями,
+и требует наличия базовых навыков работы с python.</p>
+<h2 id="_3">Что умеет библиотека</h2>
+<p>Клиент <code>YaTracker</code> собирается из нескольких категорий методов — все они доступны
+напрямую на одном объекте, разделения на под-клиенты нет.</p>
+<table>
+<thead>
+<tr>
+<th>Категория</th>
+<th>Методы</th>
+<th>Раздел</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Задачи</td>
+<td><code>get_issue</code>, <code>create_issue</code>, <code>edit_issue</code>, <code>move_issue</code>, <code>find_issues</code>, <code>iter_issues</code>, <code>count_issues</code>, <code>suggest_issues</code>, <code>clear_search_scroll</code>, <code>get_issue_links</code>, <code>link_issues</code>, <code>unlink_issues</code>, <code>get_issue_changelog</code>, <code>iter_issue_changelog</code>, <code>get_transitions</code>, <code>execute_transition</code></td>
+<td><a href="issues/">Задачи</a></td>
+</tr>
+<tr>
+<td>Очереди</td>
+<td><code>get_queue</code>, <code>get_queues</code>, <code>create_queue</code>, <code>delete_queue</code>, <code>restore_queue</code>, <code>get_queue_tags</code>, <code>delete_tag_from_queue</code>, <code>get_queue_fields</code>, <code>get_queue_versions</code>, <code>create_queue_version</code></td>
+<td><a href="queues/">Очереди</a></td>
+</tr>
+<tr>
+<td>Права доступа очередей</td>
+<td><code>get_queue_user_access</code>, <code>get_queue_group_access</code>, <code>update_queue_access</code>, <code>get_component_user_access</code>, <code>get_component_group_access</code></td>
+<td><a href="queue_access/">Права доступа очередей</a></td>
+</tr>
+<tr>
+<td>Поля задач</td>
+<td><code>get_global_fields</code>, <code>get_field</code>, <code>create_field</code>, <code>update_field</code>, <code>get_field_categories</code>, <code>create_field_category</code>, <code>update_field_category</code>, <code>get_local_fields</code>, <code>get_local_field</code>, <code>create_local_field</code>, <code>update_local_field</code></td>
+<td><a href="issue_fields/">Поля задач</a></td>
+</tr>
+<tr>
+<td>Компоненты</td>
+<td><code>get_components</code>, <code>get_queue_components</code>, <code>create_component</code>, <code>update_component</code></td>
+<td><a href="components/">Компоненты</a></td>
+</tr>
+<tr>
+<td>Рабочие процессы</td>
+<td><code>get_workflows</code>, <code>get_workflow</code>, <code>create_workflow</code>, <code>update_workflow</code>, <code>update_workflow_action</code>, <code>delete_workflow</code></td>
+<td><a href="workflows/">Рабочие процессы</a></td>
+</tr>
+<tr>
+<td>Триггеры</td>
+<td><code>get_triggers</code>, <code>iter_triggers</code>, <code>get_trigger</code>, <code>create_trigger</code>, <code>update_trigger</code>, <code>get_trigger_logs</code></td>
+<td><a href="triggers/">Триггеры</a></td>
+</tr>
+<tr>
+<td>Автодействия</td>
+<td><code>get_autoaction</code>, <code>create_autoaction</code>, <code>get_autoaction_logs</code>, <code>get_autoaction_log</code></td>
+<td><a href="autoactions/">Автодействия</a></td>
+</tr>
+<tr>
+<td>Проекты (устаревший API)</td>
+<td><code>get_projects</code>, <code>get_project</code>, <code>create_project</code>, <code>update_project</code>, <code>delete_project</code>, <code>get_project_queues</code></td>
+<td><a href="projects/">Проекты (устаревший API)</a></td>
+</tr>
+<tr>
+<td>Проекты, портфели и цели</td>
+<td><code>create_entity</code>, <code>get_entity</code>, <code>update_entity</code>, <code>delete_entity</code>, <code>search_entities</code>, <code>iter_entities</code>, <code>bulk_update_entities</code>, <code>get_entity_events</code></td>
+<td><a href="entities/">Проекты, портфели и цели</a></td>
+</tr>
+<tr>
+<td>Комментарии сущностей</td>
+<td><code>get_entity_comments</code>, <code>get_entity_comments_relative</code>, <code>get_entity_comment</code>, <code>post_entity_comment</code>, <code>edit_entity_comment</code>, <code>delete_entity_comment</code></td>
+<td><a href="entity_comments/">Комментарии сущностей</a></td>
+</tr>
+<tr>
+<td>Файлы сущностей</td>
+<td><code>get_entity_attachments</code>, <code>get_entity_attachment</code>, <code>attach_file_to_entity</code>, <code>delete_entity_attachment</code></td>
+<td><a href="entity_attachments/">Файлы сущностей</a></td>
+</tr>
+<tr>
+<td>Чек-листы сущностей</td>
+<td><code>add_entity_checklist_item</code>, <code>edit_entity_checklist</code>, <code>edit_entity_checklist_item</code>, <code>move_entity_checklist_item</code>, <code>delete_entity_checklist_item</code>, <code>delete_entity_checklist</code></td>
+<td><a href="entity_checklists/">Чек-листы сущностей</a></td>
+</tr>
+<tr>
+<td>Связи сущностей</td>
+<td><code>get_entity_links</code>, <code>link_entities</code>, <code>delete_entity_link</code></td>
+<td><a href="entity_links/">Связи сущностей</a></td>
+</tr>
+<tr>
+<td>Доступ к сущностям</td>
+<td><code>get_entity_access</code>, <code>update_entity_access</code></td>
+<td><a href="entity_access/">Доступ к сущностям</a></td>
+</tr>
+<tr>
+<td>Макросы</td>
+<td><code>get_macros</code>, <code>get_macro</code>, <code>create_macro</code>, <code>update_macro</code>, <code>delete_macro</code></td>
+<td><a href="macros/">Макросы</a></td>
+</tr>
+<tr>
+<td>Доски</td>
+<td><code>get_boards</code>, <code>get_boards_paginated</code>, <code>iter_boards</code>, <code>get_board</code>, <code>create_board</code>, <code>update_board</code>, <code>delete_board</code>, <code>get_board_columns</code>, <code>get_board_column</code>, <code>create_board_column</code>, <code>update_board_column</code>, <code>delete_board_column</code></td>
+<td><a href="boards/">Доски и спринты</a></td>
+</tr>
+<tr>
+<td>Спринты</td>
+<td><code>get_sprints</code>, <code>get_sprint</code>, <code>create_sprint</code>, <code>update_sprint</code>, <code>start_sprint</code>, <code>archive_sprint</code>, <code>delete_sprint</code></td>
+<td><a href="boards/">Доски и спринты</a></td>
+</tr>
+<tr>
+<td>Комментарии</td>
+<td><code>get_comments</code>, <code>post_comment</code>, <code>edit_comment</code>, <code>delete_comment</code>, <code>add_comment_reaction</code></td>
+<td><a href="comments/">Комментарии</a></td>
+</tr>
+<tr>
+<td>Чек-листы</td>
+<td><code>get_checklist</code>, <code>add_checklist_item</code>, <code>edit_checklist_item</code>, <code>delete_checklist_item</code>, <code>delete_checklist</code></td>
+<td><a href="checklists/">Чек-листы</a></td>
+</tr>
+<tr>
+<td>Учёт времени</td>
+<td><code>post_worklog</code>, <code>edit_worklog</code>, <code>delete_worklog</code>, <code>get_issue_worklog</code>, <code>get_worklog</code></td>
+<td><a href="worklogs/">Учёт времени</a></td>
+</tr>
+<tr>
+<td>Вложения</td>
+<td><code>get_attachments</code>, <code>attach_file</code>, <code>upload_temp_file</code>, <code>download_attachment</code>, <code>download_thumbnail</code>, <code>delete_attachment</code></td>
+<td><a href="attachments/">Вложения</a></td>
+</tr>
+<tr>
+<td>Массовые операции</td>
+<td><code>bulk_update_issues</code>, <code>bulk_transition_issues</code>, <code>bulk_move_issues</code>, <code>get_bulk_change</code>, <code>get_bulk_change_issues</code>, <code>wait_bulk_change</code></td>
+<td><a href="bulk_changes/">Массовые операции</a></td>
+</tr>
+<tr>
+<td>Импорт</td>
+<td><code>import_issue</code>, <code>import_comment</code>, <code>import_link</code>, <code>import_attachment</code>, <code>import_worklog</code></td>
+<td><a href="import/">Импорт</a></td>
+</tr>
+<tr>
+<td>Внешние приложения</td>
+<td><code>get_applications</code>, <code>get_remote_links</code>, <code>add_remote_link</code>, <code>delete_remote_link</code></td>
+<td><a href="applications/">Внешние приложения</a></td>
+</tr>
+<tr>
+<td>Пользователи</td>
+<td><code>get_users</code>, <code>get_users_relative</code>, <code>iter_users</code>, <code>get_user</code>, <code>get_myself</code></td>
+<td><a href="users/">Пользователи</a></td>
+</tr>
+<tr>
+<td>Администрирование</td>
+<td><code>get_issue_types</code>, <code>create_issue_type</code>, <code>update_issue_type</code>, <code>get_statuses</code>, <code>create_status</code>, <code>update_status</code>, <code>get_resolutions</code>, <code>create_resolution</code>, <code>update_resolution</code>, <code>get_priorities</code>, <code>create_priority</code>, <code>update_priority</code></td>
+<td><a href="admin/">Администрирование</a></td>
+</tr>
+<tr>
+<td>Отчёты по задачам</td>
+<td><code>create_report</code>, <code>search_reports</code></td>
+<td><a href="reports/">Отчёты по задачам</a></td>
+</tr>
+<tr>
+<td>Фильтры</td>
+<td><code>create_filter</code>, <code>get_filter</code>, <code>update_filter</code></td>
+<td><a href="filters/">Фильтры</a></td>
+</tr>
+<tr>
+<td>Отсутствия</td>
+<td><code>create_gap</code>, <code>create_gaps</code>, <code>search_gaps</code>, <code>iter_gaps</code>, <code>delete_gap</code>, <code>delete_gaps</code></td>
+<td><a href="gaps/">Отсутствия</a></td>
+</tr>
+<tr>
+<td>Дашборды</td>
+<td><code>create_dashboard</code>, <code>create_cycle_time_widget</code></td>
+<td><a href="dashboards/">Дашборды</a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Покрытие API</p>
+<p>Библиотека покрывает все разделы официального справочника API Трекера.
+Если вы нашли метод, которого нет в таблице выше, — его всё ещё можно
+вызвать напрямую через <code>tracker._client.request(...)</code>, а лучше
+<a href="https://github.com/Olegt0rr/YaTracker/issues">завести issue</a> или прислать pull request.</p>
+</div>
+<p>Часть методов продублирована прямо на моделях, чтобы не таскать <code>issue_id</code> руками:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-42"</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">comments</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_comments</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">post_comment</span><span class="p">(</span><span class="s2">"Готово"</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">links</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_links</span><span class="p">()</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">transitions</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_transitions</span><span class="p">()</span>
+</span></code></pre></div>
+<h2 id="_4">Технические особенности</h2>
+<h3 id="asyncio">asyncio</h3>
+<p>Все методы, обращающиеся к API, — корутины, и вызываются с <code>await</code>.
+Библиотека не содержит блокирующих вызовов и не создаёт собственных потоков,
+поэтому легко встраивается в любое приложение на <code>asyncio</code>
+(веб-сервис, бот, фоновый воркер).</p>
+<h3 id="aiohttp">aiohttp</h3>
+<p>Запрос в API реализуются на основе клиентской части <code>aiohttp</code>, но если вы хотите использовать
+<code>httpx</code> или другой асинхронный http-клиент – можете встроить в данную библиотеку свой модуль.</p>
+<p>Для этого достаточно унаследоваться от <code>yatracker.tracker.client.BaseClient</code>,
+реализовать <code>_make_request()</code> и <code>close()</code>, и передать готовый экземпляр в конструктор:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">yatracker</span><span class="w"> </span><span class="kn">import</span> <span class="n">YaTracker</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">tracker</span> <span class="o">=</span> <span class="n">YaTracker</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">MyHttpxClient</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+</span></code></pre></div>
+<p>Сессия создаётся лениво — при первом запросе, и переиспользуется до вызова
+<code>close()</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Заголовки запроса</p>
+<p><code>_make_request()</code> получает все параметры запроса именованными аргументами: <code>params</code>,
+<code>data</code> (тело в виде <code>aiohttp</code>-payload или <code>FormData</code>) и, когда они нужны, <code>headers</code> —
+дополнительные заголовки вроде <code>If-Match</code> у досок и спринтов. Свой транспорт обязан
+передавать их в HTTP-вызов и объединять <code>headers</code> с заголовками по умолчанию
+(<code>Authorization</code>, <code>X-Org-ID</code>): если их молча отбросить, оптимистичная блокировка
+перестанет работать без единой ошибки.</p>
+</div>
+<h3 id="pydantic">pydantic</h3>
+<p>В качестве основы для моделирования объектов API используется библиотека <code>pydantic</code> (v2),
+ядро которой написано на <code>rust</code> – она обеспечивает быструю валидацию и сериализацию моделей,
+а также прекрасно знакома большинству python-разработчиков.</p>
+<p>Ответы Трекера сразу превращаются в модели: <code>FullIssue</code>, <code>FullQueue</code>, <code>Project</code>, <code>Entity</code>,
+<code>Comment</code>, <code>Worklog</code>, <code>Attachment</code>, <code>Transition</code> и другие. Даты приходят готовыми
+объектами <code>datetime.datetime</code>, а не строками.</p>
+<h3 id="_5">Полная типизация</h3>
+<p>Весь публичный код аннотирован и проверяется <code>mypy</code> и <code>ruff</code> в CI.
+Перегрузки (<code>@overload</code>) расставлены так, что при передаче собственной модели
+через <code>_type</code> вы получаете корректный тип результата:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"HELP-1"</span><span class="p">,</span> <span class="n">_type</span><span class="o">=</span><span class="n">HelpIssue</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">reveal_type</span><span class="p">(</span><span class="n">issue</span><span class="p">)</span>  <span class="c1"># HelpIssue</span>
+</span></code></pre></div>
+<p>Подробнее — в разделе <a href="custom_fields/">Работа с пользовательскими полями</a>.</p>
+<h3 id="_6">Именование</h3>
+<div class="admonition warning">
+<p class="admonition-title">Обратите внимание</p>
+<ul>
+<li>Свойство <code>self</code> в моделях переименовано в <code>url</code>: в python это имя занято
+  первым аргументом методов.</li>
+<li>Все свойства <code>camelCase</code> переименованы в <code>pythonic_case</code>
+  и конвертируются обратно при отправке запроса. Аргумент <code>url=</code> при этом
+  уходит в API как <code>url</code>, а вложенные в запрос модели сохраняют ключ <code>self</code>.</li>
+<li>Имена методов придуманы автором библиотеки: в API Трекера собственных
+  имён у методов нет.</li>
+</ul>
+</div>
+<h3 id="api">Версия API</h3>
+<p>По умолчанию используется API <code>v3</code>. Если вам нужна <code>v2</code> — передайте её явно:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">tracker</span> <span class="o">=</span> <span class="n">YaTracker</span><span class="p">(</span><span class="n">org_id</span><span class="o">=...</span><span class="p">,</span> <span class="n">token</span><span class="o">=...</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="s2">"v2"</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_7">С чего начать</h2>
+<ul>
+<li><a href="howto/">С чего начать</a> — установка, токены, первый запрос.</li>
+<li><a href="errors/">Обработка ошибок</a> — какие исключения бросает библиотека и когда.</li>
+<li><a href="custom_fields/">Работа с пользовательскими полями</a> — локальные поля очередей.</li>
+</ul>
+<p>Официальная документация API: <a href="https://yandex.cloud/ru/docs/tracker/about-api">https://yandex.cloud/ru/docs/tracker/about-api</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

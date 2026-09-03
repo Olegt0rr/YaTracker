@@ -1,0 +1,2150 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../comments/">
+      
+      
+        <link rel="next" href="../worklogs/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Чек-листы - YaTracker</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#-" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href=".." title="YaTracker" class="md-header__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            YaTracker
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Чек-листы
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="YaTracker" class="md-nav__button md-logo" aria-label="YaTracker" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    YaTracker
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Olegt0rr/YaTracker" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Olegt0rr/YaTracker
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    О библиотеке
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../howto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    С чего начать
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Очереди
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Компоненты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты (устаревший API)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проекты, портфели и цели
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macros/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Макросы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доски и спринты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение чек-листа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение чек-листа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Добавление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Добавление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Редактирование пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Редактирование пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление чек-листа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление чек-листа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Методы на объекте задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklistitem-checklistassignee-checklistdeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели ChecklistItem, ChecklistAssignee, ChecklistDeadline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели ChecklistItem, ChecklistAssignee, ChecklistDeadline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklistitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklistassignee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistAssignee
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklistdeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistDeadline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../worklogs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Учёт времени
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Прикреплённые файлы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Массовые операции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../import/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Импорт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../applications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Внешние приложения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пользователи
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Администрирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../issue_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поля задач
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queue_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Права доступа очередей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../workflows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Рабочие процессы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../triggers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Триггеры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Автодействия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_comments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Комментарии сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_attachments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Файлы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Чек-листы сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Связи сущностей
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entity_access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Доступ к сущностям
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отчёты по задачам
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фильтры
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Отсутствия
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дашборды
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Обработка ошибок
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дополнительные возможности
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дополнительные возможности
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с пользовательскими полями
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Получение чек-листа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Получение чек-листа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Добавление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Добавление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        add_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Редактирование пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Редактирование пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edit_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        edit_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление пункта
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление пункта">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_checklist_item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_checklist_item
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Удаление чек-листа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Удаление чек-листа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete_checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        delete_checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Методы на объекте задачи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checklistitem-checklistassignee-checklistdeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модели ChecklistItem, ChecklistAssignee, ChecklistDeadline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модели ChecklistItem, ChecklistAssignee, ChecklistDeadline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklistitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklistassignee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistAssignee
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checklistdeadline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChecklistDeadline
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="-">Чек-листы</h1>
+<p>Чек-лист (checklist) — это список пунктов внутри задачи, каждый из которых можно отмечать
+выполненным, назначать на исполнителя и снабжать сроком (<code>deadline</code>). <code>yatracker</code>
+предоставляет методы для получения пунктов чек-листа, добавления и редактирования отдельного
+пункта, а также удаления как одного пункта, так и всего чек-листа целиком.</p>
+<div class="admonition note">
+<p class="admonition-title">Обратите внимание</p>
+<p>Как и все методы <code>YaTracker</code>, методы работы с чек-листами являются асинхронными.
+В примерах ниже вызовы показаны так, как будто мы уже находимся внутри корутины.</p>
+</div>
+<p>Официальная документация:
+https://yandex.cloud/ru/docs/tracker/about-api</p>
+<div class="admonition note">
+<p class="admonition-title">Что возвращают изменяющие методы</p>
+<p>В отличие от <code>get_checklist</code>, все изменяющие методы (<code>add_checklist_item</code>,
+<code>edit_checklist_item</code>, <code>delete_checklist_item</code>, <code>delete_checklist</code>) возвращают не пункт
+чек-листа, а <strong>всю задачу целиком</strong> — объект <code>FullIssue</code> (или вашу модель, переданную
+через <code>_type</code>, см. <a href="../custom_fields/">«Работа с пользовательскими полями»</a>). Актуальный
+список пунктов при этом можно найти в поле <code>issue.checklist_items</code> возвращённого объекта.</p>
+</div>
+<h2 id="-_1">Получение чек-листа</h2>
+<h3 id="get_checklist">get_checklist</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_checklist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ChecklistItem</span><span class="p">]:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Возвращает список пунктов чек-листа задачи.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_checklist</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">checked</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/issues/get-checklist</p>
+<h2 id="_1">Добавление пункта</h2>
+<h3 id="add_checklist_item">add_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_checklist_item</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">assignee</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">deadline</span><span class="p">:</span> <span class="n">ChecklistDeadline</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Добавляет новый пункт в чек-лист задачи.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">add_checklist_item</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="s2">"Написать тесты"</span><span class="p">)</span>
+</span></code></pre></div>
+<p>С дополнительными параметрами:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">add_checklist_item</span><span class="p">(</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">issue_id</span><span class="o">=</span><span class="s2">"WRITERS-1"</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">text</span><span class="o">=</span><span class="s2">"Написать тесты"</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">assignee</span><span class="o">=</span><span class="s2">"login"</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">deadline</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">),</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+<li><code>text</code> — текст пункта (обязателен).</li>
+<li><code>checked</code> — отметить пункт выполненным сразу при создании.</li>
+<li><code>assignee</code> — логин или числовой идентификатор исполнителя пункта; передаётся как есть
+   (число уходит в запрос как число, без преобразования в строку).</li>
+<li><code>deadline</code> — срок выполнения. Принимает <code>ChecklistDeadline</code> (например, взятый из поля
+   <code>deadline</code> другого пункта чек-листа — тогда он отправится вместе со своим <code>deadline_type</code>),
+   timezone-aware <code>datetime</code> (рекомендуется; отправляется со значением типа <code>date</code>),
+   обычный <code>date</code> (отправляется как полночь UTC) либо
+   готовую строку вида <code>YYYY-MM-DDThh:mm:ss.sss±hhmm</code>, которую библиотека передаст как есть.</li>
+<li><code>_type</code> — своя модель задачи вместо <code>FullIssue</code>, как и в остальных методах работы с
+   задачами (см. <a href="../custom_fields/">«Работа с пользовательскими полями»</a>).</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Наивный datetime</p>
+<p>Если передать в <code>deadline</code> "наивный" <code>datetime</code> (без часового пояса), библиотека всё
+равно отправит его, но выдаст <code>UserWarning</code> — API Трекера может некорректно обработать
+такое значение. Используйте timezone-aware объекты либо готовую строку.</p>
+</div>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/issues/add-checklist-item</p>
+<h2 id="_2">Редактирование пункта</h2>
+<h3 id="edit_checklist_item">edit_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">edit_checklist_item</span><span class="p">(</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">checked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">assignee</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">deadline</span><span class="p">:</span> <span class="n">ChecklistDeadline</span> <span class="o">|</span> <span class="n">datetime</span> <span class="o">|</span> <span class="n">date</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Редактирует существующий пункт чек-листа.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">edit_checklist_item</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">issue_id</span><span class="o">=</span><span class="s2">"WRITERS-1"</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">item_id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">text</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+<li><code>item_id</code> — идентификатор пункта чек-листа (<code>item.id</code>).</li>
+<li><code>text</code> — текст пункта. API считает это поле обязательным даже при редактировании, поэтому
+   если нужно поменять только <code>checked</code> (или другое поле), передавайте прежний текст пункта
+   (<code>item.text</code>).</li>
+<li><code>checked</code>, <code>assignee</code>, <code>deadline</code> — необязательные поля, как и в <code>add_checklist_item</code>. Поля,
+   оставленные <code>None</code>, в запрос не попадают; при этом официальная документация API не описывает,
+   что происходит с полями, отсутствующими в запросе, поэтому полагаться на то, что они сохранят
+   прежнее значение, не стоит — явно передавайте те поля, которые хотите сохранить.</li>
+<li><code>_type</code> — своя модель задачи вместо <code>FullIssue</code>.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Расхождение с документацией API</p>
+<p>Официальная документация метода оборачивает тело запроса в JSON-массив (<code>[ {...} ]</code>),
+но фактически (как и официальная библиотека <code>yandex_tracker_client</code>) <code>yatracker</code>
+отправляет обычный объект — так же, как во всех остальных методах.</p>
+</div>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/issues/edit-checklist</p>
+<h2 id="_3">Удаление пункта</h2>
+<h3 id="delete_checklist_item">delete_checklist_item</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_checklist_item</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">item_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет один пункт чек-листа.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_checklist_item</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+<li><code>item_id</code> — идентификатор удаляемого пункта.</li>
+<li><code>_type</code> — своя модель задачи вместо <code>FullIssue</code>.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/issues/delete-checklist-item</p>
+<h2 id="-_2">Удаление чек-листа</h2>
+<h3 id="delete_checklist">delete_checklist</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_checklist</span><span class="p">(</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">issue_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">]</span> <span class="o">=</span> <span class="n">FullIssue</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IssueT_co</span> <span class="o">|</span> <span class="n">FullIssue</span><span class="p">:</span> <span class="o">...</span>
+</span></code></pre></div>
+<p>Удаляет чек-лист задачи целиком — сразу все пункты.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">delete_checklist</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>issue_id</code> — ID или ключ задачи.</li>
+<li><code>_type</code> — своя модель задачи вместо <code>FullIssue</code>.</li>
+</ol>
+<p>Источник: https://yandex.cloud/ru/docs/tracker/concepts/issues/delete-checklist</p>
+<h2 id="_4">Методы на объекте задачи</h2>
+<p>Как и методы работы с комментариями, часть методов продублирована прямо на <code>FullIssue</code>,
+чтобы не передавать <code>issue_id</code> руками — они возвращают ту же задачу (или её подкласс, если
+задача изначально была получена с <code>_type</code>):</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tracker</span><span class="o">.</span><span class="n">get_issue</span><span class="p">(</span><span class="s2">"WRITERS-1"</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">items</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">get_checklist</span><span class="p">()</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">add_checklist_item</span><span class="p">(</span><span class="s2">"Написать тесты"</span><span class="p">)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">edit_checklist_item</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">checked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">delete_checklist_item</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="n">issue</span> <span class="o">=</span> <span class="k">await</span> <span class="n">issue</span><span class="o">.</span><span class="n">delete_checklist</span><span class="p">()</span>
+</span></code></pre></div>
+<ul>
+<li><code>issue.get_checklist()</code> — эквивалент <code>tracker.get_checklist(issue.id)</code>.</li>
+<li><code>issue.add_checklist_item(text, **kwargs)</code> — эквивалент <code>tracker.add_checklist_item(issue.id, text, **kwargs)</code>.</li>
+<li><code>issue.edit_checklist_item(item_id, text, **kwargs)</code> — эквивалент <code>tracker.edit_checklist_item(issue.id, item_id, text, **kwargs)</code>.</li>
+<li><code>issue.delete_checklist_item(item_id, **kwargs)</code> — эквивалент <code>tracker.delete_checklist_item(issue.id, item_id, **kwargs)</code>.</li>
+<li><code>issue.delete_checklist(**kwargs)</code> — эквивалент <code>tracker.delete_checklist(issue.id, **kwargs)</code>.</li>
+</ul>
+<p>Во всех этих методах <code>**kwargs</code> передаются напрямую в соответствующий метод <code>YaTracker</code>. Параметр
+<code>_type</code> по умолчанию равен классу самой задачи (<code>type(self)</code>), но его можно переопределить явно —
+например, <code>await issue.delete_checklist(_type=FullIssue)</code>, если ваш подкласс задачи требует полей,
+которых нет в ответе на запрос чек-листа.</p>
+<p><code>FullIssue</code> также получает три новых поля, заполняемые чек-листом задачи:</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>checklist_items</code></td>
+<td><code>list[ChecklistItem] \| None</code></td>
+<td>Пункты чек-листа задачи</td>
+</tr>
+<tr>
+<td><code>checklist_total</code></td>
+<td><code>int \| None</code></td>
+<td>Общее количество пунктов чек-листа</td>
+</tr>
+<tr>
+<td><code>checklist_done</code></td>
+<td><code>int \| None</code></td>
+<td>Количество выполненных пунктов</td>
+</tr>
+</tbody>
+</table>
+<p>Все три поля равны <code>None</code>, если ответ API их не содержит. Например, <code>get_issue</code> для задачи без
+чек-листа вернёт <code>None</code> для всех трёх полей, а <code>delete_checklist</code> — который отправляет
+<code>DELETE /checklistItems</code> — получает в ответе <code>checklistDone</code> и <code>checklistTotal</code>, но не
+<code>checklistItems</code>, поэтому у возвращённой задачи <code>issue.checklist_items</code> тоже окажется <code>None</code>
+(при этом <code>get_checklist</code> возвращает не задачу, а список — <code>list[ChecklistItem]</code>, — и на него
+это не распространяется). Перед использованием этих полей проверяйте их на <code>None</code>, например
+<code>issue.checklist_items or []</code>.</p>
+<h2 id="checklistitem-checklistassignee-checklistdeadline">Модели <code>ChecklistItem</code>, <code>ChecklistAssignee</code>, <code>ChecklistDeadline</code></h2>
+<h3 id="checklistitem">ChecklistItem</h3>
+<p>Пункт чек-листа — то, что возвращает <code>get_checklist</code> и что лежит в
+<code>issue.checklist_items</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор пункта</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>str</code></td>
+<td>Текст пункта</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td><code>bool</code></td>
+<td>Отмечен ли пункт выполненным (по умолчанию <code>False</code>, если поле отсутствует в ответе API)</td>
+</tr>
+<tr>
+<td><code>text_html</code></td>
+<td><code>str \| None</code></td>
+<td>HTML-версия текста (присутствует не всегда)</td>
+</tr>
+<tr>
+<td><code>assignee</code></td>
+<td><code>ChecklistAssignee \| None</code></td>
+<td>Исполнитель пункта, если назначен</td>
+</tr>
+<tr>
+<td><code>deadline</code></td>
+<td><code>ChecklistDeadline \| None</code></td>
+<td>Срок выполнения, если задан</td>
+</tr>
+<tr>
+<td><code>checklist_item_type</code></td>
+<td><code>str \| None</code></td>
+<td>Тип пункта чек-листа (например, <code>"standard"</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="checklistassignee">ChecklistAssignee</h3>
+<p>Исполнитель пункта чек-листа.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>str</code></td>
+<td>Идентификатор пользователя</td>
+</tr>
+<tr>
+<td><code>display</code></td>
+<td><code>str</code></td>
+<td>Отображаемое имя</td>
+</tr>
+<tr>
+<td><code>passport_uid</code></td>
+<td><code>int \| None</code></td>
+<td>Паспортный UID пользователя</td>
+</tr>
+<tr>
+<td><code>login</code></td>
+<td><code>str \| None</code></td>
+<td>Логин пользователя</td>
+</tr>
+<tr>
+<td><code>first_name</code></td>
+<td><code>str \| None</code></td>
+<td>Имя</td>
+</tr>
+<tr>
+<td><code>last_name</code></td>
+<td><code>str \| None</code></td>
+<td>Фамилия</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td><code>str \| None</code></td>
+<td>Email</td>
+</tr>
+<tr>
+<td><code>tracker_uid</code></td>
+<td><code>int \| None</code></td>
+<td>UID пользователя в Трекере</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Не то же самое, что <code>User</code></p>
+<p>В отличие от модели <code>User</code>, у <code>ChecklistAssignee</code> нет поля <code>self</code> (<code>url</code>) — Трекер не
+присылает ссылку на пользователя внутри пункта чек-листа, поэтому переиспользовать
+существующую модель <code>User</code> для этого поля нельзя.</p>
+</div>
+<h3 id="checklistdeadline">ChecklistDeadline</h3>
+<p>Срок выполнения пункта чек-листа.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date</code></td>
+<td><code>datetime</code></td>
+<td>Дата и время дедлайна</td>
+</tr>
+<tr>
+<td><code>deadline_type</code></td>
+<td><code>str</code></td>
+<td>Тип дедлайна (на данный момент API отдаёт только <code>"date"</code>)</td>
+</tr>
+<tr>
+<td><code>is_exceeded</code></td>
+<td><code>bool \| None</code></td>
+<td>Просрочен ли срок (заполняется в ответах, полученных из API)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

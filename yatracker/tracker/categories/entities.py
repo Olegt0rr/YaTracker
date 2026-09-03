@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import sys
 import warnings
-from collections.abc import Sequence
 from datetime import date, datetime
 from typing import TYPE_CHECKING, Any
 
-from yatracker.tracker.base import BaseTracker, _convert_value, _encode_key
+from yatracker.tracker.base import (
+    BaseTracker,
+    _check_sequence,
+    _convert_value,
+    _encode_key,
+    _join_fields,
+    _sorted_if_possible,
+)
 from yatracker.types import BulkChange
+from yatracker.types.base import Base
 from yatracker.types.entity import (
     Entity,
     EntityEvents,
@@ -16,12 +24,14 @@ from yatracker.types.entity import (
 )
 from yatracker.utils.datetime import (
     NAIVE_DATETIME_WARNING,
+    suppress_naive_warnings,
     to_tracker_date,
     to_tracker_datetime,
+    user_stacklevel,
 )
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Iterable, Sequence
 
 
 class Entities(BaseTracker):
@@ -41,7 +51,7 @@ class Entities(BaseTracker):
         summary: str,
         *,
         values: dict[str, Any] | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         fields: str | Sequence[str] | None = None,
         **kwargs: Any,  # noqa: ANN401
     ) -> Entity:
@@ -117,7 +127,7 @@ class Entities(BaseTracker):
         *,
         values: dict[str, Any] | None = None,
         comment: str | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         fields: str | Sequence[str] | None = None,
         expand: str | None = None,
         **kwargs: Any,  # noqa: ANN401
@@ -136,8 +146,10 @@ class Entities(BaseTracker):
         :param kwargs: Extra fields merged on top of `values`.
         :raises ValueError: If there is nothing to change.
 
-        A version conflict (412), a locked entity (423) and unmet
-        preconditions (428) come back as a generic `YaTrackerError`.
+        A version conflict (412) is raised as `PreconditionFailedError`
+        and unmet preconditions (428) as `PreconditionRequiredError`;
+        only a locked entity (423) comes back as a generic
+        `YaTrackerError`.
 
         Source:
         https://yandex.ru/support/tracker/ru/api/entities/update-entity
@@ -281,11 +293,11 @@ class Entities(BaseTracker):
     async def bulk_update_entities(
         self,
         entity_type: EntityType,
-        entities: Sequence[str | Entity],
+        entities: Iterable[str | Entity],
         *,
         values: dict[str, Any] | None = None,
         comment: str | None = None,
-        links: Sequence[EntityLink | dict[str, Any]] | None = None,
+        links: Iterable[EntityLink | dict[str, Any]] | None = None,
         **kwargs: Any,  # noqa: ANN401
     ) -> BulkChange:
         """Edit multiple entities at once.
@@ -296,7 +308,8 @@ class Entities(BaseTracker):
         work for it as well.
 
         :param entity_type: "project", "portfolio" or "goal".
-        :param entities: Sequence of entity ids (or `Entity` objects).
+        :param entities: Collection of entity ids (or `Entity`
+            objects): a list, a set, a generator, ...
         :param values: Fields to set, encoded like in `create_entity`.
         :param comment: Comment to add to every entity.
         :param links: Links to add: a sequence of `EntityLink` objects
@@ -384,13 +397,24 @@ def _fields_params(
     fields: str | Sequence[str] | None,
     *,
     expand: str | None = None,
+    notify: bool | None = None,
+    notify_author: bool | None = None,
 ) -> dict[str, str] | None:
-    """Build the `fields`/`expand` query params."""
+    """Build the `fields`/`expand`/`notify` query params.
+
+    Shared with the sub-resources of an entity (checklists, links,
+    ...), whose endpoints take the same parameters.
+    """
     params: dict[str, str] = {}
-    if fields:
-        params["fields"] = fields if isinstance(fields, str) else ",".join(fields)
+    joined_fields = _join_fields(fields)
+    if joined_fields:
+        params["fields"] = joined_fields
     if expand:
         params["expand"] = expand
+    if notify is not None:
+        params["notify"] = str(notify).lower()
+    if notify_author is not None:
+        params["notifyAuthor"] = str(notify_author).lower()
     return params or None
 
 
@@ -399,7 +423,7 @@ def _entity_changes(
     kwargs: dict[str, Any],
     *,
     comment: str | None = None,
-    links: Sequence[EntityLink | dict[str, Any]] | None = None,
+    links: Iterable[EntityLink | dict[str, Any]] | None = None,
     required: bool = True,
 ) -> dict[str, Any]:
     """Build the `fields`/`comment`/`links` body shared by the write methods.
@@ -410,9 +434,7 @@ def _entity_changes(
     """
     changes: dict[str, Any] = {}
 
-    # stacklevel=4: the warning is raised inside `_prepare_fields`, so it is
-    # _prepare_fields -> this function -> the public method -> user code
-    prepared_fields = _prepare_fields(values, kwargs, stacklevel=4)
+    prepared_fields = _prepare_fields(values, kwargs)
     if prepared_fields:
         changes["fields"] = prepared_fields
 
@@ -433,20 +455,16 @@ def _entity_changes(
     return changes
 
 
-def _prepare_meta_entities(entities: Sequence[str | Entity]) -> list[str]:
-    """Convert a sequence of entities into a list of entity ids."""
-    # A bare `str` would be iterated character by character and a bare
-    # `Entity` (pydantic models iterate over their fields) or a mapping
-    # would be iterated too, producing confusing errors downstream.
-    if isinstance(entities, str) or not isinstance(entities, Sequence):
-        msg = (
-            "This endpoint accepts only a sequence of entity ids or "
-            f"`Entity` objects, not a bare {type(entities).__name__}."
-        )
-        raise TypeError(msg)
-
+def _prepare_meta_entities(entities: Iterable[str | Entity]) -> list[str]:
+    """Convert a collection of entities into a list of entity ids."""
+    checked = _check_sequence(
+        entities,
+        "entities",
+        "entity ids or `Entity` objects",
+        "entity.id",
+    )
     meta_entities = [
-        entity if isinstance(entity, str) else entity.id for entity in entities
+        entity if isinstance(entity, str) else entity.id for entity in checked
     ]
     if not meta_entities:
         msg = "At least one entity is required."
@@ -457,8 +475,6 @@ def _prepare_meta_entities(entities: Sequence[str | Entity]) -> list[str]:
 def _prepare_fields(
     values: dict[str, Any] | None,
     kwargs: dict[str, Any],
-    *,
-    stacklevel: int = 3,
 ) -> dict[str, Any]:
     """Merge explicit `values` with the fields passed as keyword arguments.
 
@@ -467,49 +483,64 @@ def _prepare_fields(
     `None` keyword arguments are dropped, like in `bulk_update_issues`.
 
     A naive `datetime` anywhere in the merged values is reported once,
-    from here: warning per value would point at a comprehension frame or
-    at a recursive call instead of at the user's code. `stacklevel`
-    should point at that call site: the default `3` is this helper ->
-    the public method (`search_entities`) -> user code, plus one for
-    every extra frame in between.
+    from here: a warning per value would point at a comprehension frame
+    or at a recursive call instead of at the user's code. The warning
+    points at the first frame outside of the library, however many
+    internal helpers there are in between.
+
+    Naive values are found by walking the payload, models included, and
+    the rendering itself runs under `suppress_naive_warnings`, so a
+    model that warns on its own (`EntityDeadline._render`, for one) does
+    not add a second warning. Any other warning raised while rendering
+    propagates as usual.
     """
     merged = {
         **(values or {}),
         **{key: value for key, value in kwargs.items() if value is not None},
     }
-    if _has_naive_datetime(merged):
-        warnings.warn(NAIVE_DATETIME_WARNING, UserWarning, stacklevel=stacklevel)
+    has_naive = _has_naive_datetime(merged)
 
-    return {
-        _encode_key(key): _convert_entity_value(value) for key, value in merged.items()
-    }
+    with suppress_naive_warnings():
+        prepared = {
+            _encode_key(key): _convert_entity_value(value)
+            for key, value in merged.items()
+        }
+
+    if has_naive:
+        warnings.warn(
+            NAIVE_DATETIME_WARNING,
+            UserWarning,
+            stacklevel=user_stacklevel(sys._getframe(0)),  # noqa: SLF001
+        )
+
+    return prepared
 
 
 def _prepare_links(
-    # The bare types are part of the annotation only so that the runtime
-    # guard below is not dead code for a type checker: a single link is
-    # exactly the kind of value that would otherwise be iterated.
-    links: Sequence[EntityLink | dict[str, Any]]
-    | EntityLink
-    | dict[str, Any]
-    | str
-    | None,
+    links: Iterable[EntityLink | dict[str, Any]] | None,
 ) -> list[dict[str, Any]]:
     """Convert links to the plain dicts the API expects."""
-    if isinstance(links, (str, dict, EntityLink)):
-        msg = (
-            f"`links` must be a sequence of links, got {type(links).__name__}. "
-            "Pass a sequence of links, e.g. `[link]`."
-        )
-        raise TypeError(msg)
-    return [_convert_value(link) for link in links or ()]
+    if links is None:
+        return []
+    checked = _check_sequence(links, "links", "links", "link")
+    return [_convert_value(link) for link in checked]
 
 
 def _has_naive_datetime(obj: Any) -> bool:  # noqa: ANN401
-    """Tell whether a value contains a naive `datetime` at any depth."""
+    """Tell whether a value contains a naive `datetime` at any depth.
+
+    Models are walked as well: a naive `EntityDeadline.date` inside an
+    `EntityChecklistItem` is a naive value of the payload just like a
+    bare one, and it is rendered with the warnings suppressed.
+    """
     match obj:
         case datetime():
             return obj.utcoffset() is None
+        case Base():
+            return any(
+                _has_naive_datetime(value)
+                for value in (*obj.__dict__.values(), *(obj.model_extra or {}).values())
+            )
         case dict():
             return any(_has_naive_datetime(value) for value in obj.values())
         case list() | tuple() | set() | frozenset():
@@ -522,15 +553,19 @@ def _convert_entity_value(obj: Any) -> Any:  # noqa: ANN401
     """Convert a field value to a basic type, rendering dates as the API wants.
 
     Naive datetimes are reported by `_prepare_fields`, so the rendering
-    helper is asked to stay quiet here.
+    helper is asked to stay quiet here. A set is rendered as a sorted
+    array when its elements can be compared, like in `_convert_value`.
     """
     match obj:
         case datetime():
             return to_tracker_datetime(obj, warn=False)
         case date():
             return to_tracker_date(obj)
-        case list() | tuple() | set() | frozenset():
+        case list() | tuple():
             return [_convert_entity_value(item) for item in obj]
+        case set() | frozenset():
+            # sorted like in `_convert_value`, to keep the body reproducible
+            return [_convert_entity_value(item) for item in _sorted_if_possible(obj)]
         case dict():
             return {key: _convert_entity_value(value) for key, value in obj.items()}
         case _:

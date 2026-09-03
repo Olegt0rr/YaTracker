@@ -73,6 +73,25 @@ USER: dict[str, Any] = {
 }
 
 
+def user_ref(**overrides: Any) -> dict[str, Any]:
+    """Build a short user-reference payload (``self``/``id``/``display``, ...).
+
+    Mirrors the truncated user objects embedded in most API responses
+    (``createdBy``, ``updatedBy``, ``owner``, ``lead``, ``user``, entries of
+    a ``users`` list, ...): only ``self``, ``id`` and ``display`` are always
+    present, ``cloudUid``/``passportUid`` show up in some samples but not
+    all. Only ``self``/``id``/``display`` default here; pass the rest (and
+    override any default) to reproduce a doc sample verbatim.
+    """
+    user: dict[str, Any] = {
+        "self": USER["self"],
+        "id": USER["id"],
+        "display": USER["display"],
+    }
+    user.update(overrides)
+    return user
+
+
 def full_queue_body(**overrides: Any) -> dict[str, Any]:
     """Build a minimal ``FullQueue`` payload (``GET /queues/{id}`` shape).
 

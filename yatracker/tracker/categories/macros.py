@@ -45,7 +45,7 @@ class Macros(BaseTracker):
         `per_page` / `page` to fetch the rest.
 
         Source:
-        https://yandex.ru/support/tracker/ru/get-macroses
+        https://yandex.ru/support/tracker/ru/api/get-macroses
 
         :param queue_id: ID or key of the queue.
         :param per_page: number of macros per page (50 by default).
@@ -69,7 +69,7 @@ class Macros(BaseTracker):
         """Get a macro.
 
         Source:
-        https://yandex.ru/support/tracker/ru/get-macros
+        https://yandex.ru/support/tracker/ru/api/get-macros
 
         :param queue_id: ID or key of the queue.
         :param macro_id: ID of the macro.
@@ -92,7 +92,7 @@ class Macros(BaseTracker):
         """Create a macro.
 
         Source:
-        https://yandex.ru/support/tracker/ru/post-macros
+        https://yandex.ru/support/tracker/ru/api/post-macros
 
         :param queue_id: ID or key of the queue.
         :param name: macro name.
@@ -129,7 +129,7 @@ class Macros(BaseTracker):
         """Edit a macro.
 
         Source:
-        https://yandex.ru/support/tracker/ru/patch-macros
+        https://yandex.ru/support/tracker/ru/api/patch-macros
 
         :param queue_id: ID or key of the queue.
         :param macro_id: ID of the macro to edit.
@@ -167,7 +167,7 @@ class Macros(BaseTracker):
         """Delete a macro.
 
         Source:
-        https://yandex.ru/support/tracker/ru/delete-macros
+        https://yandex.ru/support/tracker/ru/api/delete-macros
 
         :param queue_id: ID or key of the queue.
         :param macro_id: ID of the macro to delete.

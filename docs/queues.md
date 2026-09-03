@@ -112,10 +112,7 @@ async def create_queue(
 а не объекты `User`, `IssueType` или `Priority`, которые возвращаются в ответе.
 
 ```python
-from yatracker.types import IssueTypeConfig
-from yatracker.types.issue_type import IssueType
-from yatracker.types.workflow import Workflow
-from yatracker.types.resolution import Resolution
+from yatracker.types import IssueType, IssueTypeConfig, Resolution, Workflow
 
 issue_types_config = [
     IssueTypeConfig(
@@ -153,11 +150,7 @@ queue = await tracker.create_queue(
 
 !!! note "Несоответствие в текущей реализации"
 
-    `Workflow` и `Resolution` не входят в публичный `yatracker.types.__all__`, поэтому их нужно
-    импортировать напрямую из подмодулей (`yatracker.types.workflow`, `yatracker.types.resolution`),
-    как показано выше.
-
-    Кроме того, тип параметра `issue_types_config: list[IssueTypeConfig]` требует полностью
+    Тип параметра `issue_types_config: list[IssueTypeConfig]` требует полностью
     заполненных объектов `IssueTypeConfig` (со вложенными `IssueType`, `Workflow`, `Resolution`,
     у каждого из которых обязательны `url`/`id`/`display`) — то есть повторяет форму *ответа*
     `GET /queues/{id}?expand=issueTypesConfig`, а не минимальный формат тела запроса на создание
@@ -225,6 +218,60 @@ for version in versions:
 
 Источник: https://yandex.cloud/ru/docs/tracker/concepts/queues/get-versions
 
+### create_queue_version
+
+```python
+async def create_queue_version(
+    self,
+    queue_id: str | int,
+    name: str,
+    _type: type[QueueVersion | QueueVersionT_co] = QueueVersion,
+    *,
+    description: str | None = None,
+    start_date: date | str | None = None,
+    due_date: date | str | None = None,
+) -> QueueVersion | QueueVersionT_co: ...
+```
+
+Создаёт новую версию в очереди.
+
+```python
+from datetime import date
+
+version = await tracker.create_queue_version(
+    "WRITERS",
+    name="1.0",
+    description="Первый релиз",
+    start_date=date(2026, 1, 1),
+    due_date="2026-03-01",
+)
+
+print(version.id, version.released, version.archived)
+```
+
+1. `queue_id` — ключ очереди, в которой создаётся версия (в запросе передаётся именно
+   ключом, а не идентификатором — см. предупреждение ниже).
+2. `name` — название версии.
+3. `description` — необязательное описание версии.
+4. `start_date`, `due_date` — необязательные даты начала и завершения версии: объект
+   `datetime.date` (или `datetime`), либо готовая строка `YYYY-MM-DD`.
+
+!!! warning "Путь запроса и форма ответа в документации"
+
+    Официальная документация в начале страницы описывает запрос как `POST /v3/versions/`
+    с очередью в теле (`{"queue": "<ключ>", "name": "<название>"}`), и именно так
+    реализован `create_queue_version`. Пример запроса на той же странице документации,
+    однако, показывает другой путь — `POST /v3/queues/TEST/versions` — то есть сама
+    страница противоречит себе; библиотека следует основному описанию запроса и
+    примеру тела, а не пути из примера.
+
+    Официальный пример ответа оборачивает созданную версию в массив (`[{...}]`), хотя
+    почти все остальные запросы, создающие один объект, отвечают самим объектом без
+    обёртки. `create_queue_version` понимает оба варианта ответа и в обоих случаях
+    возвращает один объект `QueueVersion`, а не список.
+
+Источник: https://yandex.ru/support/tracker/ru/api/queues/create-version
+
 ## Обязательные поля очереди
 
 ### get_queue_fields
@@ -253,6 +300,24 @@ for field in fields:
 Источник: https://yandex.cloud/ru/docs/tracker/concepts/queues/get-fields
 
 ## Теги очереди
+
+### get_queue_tags
+
+```python
+async def get_queue_tags(self, queue_id: str | int) -> list[str]: ...
+```
+
+Возвращает названия тегов, добавленных в очередь.
+
+```python
+tags = await tracker.get_queue_tags("WRITERS")
+
+print(tags)  # ["tag1", "tag2", "tag3"]
+```
+
+1. `queue_id` — ключ или идентификатор очереди (ключ чувствителен к регистру символов).
+
+Источник: https://yandex.ru/support/tracker/ru/api/queues/get-tags
 
 ### delete_tag_from_queue
 

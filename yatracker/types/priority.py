@@ -14,9 +14,12 @@ class Priority(Base):
     id - Priority ID.
     key - Priority key.
     version - Priority version.
+    display - Name displayed in the interface. Only the short reference
+    embedded into issues carries it.
     name - Display name of the priority. When localized=false is passed
     in the request, this parameter contains duplicates of
     the names in other languages.
+    description - Priority description.
     order - The weight of the priority. This parameter affects the order
     for displaying the priority in the interface.
 
@@ -28,4 +31,5 @@ class Priority(Base):
     display: str | None = None
     version: int | None = None
     name: str | dict | None = None
+    description: str | None = None
     order: int | None = None

@@ -1,9 +1,10 @@
 # Импорт
 
-Трекер поддерживает импорт задач, комментариев, связей и вложений из внешних систем с
-сохранением исходных авторов и дат — например, при переезде истории задач из другого
-трекера. `yatracker` предоставляет для этого отдельные методы: `import_issue`,
-`import_comment`, `import_link` и `import_attachment`.
+Трекер поддерживает импорт задач, комментариев, связей, записей о затраченном времени
+и вложений из внешних систем с сохранением исходных авторов и дат — например, при
+переезде истории задач из другого трекера. `yatracker` предоставляет для этого
+отдельные методы: `import_issue`, `import_comment`, `import_link`, `import_worklog` и
+`import_attachment`.
 
 !!! note "Обратите внимание"
 
@@ -19,6 +20,7 @@
 * [Импорт задачи](https://yandex.ru/support/tracker/ru/concepts/import/import-ticket)
 * [Импорт комментариев](https://yandex.ru/support/tracker/ru/concepts/import/import-comments)
 * [Импорт связей](https://yandex.ru/support/tracker/ru/concepts/import/import-links)
+* [Импорт записей о затраченном времени](https://yandex.ru/support/tracker/ru/api/import/import-worklogs)
 * [Импорт вложений](https://yandex.ru/support/tracker/ru/concepts/import/import-attachments)
 
 ## Даты и время
@@ -40,9 +42,9 @@
 Ограничения, которые проверяет сам Трекер:
 
 * `created_at` не может быть в будущем;
-* для комментария, связи и вложения `created_at` должен попадать в промежуток между
-  созданием и последним изменением задачи (а для вложения к комментарию — ещё и между
-  созданием и изменением самого комментария).
+* для комментария, связи, записи о затраченном времени и вложения `created_at` должен
+  попадать в промежуток между созданием и последним изменением задачи (а для вложения
+  к комментарию — ещё и между созданием и изменением самого комментария).
 
 Библиотека дополнительно проверяет согласованность параметров ещё до отправки запроса и
 бросает `ValueError`, если условие нарушено:
@@ -216,6 +218,50 @@ async def import_link(
 Метод возвращает `IssueLink` — модель описана в разделе
 «Связи между задачами» страницы [«Работа с задачами»](issues.md).
 
+## Импорт записи о затраченном времени
+
+```python
+worklog = await tracker.import_worklog(
+    issue_id=issue.key,
+    duration="PT1H",
+    created_at=datetime(2025, 2, 18, 16, 35, tzinfo=timezone.utc),
+    created_by="login",
+    start=datetime(2025, 2, 18, 16, 35, tzinfo=timezone.utc),
+    comment="Перенесённая запись",
+)
+```
+
+Сигнатура:
+
+```python
+async def import_worklog(
+    self,
+    issue_id: str,
+    duration: str,
+    created_at: datetime | str,
+    created_by: str | int,
+    start: datetime | str,
+    *,
+    comment: str | None = None,
+    **kwargs,
+) -> Worklog: ...
+```
+
+- `issue_id` — ID или ключ задачи, в которую импортируется запись о затраченном
+  времени.
+- `duration` — затраченное время в формате ISO 8601 (`PnYnMnDTnHnMnS`, `PnW`), например
+  `"PT1H"` (час), `"P6W"` (6 недель) или `"P0Y0M30DT2H10M25S"` (30 дней, 2 часа, 10
+  минут, 25 секунд).
+- `created_at`, `created_by` — дата создания и автор записи. `created_at` должен
+  попадать в промежуток между созданием и последним изменением задачи.
+- `start` — дата и время начала работы над задачей, датой создания записи не
+  ограничено.
+- `comment` — необязательный текст комментария к записи; отображается в Отчёте по
+  трудозатратам.
+- `**kwargs` — прочие поля записи, поддерживаемые API.
+
+Метод возвращает `Worklog` — модель описана в [«Учёт времени»](worklogs.md).
+
 ## Импорт вложения
 
 ```python
@@ -304,6 +350,16 @@ async def main() -> None:
         issue="WRITERS-1",
         created_at=datetime(2025, 1, 12, 10, 0, tzinfo=timezone.utc),
         created_by=AUTHOR,
+    )
+
+    # импортируем запись о затраченном времени
+    await tracker.import_worklog(
+        issue_id=issue.key,
+        duration="PT1H",
+        created_at=datetime(2025, 1, 12, 11, 0, tzinfo=timezone.utc),
+        created_by=AUTHOR,
+        start=datetime(2025, 1, 12, 10, 0, tzinfo=timezone.utc),
+        comment="Запись из старого трекера",
     )
 
     # импортируем вложение

@@ -250,6 +250,25 @@ class TestBoardEndpoints:
         assert [b.id for b in boards] == ["1", "2"]
         assert len(client.calls) == 2
 
+    async def test_iter_boards_sends_per_page_one_as_two(self) -> None:
+        """A one-board page could only ever hold the (inclusive) cursor."""
+        board_1, board_2, board_3 = ({**BOARD, "id": i} for i in (1, 2, 3))
+        client = FakeClient(
+            responses=[
+                (200, json.dumps([board_1, board_2]).encode(), {}),
+                (200, json.dumps([board_2, board_3]).encode(), {}),
+                (200, json.dumps([board_3]).encode(), {}),
+            ],
+        )
+        tracker = YaTracker(client=client)
+
+        boards = [board async for board in tracker.iter_boards(per_page=1)]
+
+        assert [b.id for b in boards] == ["1", "2", "3"]
+        assert client.calls[0]["params"] == {"perPage": "2"}
+        assert client.calls[1]["params"] == {"perPage": "2", "id": "2"}
+        assert client.calls[2]["params"] == {"perPage": "2", "id": "3"}
+
     async def test_create_board_sends_live_boards_endpoint(self) -> None:
         tracker, client = make_tracker(BOARD, status=201)
         board = await tracker.create_board("My board")

@@ -1,16 +1,19 @@
 from __future__ import annotations
 
-from typing import TypeVar, overload
+from typing import TYPE_CHECKING, TypeVar, overload
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, QueueT_co
 from yatracker.types import (
     FullQueue,
     IssueTypeConfig,
     QueueField,
     QueueVersion,
 )
+from yatracker.utils.datetime import to_tracker_date
 
-QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+if TYPE_CHECKING:
+    from datetime import date
+
 QueueFieldT_co = TypeVar("QueueFieldT_co", bound=QueueField, covariant=True)
 QueueVersionT_co = TypeVar("QueueVersionT_co", bound=QueueVersion, covariant=True)
 
@@ -200,6 +203,25 @@ class Queues(BaseTracker):
         )
         return self._decode(_type, data)
 
+    async def get_queue_tags(
+        self,
+        queue_id: str | int,
+    ) -> list[str]:
+        """Get the tags of a queue.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/queues/get-tags
+
+        :param queue_id: ID or key of the queue (the key is
+            case-sensitive).
+        :return: names of the tags added to the queue.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri=f"/queues/{queue_id}/tags",
+        )
+        return self._decode(list[str], data)
+
     async def delete_tag_from_queue(
         self,
         queue_id: str | int,
@@ -274,3 +296,75 @@ class Queues(BaseTracker):
             uri=f"/queues/{queue_id}/versions",
         )
         return self._decode(list[_type], data)  # type: ignore[valid-type]
+
+    @overload
+    async def create_queue_version(
+        self,
+        queue_id: str | int,
+        name: str,
+        *,
+        description: str | None = ...,
+        start_date: date | str | None = ...,
+        due_date: date | str | None = ...,
+    ) -> QueueVersion: ...
+
+    @overload
+    async def create_queue_version(
+        self,
+        queue_id: str | int,
+        name: str,
+        _type: type[QueueVersionT_co] = ...,
+        *,
+        description: str | None = ...,
+        start_date: date | str | None = ...,
+        due_date: date | str | None = ...,
+    ) -> QueueVersionT_co: ...
+
+    async def create_queue_version(
+        self,
+        queue_id: str | int,
+        name: str,
+        _type: type[QueueVersion | QueueVersionT_co] = QueueVersion,
+        *,
+        description: str | None = None,
+        start_date: date | str | None = None,
+        due_date: date | str | None = None,
+    ) -> QueueVersion | QueueVersionT_co:
+        """Create a queue version.
+
+        The version is created by `POST /versions`, with the queue
+        passed in the request body; the queue is not part of the path
+        (unlike `get_queue_versions`).
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/queues/create-version
+
+        :param queue_id: key of the queue the version is created in.
+        :param name: name of the version.
+        :param _type: you can use your own extended QueueVersion type.
+        :param description: description of the version.
+        :param start_date: start date, `YYYY-MM-DD` or a `date` object.
+        :param due_date: due date, `YYYY-MM-DD` or a `date` object.
+        :raises ValueError: if the API answered with an empty array.
+        :return: created version.
+
+        The reference shows the created version wrapped into an array,
+        while every other single-object endpoint answers with a bare
+        object; both shapes are accepted.
+        """
+        start_date = to_tracker_date(start_date)
+        due_date = to_tracker_date(due_date)
+
+        payload = self._prepare_payload(
+            locals(),
+            exclude=["queue_id"],
+            type_=_type,
+        )
+        payload = {"queue": queue_id, **payload}
+
+        data = await self._client.request(
+            method="POST",
+            uri="/versions",
+            payload=payload,
+        )
+        return self._decode_single(_type, data)

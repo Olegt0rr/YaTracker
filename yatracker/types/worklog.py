@@ -14,6 +14,8 @@ class Worklog(Base):
     id: int
     version: int
     issue: Issue
+    #: Comment saved with the worklog; shows up in the time-tracking report.
+    comment: str | None = None
     created_by: User
     updated_by: User | None = None
     created_at: datetime

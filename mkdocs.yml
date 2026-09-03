@@ -19,6 +19,22 @@ nav:
     - Массовые операции: bulk_changes.md
     - Импорт: import.md
     - Внешние приложения: applications.md
+    - Пользователи: users.md
+    - Администрирование: admin.md
+    - Поля задач: issue_fields.md
+    - Права доступа очередей: queue_access.md
+    - Рабочие процессы: workflows.md
+    - Триггеры: triggers.md
+    - Автодействия: autoactions.md
+    - Комментарии сущностей: entity_comments.md
+    - Файлы сущностей: entity_attachments.md
+    - Чек-листы сущностей: entity_checklists.md
+    - Связи сущностей: entity_links.md
+    - Доступ к сущностям: entity_access.md
+    - Отчёты по задачам: reports.md
+    - Фильтры: filters.md
+    - Отсутствия: gaps.md
+    - Дашборды: dashboards.md
   - Обработка ошибок: errors.md
   - Дополнительные возможности:
     - Работа с пользовательскими полями: custom_fields.md

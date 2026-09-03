@@ -139,6 +139,50 @@ async def test_find_issues_sends_paging_and_scroll_params() -> None:
     assert payload == {"filter": {"queue": "TEST"}}
 
 
+async def test_get_issue_accepts_a_sequence_of_fields() -> None:
+    client = FakeClient(body=full_issue_body())
+    tracker = YaTracker(client=client)
+    await tracker.get_issue("TEST-1", fields=["summary", "status"])
+    assert client.calls[0]["params"] == {"fields": "summary,status"}
+
+
+async def test_get_issue_ignores_an_empty_fields_sequence() -> None:
+    client = FakeClient(body=full_issue_body())
+    tracker = YaTracker(client=client)
+    await tracker.get_issue("TEST-1", fields=[])
+    assert client.calls[0]["params"] is None
+
+
+async def test_find_issues_accepts_a_sequence_of_fields() -> None:
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(query="Key: TEST-1", fields=("key", "summary"))
+    assert client.calls[0]["params"] == {"fields": "key,summary"}
+
+
+async def test_find_issues_sends_the_relative_pagination_cursor() -> None:
+    """A `queue=` search paginates relatively via the `id` query param."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(
+        queue="TEST",
+        per_page=10,
+        id_="5f2ad1314033c53616b50cd9",
+    )
+    call = client.calls[0]
+    assert call["params"] == {"perPage": "10", "id": "5f2ad1314033c53616b50cd9"}
+    assert sent_json(call) == {"queue": "TEST"}
+
+
+async def test_find_issues_omits_the_cursor_when_not_given() -> None:
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(queue="TEST")
+    call = client.calls[0]
+    assert call["params"] == {}
+    assert "id" not in sent_json(call)
+
+
 async def test_find_issues_scroll_params_not_in_body() -> None:
     client = FakeClient(body=b"[]")
     tracker = YaTracker(client=client)
@@ -148,6 +192,29 @@ async def test_find_issues_scroll_params_not_in_body() -> None:
     assert "perPage" not in payload
     assert "per_page" not in payload
     assert payload == {"query": "Key: TEST-1"}
+
+
+async def test_find_issues_sends_filter_id_and_query2() -> None:
+    """Both documented body params of `POST /issues/_search` reach the wire."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(filter_id=1234)
+    assert sent_json(client.calls[0]) == {"filterId": 1234}
+
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(query2={"query": {"queue": {"$eq": "TEST"}}})
+    assert sent_json(client.calls[0]) == {
+        "query2": {"query": {"queue": {"$eq": "TEST"}}},
+    }
+
+
+async def test_find_issues_sends_the_search_forms_as_given() -> None:
+    """The forms are alternatives; deciding between them is the API's job."""
+    client = FakeClient(body=b"[]")
+    tracker = YaTracker(client=client)
+    await tracker.find_issues(queue="TEST", filter_id=1234)
+    assert sent_json(client.calls[0]) == {"queue": "TEST", "filterId": 1234}
 
 
 async def test_get_comments_sends_expand_perpage_and_id() -> None:

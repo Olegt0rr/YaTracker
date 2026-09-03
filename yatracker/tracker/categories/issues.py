@@ -1,22 +1,35 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any, overload
 
-from yatracker.tracker.base import BaseTracker, IssueT_co
+from yatracker.tracker.base import (
+    BaseTracker,
+    IssueT_co,
+    SuggestT_co,
+    _iter_relative,
+    _join_fields,
+)
 from yatracker.types import (
     FullIssue,
     Issue,
-    IssueLink,
     IssueType,
+    LinkRelationship,
     Priority,
     Transition,
     Transitions,
 )
+from yatracker.types.changelog import Changelog
+from yatracker.types.issue_link import CreatedIssueLink, IssueLink
+from yatracker.types.issue_suggest import IssueSuggest
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Mapping
+    from collections.abc import AsyncIterator, Mapping, Sequence
+
+logger = logging.getLogger(__name__)
 
 SCROLL_ID_HEADER = "X-Scroll-Id"
+SCROLL_TOKEN_HEADER = "X-Scroll-Token"  # noqa: S105 (a header name, not a secret)
 
 
 def _get_header(headers: Mapping[str, str], name: str) -> str | None:
@@ -32,6 +45,56 @@ def _get_header(headers: Mapping[str, str], name: str) -> str | None:
     return None
 
 
+def _scroll_params(
+    *,
+    scroll_type: str,
+    per_scroll: int,
+    order: str | None,
+    expand: str | None,
+    scroll_ttl_millis: int | None,
+    fields: str | Sequence[str] | None,
+) -> dict[str, str]:
+    """Build the query params of the FIRST scroll search page.
+
+    `scrollType` and `perScroll` are documented as parameters of the
+    first request of a scroll series only; the following ones are built
+    by :func:`_next_scroll_params`.
+    """
+    params: dict[str, str] = {
+        "scrollType": scroll_type,
+        "perScroll": str(per_scroll),
+    }
+    if order:
+        params["order"] = order
+    if expand:
+        params["expand"] = expand
+    if scroll_ttl_millis is not None:
+        params["scrollTTLMillis"] = str(scroll_ttl_millis)
+    joined_fields = _join_fields(fields)
+    if joined_fields:
+        params["fields"] = joined_fields
+    return params
+
+
+def _next_scroll_params(params: dict[str, str], scroll_id: str) -> dict[str, str]:
+    """Build the query params of the next page of a scroll search.
+
+    Only `scrollId` identifies the page from the second request on:
+    `scrollType` and `perScroll` belong to the first request of the
+    series and are dropped here. `scrollTTLMillis` is kept because the
+    reference sends it again in its second-request example, and the
+    response projection (`order`, `expand`, `fields`) is kept so that
+    every page decodes into the same model.
+    """
+    kept = {
+        key: value
+        for key, value in params.items()
+        if key not in ("scrollType", "perScroll")
+    }
+    kept["scrollId"] = scroll_id
+    return kept
+
+
 class Issues(BaseTracker):
     @overload
     async def get_issue(
@@ -39,7 +102,7 @@ class Issues(BaseTracker):
         issue_id: str,
         expand: str | None = None,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> FullIssue: ...
 
     @overload
@@ -49,7 +112,7 @@ class Issues(BaseTracker):
         expand: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> IssueT_co: ...
 
     async def get_issue(
@@ -58,7 +121,7 @@ class Issues(BaseTracker):
         expand: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> IssueT_co | FullIssue:
         """Get issue parameters.
 
@@ -68,19 +131,21 @@ class Issues(BaseTracker):
         :param expand: Additional fields to include in the response:
                         transitions — Workflow transitions between statuses.
                         attachments — Attachments
-        :param fields: Comma-separated list of response fields to
-                        return. Non-listed fields are omitted from the
-                        response, so pass a ``_type`` whose required
-                        fields match the projection — the default
-                        FullIssue needs the full field set.
+        :param fields: Response fields to return: a comma-separated
+                        string or a sequence of names. Non-listed fields
+                        are omitted from the response, so pass a
+                        ``_type`` whose required fields match the
+                        projection — the default FullIssue needs the
+                        full field set.
         :param _type: you can use your own extended FullIssue type
         :return:
         """
         params: dict[str, str] = {}
         if expand:
             params["expand"] = expand
-        if fields:
-            params["fields"] = fields
+        joined_fields = _join_fields(fields)
+        if joined_fields:
+            params["fields"] = joined_fields
 
         data = await self._client.request(
             method="GET",
@@ -336,13 +401,16 @@ class Issues(BaseTracker):
         keys: str | None = None,
         queue: str | None = None,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[FullIssue]: ...
 
     # ruff: noqa: PLR0913
@@ -357,13 +425,16 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[IssueT_co]: ...
 
     # ruff: noqa: PLR0913
@@ -377,13 +448,16 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         per_page: int | None = None,
         page: int | None = None,
+        id_: str | None = None,
         scroll_type: str | None = None,
         per_scroll: int | None = None,
         scroll_ttl_millis: int | None = None,
         scroll_id: str | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> list[IssueT_co] | list[FullIssue]:
         """Find issues.
 
@@ -397,10 +471,46 @@ class Issues(BaseTracker):
         continue it. Scroll is not supported together with the ``keys``
         or ``queue`` search forms (the API answers HTTP 400).
 
+        A ``queue=`` search is the exception: the API paginates it
+        relatively and ignores ``page`` there. Every response carries a
+        ``Link: <...?id=...&perPage=...>; rel="next"`` header whose
+        ``id`` is the cursor of the next page — pass it back as ``id_``,
+        or use :meth:`iter_issues` (which folds ``queue`` into the
+        ``filter`` form and scrolls) to read the whole queue.
+
         ``fields`` projects the response: non-listed fields are omitted,
         so pass a ``_type`` whose required fields match the projection —
-        the default FullIssue needs the full field set.
+        the default FullIssue needs the full field set. It takes a
+        comma-separated string or a sequence of field names.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-issues
+
+        :param filter_: filter by field values, e.g.
+            ``{"queue": "TREK", "assignee": "empty()"}``.
+        :param query: filter written in the query language.
+        :param order: sorting of the result, ``[+/-]<field key>``; only
+            together with ``filter_``.
+        :param expand: additional data in the response: "transitions",
+            "attachments" or "comments".
+        :param keys: keys of the issues to return, comma-separated.
+        :param queue: key of the queue to search in.
+        :param id_: cursor of the page to return under relative
+            pagination (query param "id"), taken from the ``Link``
+            header of the previous response. Only meaningful for a
+            ``queue=`` search; omit it to get the first page.
+        :param filter_id: id of a saved filter (body param "filterId").
+        :param query2: filter written in the query language 2.0, as the
+            object the API documents (body param "query2").
+        :param _type: you can use your own extended FullIssue type.
         :return:
+
+        The search forms — ``queue``, ``keys``, ``filter_``,
+        ``filter_id``, ``query`` and ``query2`` — are alternatives
+        rather than filters to combine: the API answers a pair by the
+        one with the higher priority (``queue``, then ``keys``, then
+        ``filter``, then ``query``) and rejects three or four of them
+        with HTTP 400.
         """
         payload = self._prepare_payload(
             locals(),
@@ -409,6 +519,7 @@ class Issues(BaseTracker):
                 "order",
                 "per_page",
                 "page",
+                "id_",
                 "scroll_type",
                 "per_scroll",
                 "scroll_ttl_millis",
@@ -418,25 +529,25 @@ class Issues(BaseTracker):
             type_=_type,
         )
 
-        params: dict[str, str] = {}
-        if order:
-            params["order"] = order
-        if expand:
-            params["expand"] = expand
-        if per_page is not None:
-            params["perPage"] = str(per_page)
-        if page is not None:
-            params["page"] = str(page)
-        if scroll_type:
-            params["scrollType"] = scroll_type
-        if per_scroll is not None:
-            params["perScroll"] = str(per_scroll)
-        if scroll_ttl_millis is not None:
-            params["scrollTTLMillis"] = str(scroll_ttl_millis)
-        if scroll_id:
-            params["scrollId"] = scroll_id
-        if fields:
-            params["fields"] = fields
+        # not `_prepare_params`: the wire names of the scroll
+        # parameters ("scrollTTLMillis") are not the camel-cased ones.
+        raw_params: dict[str, Any] = {
+            "order": order,
+            "expand": expand,
+            "perPage": per_page,
+            "page": page,
+            "id": id_,
+            "scrollType": scroll_type,
+            "perScroll": per_scroll,
+            "scrollTTLMillis": scroll_ttl_millis,
+            "scrollId": scroll_id,
+            "fields": _join_fields(fields),
+        }
+        params: dict[str, str] = {
+            name: str(value)
+            for name, value in raw_params.items()
+            if value is not None and value != ""
+        }
 
         data = await self._client.request(
             method="POST",
@@ -456,10 +567,12 @@ class Issues(BaseTracker):
         expand: str | None = None,
         queue: str | None = None,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[FullIssue]: ...
 
     @overload
@@ -472,10 +585,12 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co] = ...,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[IssueT_co]: ...
 
     async def iter_issues(
@@ -487,10 +602,12 @@ class Issues(BaseTracker):
         queue: str | None = None,
         _type: type[IssueT_co | FullIssue] = FullIssue,
         *,
+        filter_id: int | str | None = None,
+        query2: dict[str, Any] | None = None,
         scroll_type: str = "sorted",
         per_scroll: int = 100,
         scroll_ttl_millis: int | None = None,
-        fields: str | None = None,
+        fields: str | Sequence[str] | None = None,
     ) -> AsyncIterator[IssueT_co | FullIssue]:
         """Iterate over all issues matching the criteria via the scroll API.
 
@@ -508,13 +625,59 @@ class Issues(BaseTracker):
         :meth:`find_issues` with an explicit ``scroll_id`` remains
         available when you need to drive the scroll session manually.
 
+        Every page holds a snapshot on the server until the scroll TTL
+        expires. When the iteration is left early the accumulated
+        `X-Scroll-Id`/`X-Scroll-Token` pairs are released with
+        :meth:`clear_search_scroll` on a best-effort basis: errors of
+        that call are swallowed (they are only logged), and it is
+        skipped altogether once the tracker is closed, because a closed
+        client cannot release anything any more.
+
+        The release runs when the generator is *closed*, which a plain
+        ``break`` does not do: it only suspends the generator until
+        something finalizes it (``asyncio.run`` does, via
+        ``shutdown_asyncgens``, but only when the loop shuts down, and
+        an unclosed generator keeps the snapshot until its TTL). Close
+        it explicitly to release the snapshot at a moment you control,
+        and do it before leaving the ``async with`` block of the
+        tracker::
+
+            from contextlib import aclosing
+
+            async with aclosing(tracker.iter_issues(query=...)) as issues:
+                async for issue in issues:
+                    if ...:
+                        break
+
+        or, without a context manager, ``gen = tracker.iter_issues(...)``
+        and ``await gen.aclose()``.
+
+        :param filter_: filter by field values, e.g.
+            ``{"queue": "TREK", "assignee": "empty()"}``.
+        :param query: filter written in the query language.
+        :param order: sorting of the result, ``[+/-]<field key>``; only
+            together with ``filter_``.
+        :param expand: additional data in the response: "transitions",
+            "attachments" or "comments".
+        :param queue: key of the queue to search in; folded into
+            ``filter_`` before the request is sent.
+        :param filter_id: id of a saved filter (body param "filterId").
+        :param query2: filter written in the query language 2.0, as the
+            object the API documents (body param "query2").
+        :param _type: you can use your own extended FullIssue type.
         :param scroll_type: "sorted" or "unsorted".
         :param per_scroll: number of issues per scroll page.
         :param scroll_ttl_millis: lifetime of the scroll context, in ms.
-        :param fields: comma-separated projection of response fields.
-            Non-listed fields are omitted from the response, so pass a
-            ``_type`` whose required fields match the projection — the
-            default :class:`FullIssue` needs the full field set.
+        :param fields: projection of response fields: a comma-separated
+            string or a sequence of names. Non-listed fields are omitted
+            from the response, so pass a ``_type`` whose required fields
+            match the projection — the default :class:`FullIssue` needs
+            the full field set.
+
+        The search forms (``filter_``, ``filter_id``, ``query``,
+        ``query2`` and the ``queue`` folded into ``filter_``) are
+        alternatives, like in :meth:`find_issues`: the API rejects three
+        or four of them with HTTP 400.
         """
         if queue is not None:
             filter_ = {**(filter_ or {}), "queue": queue}
@@ -533,38 +696,260 @@ class Issues(BaseTracker):
             type_=_type,
         )
 
-        params: dict[str, str] = {
-            "scrollType": scroll_type,
-            "perScroll": str(per_scroll),
-        }
-        if order:
-            params["order"] = order
-        if expand:
-            params["expand"] = expand
-        if scroll_ttl_millis is not None:
-            params["scrollTTLMillis"] = str(scroll_ttl_millis)
-        if fields:
-            params["fields"] = fields
+        params = _scroll_params(
+            scroll_type=scroll_type,
+            per_scroll=per_scroll,
+            order=order,
+            expand=expand,
+            scroll_ttl_millis=scroll_ttl_millis,
+            fields=fields,
+        )
 
-        while True:
-            data, headers = await self._client.request_with_headers(
-                method="POST",
-                uri="/issues/_search",
-                params=params,
-                payload=payload,
+        pairs: dict[str, str] = {}
+        completed = False
+        try:
+            while True:
+                data, headers = await self._client.request_with_headers(
+                    method="POST",
+                    uri="/issues/_search",
+                    params=params,
+                    payload=payload,
+                )
+                scroll_id = _get_header(headers, SCROLL_ID_HEADER)
+                scroll_token = _get_header(headers, SCROLL_TOKEN_HEADER)
+                if scroll_id:
+                    # `X-Scroll-Token` is documented as unused in the
+                    # current v3 API, so it may well be absent: the pair
+                    # is still recorded, with an empty token, otherwise
+                    # the snapshot would never be released.
+                    pairs[scroll_id] = scroll_token or ""
+
+                issues = self._decode(list[_type], data)  # type: ignore[valid-type]
+                if not issues:
+                    completed = True
+                    return
+
+                for issue in issues:
+                    yield issue
+
+                if not scroll_id:
+                    completed = True
+                    return
+
+                params = _next_scroll_params(params, scroll_id)
+        finally:
+            # Best effort: the caller may have gone away already, and a
+            # failing release must not mask the original error. Every
+            # exception is swallowed on purpose — the transport is
+            # pluggable, so anything from `aiohttp.ClientError` to a
+            # `TimeoutError` can come out of it. `CancelledError` is a
+            # `BaseException` and still propagates.
+            if pairs and not completed and not self._client.closed:
+                try:
+                    await self.clear_search_scroll(pairs)
+                except Exception:
+                    logger.warning(
+                        "Failed to release the scroll contexts of a search; "
+                        "they expire on their own after the scroll TTL.",
+                        exc_info=True,
+                    )
+
+    async def clear_search_scroll(self, scroll_ids: Mapping[str, str]) -> bool:
+        """Release the resources of a scroll search.
+
+        Every page of a scroll search holds a snapshot on the server
+        until it expires. Use this request to release them earlier.
+        :meth:`iter_issues` calls it on your behalf when the iteration
+        is left before the scroll is exhausted; call it yourself when
+        you drive the scroll session manually.
+
+        The docs show the request body as `{"srollId": "scrollToken"}`,
+        which is a (misspelled) placeholder rather than a literal key:
+        the parameter table names the value `scrollId` and the full
+        example sends real scroll ids as the keys of the object. So the
+        body is a plain mapping of a scroll id to its scroll token, and
+        all the pairs of the search have to be sent at once — one pair
+        per page of the search results.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-release
+
+        :param scroll_ids: mapping of every `X-Scroll-Id` returned by
+            the search to the matching `X-Scroll-Token`.
+        :return: `True` if the resources were released.
+        """
+        await self._client.request(
+            method="POST",
+            uri="/system/search/scroll/_clear",
+            payload=dict(scroll_ids),
+        )
+        return True
+
+    @overload
+    async def suggest_issues(
+        self,
+        input_: str,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[IssueSuggest]: ...
+
+    @overload
+    async def suggest_issues(
+        self,
+        input_: str,
+        _type: type[SuggestT_co] = ...,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[SuggestT_co]: ...
+
+    async def suggest_issues(
+        self,
+        input_: str,
+        _type: type[SuggestT_co | IssueSuggest] = IssueSuggest,
+        *,
+        queue: str | None = None,
+        full: bool | None = None,
+        fields: str | Sequence[str] | None = None,
+        expand: str | None = None,
+        embed: str | None = None,
+    ) -> list[SuggestT_co] | list[IssueSuggest]:
+        """Get issue suggestions by a fragment of the issue name.
+
+        Only the issues the user has access to are returned. The
+        response is a projection of the issue, not the whole issue: the
+        default :class:`IssueSuggest` decodes exactly that bare
+        projection. To get whole issues instead, pass
+        ``_type=FullIssue`` together with ``full=True`` and *without*
+        ``fields`` — a projection narrower than :class:`FullIssue`
+        requires fails to validate. With the default type ``full=True``
+        still works, the extra fields are simply ignored.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-suggest
+
+        :param input_: fragment of the issue name (query param "input").
+            A space between words also matches any text in its place.
+        :param _type: model to decode the response with;
+            :class:`FullIssue` (with `full=True`) or your own model.
+        :param queue: key of the queue to search in.
+        :param full: whether to return the detailed information about
+            every issue. Required to enable `fields`, `expand` and
+            `embed`.
+        :param fields: issue fields to return: a comma-separated string
+            or a sequence of names.
+        :param expand: additional information to include in the
+            response: "all", "html", "attachments", "comments", "links",
+            "localLinkRefs", "aliases", "transitions", "permissions",
+            "sla" or "update_limits".
+        :param embed: more details about what was asked in `expand`:
+            "attachments", "comments", "transitions" or "sla".
+        :return: list of the issues found.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri="/issues/_suggest",
+            params=self._prepare_params(
+                input_=input_,
+                queue=queue,
+                full=full,
+                fields=_join_fields(fields),
+                expand=expand,
+                embed=embed,
+            ),
+        )
+        return self._decode(list[_type], data)  # type: ignore[valid-type]
+
+    async def get_issue_changelog(
+        self,
+        issue_id: str,
+        *,
+        id_: str | None = None,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> list[Changelog]:
+        """Get one page of the change history of an issue.
+
+        The API returns 50 changes per page by default; use `per_page`
+        and the `id_` cursor (or :meth:`iter_issue_changelog`) to read
+        the rest.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-changelog
+
+        :param issue_id: ID or key of the issue.
+        :param id_: id of the change the requested ones follow
+            (query param "id"). Omit it to get the first page.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by, e.g.
+            "checklistItems" or "status".
+        :param type_: key of the change type to filter by, e.g.
+            "IssueWorkflow" (query param "type").
+        :return: list of the changelog records.
+        """
+        data = await self._client.request(
+            method="GET",
+            uri=f"/issues/{issue_id}/changelog",
+            params=self._prepare_params(
+                id_=id_,
+                per_page=per_page,
+                field=field,
+                type_=type_,
+            ),
+        )
+        return self._decode(list[Changelog], data)
+
+    async def iter_issue_changelog(
+        self,
+        issue_id: str,
+        *,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> AsyncIterator[Changelog]:
+        """Iterate over the whole change history of an issue.
+
+        Wraps :meth:`get_issue_changelog`: every page is requested with
+        the id of the last change of the previous one (see
+        :func:`yatracker.tracker.base._iter_relative`).
+
+        Unlike the boards, users and triggers cursors, the changelog one
+        is exclusive — the docs describe `id` as the change the
+        requested ones *follow* — so `per_page` is sent unchanged, a
+        page of one item included.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-changelog
+
+        :param issue_id: ID or key of the issue.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by.
+        :param type_: key of the change type to filter by.
+        """
+
+        async def fetch_page(id_: str | None) -> list[Changelog]:
+            return await self.get_issue_changelog(
+                issue_id,
+                id_=id_,
+                per_page=per_page,
+                field=field,
+                type_=type_,
             )
-            issues = self._decode(list[_type], data)  # type: ignore[valid-type]
-            if not issues:
-                return
 
-            for issue in issues:
-                yield issue
-
-            scroll_id = _get_header(headers, SCROLL_ID_HEADER)
-            if not scroll_id:
-                return
-
-            params = {**params, "scrollId": scroll_id}
+        async for change in _iter_relative(
+            fetch_page,
+            items=lambda page: page,
+            key=lambda change: change.id,
+        ):
+            yield change
 
     async def get_issue_links(
         self,
@@ -574,12 +959,71 @@ class Issues(BaseTracker):
 
         Use this request to get information about links between issues.
         The issue is selected by its ID or key.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/get-links
         """
         data = await self._client.request(
             method="GET",
             uri=f"/issues/{issue_id}/links",
         )
         return self._decode(list[IssueLink], data)
+
+    async def link_issues(
+        self,
+        issue_id: str,
+        relationship: LinkRelationship | str,
+        issue: str | Issue | FullIssue,
+    ) -> CreatedIssueLink:
+        """Create a link between two issues.
+
+        The link is created between the current issue (`issue_id`) and
+        the linked one (`issue`).
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/link-issue
+
+        :param issue_id: ID or key of the current issue.
+        :param relationship: type of the link: "relates",
+            "is dependent by", "depends on", "is subtask for",
+            "is parent task for", "duplicates", "is duplicated by",
+            "is epic of" or "has epic" (see :class:`LinkRelationship`).
+            The two epic links are only allowed for epics.
+        :param issue: ID or key of the issue to link, or an
+            :class:`Issue` / :class:`FullIssue` object (its `key` is
+            sent).
+        :return: the created link. The API answers without `assignee`
+            and `status`, hence :class:`CreatedIssueLink` rather than
+            :class:`IssueLink`.
+        """
+        payload = {
+            "relationship": relationship.value
+            if isinstance(relationship, LinkRelationship)
+            else relationship,
+            "issue": issue.key if isinstance(issue, (Issue, FullIssue)) else issue,
+        }
+        data = await self._client.request(
+            method="POST",
+            uri=f"/issues/{issue_id}/links",
+            payload=payload,
+        )
+        return self._decode(CreatedIssueLink, data)
+
+    async def unlink_issues(self, issue_id: str, link_id: str | int) -> bool:
+        """Delete a link between two issues.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/delete-link-issue
+
+        :param issue_id: ID or key of the current issue.
+        :param link_id: ID of the link with the other issue.
+        :return: `True` if the link was deleted.
+        """
+        await self._client.request(
+            method="DELETE",
+            uri=f"/issues/{issue_id}/links/{link_id}",
+        )
+        return True
 
     async def get_transitions(self, issue_id: str) -> Transitions:
         """Get transitions.

@@ -141,8 +141,7 @@ def _process_created_at(
     if not created_at_from or not created_at_to:
         return None
 
-    # stacklevel=4: helper -> this function -> get_worklog -> user code
     return {
-        "from": to_tracker_datetime(created_at_from, stacklevel=4),
-        "to": to_tracker_datetime(created_at_to, stacklevel=4),
+        "from": to_tracker_datetime(created_at_from),
+        "to": to_tracker_datetime(created_at_to),
     }

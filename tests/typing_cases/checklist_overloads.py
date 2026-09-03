@@ -7,6 +7,8 @@ The ``FullIssue`` helpers default to ``type(self)`` and an explicit
 
 from __future__ import annotations
 
+from datetime import date
+
 from typing_extensions import assert_type
 from yatracker import YaTracker
 from yatracker.types import ChecklistItem, FullIssue
@@ -20,6 +22,20 @@ async def checklist_overloads(tracker: YaTracker) -> None:
     assert_type(await tracker.get_checklist("K-1"), list[ChecklistItem])
 
     assert_type(await tracker.add_checklist_item("K-1", "x"), FullIssue)
+    # a bare `date` is accepted as a deadline, like a `datetime`
+    assert_type(
+        await tracker.add_checklist_item("K-1", "x", deadline=date(2024, 3, 1)),
+        FullIssue,
+    )
+    assert_type(
+        await tracker.edit_checklist_item(
+            "K-1",
+            "i",
+            "x",
+            deadline=date(2024, 3, 1),
+        ),
+        FullIssue,
+    )
     assert_type(await tracker.add_checklist_item("K-1", "x", _type=MyIssue), MyIssue)
     assert_type(await tracker.edit_checklist_item("K-1", "i", "x"), FullIssue)
     assert_type(

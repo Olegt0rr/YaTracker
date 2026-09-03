@@ -4,11 +4,16 @@ import asyncio
 from typing import TYPE_CHECKING, Any
 
 from yatracker.exceptions import ObjectNotFoundError
-from yatracker.tracker.base import BaseTracker, _convert_value, _encode_key
+from yatracker.tracker.base import (
+    BaseTracker,
+    _check_sequence,
+    _convert_value,
+    _encode_key,
+)
 from yatracker.types import BulkChange, BulkChangeIssue
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Iterable
 
     from yatracker.types import FullIssue, FullQueue, Issue, Queue, Transition
 
@@ -22,7 +27,7 @@ NOT_FOUND_RETRIES = 10
 class BulkChanges(BaseTracker):
     async def bulk_update_issues(
         self,
-        issues: Sequence[str | Issue | FullIssue] | str,
+        issues: Iterable[str | Issue | FullIssue] | str,
         values: dict[str, Any] | None = None,
         *,
         notify: bool | None = None,
@@ -30,7 +35,7 @@ class BulkChanges(BaseTracker):
     ) -> BulkChange:
         """Edit multiple issues at once.
 
-        :param issues: Sequence of issue keys (or `Issue` objects), or a
+        :param issues: Collection of issue keys (or `Issue` objects), or a
                        query-language filter string selecting the issues.
                        Note that a bare key like `"TEST-1"` is a full-text
                        search, not a key match — use `"Key: TEST-1"` or
@@ -78,7 +83,7 @@ class BulkChanges(BaseTracker):
 
     async def bulk_transition_issues(
         self,
-        issues: Sequence[str | Issue | FullIssue],
+        issues: Iterable[str | Issue | FullIssue],
         transition: str | Transition,
         values: dict[str, Any] | None = None,
         *,
@@ -87,7 +92,7 @@ class BulkChanges(BaseTracker):
     ) -> BulkChange:
         """Move multiple issues to a new status at once.
 
-        :param issues: Sequence of issue keys (or `Issue` objects). Unlike
+        :param issues: Collection of issue keys (or `Issue` objects). Unlike
                        `bulk_update_issues`, a filter string is not
                        supported by this endpoint (`TypeError`).
         :param transition: Transition id (or a `Transition` object).
@@ -118,7 +123,7 @@ class BulkChanges(BaseTracker):
 
     async def bulk_move_issues(  # noqa: PLR0913
         self,
-        issues: Sequence[str | Issue | FullIssue],
+        issues: Iterable[str | Issue | FullIssue],
         queue: str | Queue | FullQueue,
         values: dict[str, Any] | None = None,
         *,
@@ -129,7 +134,7 @@ class BulkChanges(BaseTracker):
     ) -> BulkChange:
         """Move multiple issues to another queue at once.
 
-        :param issues: Sequence of issue keys (or `Issue` objects). Unlike
+        :param issues: Collection of issue keys (or `Issue` objects). Unlike
                        `bulk_update_issues`, a filter string is not
                        supported by this endpoint (`TypeError`).
         :param queue: Target queue key (or a `Queue`/`FullQueue` object).
@@ -306,16 +311,19 @@ def _prepare_values(
     return prepared
 
 
-def _prepare_issue_keys(issues: Sequence[str | Issue | FullIssue] | str) -> list[str]:
-    """Convert a sequence of issues into a list of issue keys."""
-    if isinstance(issues, str):
-        msg = (
-            "This endpoint accepts only a sequence of issue keys. "
-            "A query filter string is supported by `bulk_update_issues` only."
-        )
-        raise TypeError(msg)
+def _prepare_issue_keys(issues: Iterable[str | Issue | FullIssue] | str) -> list[str]:
+    """Convert a collection of issues into a list of issue keys.
 
-    keys = [issue if isinstance(issue, str) else issue.key for issue in issues]
+    A bare `str` is rejected here on purpose: a query filter string is
+    supported by `bulk_update_issues` only.
+    """
+    checked = _check_sequence(
+        issues,
+        "issues",
+        "issue keys or `Issue` objects",
+        "issue.key",
+    )
+    keys = [issue if isinstance(issue, str) else issue.key for issue in checked]
     if not keys:
         msg = "At least one issue is required."
         raise ValueError(msg)

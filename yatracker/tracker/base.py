@@ -1,27 +1,42 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterable, Mapping
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from pydantic import TypeAdapter
 from typing_extensions import Self
 
 from yatracker.types.base import Base
 from yatracker.types.full_issue import FullIssue
+from yatracker.types.full_queue import FullQueue
 from yatracker.utils.camel_case import camel_case
 
 from .client import AIOHTTPClient
 
 if TYPE_CHECKING:
-    from collections.abc import Collection
+    from collections.abc import (
+        AsyncIterator,
+        Awaitable,
+        Callable,
+        Collection,
+        Sequence,
+    )
     from types import TracebackType
 
     from .client import BaseClient
 
 T = TypeVar("T")
 B = TypeVar("B", bound=Base)
+PageT = TypeVar("PageT")
+IssueT = TypeVar("IssueT", bound=FullIssue)
 IssueT_co = TypeVar("IssueT_co", bound=FullIssue, covariant=True)
+QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
+#: `SuggestT_co` stays bound to `Base` rather than to `IssueSuggest`:
+#: `suggest_issues(..., full=True)` answers with whole issues, so a
+#: `FullIssue` is a legitimate `_type` there.
+SuggestT_co = TypeVar("SuggestT_co", bound=Base, covariant=True)
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +89,31 @@ class BaseTracker:
         """
         adapter = _get_adapter(type_)  # type: ignore[arg-type]
         return adapter.validate_json(data, context={"tracker": self})
+
+    def _decode_single(self, type_: type[T], data: bytes) -> T:
+        """Decode one object out of a response documented as an array.
+
+        A handful of endpoints (create/edit a status, create/edit an
+        issue type, create a queue version) show the created object
+        wrapped into a one-element JSON array, while their siblings
+        answer with a bare object. Both shapes are accepted here and the
+        single object is returned.
+
+        :raises ValueError: if the API answered with an empty array.
+        """
+        decoded: Any = self._decode(
+            list[type_] | type_,  # type: ignore[valid-type,arg-type]
+            data,
+        )
+        if isinstance(decoded, list):
+            if not decoded:
+                msg = (
+                    f"The API answered with an empty array where a single "
+                    f"{getattr(type_, '__name__', type_)} object was expected."
+                )
+                raise ValueError(msg)
+            decoded = decoded[0]
+        return cast("T", decoded)
 
     @staticmethod
     def _prepare_payload(
@@ -160,6 +200,67 @@ def _encode_key(key: str) -> str:
     return camel_case(key) if key.isidentifier() else key
 
 
+def _check_sequence(values: object, param: str, item: str, example: str) -> list[Any]:
+    """Materialize a collection passed where several items are expected.
+
+    Only the "bare single value" shapes are rejected: a `str`/`bytes`
+    would be iterated character by character, a mapping key by key and a
+    :class:`Base` model field by field, so the request would go out
+    silently mangled instead of failing. Everything else iterable is
+    accepted — a set, a `dict.keys()` view or a generator are legitimate
+    ways to pass several ids — and returned as a list, so the callers
+    can measure it and walk it more than once.
+
+    :param param: name of the offending parameter, as the caller wrote it.
+    :param item: what the collection holds, e.g. "issue keys".
+    :param example: one element, to show in the suggested call.
+    :raises TypeError: if `values` is a single value rather than a
+        collection of them.
+    :return: the items as a list.
+    """
+    if isinstance(values, (str, bytes, Mapping, Base)) or not isinstance(
+        values,
+        Iterable,
+    ):
+        msg = (
+            f"`{param}` must be a sequence of {item}, got "
+            f"{type(values).__name__}. Pass a sequence, e.g. `[{example}]`."
+        )
+        raise TypeError(msg)
+    return list(values)
+
+
+def _join_fields(fields: str | Sequence[str] | None) -> str | None:
+    """Render a `fields` projection as the comma-separated string the API wants.
+
+    Every endpoint taking `fields` documents it as one comma-separated
+    string, which is also the most convenient shape when the projection
+    is copied out of the reference. A sequence of names is joined here,
+    so the same call works with `"key,summary"` and with
+    `["key", "summary"]`. An empty value (`None`, `""`, `[]`) means
+    "no projection" and is dropped by the callers.
+    """
+    if not fields:
+        return None
+    return fields if isinstance(fields, str) else ",".join(fields)
+
+
+def _split_fields(fields: str | Sequence[str] | None) -> list[str] | None:
+    """Render a `fields` projection as the JSON array some bodies want.
+
+    The mirror image of :func:`_join_fields`: a couple of endpoints
+    (the report export, for one) take the projection as an array inside
+    the request body rather than as a query parameter. A comma-separated
+    string is split on the commas and the names are stripped, so both
+    shapes are accepted there as well.
+    """
+    if fields is None:
+        return None
+    if isinstance(fields, str):
+        return [name.strip() for name in fields.split(",") if name.strip()]
+    return list(fields)
+
+
 def _if_match(version: str | int) -> dict[str, str]:
     """Build the `If-Match` header carrying an object version.
 
@@ -171,6 +272,62 @@ def _if_match(version: str | int) -> dict[str, str]:
     return {"If-Match": f'"{version}"'}
 
 
+async def _iter_relative(
+    fetch_page: Callable[[str | None], Awaitable[PageT]],
+    *,
+    items: Callable[[PageT], Sequence[T]],
+    key: Callable[[T], str],
+    has_next: Callable[[PageT], bool] | None = None,
+) -> AsyncIterator[T]:
+    """Walk over an id-cursor paginated endpoint, page by page.
+
+    Several Tracker endpoints (boards, triggers, users, changelog) share
+    the same relative pagination: items are sorted by id ascending and
+    the next page is requested with the id of the last item of the
+    current one. The docs describe that `id` as the item the next page
+    *starts from*, so the cursor item comes back at the top of the next
+    page and is filtered out here instead of being yielded twice.
+
+    A page that does not advance past the cursor is either the last one
+    (it only repeats the cursor item) or a server ignoring `id`: the
+    iteration stops before yielding anything, even when the endpoint
+    reports a next page, rather than looping forever.
+
+    :param fetch_page: coroutine fetching one page for a cursor
+        (`None` for the first page).
+    :param items: extract the items of a page.
+    :param key: extract the cursor value of an item.
+    :param has_next: whether the endpoint reports more pages; endpoints
+        that do not report it stop on the first non-advancing page.
+    """
+    cursor: str | None = None
+    while True:
+        page = await fetch_page(cursor)
+        batch = items(page)
+        if not batch or key(batch[-1]) == cursor:
+            return
+
+        for item in batch:
+            if key(item) != cursor:
+                yield item
+
+        if has_next is not None and not has_next(page):
+            return
+
+        cursor = key(batch[-1])
+
+
+def _relative_page_size(per_page: int | None) -> int | None:
+    """Bump a one-item page size for an inclusive id cursor.
+
+    The cursor item is resent at the top of every page, so a page of one
+    item can only ever contain the cursor itself: the iteration would
+    stop right after the first item. Two is the smallest size that still
+    advances.
+    """
+    return 2 if per_page == 1 else per_page
+
+
 def _encode_param(value: Any) -> str:  # noqa: ANN401
     """Encode a query param value the way the Tracker API expects it."""
     if isinstance(value, bool):
@@ -179,16 +336,38 @@ def _encode_param(value: Any) -> str:  # noqa: ANN401
 
 
 def _convert_value(obj: Any) -> Any:  # noqa: ANN401
-    """Convert values to basic types."""
+    """Convert values to basic types.
+
+    A model is rendered through its own request form (`Base._to_request`)
+    rather than dumped verbatim, so a model read back from the API can
+    be passed straight into the next request body.
+
+    Every collection is rendered as a JSON array, tuples and sets
+    included: `pydantic_core.to_json` would serialize them, but without
+    walking into them, so a model inside one would be dumped verbatim
+    instead of going through its request form. A set is sorted when its
+    elements are comparable, to keep the request reproducible, and left
+    in iteration order otherwise.
+    """
     match obj:
         case Base():
-            return obj.model_dump(mode="json", by_alias=True, exclude_none=True)
-        case list():
+            return obj._to_request()  # noqa: SLF001
+        case list() | tuple():
             return [_convert_value(o) for o in obj]
+        case set() | frozenset():
+            return [_convert_value(o) for o in _sorted_if_possible(obj)]
         case dict():
             return {k: _convert_value(v) for k, v in obj.items()}
         case _:
             return obj
+
+
+def _sorted_if_possible(values: Collection[Any]) -> Collection[Any]:
+    """Sort a set of values, unless they cannot be compared to each other."""
+    try:
+        return sorted(values)
+    except TypeError:
+        return values
 
 
 def _rename_and_clear(

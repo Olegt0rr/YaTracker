@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 __all__ = [
+    "ChecklistEntityType",
     "Entity",
     "EntityChecklistItem",
     "EntityDeadline",
@@ -12,6 +13,7 @@ __all__ = [
     "EntityKeyResult",
     "EntityKeyResultProgress",
     "EntityLink",
+    "EntityLinkInfo",
     "EntityMetricItem",
     "EntityParent",
     "EntityRef",
@@ -25,11 +27,15 @@ from datetime import date as date_
 from datetime import datetime
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from pydantic import BeforeValidator, ConfigDict, TypeAdapter
+from pydantic import AliasChoices, BeforeValidator, ConfigDict, TypeAdapter
+
+from yatracker.utils.datetime import to_tracker_date, to_tracker_datetime
 
 from .attachment import Attachment
 from .base import Base, field, url_field
+from .checklist import ChecklistAssignee
 from .queue import Queue
+from .ref import Ref
 from .user import User
 
 if TYPE_CHECKING:
@@ -37,6 +43,13 @@ if TYPE_CHECKING:
 
 EntityType = Literal["project", "portfolio", "goal"]
 """Kind of entity: a project, a portfolio of projects or a goal."""
+
+ChecklistEntityType = Literal["project", "portfolio"]
+"""Kind of entity that has a checklist.
+
+The checklist endpoints are documented for projects and portfolios
+only; goals have none.
+"""
 
 _DATE_ADAPTER = TypeAdapter(date_)
 _DATETIME_ADAPTER = TypeAdapter(datetime)
@@ -61,12 +74,17 @@ DateOrDatetime = Annotated[date_ | datetime, BeforeValidator(_parse_date_or_date
 """A field the API returns either as `YYYY-MM-DD` or as a full timestamp."""
 
 
-class EntityRef(Base):
-    """Short reference to an entity, embedded into `parentEntity`."""
+def _fields_or_empty(value: Any) -> Any:  # noqa: ANN401
+    """Read an explicit `null` as an empty set of fields.
 
-    url: str = url_field()
-    id: str
-    display: str | None = None
+    The API sends `"linkFieldValues": null` when the request asked for
+    no fields, which a plain `EntityFields` would reject.
+    """
+    return {} if value is None else value
+
+
+class EntityRef(Ref):
+    """Short reference to an entity, embedded into `parentEntity`."""
 
 
 class EntityParent(Base):
@@ -77,23 +95,99 @@ class EntityParent(Base):
 
 
 class EntityDeadline(Base):
-    """Deadline of a checklist item or a key result."""
+    """Deadline of a checklist item or a key result.
 
-    date: date_ | None = None
+    The API documents `date` as a full timestamp
+    (`YYYY-MM-DDThh:mm:ss.sss±hhmm`) for checklist items and as a plain
+    `YYYY-MM-DD` date for key results, so it is read as whichever of the
+    two the response actually carries. `deadline_type` is `date` or
+    `quarter`.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/entities/about-entities
+    """
+
+    date: DateOrDatetime | None = None
     deadline_type: str | None = None
     is_exceeded: bool | None = None
 
+    def _render(self, *, as_timestamp: bool) -> dict[str, Any]:
+        """Render the deadline as the `{"date", "deadlineType"}` request object.
+
+        The read-only `isExceeded` is dropped and a naive `datetime` is
+        reported from here, so every caller warns the same way. A
+        deadline without a date renders without the `date` key.
+
+        :param as_timestamp: render a bare `date` as midnight UTC. The
+            checklist endpoints document the date as a full
+            `YYYY-MM-DDThh:mm:ss.sss±hhmm` timestamp, key results as a
+            plain `YYYY-MM-DD`.
+        """
+        payload: dict[str, Any] = {}
+        # `datetime` is a subclass of `date`, so it is matched first
+        if isinstance(self.date, datetime):
+            payload["date"] = to_tracker_datetime(self.date)
+        elif isinstance(self.date, date_):
+            payload["date"] = (
+                to_tracker_datetime(self.date)
+                if as_timestamp
+                else to_tracker_date(self.date)
+            )
+        if self.deadline_type is not None:
+            payload["deadlineType"] = self.deadline_type
+        return payload
+
+    def _to_request(self) -> dict[str, Any]:
+        """Render the deadline for a generic request body.
+
+        A bare `date` keeps its `YYYY-MM-DD` form here: that is what a
+        key result deadline looks like, and it is the only place a
+        deadline reaches a request body on its own. The checklist
+        endpoints ask for a timestamp through `_render` instead.
+        """
+        return self._render(as_timestamp=False)
+
 
 class EntityChecklistItem(Base):
-    """Single item of the entity checklist (`checklistItems` field)."""
+    """Single item of the entity checklist (`checklistItems` field).
+
+    The assignee of a checklist item is the trimmed-down user object of
+    :class:`~yatracker.types.checklist.ChecklistAssignee`: unlike the
+    assignee of a key result it carries no `self` reference.
+    """
 
     id: str
     text: str | None = None
     text_html: str | None = None
     checked: bool | None = None
-    assignee: User | None = None
+    assignee: ChecklistAssignee | None = None
     deadline: EntityDeadline | None = None
     checklist_item_type: str | None = None
+
+    def _to_request(self) -> dict[str, Any]:
+        """Render the item the way the checklist endpoints want it.
+
+        The read-only `textHtml` and `checklistItemType` are dropped and
+        the assignee is sent as a user id (the endpoints document an id
+        or a login, not an object). Fields that are not set are left
+        out.
+        """
+        payload: dict[str, Any] = {"id": self.id}
+        if self.text is not None:
+            payload["text"] = self.text
+        if self.checked is not None:
+            payload["checked"] = self.checked
+        if self.assignee is not None:
+            payload["assignee"] = self.assignee.id
+        if self.deadline is not None:
+            deadline = self.deadline._render(as_timestamp=True)  # noqa: SLF001
+            # a deadline object without a date (e.g. only the read-only
+            # `isExceeded`) has nothing to send; the checklist endpoints
+            # always show `deadlineType` next to the date
+            if "date" in deadline:
+                deadline.setdefault("deadlineType", "date")
+                payload["deadline"] = deadline
+        return payload
 
 
 class EntityMetricItem(Base):
@@ -115,7 +209,14 @@ class EntityKeyResultProgress(Base):
 
 
 class EntityKeyResult(Base):
-    """Single key result of a goal (`keyResultItems` field)."""
+    """Single key result of a goal (`keyResultItems` field).
+
+    Unlike a checklist item, a key result has no request form of its
+    own: the `remove` operator of `keyResultItems` matches the object
+    against the stored one, so it has to be sent exactly as the API
+    returned it. Its `assignee` is therefore the regular
+    :class:`~yatracker.types.user.User`, `self` link included.
+    """
 
     id: str
     text: str | None = None
@@ -146,6 +247,9 @@ class EntityFields(Base):
     # the parent config into this one.
     model_config = ConfigDict(extra="allow")
 
+    # not part of the `fields` block of an entity, but `fields=id` is a
+    # valid selector for `linkFieldValues` of `get_entity_links`
+    id: str | None = None
     summary: str | None = None
     description: str | None = None
     author: User | None = None
@@ -181,6 +285,37 @@ class EntityLink(Base):
 
     relationship: str
     entity: str
+
+
+class EntityLinkInfo(Base):
+    """Link of an entity, as returned by `GET /entities/<type>/<id>/links`.
+
+    The response sample names the kind of the link `type` while the
+    parameter table calls it `relationship`, so both keys are accepted
+    and the value is exposed as `relationship`, like in
+    :class:`EntityLink`.
+
+    Source:
+    https://yandex.ru/support/tracker/ru/api/entities/links/get-links
+
+    Attributes
+    ----------
+    relationship - Kind of the link: "depends on", "is dependent by",
+    "works towards", "parent entity", "child entity" or
+    "is supported by".
+    link_field_values - Fields of the linked entity: the ones listed in
+    the `fields` parameter of the request, so everything is optional.
+
+    """
+
+    relationship: str | None = field(
+        default=None,
+        validation_alias=AliasChoices("type", "relationship"),
+        serialization_alias="relationship",
+    )
+    link_field_values: Annotated[EntityFields, BeforeValidator(_fields_or_empty)] = (
+        field(default_factory=EntityFields)
+    )
 
 
 class Entity(Base):

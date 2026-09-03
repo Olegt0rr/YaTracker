@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar, overload
+from typing import TYPE_CHECKING, overload
 
-from yatracker.tracker.base import BaseTracker
+from yatracker.tracker.base import BaseTracker, QueueT_co
 from yatracker.types import FullQueue, Project
 from yatracker.utils.datetime import to_tracker_date
 
@@ -11,8 +11,6 @@ if TYPE_CHECKING:
     from datetime import date
 
 # ruff: noqa: PLR0913
-
-QueueT_co = TypeVar("QueueT_co", bound=FullQueue, covariant=True)
 
 
 class Projects(BaseTracker):

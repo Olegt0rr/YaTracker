@@ -23,6 +23,8 @@ from yatracker import YaTracker
 from yatracker.types import BulkChange
 from yatracker.types.entity import (
     Entity,
+    EntityChecklistItem,
+    EntityDeadline,
     EntityEvents,
     EntityFields,
     EntityLink,
@@ -483,6 +485,19 @@ class TestCreateEntity:
 
         assert client.calls == []
 
+    async def test_links_accept_any_collection(self) -> None:
+        tracker, client = make_tracker(CREATED_ENTITY)
+        links = (EntityLink(relationship="works towards", entity="1234"),)
+        await tracker.create_entity(
+            "project",
+            "Project",
+            links=(link for link in links),
+        )
+
+        assert sent_json(client.calls[0])["links"] == [
+            {"relationship": "works towards", "entity": "1234"},
+        ]
+
     async def test_dates_inside_a_tuple_are_rendered(self) -> None:
         tracker, client = make_tracker(CREATED_ENTITY)
         await tracker.create_entity(
@@ -786,11 +801,12 @@ class TestBulkUpdateEntities:
         assert client.calls == []
 
     async def test_bare_entity_or_mapping_entities(self) -> None:
-        # pydantic models and dicts are iterable too, but not sequences
+        # pydantic models and dicts are iterable too, but a single one
+        # of them is a bare value, not a collection of entities
         tracker, client = make_tracker(bulk_change_payload())
         entity = Entity.model_validate(CREATED_ENTITY)
         for bare in (entity, {"id": entity.id}):
-            with pytest.raises(TypeError, match="not a bare"):
+            with pytest.raises(TypeError, match="sequence of entity ids"):
                 await tracker.bulk_update_entities(
                     "project",
                     bare,  # type: ignore[arg-type]
@@ -971,10 +987,60 @@ class TestEntityShortcuts:
         assert len(client.calls) == 1
 
 
+# --- set rendering -----------------------------------------------------------
+
+
+class TestSetFieldRendering:
+    """A set has no order of its own, so it is sorted before it is sent.
+
+    Iteration order depends on `PYTHONHASHSEED`, which would make the
+    request body differ between runs; `_convert_value` in
+    `yatracker.tracker.base` sorts sets for the same reason.
+    """
+
+    async def test_a_top_level_set_is_sorted(self) -> None:
+        tags = {"gamma", "alpha", "delta", "beta"}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", values={"tags": tags})
+
+        assert sent_json(client.calls[0])["fields"]["tags"] == sorted(tags)
+
+    async def test_a_nested_frozenset_is_sorted(self) -> None:
+        tags = frozenset({"gamma", "alpha", "delta", "beta"})
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", tags={"add": tags})
+
+        assert sent_json(client.calls[0])["fields"]["tags"]["add"] == sorted(tags)
+
+    async def test_a_set_of_kwargs_is_sorted_too(self) -> None:
+        queues = {30, 10, 20}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", issue_queues=queues)
+
+        assert sent_json(client.calls[0])["fields"]["issueQueues"] == sorted(queues)
+
+    async def test_an_unsortable_set_is_kept_as_is(self) -> None:
+        # `sorted` raises `TypeError` on mixed types; the values must
+        # still reach the body, in whatever order the set yields them
+        values = {"a", 1}
+        tracker, client = make_tracker(entity_payload())
+        await tracker.update_entity("project", "1", values={"tags": values})
+
+        assert sorted(
+            sent_json(client.calls[0])["fields"]["tags"],
+            key=repr,
+        ) == sorted(values, key=repr)
+
+
 # --- naive datetime warning --------------------------------------------------
 
 NAIVE = datetime(2023, 11, 23, 10, 0)  # noqa: DTZ001
 AWARE = datetime(2023, 11, 23, 10, 0, tzinfo=timezone.utc)
+
+
+def _emit_unrelated() -> None:
+    """Warn from a fixed location, so a `default` filter can dedupe it."""
+    warnings.warn("unrelated", DeprecationWarning, stacklevel=1)
 
 
 class TestNaiveDatetimeWarning:
@@ -1024,6 +1090,50 @@ class TestNaiveDatetimeWarning:
         assert len(record) == 1
         assert record[0].filename == __file__
 
+    async def test_a_bare_value_and_a_model_warn_once_together(self) -> None:
+        """The walk finds the bare value, the model warns while rendering."""
+        tracker, client = make_tracker(entity_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.update_entity(
+                "project",
+                "1",
+                values={
+                    "start": NAIVE,
+                    "checklistItems": [
+                        EntityChecklistItem(
+                            id="1", deadline=EntityDeadline(date=NAIVE)
+                        ),
+                    ],
+                },
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+        fields = sent_json(client.calls[0])["fields"]
+        assert fields["start"] == "2023-11-23T10:00:00.000"
+        assert fields["checklistItems"][0]["deadline"] == {
+            "date": "2023-11-23T10:00:00.000",
+            "deadlineType": "date",
+        }
+
+    async def test_a_model_alone_still_warns_once(self) -> None:
+        tracker, _ = make_tracker(entity_payload())
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await tracker.update_entity(
+                "project",
+                "1",
+                values={
+                    "checklistItems": [
+                        EntityChecklistItem(
+                            id="1", deadline=EntityDeadline(date=NAIVE)
+                        ),
+                    ],
+                },
+            )
+
+        assert len(record) == 1
+        assert record[0].filename == __file__
+
     async def test_search_filter_is_attributed_to_the_caller(self) -> None:
         tracker, _ = make_tracker(search_payload())
         with pytest.warns(UserWarning, match="Timezone-Aware") as record:
@@ -1031,6 +1141,32 @@ class TestNaiveDatetimeWarning:
 
         assert len(record) == 1
         assert record[0].filename == __file__
+
+    async def test_iter_filter_is_attributed_to_the_caller(self) -> None:
+        # `iter_entities` delegates to `search_entities`, adding a frame
+        # that the warning must still look past
+        tracker, _ = make_tracker(search_payload())
+        pages = tracker.iter_entities("project", filter_={"start": NAIVE})
+        with pytest.warns(UserWarning, match="Timezone-Aware") as record:
+            await anext(pages)
+        await pages.aclose()
+
+        assert record[0].filename == __file__
+
+    async def test_an_unrelated_warning_is_still_deduplicated(self) -> None:
+        # rendering used to run inside `warnings.catch_warnings`, which
+        # bumps the filters version and thereby resets the
+        # `__warningregistry__` of every module: a `default` filter then
+        # stopped deduplicating in the caller's own code
+        tracker, _ = make_tracker(entity_payload())
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("default")
+            _emit_unrelated()
+            await tracker.update_entity("project", "1", values={"start": AWARE})
+            _emit_unrelated()
+
+        assert [str(warning.message) for warning in caught] == ["unrelated"]
 
     async def test_aware_datetime_does_not_warn(self) -> None:
         tracker, client = make_tracker(CREATED_ENTITY)

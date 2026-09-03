@@ -3,16 +3,18 @@ from __future__ import annotations
 __all__ = ["FullIssue"]
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, TypeVar, overload
+from typing import TYPE_CHECKING, Any, overload
 
+from pydantic import field_validator
 from typing_extensions import Self
 
 from yatracker.utils.datetime import to_tracker_datetime
 
-from .base import Base, url_field
+from .base import Base, field, url_field
 from .checklist import ChecklistItem
 from .comment import Comment
 from .component import ComponentRef
+from .entity import EntityParent
 from .issue import Issue
 from .issue_type import IssueType
 from .priority import Priority
@@ -25,9 +27,12 @@ from .user import User
 if TYPE_CHECKING:
     import builtins
 
-    from .issue_link import IssueLink
+    # Imported for typing only: `yatracker.tracker.base` imports this
+    # module, so a runtime import would be circular.
+    from yatracker.tracker.base import IssueT
 
-IssueT = TypeVar("IssueT", bound="FullIssue")
+    from .changelog import Changelog
+    from .issue_link import CreatedIssueLink, IssueLink, LinkRelationship
 
 
 def _render_deadline(kwargs: dict[str, Any]) -> dict[str, Any]:
@@ -37,7 +42,7 @@ def _render_deadline(kwargs: dict[str, Any]) -> dict[str, Any]:
     `FullIssue` helper, not at the frames below it.
     """
     if isinstance(kwargs.get("deadline"), datetime):
-        kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"], stacklevel=4)
+        kwargs["deadline"] = to_tracker_datetime(kwargs["deadline"])
     return kwargs
 
 
@@ -62,9 +67,21 @@ class FullIssue(Base):
     previous_queue: Queue | None = None
     favorite: bool
     assignee: User | None = None
+    # projects and portfolios the issue belongs to; the API sends them
+    # in the same `{primary, secondary}` shape as `parentEntity`, except
+    # with `api_version="v2"` (see `_wrap_v2_project`)
+    project: EntityParent | None = None
 
-    last_comment_update_at: datetime | None = None
+    # the API sends this one as `lastCommentUpdatedAt`, not as the
+    # camelized `lastCommentUpdateAt`
+    last_comment_update_at: datetime | None = field(
+        default=None,
+        alias="lastCommentUpdatedAt",
+    )
     aliases: list[str] | None = None
+    # documented as a top-level response parameter of `POST
+    # /issues/_search` ("Теги задачи", array of strings)
+    tags: list[str] | None = None
     updated_by: User | None = None
     created_at: datetime
     created_by: User
@@ -73,6 +90,28 @@ class FullIssue(Base):
     status: Status
     previous_status: Status | None = None
     direction: str | None = None
+
+    @field_validator("project", mode="before")
+    @classmethod
+    def _wrap_v2_project(cls, value: Any) -> Any:  # noqa: ANN401
+        """Read the v2 `project` object as the primary project.
+
+        With `api_version="v2"` the `project` object holds the primary
+        project itself (a bare `{self, id, display}` reference) instead
+        of the v3 `{primary, secondary}` pair, which `extra="ignore"`
+        would otherwise decode as an empty `EntityParent`.
+
+        Source:
+        https://yandex.ru/support/tracker/ru/api/issues/search-issues
+        """
+        if (
+            isinstance(value, dict)
+            and "primary" not in value
+            and "secondary" not in value
+            and "id" in value
+        ):
+            return {"primary": value, "secondary": []}
+        return value
 
     async def get_transitions(self) -> Transitions:
         """Return dict and list-like Transitions object.
@@ -238,3 +277,51 @@ class FullIssue(Base):
     async def get_links(self) -> list[IssueLink]:
         """Get issue links."""
         return await self._tracker.get_issue_links(self.id)
+
+    async def link(
+        self,
+        relationship: LinkRelationship | str,
+        issue: str | Issue | FullIssue,
+    ) -> CreatedIssueLink:
+        """Create a link between self and another issue.
+
+        :param relationship: type of the link, e.g. "relates"
+            (see `LinkRelationship`).
+        :param issue: ID or key of the issue to link, or an `Issue` /
+            `FullIssue` object (its `key` is sent).
+        :return: the created link. The API answers without `assignee`
+            and `status`, hence `CreatedIssueLink` rather than
+            `IssueLink`.
+        """
+        return await self._tracker.link_issues(self.id, relationship, issue)
+
+    async def unlink(self, link_id: str | int) -> bool:
+        """Delete a link between self and another issue.
+
+        :param link_id: ID of the link.
+        :return: `True` if the link was deleted.
+        """
+        return await self._tracker.unlink_issues(self.id, link_id)
+
+    async def get_changelog(
+        self,
+        *,
+        id_: str | None = None,
+        per_page: int | None = None,
+        field: str | None = None,
+        type_: str | None = None,
+    ) -> list[Changelog]:
+        """Get one page of the change history of self.
+
+        :param id_: id of the change the requested ones follow.
+        :param per_page: number of changes per page (50 by default).
+        :param field: id of the changed issue field to filter by.
+        :param type_: key of the change type to filter by.
+        """
+        return await self._tracker.get_issue_changelog(
+            self.id,
+            id_=id_,
+            per_page=per_page,
+            field=field,
+            type_=type_,
+        )

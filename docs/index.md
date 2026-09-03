@@ -24,30 +24,44 @@ print(issue.key, issue.status)
 
 | Категория | Методы | Раздел |
 |---|---|---|
-| Задачи | `get_issue`, `create_issue`, `edit_issue`, `move_issue`, `find_issues`, `iter_issues`, `count_issues`, `get_issue_links`, `get_transitions`, `execute_transition` | [Задачи](issues.md) |
-| Очереди | `get_queue`, `get_queues`, `create_queue`, `delete_queue`, `restore_queue`, `delete_tag_from_queue`, `get_queue_fields`, `get_queue_versions` | [Очереди](queues.md) |
+| Задачи | `get_issue`, `create_issue`, `edit_issue`, `move_issue`, `find_issues`, `iter_issues`, `count_issues`, `suggest_issues`, `clear_search_scroll`, `get_issue_links`, `link_issues`, `unlink_issues`, `get_issue_changelog`, `iter_issue_changelog`, `get_transitions`, `execute_transition` | [Задачи](issues.md) |
+| Очереди | `get_queue`, `get_queues`, `create_queue`, `delete_queue`, `restore_queue`, `get_queue_tags`, `delete_tag_from_queue`, `get_queue_fields`, `get_queue_versions`, `create_queue_version` | [Очереди](queues.md) |
+| Права доступа очередей | `get_queue_user_access`, `get_queue_group_access`, `update_queue_access`, `get_component_user_access`, `get_component_group_access` | [Права доступа очередей](queue_access.md) |
+| Поля задач | `get_global_fields`, `get_field`, `create_field`, `update_field`, `get_field_categories`, `create_field_category`, `update_field_category`, `get_local_fields`, `get_local_field`, `create_local_field`, `update_local_field` | [Поля задач](issue_fields.md) |
 | Компоненты | `get_components`, `get_queue_components`, `create_component`, `update_component` | [Компоненты](components.md) |
+| Рабочие процессы | `get_workflows`, `get_workflow`, `create_workflow`, `update_workflow`, `update_workflow_action`, `delete_workflow` | [Рабочие процессы](workflows.md) |
+| Триггеры | `get_triggers`, `iter_triggers`, `get_trigger`, `create_trigger`, `update_trigger`, `get_trigger_logs` | [Триггеры](triggers.md) |
+| Автодействия | `get_autoaction`, `create_autoaction`, `get_autoaction_logs`, `get_autoaction_log` | [Автодействия](autoactions.md) |
 | Проекты (устаревший API) | `get_projects`, `get_project`, `create_project`, `update_project`, `delete_project`, `get_project_queues` | [Проекты (устаревший API)](projects.md) |
 | Проекты, портфели и цели | `create_entity`, `get_entity`, `update_entity`, `delete_entity`, `search_entities`, `iter_entities`, `bulk_update_entities`, `get_entity_events` | [Проекты, портфели и цели](entities.md) |
+| Комментарии сущностей | `get_entity_comments`, `get_entity_comments_relative`, `get_entity_comment`, `post_entity_comment`, `edit_entity_comment`, `delete_entity_comment` | [Комментарии сущностей](entity_comments.md) |
+| Файлы сущностей | `get_entity_attachments`, `get_entity_attachment`, `attach_file_to_entity`, `delete_entity_attachment` | [Файлы сущностей](entity_attachments.md) |
+| Чек-листы сущностей | `add_entity_checklist_item`, `edit_entity_checklist`, `edit_entity_checklist_item`, `move_entity_checklist_item`, `delete_entity_checklist_item`, `delete_entity_checklist` | [Чек-листы сущностей](entity_checklists.md) |
+| Связи сущностей | `get_entity_links`, `link_entities`, `delete_entity_link` | [Связи сущностей](entity_links.md) |
+| Доступ к сущностям | `get_entity_access`, `update_entity_access` | [Доступ к сущностям](entity_access.md) |
 | Макросы | `get_macros`, `get_macro`, `create_macro`, `update_macro`, `delete_macro` | [Макросы](macros.md) |
 | Доски | `get_boards`, `get_boards_paginated`, `iter_boards`, `get_board`, `create_board`, `update_board`, `delete_board`, `get_board_columns`, `get_board_column`, `create_board_column`, `update_board_column`, `delete_board_column` | [Доски и спринты](boards.md) |
 | Спринты | `get_sprints`, `get_sprint`, `create_sprint`, `update_sprint`, `start_sprint`, `archive_sprint`, `delete_sprint` | [Доски и спринты](boards.md) |
-| Комментарии | `get_comments`, `post_comment`, `edit_comment`, `delete_comment` | [Комментарии](comments.md) |
+| Комментарии | `get_comments`, `post_comment`, `edit_comment`, `delete_comment`, `add_comment_reaction` | [Комментарии](comments.md) |
 | Чек-листы | `get_checklist`, `add_checklist_item`, `edit_checklist_item`, `delete_checklist_item`, `delete_checklist` | [Чек-листы](checklists.md) |
 | Учёт времени | `post_worklog`, `edit_worklog`, `delete_worklog`, `get_issue_worklog`, `get_worklog` | [Учёт времени](worklogs.md) |
 | Вложения | `get_attachments`, `attach_file`, `upload_temp_file`, `download_attachment`, `download_thumbnail`, `delete_attachment` | [Вложения](attachments.md) |
 | Массовые операции | `bulk_update_issues`, `bulk_transition_issues`, `bulk_move_issues`, `get_bulk_change`, `get_bulk_change_issues`, `wait_bulk_change` | [Массовые операции](bulk_changes.md) |
-| Импорт | `import_issue`, `import_comment`, `import_link`, `import_attachment` | [Импорт](import.md) |
+| Импорт | `import_issue`, `import_comment`, `import_link`, `import_attachment`, `import_worklog` | [Импорт](import.md) |
 | Внешние приложения | `get_applications`, `get_remote_links`, `add_remote_link`, `delete_remote_link` | [Внешние приложения](applications.md) |
-| Приоритеты | `get_priorities` | — |
+| Пользователи | `get_users`, `get_users_relative`, `iter_users`, `get_user`, `get_myself` | [Пользователи](users.md) |
+| Администрирование | `get_issue_types`, `create_issue_type`, `update_issue_type`, `get_statuses`, `create_status`, `update_status`, `get_resolutions`, `create_resolution`, `update_resolution`, `get_priorities`, `create_priority`, `update_priority` | [Администрирование](admin.md) |
+| Отчёты по задачам | `create_report`, `search_reports` | [Отчёты по задачам](reports.md) |
+| Фильтры | `create_filter`, `get_filter`, `update_filter` | [Фильтры](filters.md) |
+| Отсутствия | `create_gap`, `create_gaps`, `search_gaps`, `iter_gaps`, `delete_gap`, `delete_gaps` | [Отсутствия](gaps.md) |
+| Дашборды | `create_dashboard`, `create_cycle_time_widget` | [Дашборды](dashboards.md) |
 
 !!! note "Покрытие API"
 
-    Библиотека покрывает не весь API Трекера. Разделы, которых нет в таблице выше
-    (пользователи и т.д.),
-    пока не реализованы. Если вам нужен отсутствующий метод — вы всегда можете
-    выполнить запрос напрямую через `tracker._client.request(...)`
-    или прислать pull request.
+    Библиотека покрывает все разделы официального справочника API Трекера.
+    Если вы нашли метод, которого нет в таблице выше, — его всё ещё можно
+    вызвать напрямую через `tracker._client.request(...)`, а лучше
+    [завести issue](https://github.com/Olegt0rr/YaTracker/issues) или прислать pull request.
 
 Часть методов продублирована прямо на моделях, чтобы не таскать `issue_id` руками:
 

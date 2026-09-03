@@ -11,7 +11,8 @@ https://yandex.cloud/ru/docs/tracker/concepts/issues/delete-checklist
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+import warnings
+from datetime import date, datetime, timezone
 from typing import Any
 
 import pytest
@@ -170,6 +171,26 @@ class TestAddChecklistItem:
             "List item text",
             deadline="2021-05-09T00:00:00.000+0000",
         )
+
+        assert sent_json(client.calls[0])["deadline"] == {
+            "date": "2021-05-09T00:00:00.000+0000",
+            "deadlineType": "date",
+        }
+
+    async def test_bare_date_deadline_becomes_midnight_utc(self) -> None:
+        # the parameter is documented as a timestamp; a `date` has no
+        # time of its own, so it is anchored to midnight UTC instead of
+        # reaching the API as an unusable `datetime.date` object
+        tracker, client = make_tracker(status=200)
+        client.body = self._issue_response()
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("error")
+            await tracker.add_checklist_item(
+                "ORG-3",
+                "List item text",
+                deadline=date(2021, 5, 9),
+            )
 
         assert sent_json(client.calls[0])["deadline"] == {
             "date": "2021-05-09T00:00:00.000+0000",

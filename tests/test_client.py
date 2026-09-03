@@ -146,6 +146,33 @@ async def test_get_session_is_cached_and_recreated_after_close() -> None:
     assert new_session.closed
 
 
+async def test_get_session_after_close_raises() -> None:
+    """A closed client must not silently open a session nobody closes."""
+    client = AIOHTTPClient(org_id="1", token="token")
+    session = client.get_session()
+    await client.close()
+
+    assert client.closed is True
+    with pytest.raises(RuntimeError, match="Client is closed"):
+        client.get_session()
+    assert session.closed
+
+
+async def test_close_marks_a_client_without_session_closed() -> None:
+    client = AIOHTTPClient(org_id="1", token="token")
+    assert client.closed is False
+    await client.close()
+
+    assert client.closed is True
+    with pytest.raises(RuntimeError, match="Client is closed"):
+        client.get_session()
+
+
+def test_custom_client_is_open_by_default() -> None:
+    """`closed` defaults to `False` for transports that keep no state."""
+    assert FakeClient().closed is False
+
+
 async def test_close_is_idempotent() -> None:
     client = AIOHTTPClient(org_id="1", token="token")
     session = client.get_session()

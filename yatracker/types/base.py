@@ -48,6 +48,24 @@ class Base(Printable, BaseModel):
 
     _tracker: Any = PrivateAttr(default=None)
 
+    def _to_request(self) -> Any:  # noqa: ANN401
+        """Render the model the way a request body wants it.
+
+        Called by the payload pipeline (`_convert_value` in
+        `yatracker.tracker.base`) for every model that reaches a request
+        body, so a model read back from the API can be passed straight
+        into the next request. The default is a verbatim JSON dump;
+        models whose request shape differs from the response shape
+        (read-only fields, an embedded object the API wants as a bare
+        id, a different date format) override this.
+
+        The hook is **not** recursive: a default dump serializes nested
+        models through pydantic, which knows nothing about it, so an
+        override that carries a nested model has to call the child's
+        hook itself.
+        """
+        return self.model_dump(mode="json", by_alias=True, exclude_none=True)
+
     @model_validator(mode="after")
     def _inject_tracker(self, info: ValidationInfo) -> Base:
         """Add the producer tracker object to the `_tracker` private field."""

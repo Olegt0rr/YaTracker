@@ -7,7 +7,7 @@ from yatracker.types.gap import Gap, GapsResult, GapsSearchResult, UserGaps
 from yatracker.utils.datetime import to_tracker_datetime
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Mapping, Sequence
+    from collections.abc import AsyncIterator, Iterable, Mapping
     from datetime import date, datetime
 
 # ruff: noqa: PLR0913
@@ -96,7 +96,7 @@ class Gaps(BaseTracker):
 
     async def create_gaps(
         self,
-        gaps: Sequence[Mapping[str, Any]],
+        gaps: Iterable[Mapping[str, Any]],
     ) -> list[Gap]:
         """Create several absence records at once.
 
@@ -138,7 +138,7 @@ class Gaps(BaseTracker):
 
     async def search_gaps(
         self,
-        users: Sequence[str | int],
+        users: Iterable[str | int],
         *,
         from_: datetime | date | str | None = None,
         to: datetime | date | str | None = None,
@@ -203,7 +203,7 @@ class Gaps(BaseTracker):
 
     async def iter_gaps(
         self,
-        users: Sequence[str | int],
+        users: Iterable[str | int],
         *,
         from_: datetime | date | str | None = None,
         to: datetime | date | str | None = None,
@@ -268,7 +268,7 @@ class Gaps(BaseTracker):
         """
         return await self.delete_gaps([gap_id])
 
-    async def delete_gaps(self, gap_ids: Sequence[str]) -> bool:
+    async def delete_gaps(self, gap_ids: Iterable[str]) -> bool:
         """Delete several absence records at once.
 
         Unknown ids are ignored by the API instead of failing.

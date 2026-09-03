@@ -89,7 +89,7 @@ gap = await tracker.create_gap(
 ```python
 async def create_gaps(
     self,
-    gaps: Sequence[Mapping[str, Any]],
+    gaps: Iterable[Mapping[str, Any]],
 ) -> list[Gap]: ...
 ```
 
@@ -143,7 +143,7 @@ gaps = await tracker.create_gaps(
 ```python
 async def search_gaps(
     self,
-    users: Sequence[str | int],
+    users: Iterable[str | int],
     *,
     from_: datetime | date | str | None = None,
     to: datetime | date | str | None = None,
@@ -195,7 +195,7 @@ for user_gaps in result.user_gaps:
 ```python
 async def iter_gaps(
     self,
-    users: Sequence[str | int],
+    users: Iterable[str | int],
     *,
     from_: datetime | date | str | None = None,
     to: datetime | date | str | None = None,
@@ -242,7 +242,7 @@ await tracker.delete_gap(gap.id)
 ### delete_gaps
 
 ```python
-async def delete_gaps(self, gap_ids: Sequence[str]) -> bool: ...
+async def delete_gaps(self, gap_ids: Iterable[str]) -> bool: ...
 ```
 
 Удаляет до 100 записей об отсутствии одним запросом. Возвращает `True` при успехе.

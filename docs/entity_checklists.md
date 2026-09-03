@@ -133,7 +133,7 @@ async def edit_entity_checklist(
     self,
     entity_type: ChecklistEntityType,
     entity_id: str | int,
-    items: Sequence[EntityChecklistItem | dict[str, Any]],
+    items: Iterable[EntityChecklistItem | dict[str, Any]],
     *,
     notify: bool | None = None,
     notify_author: bool | None = None,
